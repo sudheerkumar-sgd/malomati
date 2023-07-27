@@ -1,0 +1,36 @@
+{
+    "appTitle": "Malomati",
+    "@appTitle": {
+        "description": "The app name",
+        "type": "text"
+    },
+    "please_select_language": "Please Select Language",
+    "@please_select_language": {
+        "type": "text"
+    },
+    "please_select_language_ar": "الرجـاء اخــتيـار اللـغـة",
+    "@please_select_language_ar": {
+        "type": "text"
+    },
+    "english": "English",
+    "@english": {
+        "type": "text"
+    },
+    "arabic": "العربية",
+    "@arabic": {
+        "type": "text"
+    },
+    "transactionSubTittleText": "{bankName} • {dateString}",
+    "@transactionSubTittleText": {
+        "description": "Tooltip shown on the overview fab button",
+        "type": "text",
+        "placeholders": {
+            "bankName": {
+                "type": "String"
+            },
+            "dateString": {
+                "type": "String"
+            }
+        }
+    }
+}
