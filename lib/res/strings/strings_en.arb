@@ -20,6 +20,34 @@
     "@arabic": {
         "type": "text"
     },
+    "manager_amp_employee_self_service_of_uaq_government": "Manager & Employee Self-Service of UAQ Government",
+    "@manager_amp_employee_self_service_of_uaq_government": {
+        "type": "text"
+    },
+    "login": "Login",
+    "@login": {
+        "type": "text"
+    },
+    "username": "Username",
+    "@login": {
+        "type": "text"
+    },
+    "password": "Password",
+    "@login": {
+        "type": "text"
+    },
+    "rememberMe": "Remember Me",
+    "@login": {
+        "type": "text"
+    },
+    "or": "or",
+    "@login": {
+        "type": "text"
+    },
+    "loginWith": "Login with",
+    "@login": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

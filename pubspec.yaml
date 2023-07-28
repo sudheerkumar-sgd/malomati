@@ -85,7 +85,14 @@ flutter:
      - assets/images/2.0x/login_cover_image.png
      - assets/images/3.0x/login_cover_image.png
      - assets/images/4.0x/login_cover_image.png
+     - assets/images/ic_lang_ar.svg
+     - assets/images/ic_lang_en.svg
      - assets/images/ic_logo_title.svg
+     - assets/images/ic_uae_pass.png
+     - assets/images/1.5x/ic_uae_pass.png
+     - assets/images/2.0x/ic_uae_pass.png
+     - assets/images/3.0x/ic_uae_pass.png
+     - assets/images/4.0x/ic_uae_pass.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

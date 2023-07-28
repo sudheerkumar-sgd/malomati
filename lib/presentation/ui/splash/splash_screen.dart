@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/config/app_routes.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -7,15 +8,9 @@ import '../../../core/enum.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  //final Function(Widget) changeScreen;
-  @override
-  State<SplashScreen> createState() => _SplashState();
-}
-
-class _SplashState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,23 +31,24 @@ class _SplashState extends State<SplashScreen> {
                     Container(
                       alignment: Alignment.bottomCenter,
                       width: double.infinity,
-                      padding: const EdgeInsets.only(
-                          left: 50, top: 10, right: 50, bottom: 100),
+                      padding: EdgeInsets.only(
+                          left: context.resources.dimen.dp50,
+                          top: context.resources.dimen.dp10,
+                          right: context.resources.dimen.dp50,
+                          bottom: context.resources.dimen.dp100),
                       decoration: BackgroundBoxDecoration(
-                              context.resources.color.colorWhite,
-                              context.resources.color.colorWhite,
-                              0,
-                              30)
+                              boxColor: context.resources.color.colorWhite,
+                              radious: context.resources.dimen.dp30)
                           .topCornersBox,
                       child: Column(
                         children: [
-                          const SizedBox(
-                            height: 10,
+                          SizedBox(
+                            height: context.resources.dimen.dp10,
                           ),
                           ImageWidget(path: DrawableAssets.icLogoTitle)
                               .loadImage,
-                          const SizedBox(
-                            height: 50,
+                          SizedBox(
+                            height: context.resources.dimen.dp50,
                           ),
                           Text(
                             context.string.please_select_language_ar,
@@ -70,13 +66,15 @@ class _SplashState extends State<SplashScreen> {
                                     fontWeight: FontWeight.w600)
                                 .onFontSize(14),
                           ),
-                          const SizedBox(
-                            height: 30,
+                          SizedBox(
+                            height: context.resources.dimen.dp30,
                           ),
                           GestureDetector(
-                            onTap: () => {
+                            onTap: () {
                               context.resources
-                                  .setLocal(language: LocalEnum.ar.name)
+                                  .setLocal(language: LocalEnum.ar.name);
+                              Navigator.pushReplacementNamed(
+                                  context, AppRoutes.loginRoute);
                             },
                             child: CustomBgWidgets().roundedCornerWidget(
                                 Center(
@@ -88,45 +86,51 @@ class _SplashState extends State<SplashScreen> {
                                             fontWeight: FontWeight.w600)
                                         .onColor(
                                             context.resources.color.textColor)
-                                        .onFontSize(17),
+                                        .onFontSize(
+                                            context.resources.dimen.dp17),
                                   ),
                                 ),
                                 BackgroundBoxDecoration(
-                                        context.resources.color.colorWhite,
-                                        context.resources.color.viewBgColor,
-                                        1,
-                                        10)
+                                        boxColor:
+                                            context.resources.color.colorWhite,
+                                        boarderColor:
+                                            context.resources.color.viewBgColor,
+                                        boarderWidth:
+                                            context.resources.dimen.dp1,
+                                        radious: context.resources.dimen.dp10)
                                     .roundedCornerBox,
-                                40),
+                                context.resources.dimen.dp40),
                           ),
-                          const SizedBox(
-                            height: 15,
+                          SizedBox(
+                            height: context.resources.dimen.dp15,
                           ),
                           GestureDetector(
-                            onTap: () => {
+                            onTap: () {
                               context.resources
-                                  .setLocal(language: LocalEnum.en.name)
+                                  .setLocal(language: LocalEnum.en.name);
+                              Navigator.pushReplacementNamed(
+                                  context, AppRoutes.loginRoute);
                             },
                             child: CustomBgWidgets().roundedCornerWidget(
                                 Center(
                                   child: Text(
                                     context.string.english,
-                                    style: context.textFontWeight900
+                                    style: context.textFontWeight600
                                         .copyWith(
                                             fontFamily: fontFamilyEN,
-                                            fontWeight: FontWeight.w900)
+                                            fontWeight: FontWeight.w600)
                                         .onColor(
                                             context.resources.color.colorWhite)
-                                        .onFontSize(17),
+                                        .onFontSize(
+                                            context.resources.dimen.dp17),
                                   ),
                                 ),
                                 BackgroundBoxDecoration(
-                                        context.resources.color.viewBgColor,
-                                        context.resources.color.viewBgColor,
-                                        0,
-                                        10)
+                                        boxColor:
+                                            context.resources.color.viewBgColor,
+                                        radious: context.resources.dimen.dp10)
                                     .roundedCornerBox,
-                                40),
+                                context.resources.dimen.dp40),
                           ),
                         ],
                       ),

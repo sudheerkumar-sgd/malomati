@@ -27,7 +27,7 @@ class Resources {
         : ThemeRed.instance;
   }
 
-  AppDimension get dimension {
+  AppDimension get dimen {
     return AppDimension();
   }
 
@@ -40,6 +40,8 @@ class Resources {
         : appSettings.put(appThemeKey, ThemeEnum.blue.name);
   }
 
+  bool get isLocalEn => getLocal();
+
   void setLocal({String? language}) {
     final appSettings = Hive.box(appSettingsDb);
     if (language != null) {
@@ -51,6 +53,12 @@ class Resources {
           ? appSettings.put(appLocalKey, LocalEnum.en.name)
           : appSettings.put(appLocalKey, LocalEnum.ar.name);
     }
+  }
+
+  bool getLocal() {
+    final appSettings = Hive.box(appSettingsDb);
+    final local = appSettings.get(appLocalKey, defaultValue: LocalEnum.en.name);
+    return (local == LocalEnum.en.name);
   }
 
   static Resources of() {

@@ -1,4 +1,14 @@
 {
     "appTitle": "Malomati",
-    "transactionSubTittleText": "{bankName} • {dateString}"
+    "transactionSubTittleText": "{bankName} • {dateString}",
+    "manager_amp_employee_self_service_of_uaq_government": "الخدمة الذاتية للمدراءوالموظفين في حكومة ام القيوين",
+    "login": "تسجيل الدخول",
+    "@login": {
+        "type": "text"
+    },
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "or": "أو",
+    "loginWith": "تسجيل الدخول مع"
 }

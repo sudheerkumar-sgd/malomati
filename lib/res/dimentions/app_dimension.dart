@@ -1,5 +1,4 @@
 class AppDimension {
-  
   double get bigMargin => 20;
 
   double get defaultMargin => 16;
@@ -31,4 +30,22 @@ class AppDimension {
   double get imageBorderRadius => 8;
 
   double get imageHeight => 450;
+  double get dp1 => 1;
+  double get dp2 => 2;
+  double get dp3 => 3;
+  double get dp4 => 4;
+  double get dp5 => 5;
+  double get dp10 => 10;
+  double get dp14 => 14;
+  double get dp12 => 12;
+  double get dp13 => 13;
+  double get dp15 => 15;
+  double get dp17 => 17;
+  double get dp20 => 20;
+  double get dp25 => 25;
+  double get dp30 => 30;
+  double get dp40 => 40;
+  double get dp50 => 50;
+  double get dp100 => 100;
+  double get dp300 => 300;
 }
