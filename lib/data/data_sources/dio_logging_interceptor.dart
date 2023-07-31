@@ -1,14 +1,22 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:malomati/core/constants/constants.dart';
 import '../../config/flavor_config.dart';
 
 class DioLoggingInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (authorizationToken.isNotEmpty) {
+      options.headers.addAll({
+        HttpHeaders.authorizationHeader: authorizationToken,
+      });
+    }
     if (FlavorConfig.instance.flavor == Flavor.DEVELOPMENT) {
       print(
-          "--> ${options.method.toUpperCase()} ${options.baseUrl} ${options.path}");
+          "--> ${options.method.toUpperCase()} ${options.baseUrl}${options.path}");
       print('Headers:');
       options.headers.forEach((k, v) => print('$k: $v'));
       print('queryParameters:');
@@ -39,7 +47,7 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (FlavorConfig.instance.flavor == Flavor.DEVELOPMENT) {
       print(
-          "<-- ${err.message} ${err.response?.requestOptions.baseUrl} ${err.response?.requestOptions.path}");
+          "<-- ${err.message} ${err.response?.requestOptions.baseUrl}${err.response?.requestOptions.path}");
       print("${err.response?.data}");
       print('<-- End error');
     }

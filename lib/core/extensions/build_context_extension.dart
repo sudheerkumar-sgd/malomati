@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:malomati/core/common/common.dart';
 import '../../res/resources.dart';
 
 extension LocalizedBuildContext on BuildContext {
   ThemeData get theme => Theme.of(this);
   AppLocalizations get string => AppLocalizations.of(this)!;
-  Resources get resources => Resources.of();
+  Resources get resources => Resources.of(this);
+  Box get settingDB => Hive.box(appSettingsDb);
 }
 
 extension AppBarHelper on BuildContext {

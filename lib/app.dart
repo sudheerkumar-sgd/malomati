@@ -35,7 +35,9 @@ class App extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           onGenerateTitle: (BuildContext context) => context.string.appTitle,
-          initialRoute: AppRoutes.initialRoute,
+          initialRoute: value.get(isSplashDoneKey, defaultValue: false)
+              ? AppRoutes.loginRoute
+              : AppRoutes.initialRoute,
           routes: AppRoutes.getRoutes(),
         );
       },

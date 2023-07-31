@@ -12,18 +12,21 @@ class TextInputWidget {
   double? boarderRadius;
   String? regExp;
   TextInputType? textInputType;
-  TextInputWidget(
-      {this.textStyle,
-      this.hintText,
-      this.width,
-      this.height,
-      this.textController,
-      this.focusedBorderColor,
-      this.enabledBorderColor,
-      this.boarderWidth,
-      this.boarderRadius,
-      this.regExp,
-      this.textInputType});
+  TextInputAction? textInputAction;
+  TextInputWidget({
+    this.textStyle,
+    this.hintText,
+    this.width,
+    this.height,
+    this.textController,
+    this.focusedBorderColor,
+    this.enabledBorderColor,
+    this.boarderWidth,
+    this.boarderRadius,
+    this.regExp,
+    this.textInputType,
+    this.textInputAction,
+  });
   Widget get textInputFiled => getTextField();
 
   Widget getTextField() {
@@ -33,6 +36,7 @@ class TextInputWidget {
       child: TextFormField(
         controller: textController,
         keyboardType: textInputType,
+        textInputAction: textInputAction ?? TextInputAction.next,
         obscureText:
             textInputType == TextInputType.visiblePassword ? true : false,
         decoration: InputDecoration(

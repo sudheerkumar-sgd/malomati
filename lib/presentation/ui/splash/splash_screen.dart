@@ -73,6 +73,7 @@ class SplashScreen extends StatelessWidget {
                             onTap: () {
                               context.resources
                                   .setLocal(language: LocalEnum.ar.name);
+                              context.settingDB.put(isSplashDoneKey, true);
                               Navigator.pushReplacementNamed(
                                   context, AppRoutes.loginRoute);
                             },
@@ -108,6 +109,7 @@ class SplashScreen extends StatelessWidget {
                             onTap: () {
                               context.resources
                                   .setLocal(language: LocalEnum.en.name);
+                              context.settingDB.put(isSplashDoneKey, true);
                               Navigator.pushReplacementNamed(
                                   context, AppRoutes.loginRoute);
                             },

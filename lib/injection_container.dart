@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:malomati/data/repository/apis_repository_impl.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
+import 'package:malomati/domain/use_case/login_usecase.dart';
+import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 
 import 'config/constant_config.dart';
 import 'config/flavor_config.dart';
@@ -17,8 +19,13 @@ Future<void> init() async {
    * ! Features
    */
   // Bloc
-
+  sl.registerFactory(
+    () => LoginBloc(
+      loginUseCase: sl(),
+    ),
+  );
   // Use Case
+  sl.registerLazySingleton(() => LoginUseCase(apisRepository: sl()));
 
   // Repository
   sl.registerLazySingleton<ApisRepository>(

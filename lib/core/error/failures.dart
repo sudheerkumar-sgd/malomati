@@ -5,21 +5,30 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [];
 }
 
-class FileNotFoundFailure extends Failure {}
+const String messageConnectionFailure = 'No Network Available';
 
-class ErrorFileExportFailure extends Failure {}
+class ServerFailure extends Failure {
+  final String errorMessage;
 
-class ErrorImagePickFailure extends Failure {}
+  ServerFailure(this.errorMessage);
 
-String mapFailureToMessage(Failure failure) {
-  switch (failure.runtimeType) {
-    case FileNotFoundFailure:
-      return 'File not found';
-    case ErrorFileExportFailure:
-      return 'Error file export';
-    default:
-      return 'Unexpected error';
+  @override
+  List<Object> get props => [errorMessage];
+
+  @override
+  String toString() {
+    return 'ServerFailure{errorMessage: $errorMessage}';
   }
 }
 
-class FailedToAddTransactionFailure extends Failure {}
+class ConnectionFailure extends Failure {
+  final String errorMessage = messageConnectionFailure;
+
+  @override
+  List<Object> get props => [errorMessage];
+
+  @override
+  String toString() {
+    return 'ConnectionFailure{errorMessage: $errorMessage}';
+  }
+}

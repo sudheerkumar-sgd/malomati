@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:malomati/core/constants/constants.dart';
+import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/login_model.dart';
 import '../../config/constant_config.dart';
 
 abstract class RemoteDataSource {
-  
+  Future<ApiResponse<LoginModel>> login(
+      {required apiPath, required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -14,4 +21,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required this.constantConfig,
   });
 
+  @override
+  Future<ApiResponse<LoginModel>> login(
+      {required apiPath, required Map<String, dynamic> requestParams}) async {
+    var response = await dio.post(
+      apiPath,
+      options: Options(headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+      }),
+      data: jsonEncode(requestParams),
+    );
+
+    if (response.statusCode == 200) {
+      var apiResponse = ApiResponse<LoginModel>.fromJson(
+          response.data, (p0) => LoginModel.fromJson(response.data));
+      return apiResponse;
+    } else {
+      throw DioException(requestOptions: RequestOptions());
+    }
+  }
 }

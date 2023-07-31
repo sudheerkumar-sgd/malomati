@@ -11,7 +11,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       AppRoutes.initialRoute: (context) => const SplashScreen(),
-      AppRoutes.loginRoute: (context) => const LoginScreen(),
+      AppRoutes.loginRoute: (context) => LoginScreen(),
     };
   }
 }
