@@ -28,6 +28,14 @@ class OnIsManagerSuccess extends LoginState {
   List<Object?> get props => [loginEntity];
 }
 
+class OnProfileSuccess extends LoginState {
+  final ApiEntity<ProfileEntity> profileEntity;
+
+  OnProfileSuccess({required this.profileEntity});
+  @override
+  List<Object?> get props => [profileEntity];
+}
+
 class OnLoginError extends LoginState {
   final String message;
 

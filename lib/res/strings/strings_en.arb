@@ -48,6 +48,26 @@
     "@login": {
         "type": "text"
     },
+    "home": "Home",
+    "@home": {
+        "type": "text"
+    },
+    "services": "Services",
+    "@services": {
+        "type": "text"
+    },
+    "requests": "Requests",
+    "@requests": {
+        "type": "text"
+    },
+    "more": "More",
+    "@more": {
+        "type": "text"
+    },
+    "welcome": "Welcome",
+    "@login": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

@@ -78,7 +78,7 @@ class SplashScreen extends StatelessWidget {
                                   context, AppRoutes.loginRoute);
                             },
                             child: CustomBgWidgets().roundedCornerWidget(
-                                Center(
+                                widget: Center(
                                   child: Text(
                                     context.string.arabic,
                                     style: context.textFontWeight600
@@ -91,7 +91,7 @@ class SplashScreen extends StatelessWidget {
                                             context.resources.dimen.dp17),
                                   ),
                                 ),
-                                BackgroundBoxDecoration(
+                                boxDecoration: BackgroundBoxDecoration(
                                         boxColor:
                                             context.resources.color.colorWhite,
                                         boarderColor:
@@ -100,7 +100,7 @@ class SplashScreen extends StatelessWidget {
                                             context.resources.dimen.dp1,
                                         radious: context.resources.dimen.dp10)
                                     .roundedCornerBox,
-                                context.resources.dimen.dp40),
+                                height: context.resources.dimen.dp40),
                           ),
                           SizedBox(
                             height: context.resources.dimen.dp15,
@@ -114,7 +114,7 @@ class SplashScreen extends StatelessWidget {
                                   context, AppRoutes.loginRoute);
                             },
                             child: CustomBgWidgets().roundedCornerWidget(
-                                Center(
+                                widget: Center(
                                   child: Text(
                                     context.string.english,
                                     style: context.textFontWeight600
@@ -127,12 +127,12 @@ class SplashScreen extends StatelessWidget {
                                             context.resources.dimen.dp17),
                                   ),
                                 ),
-                                BackgroundBoxDecoration(
+                                boxDecoration: BackgroundBoxDecoration(
                                         boxColor:
                                             context.resources.color.viewBgColor,
                                         radious: context.resources.dimen.dp10)
                                     .roundedCornerBox,
-                                context.resources.dimen.dp40),
+                                height: context.resources.dimen.dp40),
                           ),
                         ],
                       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
+import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 
@@ -16,5 +17,10 @@ class LoginUseCase extends BaseUseCase {
       {required apiPath, required Map<String, dynamic> requestParams}) async {
     return await apisRepository.login(
         apiPath: apiPath, requestParams: requestParams);
+  }
+
+  Future<Either<Failure, ApiEntity<ProfileEntity>>> getProfile(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getProfile(requestParams: requestParams);
   }
 }

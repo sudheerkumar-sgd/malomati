@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -38,15 +40,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 BlocListener<LoginBloc, LoginState>(
                   listener: (context, state) {
-                    print(state);
                     if (state is OnLoading) {
                       Dialogs.loader(context);
                     } else if (state is OnLoginSuccess) {
                       if (state.loginEntity.isSuccess ?? false) {
                         authorizationToken =
                             'bearer ${state.loginEntity.entity?.token ?? ''}';
-                        context.settingDB
-                            .put(authorizationTokenKey, authorizationToken);
                         loginBloc.isManger(requestParams: {
                           "username": _nameTextController.text
                         });
@@ -56,9 +55,18 @@ class LoginScreen extends StatelessWidget {
                             context, "Fail", state.loginEntity.message ?? '');
                       }
                     } else if (state is OnIsManagerSuccess) {
+                      loginBloc.getProfile(requestParams: {
+                        "username": _nameTextController.text
+                      });
+                    } else if (state is OnProfileSuccess) {
                       Navigator.pop(context);
-                      Dialogs.showInfoDialog(
-                          context, "success", '${state.loginEntity.isSuccess}');
+                      context.userDB.put(userFullNameKey,
+                          state.profileEntity.entity?.USER_NAME ?? '');
+                      context.userDB
+                          .put(authorizationTokenKey, authorizationToken);
+                      context.userDB.put(userNameKey, _nameTextController.text);
+                      Navigator.pushReplacementNamed(
+                          context, AppRoutes.mainRoute);
                     } else if (state is OnLoginError) {
                       Navigator.pop(context);
                     }
@@ -68,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       width: double.infinity,
                       margin:
-                          EdgeInsets.only(top: context.resources.dimen.dp300),
+                          EdgeInsets.only(top: context.resources.dimen.dp340),
                       decoration: BackgroundBoxDecoration(
                               boxColor: context.resources.color.colorWhite,
                               radious: context.resources.dimen.dp30)
@@ -106,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                                 ImageWidget(path: DrawableAssets.icLogoTitle)
                                     .loadImage,
                                 SizedBox(
-                                  height: context.resources.dimen.dp50,
+                                  height: context.resources.dimen.dp30,
                                 ),
                                 Center(
                                   child: Text(
@@ -136,7 +144,7 @@ class LoginScreen extends StatelessWidget {
                                             .onFontSize(
                                                 context.resources.dimen.dp13))
                                     .textInputFiled,
-                                SizedBox(height: context.resources.dimen.dp15),
+                                SizedBox(height: context.resources.dimen.dp10),
                                 TextInputWidget(
                                         height: context.resources.dimen.dp40,
                                         textController: _pwdTextController,
@@ -199,7 +207,7 @@ class LoginScreen extends StatelessWidget {
                                         requestParams: requestParams);
                                   },
                                   child: CustomBgWidgets().roundedCornerWidget(
-                                      Center(
+                                      widget: Center(
                                         child: Text(
                                           context.string.login,
                                           style: context.textFontWeight600
@@ -209,7 +217,7 @@ class LoginScreen extends StatelessWidget {
                                                   context.resources.dimen.dp17),
                                         ),
                                       ),
-                                      BackgroundBoxDecoration(
+                                      boxDecoration: BackgroundBoxDecoration(
                                               boxColor: context
                                                   .resources.color.viewBgColor,
                                               radious:
@@ -220,7 +228,7 @@ class LoginScreen extends StatelessWidget {
                                                   context.resources.dimen.dp1,
                                               shadowOffset: const Offset(1, 2))
                                           .roundedCornerBoxWithShadow,
-                                      context.resources.dimen.dp40),
+                                      height: context.resources.dimen.dp40),
                                 ),
                                 SizedBox(
                                   height: context.resources.dimen.dp10,
@@ -238,7 +246,7 @@ class LoginScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () => {},
                                   child: CustomBgWidgets().roundedCornerWidget(
-                                      Row(
+                                      widget: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -259,7 +267,7 @@ class LoginScreen extends StatelessWidget {
                                               .loadImage,
                                         ],
                                       ),
-                                      BackgroundBoxDecoration(
+                                      boxDecoration: BackgroundBoxDecoration(
                                               boxColor: context
                                                   .resources.color.colorWhite,
                                               boarderWidth: 0,
@@ -271,7 +279,7 @@ class LoginScreen extends StatelessWidget {
                                                   context.resources.dimen.dp1,
                                               shadowOffset: const Offset(1, 2))
                                           .roundedCornerBoxWithShadow,
-                                      context.resources.dimen.dp40),
+                                      height: context.resources.dimen.dp40),
                                 )
                               ],
                             ),

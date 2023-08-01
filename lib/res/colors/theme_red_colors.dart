@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'base_clors.dart';
@@ -62,4 +61,12 @@ class ThemeRedColors implements BaseColors {
   @override
   Color get viewBgColorLight => const Color(0xFFEC294E);
 
+  @override
+  Color get colorEDECEC => const Color(0xffEDECEC);
+
+  @override
+  Color get bottomSheetIconSelected => bgGradientEnd;
+
+  @override
+  Color get bottomSheetIconUnSelected => const Color(0xffD8D8D8);
 }

@@ -5,6 +5,7 @@ class BaseEntity extends Equatable {
   String? message;
   String? messageAR;
 
+
   @override
   List<Object?> get props => [isSuccess, message, messageAR];
 }

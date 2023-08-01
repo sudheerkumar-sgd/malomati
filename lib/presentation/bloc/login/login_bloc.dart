@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
+import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/use_case/login_usecase.dart';
 
 import '../../../core/error/failures.dart';
@@ -27,7 +28,15 @@ class LoginBloc extends Cubit<LoginState> {
     final result = await loginUseCase.doLogin(
         apiPath: 'IsManager', requestParams: requestParams);
     emit(result.fold((l) => OnLoginError(message: _getErrorMessage(l)),
-        (r) => OnLoginSuccess(loginEntity: r)));
+        (r) => OnIsManagerSuccess(loginEntity: r)));
+  }
+
+  Future<void> getProfile({required Map<String, dynamic> requestParams}) async {
+    //emit(OnLoading());
+
+    final result = await loginUseCase.getProfile(requestParams: requestParams);
+    emit(result.fold((l) => OnLoginError(message: _getErrorMessage(l)),
+        (r) => OnProfileSuccess(profileEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {

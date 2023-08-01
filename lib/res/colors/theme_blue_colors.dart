@@ -60,4 +60,13 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get viewBgColorLight => const Color(0xffb0a2f6);
+
+  @override
+  Color get colorEDECEC => const Color(0xffEDECEC);
+
+  @override
+  Color get bottomSheetIconSelected => bgGradientEnd;
+
+  @override
+  Color get bottomSheetIconUnSelected => const Color(0xffD8D8D8);
 }

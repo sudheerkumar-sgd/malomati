@@ -10,7 +10,6 @@ abstract class BaseColors {
   Color get colorPrimaryText;
 
   Color get colorSecondaryText;
-  
 
   //chips color
   Color get catChipColor;
@@ -33,7 +32,11 @@ abstract class BaseColors {
   Color get viewBgColorLight;
 
   Color get bgGradientStart;
-  
+
   Color get bgGradientEnd;
 
+  Color get colorEDECEC;
+
+  Color get bottomSheetIconSelected;
+  Color get bottomSheetIconUnSelected;
 }

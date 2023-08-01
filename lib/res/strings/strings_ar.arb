@@ -10,5 +10,10 @@
     "password": "كلمة المرور",
     "rememberMe": "تذكرني",
     "or": "أو",
-    "loginWith": "تسجيل الدخول مع"
+    "loginWith": "تسجيل الدخول مع",
+    "home": "Home",
+    "services": "Services",
+    "requests": "Requests",
+    "more": "More",
+    "welcome": "Welcome"
 }

@@ -48,4 +48,5 @@ class AppDimension {
   double get dp50 => 50;
   double get dp100 => 100;
   double get dp300 => 300;
+  double get dp340 => 340;
 }

@@ -9,6 +9,7 @@ extension LocalizedBuildContext on BuildContext {
   AppLocalizations get string => AppLocalizations.of(this)!;
   Resources get resources => Resources.of(this);
   Box get settingDB => Hive.box(appSettingsDb);
+  Box get userDB => Hive.box(appSettingsDb);
 }
 
 extension AppBarHelper on BuildContext {
