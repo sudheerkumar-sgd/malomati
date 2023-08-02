@@ -69,4 +69,10 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get bottomSheetIconUnSelected => const Color(0xffD8D8D8);
+
+  @override
+  Color get appScaffoldBg => const Color(0xffF5F5F5);
+  
+  @override
+  Color get colorF5C3C3 => const Color(0xffF5C3C3);
 }

@@ -7,8 +7,10 @@ class CustomBgWidgets {
     double? height,
     EdgeInsetsGeometry? margin,
     EdgeInsetsGeometry? padding,
+    Matrix4? transform,
   }) {
     return Container(
+      transform: transform,
       margin: margin,
       padding: padding,
       width: double.infinity,

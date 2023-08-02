@@ -86,3 +86,10 @@ extension TextStyleFontSizeMapping on TextStyle {
     return copyWith(fontSize: size);
   }
 }
+
+extension TextStyleFontFamilyMapping on TextStyle {
+  //custom font Sizes
+  TextStyle onFontFamily({required String fontFamily}) {
+    return copyWith(fontFamily: fontFamily);
+  }
+}

@@ -13,3 +13,5 @@ const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";
 
 String authorizationToken = "";
+
+String favoriteAdd = "add";

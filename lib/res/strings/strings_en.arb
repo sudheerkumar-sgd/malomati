@@ -65,7 +65,55 @@
         "type": "text"
     },
     "welcome": "Welcome",
-    "@login": {
+    "@welcome": {
+        "type": "text"
+    },
+    "welcome": "Welcome",
+    "@welcome": {
+        "type": "text"
+    },
+    "punchIn": "Punch In",
+    "@punchIn": {
+        "type": "text"
+    },
+    "punchOut": "Punch Out",
+    "@punchOut": {
+        "type": "text"
+    },
+    "morningPunch": "Good Morning, you didn't punch yet",
+    "@morningPunch": {
+        "type": "text"
+    },
+    "thankYouForPunchIn": "Thank You, Don't forget to punch out",
+    "@thankYouForPunchIn": {
+        "type": "text"
+    },
+    "thankYouForPunchOut": "Goodbye, Have a good day",
+    "@thankYouForPunchOut": {
+        "type": "text"
+    },
+    "myFavoriteService": "My Favorite Service",
+    "@myFavoriteService": {
+        "type": "text"
+    },
+    "leaves": "Leaves",
+    "@leaves": {
+        "type": "text"
+    },
+    "permission": "Permission",
+    "@permission": {
+        "type": "text"
+    },
+    "attendance": "Attendance",
+    "@attendance": {
+        "type": "text"
+    },
+    "certificate": "Certificate",
+    "@certificate": {
+        "type": "text"
+    },
+    "thankYou": "Thank You",
+    "@thankYou": {
         "type": "text"
     },
     "transactionSubTittleText": "{bankName} • {dateString}",

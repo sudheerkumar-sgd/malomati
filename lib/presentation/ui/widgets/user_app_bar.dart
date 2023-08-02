@@ -13,30 +13,61 @@ class UserAppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.string.welcome,
-              style: context.textFontWeight400
-                  .onColor(context.resources.color.colorEDECEC),
-            ),
-            Text(
-              jsonDecode(title),
-              style: context.textFontWeight700
-                  .onColor(context.resources.color.colorEDECEC)
-                  .onFontSize(context.resources.dimen.dp20),
-            )
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.string.welcome,
+                style: context.textFontWeight400
+                    .onColor(context.resources.color.colorEDECEC),
+              ),
+              Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: context.textFontWeight600
+                    .onFontFamily(fontFamily: fontFamilyEN)
+                    .onColor(context.resources.color.colorEDECEC)
+                    .onFontSize(context.resources.dimen.dp17),
+              )
+            ],
+          ),
         ),
-        const Spacer(),
         Align(
           alignment: Alignment.center,
           child: Row(
             children: [
-              ImageWidget(path: DrawableAssets.icLangAr).loadImage,
-              ImageWidget(path: DrawableAssets.icLangAr).loadImage,
-              ImageWidget(path: DrawableAssets.icLangAr).loadImage,
+              Container(
+                  padding: EdgeInsets.all(context.resources.dimen.dp5),
+                  child: ImageWidget(path: DrawableAssets.icBell).loadImage),
+              SizedBox(
+                width: context.resources.dimen.dp5,
+              ),
+              InkWell(
+                onTap: () {
+                  context.resources.setLocal();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(context.resources.dimen.dp5),
+                  child: ImageWidget(
+                          path: context.resources.isLocalEn
+                              ? DrawableAssets.icLangAr
+                              : DrawableAssets.icLangEn,
+                          backgroundTint: Colors.white)
+                      .loadImage,
+                ),
+              ),
+              SizedBox(
+                width: context.resources.dimen.dp5,
+              ),
+              Container(
+                  padding: EdgeInsets.only(
+                    left: context.resources.dimen.dp5,
+                    top: context.resources.dimen.dp5,
+                    bottom: context.resources.dimen.dp5,
+                  ),
+                  child:
+                      ImageWidget(path: DrawableAssets.icUserCircle).loadImage),
             ],
           ),
         )

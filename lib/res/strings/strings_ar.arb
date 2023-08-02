@@ -15,5 +15,16 @@
     "services": "Services",
     "requests": "Requests",
     "more": "More",
-    "welcome": "Welcome"
+    "welcome": "مرحباً",
+    "punchIn": "تسجيل الحضور",
+    "punchOut": "تسجيل الانصراف",
+    "morningPunch": "صباح الخير، لم تقم بتسجيل حضورك بعد",
+    "thankYouForPunchIn": "شكرا لك ، لا تنسى أن تضرب",
+    "thankYouForPunchOut": "وداعا ، أتمنى لك يوم سعيد",
+    "myFavoriteService": "خدمتي المفضلة",
+    "leaves": "إجازة",
+    "permission": "إستئذان",
+    "attendance": "حضور",
+    "certificate": "شهادة",
+    "thankYou": "شكراً لك"
 }

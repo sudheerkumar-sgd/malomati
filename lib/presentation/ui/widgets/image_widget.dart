@@ -8,7 +8,13 @@ class ImageWidget {
   double? width;
   double? height;
   BoxFit? boxType;
-  ImageWidget({required this.path, this.width, this.height, this.boxType});
+  Color? backgroundTint;
+  ImageWidget(
+      {required this.path,
+      this.width,
+      this.height,
+      this.boxType,
+      this.backgroundTint});
   Widget get loadImage => getImage();
 
   Widget getImage() {
@@ -19,6 +25,10 @@ class ImageWidget {
         if (path.contains(".svg")) {
           return SvgPicture.asset(
             path,
+            width: width,
+            height: height,
+            fit: boxType ?? BoxFit.contain,
+            color: backgroundTint,
           );
         } else {
           return Image.asset(path);

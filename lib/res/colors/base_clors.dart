@@ -38,5 +38,10 @@ abstract class BaseColors {
   Color get colorEDECEC;
 
   Color get bottomSheetIconSelected;
+
   Color get bottomSheetIconUnSelected;
+
+  Color get appScaffoldBg;
+
+  Color get colorF5C3C3;
 }

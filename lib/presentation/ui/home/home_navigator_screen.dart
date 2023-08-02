@@ -13,7 +13,7 @@ class HomeNavigatorScreen extends StatelessWidget {
           WidgetBuilder builder;
           switch (settings.name) {
             case '/':
-              builder = (BuildContext _) => const HomeScreen();
+              builder = (BuildContext _) => HomeScreen();
               break;
             // case InfoListScreen.route:
             //   builder = (BuildContext _) {
@@ -21,7 +21,7 @@ class HomeNavigatorScreen extends StatelessWidget {
             //   };
             // break;
             default:
-              builder = (BuildContext _) => const HomeScreen();
+              builder = (BuildContext _) => HomeScreen();
           }
           return MaterialPageRoute(builder: builder, settings: settings);
         });

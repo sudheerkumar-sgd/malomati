@@ -37,13 +37,25 @@ class BackgroundBoxDecoration {
             topRight: Radius.circular(radious ?? 4)));
   }
 
-  BoxDecoration get roundedCornerBoxWithShadow {
+  BoxDecoration get bottomCornersBox {
     return BoxDecoration(
-      color: boxColor,
-      border: Border.all(
-          color: boarderColor ?? const Color(0x00000000),
-          width: boarderWidth ?? 0),
-      borderRadius: BorderRadius.all(Radius.circular(radious ?? 4)),
+        color: boxColor,
+        border: Border.all(
+            color: boarderColor ?? const Color(0x00000000),
+            width: boarderWidth ?? 0),
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(radious ?? 4),
+            bottomRight: Radius.circular(radious ?? 4)));
+  }
+
+  BoxDecoration get bottomCornersBoxWithShadow {
+    return bottomCornersBox.copyWith(
+      boxShadow: kElevationToShadow[5],
+    );
+  }
+
+  BoxDecoration get roundedCornerBoxWithShadow {
+    return roundedCornerBox.copyWith(
       boxShadow: [
         BoxShadow(
           color: shadowColor ?? const Color(0x00000000),
@@ -52,5 +64,18 @@ class BackgroundBoxDecoration {
         ),
       ],
     );
+  }
+
+  BoxDecoration get roundedBoxWithShadow {
+    return roundedCornerBox.copyWith(boxShadow: kElevationToShadow[2]);
+  }
+
+  BoxDecoration get circularBox {
+    return BoxDecoration(
+        color: boxColor,
+        border: Border.all(
+            color: boarderColor ?? const Color(0x00000000),
+            width: boarderWidth ?? 0),
+        shape: BoxShape.circle);
   }
 }

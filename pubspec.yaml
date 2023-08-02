@@ -99,6 +99,19 @@ flutter:
      - assets/images/ic_selfservice.svg
      - assets/images/ic_request.svg
      - assets/images/ic_more.svg
+     - assets/images/ic_user_circle.svg
+     - assets/images/ic_weather.svg
+     - assets/images/ic_bell.svg
+     - assets/images/ic_punch_in.svg
+     - assets/images/ic_punch_out.svg
+     - assets/images/ic_home_cover_ring.png
+     - assets/images/ic_celebration.svg
+     - assets/images/ic_service_leave.svg
+     - assets/images/ic_service_permission.svg
+     - assets/images/ic_service_attendance.svg
+     - assets/images/ic_service_certificate.svg
+     - assets/images/ic_service_thankyou.svg
+     - assets/images/ic_service_add.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

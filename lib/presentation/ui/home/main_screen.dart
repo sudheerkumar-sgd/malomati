@@ -61,17 +61,12 @@ class _MainState extends State<MainScreen> {
           body: IndexedStack(
               index: _selectedIndex,
               children: _screens), //_widgetOptions(context),
-          backgroundColor: context.resources.color.bottomSheetIconUnSelected,
+          backgroundColor: context.resources.color.appScaffoldBg,
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                   Radius.circular(context.resources.dimen.dp20)),
-              boxShadow: [
-                BoxShadow(
-                    color: context.resources.color.textColorLight,
-                    spreadRadius: 0,
-                    blurRadius: context.resources.dimen.dp5),
-              ],
+              boxShadow: kElevationToShadow[4],
             ),
             margin: EdgeInsets.all(context.resources.dimen.dp10),
             child: ClipRRect(
