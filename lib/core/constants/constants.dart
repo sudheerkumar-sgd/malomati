@@ -6,12 +6,17 @@ const String appThemeKey = 'key_app_theme';
 const String appLocalKey = "app_local_key";
 const String isSplashDoneKey = "is_splash_done";
 const String authorizationTokenKey = "authorization_token";
+const String oracleLoginIdKey = "oracle_login_id";
 const String userNameKey = "user_name";
-const String userFullNameKey = "user_full_name";
+const String passwordKey = "password";
+const String userFullNameUsKey = "user_full_name_us";
+const String userFullNameArKey = "user_full_name_ar";
+const String isRememberdKey = "is_rememberd";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";
 
 String authorizationToken = "";
+String oracleLoginId = "";
 
 String favoriteAdd = "add";

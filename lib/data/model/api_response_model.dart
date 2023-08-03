@@ -8,6 +8,7 @@ class ApiResponse<T extends BaseModel> extends Equatable {
   bool? isSuccess;
   String? message;
   String? messageAR;
+  String? isManager;
   T? data;
   ApiResponse({this.isSuccess, this.message, this.messageAR, this.data});
 

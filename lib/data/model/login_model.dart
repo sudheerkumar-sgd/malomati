@@ -4,34 +4,40 @@ import 'package:malomati/domain/entities/base_entity.dart';
 import '../../domain/entities/login_entity.dart';
 
 class LoginModel extends BaseModel {
-  final String? token;
+  String? oracleLoginId;
+  String? fullNameAR;
+  String? fullNameUS;
 
-  LoginModel({
-    required this.token,
-  });
+  LoginModel();
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
-    return LoginModel(
-      token: json["Token"],
-    );
+    var loginModel = LoginModel();
+    loginModel.oracleLoginId = json['ORACLE_LOGIN'];
+    loginModel.fullNameAR = json['FULL_NAME_AR'];
+    loginModel.fullNameUS = json['FULL_NAME_US'];
+    return loginModel;
   }
 
   @override
   Map<String, dynamic> toJson() => {
-        "token": token,
+        "token": oracleLoginId,
       };
 
   @override
-  List<Object?> get props => [token];
+  List<Object?> get props => [oracleLoginId];
 
   @override
   BaseEntity toEntity<T>() {
-    return LoginEntity(token: token);
+    return LoginEntity();
   }
 }
 
 extension SourceModelExtension on LoginModel {
-  LoginEntity get toLoginEntity => LoginEntity(
-        token: '$token',
-      );
+  LoginEntity toLoginEntity() {
+    var loginEntity = LoginEntity();
+    loginEntity.oracleLoginId = oracleLoginId;
+    loginEntity.fullNameUS = fullNameUS;
+    loginEntity.fullNameAR = fullNameAR;
+    return loginEntity;
+  }
 }

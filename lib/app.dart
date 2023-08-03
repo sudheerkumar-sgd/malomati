@@ -27,7 +27,7 @@ class App extends StatelessWidget {
             : fontFamilyEN);
         SystemChrome.setSystemUIOverlayStyle(
             SystemUiOverlayStyle(statusBarColor: theme.theme?.primaryColor));
-        authorizationToken = value.get(authorizationTokenKey, defaultValue: '');
+        oracleLoginId = '';
         return MaterialApp(
           locale: locale,
           debugShowCheckedModeBanner: false,
@@ -37,7 +37,7 @@ class App extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           onGenerateTitle: (BuildContext context) => context.string.appTitle,
           initialRoute: value.get(isSplashDoneKey, defaultValue: false)
-              ? authorizationToken.isEmpty
+              ? oracleLoginId.isEmpty
                   ? AppRoutes.loginRoute
                   : AppRoutes.mainRoute
               : AppRoutes.initialRoute,

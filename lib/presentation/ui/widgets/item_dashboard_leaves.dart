@@ -18,6 +18,7 @@ class ItemDashboardLeaves extends StatelessWidget {
                   textAlign: TextAlign.center,
                   '25',
                   style: context.textFontWeight900
+                      .onFontFamily(fontFamily: fontFamilyEN)
                       .onColor(context.resources.color.viewBgColor)
                       .onFontSize(context.resources.dimen.dp20),
                 ),

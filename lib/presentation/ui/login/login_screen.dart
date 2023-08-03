@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -13,16 +11,26 @@ import '../../../config/app_routes.dart';
 import '../../../injection_container.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';
-import 'package:page_transition/page_transition.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final loginBloc = sl<LoginBloc>();
   final _nameTextController = TextEditingController();
   final _pwdTextController = TextEditingController();
-  final ValueNotifier<bool> isRememberd = ValueNotifier(false);
+  final ValueNotifier<bool> _isRememberd = ValueNotifier(false);
+  void dispose() {
+    loginBloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _isRememberd.value =
+        context.userDB.get(isRememberdKey, defaultValue: false);
+    if (_isRememberd.value) {
+      _nameTextController.text =
+          context.userDB.get(userNameKey, defaultValue: '');
+    }
+    _pwdTextController.text = context.userDB.get(passwordKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -44,31 +52,34 @@ class LoginScreen extends StatelessWidget {
                       Dialogs.loader(context);
                     } else if (state is OnLoginSuccess) {
                       if (state.loginEntity.isSuccess ?? false) {
-                        authorizationToken =
-                            'bearer ${state.loginEntity.entity?.token ?? ''}';
-                        loginBloc.isManger(requestParams: {
-                          "username": _nameTextController.text
-                        });
+                        oracleLoginId =
+                            state.loginEntity.entity?.oracleLoginId ?? '';
+                        context.userDB.put(userFullNameUsKey,
+                            state.loginEntity.entity?.fullNameUS ?? '');
+                        context.userDB.put(userFullNameArKey,
+                            state.loginEntity.entity?.fullNameAR ?? '');
+                        context.userDB.put(oracleLoginIdKey, oracleLoginId);
+                        context.userDB
+                            .put(userNameKey, _nameTextController.text);
+                        if (_isRememberd.value) {
+                          context.userDB
+                              .put(passwordKey, _pwdTextController.text);
+                          context.userDB
+                              .put(isRememberdKey, _isRememberd.value);
+                        } else {
+                          context.userDB.delete(passwordKey);
+                          context.userDB.delete(isRememberdKey);
+                        }
+                        Navigator.pushReplacementNamed(
+                            context, AppRoutes.mainRoute);
                       } else {
                         Navigator.pop(context);
                         Dialogs.showInfoDialog(
-                            context, "Fail", state.loginEntity.message ?? '');
+                            context, "Failed", state.loginEntity.message ?? '');
                       }
-                    } else if (state is OnIsManagerSuccess) {
-                      loginBloc.getProfile(requestParams: {
-                        "username": _nameTextController.text
-                      });
-                    } else if (state is OnProfileSuccess) {
-                      Navigator.pop(context);
-                      context.userDB.put(userFullNameKey,
-                          state.profileEntity.entity?.USER_NAME ?? '');
-                      context.userDB
-                          .put(authorizationTokenKey, authorizationToken);
-                      context.userDB.put(userNameKey, _nameTextController.text);
-                      Navigator.pushReplacementNamed(
-                          context, AppRoutes.mainRoute);
                     } else if (state is OnLoginError) {
                       Navigator.pop(context);
+                      Dialogs.showInfoDialog(context, "Failed", state.message);
                     }
                   },
                   child: SingleChildScrollView(
@@ -166,7 +177,7 @@ class LoginScreen extends StatelessWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: ValueListenableBuilder(
-                                    valueListenable: isRememberd,
+                                    valueListenable: _isRememberd,
                                     builder: (context, value, child) {
                                       return Row(
                                         children: [
@@ -178,16 +189,21 @@ class LoginScreen extends StatelessWidget {
                                               shape: const CircleBorder(),
                                               value: value,
                                               onChanged: (isChecked) {
-                                                isRememberd.value =
+                                                _isRememberd.value =
                                                     isChecked ?? false;
                                               }),
-                                          Text(
-                                            context.string.rememberMe,
-                                            style: context.textFontWeight400
-                                                .onColor(context.resources.color
-                                                    .textColorLight)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp12),
+                                          InkWell(
+                                            onTap: () {
+                                              _isRememberd.value = !value;
+                                            },
+                                            child: Text(
+                                              context.string.rememberMe,
+                                              style: context.textFontWeight400
+                                                  .onColor(context.resources
+                                                      .color.textColorLight)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp12),
+                                            ),
                                           ),
                                         ],
                                       );
@@ -200,8 +216,10 @@ class LoginScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     Map<String, dynamic> requestParams = {
-                                      "username": _nameTextController.text,
-                                      "password": _pwdTextController.text,
+                                      "user_name".toUpperCase():
+                                          _nameTextController.text,
+                                      "password".toUpperCase():
+                                          _pwdTextController.text,
                                     };
                                     loginBloc.doLogin(
                                         requestParams: requestParams);

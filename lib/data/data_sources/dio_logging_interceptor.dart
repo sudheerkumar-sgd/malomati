@@ -1,19 +1,26 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:malomati/core/constants/constants.dart';
+import 'package:malomati/config/base_url_config.dart';
+import 'package:malomati/core/common/common.dart';
 import '../../config/flavor_config.dart';
 
 class DioLoggingInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (authorizationToken.isNotEmpty) {
-      options.headers.addAll({
-        HttpHeaders.authorizationHeader: authorizationToken,
-      });
+    var authString = 'soauser:soauser123';
+    if (options.baseUrl == baseUrlAttendanceDevelopment) {
+      authString = '$oracleLoginId:12345';
     }
+    String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
+    print(basicAuth);
+    options.headers.addAll({
+      HttpHeaders.authorizationHeader: basicAuth,
+    });
+
     if (FlavorConfig.instance.flavor == Flavor.DEVELOPMENT) {
       print(
           "--> ${options.method.toUpperCase()} ${options.baseUrl}${options.path}");

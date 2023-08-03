@@ -1,11 +1,11 @@
 import 'package:malomati/domain/entities/base_entity.dart';
 
 class LoginEntity extends BaseEntity {
-  final String? token;
+  String? oracleLoginId;
+  String? fullNameAR;
+  String? fullNameUS;
 
-  LoginEntity({required this.token, t});
+  LoginEntity();
   @override
-  List<Object?> get props => [
-        token,
-      ];
+  List<Object?> get props => [oracleLoginId, fullNameAR, fullNameUS];
 }

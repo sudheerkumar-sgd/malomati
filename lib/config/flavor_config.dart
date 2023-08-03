@@ -6,7 +6,7 @@ enum Flavor {
 }
 
 class FlavorValues {
- final String baseUrl;
+  final String baseUrl;
 
   FlavorValues({required this.baseUrl});
 }
