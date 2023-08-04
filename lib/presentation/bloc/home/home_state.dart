@@ -20,6 +20,22 @@ class OnAttendanceSuccess extends HomeState {
   List<Object?> get props => [attendanceEntity];
 }
 
+class OnDashboardSuccess extends HomeState {
+  final ApiEntity<DashboardEntity> dashboardEntity;
+
+  OnDashboardSuccess({required this.dashboardEntity});
+  @override
+  List<Object?> get props => [dashboardEntity];
+}
+
+class OnFavoriteSuccess extends HomeState {
+  final List<FavoriteEntity> favoriteEntity;
+
+  OnFavoriteSuccess({required this.favoriteEntity});
+  @override
+  List<Object?> get props => [favoriteEntity];
+}
+
 class OnApiError extends HomeState {
   final String message;
 

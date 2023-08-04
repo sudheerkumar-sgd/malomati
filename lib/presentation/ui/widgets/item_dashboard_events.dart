@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/presentation/ui/widgets/custom_bg_widgets.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 class ItemDashboardEvent extends StatelessWidget {
-  const ItemDashboardEvent({super.key});
+  final EventsEntity eventsEntity;
+  const ItemDashboardEvent({required this.eventsEntity, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,11 @@ class ItemDashboardEvent extends StatelessWidget {
                   Expanded(
                     child: Text(
                       textAlign: TextAlign.center,
-                      'MOHAMMED AHMED HASSAN'.toUpperCase(),
+                      (context.resources.isLocalEn
+                                  ? eventsEntity.fULLNAMEUS
+                                  : eventsEntity.fULLNAMEAR)
+                              ?.toUpperCase() ??
+                          '',
                       overflow: TextOverflow.ellipsis,
                       style: context.textFontWeight900
                           .onColor(context.resources.color.colorWhite)

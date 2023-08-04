@@ -59,4 +59,5 @@ Future<void> init() async {
   });
 
   sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerFactory(() => ConstantConfig());
 }

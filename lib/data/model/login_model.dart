@@ -24,7 +24,7 @@ class LoginModel extends BaseModel {
       };
 
   @override
-  List<Object?> get props => [oracleLoginId];
+  List<Object?> get props => [oracleLoginId, fullNameAR, fullNameUS];
 
   @override
   BaseEntity toEntity<T>() {

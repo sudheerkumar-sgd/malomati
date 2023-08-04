@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_model.dart';
+import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import '../../config/base_url_config.dart';
@@ -18,14 +19,14 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceModel>> getAttendance(
       {required Map<String, dynamic> requestParams});
+  Future<ApiResponse<DashboardModel>> getDashboardData(
+      {required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
   final Dio dio;
 
-  RemoteDataSourceImpl({
-    required this.dio
-  });
+  RemoteDataSourceImpl({required this.dio});
 
   ServerException _getExceptionType(Response<dynamic> response) {
     switch (response.statusCode) {
@@ -113,6 +114,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } catch (e) {
       if (e is ServerException) rethrow;
       throw e.toString();
+    }
+  }
+
+  @override
+  Future<ApiResponse<DashboardModel>> getDashboardData(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        'UAQSGD_MOB_ERP_EmployeeDashboard/LeavesAndThankyouCount',
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+
+      var apiResponse = ApiResponse<DashboardModel>.fromJson(
+          response.data, (p0) => DashboardModel.fromJson(response.data));
+      return apiResponse;
+    } on DioException catch (e) {
+      rethrow;
     }
   }
 }

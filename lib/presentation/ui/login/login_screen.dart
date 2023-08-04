@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
+import 'package:malomati/presentation/ui/home/main_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
@@ -70,8 +71,10 @@ class LoginScreen extends StatelessWidget {
                           context.userDB.delete(passwordKey);
                           context.userDB.delete(isRememberdKey);
                         }
-                        Navigator.pushReplacementNamed(
-                            context, AppRoutes.mainRoute);
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()),
+                            (_) => false);
                       } else {
                         Navigator.pop(context);
                         Dialogs.showInfoDialog(

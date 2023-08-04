@@ -40,21 +40,21 @@ class _MainState extends State<MainScreen> {
       onWillPop: () async {
         final bool isExitingApp =
             await _navbarNotifier.onBackButtonPressed(_selectedIndex);
-        if (isExitingApp) {
-          if (backpressCount > 1) {
-            return isExitingApp;
-          } else {
-            backpressCount++;
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Center(child: Text("press again to exit app")),
-              ));
-            }
-            return false;
-          }
-        } else {
-          return isExitingApp;
-        }
+        // if (isExitingApp) {
+        //   if (backpressCount > 1) {
+        //     return isExitingApp;
+        //   } else {
+        //     backpressCount++;
+        //     if (mounted) {
+        //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //         content: Center(child: Text("press again to exit app")),
+        //       ));
+        //     }
+        //     return false;
+        //   }
+        // } else {
+        return isExitingApp;
+        // }
       },
       child: SafeArea(
         child: Scaffold(

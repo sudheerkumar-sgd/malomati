@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/colors/base_clors.dart';
@@ -52,6 +53,7 @@ class Resources {
           ? context.settingDB.put(appLocalKey, LocalEnum.en.name)
           : context.settingDB.put(appLocalKey, LocalEnum.ar.name);
     }
+    Phoenix.rebirth(context);
   }
 
   bool getLocal() {

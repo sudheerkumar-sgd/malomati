@@ -12,6 +12,7 @@ const String passwordKey = "password";
 const String userFullNameUsKey = "user_full_name_us";
 const String userFullNameArKey = "user_full_name_ar";
 const String isRememberdKey = "is_rememberd";
+const String favoriteKey = "favorites";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";
