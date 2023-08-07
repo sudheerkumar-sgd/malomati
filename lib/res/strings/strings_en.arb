@@ -96,6 +96,34 @@
     "@myFavoriteService": {
         "type": "text"
     },
+    "balanceSickLeaves": "Balance Sick Leaves",
+    "@balanceSickLeaves": {
+        "type": "text"
+    },
+    "balanceLeaves": "Balance Leaves",
+    "@balanceLeaves": {
+        "type": "text"
+    },
+    "balancePermission": "Balance Permission",
+    "@balancePermission": {
+        "type": "text"
+    },
+    "totalThankYou": "Total Thank You",
+    "@totalThankYou": {
+        "type": "text"
+    },
+    "days": "days",
+    "@days": {
+        "type": "text"
+    },
+    "hours": "hours",
+    "@hours": {
+        "type": "text"
+    },
+    "star": "star",
+    "@star": {
+        "type": "text"
+    },
     "leaves": "Leaves",
     "@leaves": {
         "type": "text"
@@ -114,6 +142,50 @@
     },
     "thankYou": "Thank You",
     "@thankYou": {
+        "type": "text"
+    },
+    "badge": "Badge",
+    "@badge": {
+        "type": "text"
+    },
+    "overtime": "Overtime",
+    "@overtime": {
+        "type": "text"
+    },
+    "advanceSalary": "Advance Salary",
+    "@advanceSalary": {
+        "type": "text"
+    },
+    "payslip": "Payslip",
+    "@payslip": {
+        "type": "text"
+    },
+    "initiatives": "Initiatives",
+    "@initiatives": {
+        "type": "text"
+    },
+    "missionLeaves": "Mission Leaves",
+    "@missionLeaves": {
+        "type": "text"
+    },
+    "sickLeaves": "Sick Leaves",
+    "@sickLeaves": {
+        "type": "text"
+    },
+    "anualLeaves": "Anual Leaves",
+    "@anualLeaves": {
+        "type": "text"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "type": "text"
+    },
+    "done": "Done",
+    "@done": {
+        "type": "text"
+    },
+    "selfService": "Self Service",
+    "@selfService": {
         "type": "text"
     },
     "transactionSubTittleText": "{bankName} • {dateString}",

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/home/more_screen.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';

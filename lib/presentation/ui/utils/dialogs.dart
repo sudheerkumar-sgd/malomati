@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/home/favorite_screen.dart';
+
+import '../../../res/drawables/background_box_decoration.dart';
 
 class Dialogs {
   static Future<T?> loader<T>(BuildContext context) {
@@ -72,5 +76,17 @@ class Dialogs {
         ],
       ),
     );
+  }
+
+  static showBottomSheetDialog(BuildContext context, Widget widget) {
+    showBottomSheet(
+      shape: RoundedRectangleBorder(
+     borderRadius: BorderRadius.circular(30.0),
+  ),
+        context: context,
+        builder: (context) => Container(
+          height: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: context.resources.dimen.dp20),
+            child: widget));
   }
 }

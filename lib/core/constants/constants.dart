@@ -21,3 +21,4 @@ String authorizationToken = "";
 String oracleLoginId = "";
 
 String favoriteAdd = "add";
+String favoriteAddAR = "add";

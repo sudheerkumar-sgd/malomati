@@ -9,6 +9,7 @@ import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../config/constant_config.dart';
 import '../../core/constants/constants.dart';
@@ -38,6 +39,56 @@ class HomeUseCase extends BaseUseCase {
         userDB.put(favoriteKey, sl<ConstantConfig>().dashboardFavorites);
         favoriteData = sl<ConstantConfig>().dashboardFavorites;
       }
+      final result = favoriteData
+          .map((eventJson) =>
+              FavoriteEntity.fromJson(eventJson).toFavoriteEntity)
+          .toList();
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<FavoriteEntity>>> saveFavoritesData(
+      {required Box userDB, required FavoriteEntity favoriteEntity}) async {
+    try {
+      var favoriteData = userDB.get(favoriteKey, defaultValue: []) as List;
+      var favorites = favoriteData;
+      var index =
+          favorites.indexWhere((element) => element['name'] == favoriteAdd);
+      favorites.removeAt(index);
+      favorites.insert(index, {
+        'name': favoriteEntity.name,
+        'nameAR': favoriteEntity.nameAR,
+        'iconPath': favoriteEntity.iconPath,
+      });
+      userDB.put(favoriteKey, favorites);
+      favoriteData = userDB.get(favoriteKey, defaultValue: []) as List;
+      final result = favoriteData
+          .map((eventJson) =>
+              FavoriteEntity.fromJson(eventJson).toFavoriteEntity)
+          .toList();
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<FavoriteEntity>>> removeFavoritesData(
+      {required Box userDB, required FavoriteEntity favoriteEntity}) async {
+    try {
+      var favoriteData = userDB.get(favoriteKey, defaultValue: []) as List;
+      var favorites = favoriteData;
+      var index = favorites
+          .indexWhere((element) => element['name'] == favoriteEntity.name);
+      favorites.removeAt(index);
+      favorites.insert(favoriteData.length - 1, {
+        'name': favoriteAdd,
+        'nameAR': favoriteAddAR,
+        'iconPath': DrawableAssets.icServiceAdd,
+      });
+      userDB.put(favoriteKey, favorites);
+      favoriteData = userDB.get(favoriteKey, defaultValue: []) as List;
       final result = favoriteData
           .map((eventJson) =>
               FavoriteEntity.fromJson(eventJson).toFavoriteEntity)

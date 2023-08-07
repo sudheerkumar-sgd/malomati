@@ -23,4 +23,16 @@ class DrawableAssets {
       '${drawablePath}ic_service_certificate.svg';
   static const icServiceThankyou = '${drawablePath}ic_service_thankyou.svg';
   static const icServiceAdd = '${drawablePath}ic_service_add.svg';
+  static const icClose = '${drawablePath}ic_close.svg';
+  static const icBadge = '${drawablePath}ic_badge.svg';
+  static const icOvertime = '${drawablePath}ic_overtime.svg';
+  static const icAdvancesalary = '${drawablePath}ic_advancesalary.svg';
+  static const icPayslip = '${drawablePath}ic_payslip.svg';
+  static const icInitiatives = '${drawablePath}ic_initiatives.svg';
+  static const icMissionleaves = '${drawablePath}ic_missionleaves.svg';
+  static const icSickleaves = '${drawablePath}ic_sickleaves.svg';
+  static const icAnualleaves = '${drawablePath}ic_anualleaves.svg';
+  static const icHrApprovals = '${drawablePath}ic_hrapprovals.svg';
+  static const icFinanceApprovals = '${drawablePath}ic_financeapprovals.svg';
+  static const icMyteam = '${drawablePath}ic_myteam.svg';
 }

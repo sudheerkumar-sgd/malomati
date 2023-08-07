@@ -113,6 +113,18 @@ flutter:
      - assets/images/ic_service_certificate.svg
      - assets/images/ic_service_thankyou.svg
      - assets/images/ic_service_add.svg
+     - assets/images/ic_close.svg
+     - assets/images/ic_badge.svg
+     - assets/images/ic_overtime.svg
+     - assets/images/ic_advancesalary.svg
+     - assets/images/ic_payslip.svg
+     - assets/images/ic_initiatives.svg
+     - assets/images/ic_missionleaves.svg
+     - assets/images/ic_sickleaves.svg
+     - assets/images/ic_anualleaves.svg
+     - assets/images/ic_hrapprovals.svg
+     - assets/images/ic_financeapprovals.svg
+     - assets/images/ic_myteam.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

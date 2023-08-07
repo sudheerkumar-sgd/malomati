@@ -47,6 +47,22 @@ class HomeBloc extends Cubit<HomeState> {
         (r) => OnFavoriteSuccess(favoriteEntity: r)));
   }
 
+  Future<void> saveFavoritesdData(
+      {required Box userDB, required FavoriteEntity favoriteEntity}) async {
+    final result = await homeUseCase.saveFavoritesData(
+        userDB: userDB, favoriteEntity: favoriteEntity);
+    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnFavoriteSuccess(favoriteEntity: r)));
+  }
+
+  Future<void> removeFavoritesdData(
+      {required Box userDB, required FavoriteEntity favoriteEntity}) async {
+    final result = await homeUseCase.removeFavoritesData(
+        userDB: userDB, favoriteEntity: favoriteEntity);
+    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnFavoriteSuccess(favoriteEntity: r)));
+  }
+
   String _getErrorMessage(Failure failure) {
     switch (failure.runtimeType) {
       case ServerFailure:

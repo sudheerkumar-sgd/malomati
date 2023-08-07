@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
@@ -12,6 +10,7 @@ import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
+import 'package:malomati/presentation/ui/home/favorite_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/presentation/ui/widgets/item_dashboard_events.dart';
@@ -33,13 +32,24 @@ class HomeScreen extends StatelessWidget {
       ValueNotifier<DashboardEntity>(DashboardEntity());
   final ValueNotifier<List<FavoriteEntity>> _favoriteEntity =
       ValueNotifier<List<FavoriteEntity>>([]);
-  ValueNotifier eventBannerChange = ValueNotifier<int>(0);
+  final ValueNotifier _eventBannerChange = ValueNotifier<int>(0);
+  final ValueNotifier _isFavoriteEdited = ValueNotifier<bool>(false);
   final _currentDate = DateFormat('EEE, dd MMMM yyyy').format(DateTime.now());
   final ValueNotifier _timeString =
       ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
 
   void _getTime() {
     _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
+  }
+
+  _addFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
+    _homeBloc.saveFavoritesdData(
+        userDB: context.userDB, favoriteEntity: favoriteEntity);
+  }
+
+  _removeFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
+    _homeBloc.removeFavoritesdData(
+        userDB: context.userDB, favoriteEntity: favoriteEntity);
   }
 
   @override
@@ -66,6 +76,7 @@ class HomeScreen extends StatelessWidget {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();
                   } else if (state is OnFavoriteSuccess) {
+                    _favoriteEntity.value = [];
                     _favoriteEntity.value = state.favoriteEntity;
                   } else if (state is OnApiError) {}
                 },
@@ -387,8 +398,8 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .aNNUALACCRUAL ??
                                                       '0',
-                                                  balancetype: 'days',
-                                                  title: 'Balance Leaves',
+                                                  balancetype: context.string.days,
+                                                  title: context.string.balanceLeaves,
                                                 );
                                               }
                                             case 1:
@@ -397,8 +408,8 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .sICKACCRUAL ??
                                                       '0',
-                                                  balancetype: 'days',
-                                                  title: 'Balance Sick Leaves',
+                                                  balancetype: context.string.days,
+                                                  title: context.string.balanceSickLeaves,
                                                 );
                                               }
                                             case 2:
@@ -407,8 +418,8 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .pERMISSIONACCRUAL ??
                                                       '0',
-                                                  balancetype: 'hours',
-                                                  title: 'Balance Permission',
+                                                  balancetype: context.string.hours,
+                                                  title: context.string.balancePermission,
                                                 );
                                               }
                                             default:
@@ -417,8 +428,8 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .tHANKYOUCOUNT ??
                                                       '0',
-                                                  balancetype: 'star',
-                                                  title: 'Total Thank You',
+                                                  balancetype: context.string.star,
+                                                  title: context.string.totalThankYou,
                                                 );
                                               }
                                           }
@@ -453,7 +464,7 @@ class HomeScreen extends StatelessWidget {
                                               ]
                                           ],
                                           onPageChanged: (value) {
-                                            eventBannerChange.value = value;
+                                            _eventBannerChange.value = value;
                                           },
                                         ),
                                       ),
@@ -476,7 +487,7 @@ class HomeScreen extends StatelessWidget {
                                                       .resources.dimen.dp5,
                                                   position: i,
                                                   eventBannerChange:
-                                                      eventBannerChange)
+                                                      _eventBannerChange)
                                             ]
                                         ],
                                       ),
@@ -495,15 +506,33 @@ class HomeScreen extends StatelessWidget {
                                     style: context.textFontWeight700.onFontSize(
                                         context.resources.dimen.dp17),
                                   ),
-                                  Text(
-                                    'Edit',
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColorLight)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .onFontSize(
-                                            context.resources.dimen.dp12),
-                                  ),
+                                  ValueListenableBuilder(
+                                      valueListenable: _isFavoriteEdited,
+                                      builder:
+                                          (context, isFavoriteEdited, widget) {
+                                        return InkWell(
+                                          onTap: () {
+                                            _isFavoriteEdited.value =
+                                                !isFavoriteEdited;
+                                            var favoraties =
+                                                _favoriteEntity.value;
+                                            _favoriteEntity.value = [];
+                                            _favoriteEntity.value = favoraties;
+                                          },
+                                          child: Text(
+                                            isFavoriteEdited
+                                                ? context.string.done
+                                                : context.string.edit,
+                                            style: context.textFontWeight400
+                                                .onColor(context.resources.color
+                                                    .textColorLight)
+                                                .onFontFamily(
+                                                    fontFamily: fontFamilyEN)
+                                                .onFontSize(context
+                                                    .resources.dimen.dp12),
+                                          ),
+                                        );
+                                      }),
                                 ],
                               ),
                             ),
@@ -529,10 +558,24 @@ class HomeScreen extends StatelessWidget {
                                           context.resources.dimen.dp20,
                                     ),
                                     itemBuilder: (ctx, i) {
-                                      return ItemDashboardService(
-                                        title: (favoriteEntity[i]).name ?? '',
-                                        iconPath:
-                                            (favoriteEntity[i]).iconPath ?? '',
+                                      return InkWell(
+                                        onTap: () {
+                                          if (favoriteEntity[i].name ==
+                                              favoriteAdd) {
+                                            Dialogs.showBottomSheetDialog(
+                                                context,
+                                                FavoriteScreen(
+                                                    callback: _addFavorite));
+                                          }
+                                        },
+                                        child: ItemDashboardService(
+                                          title: (favoriteEntity[i]).name ?? '',
+                                          iconPath:
+                                              (favoriteEntity[i]).iconPath ??
+                                                  '',
+                                          callback: _removeFavorite,
+                                          showDelete: _isFavoriteEdited.value,
+                                        ),
                                       );
                                     },
                                   );
