@@ -60,7 +60,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           response.data, (p0) => LoginModel.fromJson(response.data));
       return apiResponse;
     } on DioException catch (e) {
-      // Something happened in setting up or sending the request that triggered an Error
+      printLog(message: e.toString());
       rethrow;
     }
   }
@@ -135,9 +135,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           response.data, (p0) => DashboardModel.fromJson(response.data));
       return apiResponse;
     } on DioException catch (e) {
-      if (kDebugMode) {
-        printLog(message:e.toString());
-      }
+      printLog(message: e.toString());
       rethrow;
     }
   }

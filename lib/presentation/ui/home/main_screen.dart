@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/presentation/ui/home/more_screen.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
-import 'package:malomati/presentation/ui/home/services_screen.dart';
+import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
+import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../utils/NavbarNotifier.dart';
@@ -22,9 +22,9 @@ class _MainState extends State<MainScreen> {
   int backpressCount = 0;
   final _screens = <Widget>[
     const HomeNavigatorScreen(),
-    const ServicesScreen(),
+    const ServicesNavigatorScreen(),
     RequestsScreen(),
-    MoreScreen(),
+    const MoreNavigatorScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -39,21 +39,21 @@ class _MainState extends State<MainScreen> {
       onWillPop: () async {
         final bool isExitingApp =
             await _navbarNotifier.onBackButtonPressed(_selectedIndex);
-        // if (isExitingApp) {
-        //   if (backpressCount > 1) {
-        //     return isExitingApp;
-        //   } else {
-        //     backpressCount++;
-        //     if (mounted) {
-        //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //         content: Center(child: Text("press again to exit app")),
-        //       ));
-        //     }
-        //     return false;
-        //   }
-        // } else {
-        return isExitingApp;
-        // }
+        if (isExitingApp) {
+          if (backpressCount > 1) {
+            return isExitingApp;
+          } else {
+            backpressCount++;
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Center(child: Text("press again to exit app")),
+              ));
+            }
+            return false;
+          }
+        } else {
+          return isExitingApp;
+        }
       },
       child: SafeArea(
         child: Scaffold(

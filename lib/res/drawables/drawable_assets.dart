@@ -49,4 +49,5 @@ class DrawableAssets {
   static const icMail = '${drawablePath}ic_mail.svg';
   static const icCall = '${drawablePath}ic_call.svg';
   static const icChevronRight = '${drawablePath}ic_chevron_right.svg';
+  static const icChevronBack = '${drawablePath}ic_chevron_back.svg';
 }

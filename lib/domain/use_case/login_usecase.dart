@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';

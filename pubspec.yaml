@@ -143,6 +143,7 @@ flutter:
      - assets/images/ic_mail.svg
      - assets/images/ic_call.svg
      - assets/images/ic_chevron_right.svg
+     - assets/images/ic_chevron_back.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -7,7 +7,7 @@ class HomeNavigatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-        key: GlobalKey<NavigatorState>(),
+        key: homeKey,
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
           WidgetBuilder builder;

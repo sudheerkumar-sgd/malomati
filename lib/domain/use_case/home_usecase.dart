@@ -1,12 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
-import 'package:malomati/domain/entities/login_entity.dart';
-import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/presentation/ui/more/about_malomati.dart';
+import 'package:malomati/presentation/ui/more/hr_government_law.dart';
+import 'package:malomati/presentation/ui/more/privacy_and_policy.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../core/enum.dart';
@@ -93,22 +96,29 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
-                      Row(children: [
-                        ImageWidget(
-                                path: DrawableAssets.icLaw,
-                                backgroundTint: resources.iconBgColor)
-                            .loadImage,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        Text(
-                          context.string.hRGovernmentLaw,
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
-                        ),
-                        const Spacer(),
-                      ]),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: false).pushNamed(
+                            HRGovernmentLaw.route,
+                          );
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icLaw,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            context.string.hRGovernmentLaw,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.dimen.dp15),
+                          ),
+                          const Spacer(),
+                        ]),
+                      ),
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
@@ -278,22 +288,29 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
-                      Row(children: [
-                        ImageWidget(
-                                path: DrawableAssets.icPrivacy,
-                                backgroundTint: resources.iconBgColor)
-                            .loadImage,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        Text(
-                          context.string.privacyAndPolicy,
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
-                        ),
-                        const Spacer(),
-                      ]),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: false).pushNamed(
+                            PrivacyAndPolicy.route,
+                          );
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icPrivacy,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            context.string.privacyAndPolicy,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.dimen.dp15),
+                          ),
+                          const Spacer(),
+                        ]),
+                      ),
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
@@ -304,22 +321,29 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
-                      Row(children: [
-                        ImageWidget(
-                                path: DrawableAssets.icInfoCircle,
-                                backgroundTint: resources.iconBgColor)
-                            .loadImage,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        Text(
-                          context.string.aboutMalomati,
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
-                        ),
-                        const Spacer(),
-                      ]),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: false).pushNamed(
+                            AboutMalomati.route,
+                          );
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icInfoCircle,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            context.string.aboutMalomati,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.dimen.dp15),
+                          ),
+                          const Spacer(),
+                        ]),
+                      ),
                       SizedBox(
                         height: context.resources.dimen.dp50,
                       ),
