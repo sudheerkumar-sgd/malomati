@@ -3,8 +3,6 @@ import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
-import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../injection_container.dart';
 

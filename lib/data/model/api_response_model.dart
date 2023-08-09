@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
-import 'package:malomati/domain/entities/login_entity.dart';
 
+// ignore: must_be_immutable
 class ApiResponse<T extends BaseModel> extends Equatable {
   bool? isSuccess;
   String? message;

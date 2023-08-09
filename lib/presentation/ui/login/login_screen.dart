@@ -7,8 +7,6 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-
-import '../../../config/app_routes.dart';
 import '../../../injection_container.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';

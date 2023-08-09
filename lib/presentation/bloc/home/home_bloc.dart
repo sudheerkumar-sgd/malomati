@@ -2,15 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
-
-import '../../../config/constant_config.dart';
-import '../../../core/constants/constants.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
 import '../../../domain/entities/attendance_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';
 import '../../../domain/use_case/home_usecase.dart';
-import '../../../injection_container.dart';
 
 part 'home_state.dart';
 

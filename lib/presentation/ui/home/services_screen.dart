@@ -3,7 +3,6 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/favorite_screen.dart';
 
 import '../widgets/services_app_bar.dart';
-import '../widgets/user_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});

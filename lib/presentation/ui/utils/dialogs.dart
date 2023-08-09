@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/presentation/ui/home/favorite_screen.dart';
-
-import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/drawables/drawable_assets.dart';
 import '../widgets/image_widget.dart';
 

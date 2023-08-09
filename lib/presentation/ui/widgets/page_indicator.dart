@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 
@@ -5,8 +7,8 @@ import '../../../res/drawables/background_box_decoration.dart';
 
 class PageIndicator extends StatelessWidget {
   ValueNotifier eventBannerChange = ValueNotifier<int>(0);
-  double size;
-  int position;
+  final double size;
+  final int position;
   PageIndicator(
       {super.key,
       required this.size,

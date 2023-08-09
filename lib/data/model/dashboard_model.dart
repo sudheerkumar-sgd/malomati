@@ -1,4 +1,4 @@
-import 'dart:convert';
+// ignore_for_file: must_be_immutable
 
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';

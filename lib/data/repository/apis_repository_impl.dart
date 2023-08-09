@@ -9,7 +9,6 @@ import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
-import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';

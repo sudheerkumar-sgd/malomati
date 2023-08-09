@@ -1,8 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
-
-import '../../domain/entities/login_entity.dart';
 
 class ProfileModel extends BaseModel {
   int PERSON_ID = 0;

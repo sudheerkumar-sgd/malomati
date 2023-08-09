@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import '../../config/base_url_config.dart';
-import '../../config/constant_config.dart';
 import '../../core/error/exceptions.dart';
+import 'api_urls.dart';
 import 'dio_logging_interceptor.dart';
 
 abstract class RemoteDataSource {
@@ -47,7 +49,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       {required apiPath, required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.post(
-        'UAQSGD_MOB_ERP_GetProfile/GetProfile',
+        loginApiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -97,7 +99,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
       var response = await dio2.get(
-        'attendance-daily?action=get;format=json;date-range=${requestParams['date-range']};Field-name=USERID,USERNAME,PROCESSDATE,PUNCH1_TIME,PUNCH2_TIME,PUNCH3_TIME,PUNCH4_TIME,PUNCH5_TIME,PUNCH6_TIME,PUNCH7_TIME,PUNCH8_TIME,PUNCH9_TIME,PUNCH10_TIME,WORKTIME_HHMM,FIRSTHALF,SECONDHALF,SPFID1,SPFID2,SPFID3,SPFID4,SPFID5,SPFID6,SPFID7,SPFID8,SPFID9,SPFID10',
+        '${attendanceApiUrl}date-range=${requestParams['date-range']}$attendanceRequestedParams',
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -122,7 +124,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       {required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.get(
-        'UAQSGD_MOB_ERP_EmployeeDashboard/LeavesAndThankyouCount',
+        dashboardApiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -133,6 +135,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           response.data, (p0) => DashboardModel.fromJson(response.data));
       return apiResponse;
     } on DioException catch (e) {
+      if (kDebugMode) {
+        printLog(message:e.toString());
+      }
       rethrow;
     }
   }
