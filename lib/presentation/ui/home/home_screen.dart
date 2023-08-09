@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
@@ -10,7 +11,7 @@ import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
-import 'package:malomati/presentation/ui/home/favorite_screen.dart';
+import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
@@ -159,7 +160,10 @@ class HomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                     const Spacer(),
-                                    ImageWidget(path: DrawableAssets.icWeather, backgroundTint: context.resources.iconBgColor)
+                                    ImageWidget(
+                                            path: DrawableAssets.icWeather,
+                                            backgroundTint:
+                                                context.resources.iconBgColor)
                                         .loadImage
                                   ],
                                 ),
@@ -398,8 +402,10 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .aNNUALACCRUAL ??
                                                       '0',
-                                                  balancetype: context.string.days,
-                                                  title: context.string.balanceLeaves,
+                                                  balancetype:
+                                                      context.string.days,
+                                                  title: context
+                                                      .string.balanceLeaves,
                                                 );
                                               }
                                             case 1:
@@ -408,8 +414,10 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .sICKACCRUAL ??
                                                       '0',
-                                                  balancetype: context.string.days,
-                                                  title: context.string.balanceSickLeaves,
+                                                  balancetype:
+                                                      context.string.days,
+                                                  title: context
+                                                      .string.balanceSickLeaves,
                                                 );
                                               }
                                             case 2:
@@ -418,8 +426,10 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .pERMISSIONACCRUAL ??
                                                       '0',
-                                                  balancetype: context.string.hours,
-                                                  title: context.string.balancePermission,
+                                                  balancetype:
+                                                      context.string.hours,
+                                                  title: context
+                                                      .string.balancePermission,
                                                 );
                                               }
                                             default:
@@ -428,8 +438,10 @@ class HomeScreen extends StatelessWidget {
                                                   balanceCount: dashboardEntity
                                                           .tHANKYOUCOUNT ??
                                                       '0',
-                                                  balancetype: context.string.star,
-                                                  title: context.string.totalThankYou,
+                                                  balancetype:
+                                                      context.string.star,
+                                                  title: context
+                                                      .string.totalThankYou,
                                                 );
                                               }
                                           }
@@ -562,9 +574,22 @@ class HomeScreen extends StatelessWidget {
                                         onTap: () {
                                           if (favoriteEntity[i].name ==
                                               favoriteAdd) {
+                                            final services =
+                                                sl<ConstantConfig>()
+                                                    .getServicesByManager(
+                                                        isManager: context
+                                                            .userDB
+                                                            .get(isMaangerKey,
+                                                                defaultValue:
+                                                                    false))
+                                                    .where((element) =>
+                                                        !favoriteEntity
+                                                            .contains(element))
+                                                    .toList();
                                             Dialogs.showBottomSheetDialog(
                                                 context,
-                                                FavoriteScreen(
+                                                ServicesList(
+                                                    services: services,
                                                     callback: _addFavorite));
                                           }
                                         },

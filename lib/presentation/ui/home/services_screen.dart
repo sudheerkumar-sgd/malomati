@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/presentation/ui/home/favorite_screen.dart';
+import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 
+import '../../../injection_container.dart';
 import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
@@ -22,7 +24,11 @@ class ServicesScreen extends StatelessWidget {
                     vertical: context.resources.dimen.dp20,
                     horizontal: context.resources.dimen.dp25),
                 child: ServicesAppBarWidget(title: context.string.selfService)),
-            const FavoriteScreen(),
+            ServicesList(
+              services: sl<ConstantConfig>().getServicesByManager(
+                  isManager:
+                      context.userDB.get(isMaangerKey, defaultValue: false)),
+            ),
           ],
         ),
       ),

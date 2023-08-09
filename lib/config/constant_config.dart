@@ -66,6 +66,18 @@ class ConstantConfig {
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
+  final managerServices = [
+    FavoriteEntity(
+        name: 'HR Approvals',
+        nameAR: 'موافقات الموارد البشرية',
+        iconPath: DrawableAssets.icHrApprovals),
+    FavoriteEntity(
+        name: 'Finance Approvals',
+        nameAR: 'الموافقات المالية',
+        iconPath: DrawableAssets.icFinanceApprovals),
+    FavoriteEntity(
+        name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
+  ];
   final dashboardFavorites = [
     {
       'name': 'Annual Leaves',
@@ -98,4 +110,12 @@ class ConstantConfig {
       'iconPath': DrawableAssets.icServiceAdd
     },
   ];
+
+  List<FavoriteEntity> getServicesByManager({required bool isManager}) {
+    return isManager
+        ? services
+        : services
+            .where((element) => !managerServices.contains(element))
+            .toList();
+  }
 }

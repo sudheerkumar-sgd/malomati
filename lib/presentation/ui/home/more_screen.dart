@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
@@ -47,7 +48,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp20,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icSettings,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icSettings,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -89,7 +93,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp15,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icLaw,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icLaw,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -115,7 +122,9 @@ class MoreScreen extends StatelessWidget {
                           valueListenable: _languageType,
                           builder: (context, languageType, widget) {
                             return Row(children: [
-                              ImageWidget(path: DrawableAssets.icLanguage,backgroundTint: resources.iconBgColor)
+                              ImageWidget(
+                                      path: DrawableAssets.icLanguage,
+                                      backgroundTint: resources.iconBgColor)
                                   .loadImage,
                               SizedBox(
                                 width: resources.dimen.dp10,
@@ -227,7 +236,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp15,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icTheme,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icTheme,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -266,7 +278,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp15,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icPrivacy,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icPrivacy,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -289,7 +304,9 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp15,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icInfoCircle,backgroundTint: resources.iconBgColor)
+                        ImageWidget(
+                                path: DrawableAssets.icInfoCircle,
+                                backgroundTint: resources.iconBgColor)
                             .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
@@ -318,7 +335,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp20,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icMail,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icMail,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -343,7 +363,10 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp15,
                       ),
                       Row(children: [
-                        ImageWidget(path: DrawableAssets.icCall,backgroundTint: resources.iconBgColor).loadImage,
+                        ImageWidget(
+                                path: DrawableAssets.icCall,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
                         SizedBox(
                           width: resources.dimen.dp10,
                         ),
@@ -365,19 +388,29 @@ class MoreScreen extends StatelessWidget {
             SizedBox(
               height: context.resources.dimen.dp20,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: resources.dimen.dp60),
-              padding: EdgeInsets.all(resources.dimen.dp5),
-              decoration: BackgroundBoxDecoration(
-                boxColor: resources.color.viewBgColor,
-                radious: context.resources.dimen.dp20,
-              ).roundedCornerBox,
-              alignment: Alignment.center,
-              child: Text(
-                context.string.logout,
-                style: context.textFontWeight400
-                    .onColor(resources.color.colorWhite)
-                    .onFontSize(context.resources.dimen.dp17),
+            InkWell(
+              onTap: () {
+                context.userDB.delete(oracleLoginIdKey);
+                context.userDB.delete(userFullNameUsKey);
+                context.userDB.delete(userFullNameArKey);
+                context.userDB.delete(isMaangerKey);
+                context.userDB.delete(favoriteKey);
+                Phoenix.rebirth(context);
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: resources.dimen.dp60),
+                padding: EdgeInsets.all(resources.dimen.dp5),
+                decoration: BackgroundBoxDecoration(
+                  boxColor: resources.color.viewBgColor,
+                  radious: context.resources.dimen.dp20,
+                ).roundedCornerBox,
+                alignment: Alignment.center,
+                child: Text(
+                  context.string.logout,
+                  style: context.textFontWeight400
+                      .onColor(resources.color.colorWhite)
+                      .onFontSize(context.resources.dimen.dp17),
+                ),
               ),
             ),
             SizedBox(

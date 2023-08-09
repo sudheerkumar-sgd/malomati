@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
 
-import '../../../injection_container.dart';
-
-class FavoriteScreen extends StatelessWidget {
+class ServicesList extends StatelessWidget {
+  final List<FavoriteEntity> services;
   final Function(BuildContext, FavoriteEntity)? callback;
-  const FavoriteScreen({this.callback, super.key});
+  const ServicesList({required this.services, this.callback, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final services = sl<ConstantConfig>().services;
     return Expanded(
       child: SingleChildScrollView(
         child: GridView.builder(

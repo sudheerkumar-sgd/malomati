@@ -7,6 +7,7 @@ import '../../domain/entities/login_entity.dart';
 
 class LoginModel extends BaseModel {
   String? oracleLoginId;
+  String? iSMANAGER;
   String? fullNameAR;
   String? fullNameUS;
 
@@ -15,6 +16,7 @@ class LoginModel extends BaseModel {
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     var loginModel = LoginModel();
     loginModel.oracleLoginId = json['ORACLE_LOGIN'];
+    loginModel.iSMANAGER = json['IS_MANAGER'];
     loginModel.fullNameAR = json['FULL_NAME_AR'];
     loginModel.fullNameUS = json['FULL_NAME_US'];
     return loginModel;
@@ -26,7 +28,7 @@ class LoginModel extends BaseModel {
       };
 
   @override
-  List<Object?> get props => [oracleLoginId, fullNameAR, fullNameUS];
+  List<Object?> get props => [oracleLoginId, fullNameAR, fullNameUS, iSMANAGER];
 
   @override
   BaseEntity toEntity<T>() {
@@ -38,6 +40,7 @@ extension SourceModelExtension on LoginModel {
   LoginEntity toLoginEntity() {
     var loginEntity = LoginEntity();
     loginEntity.oracleLoginId = oracleLoginId;
+    loginEntity.iSMANAGER = iSMANAGER;
     loginEntity.fullNameUS = fullNameUS;
     loginEntity.fullNameAR = fullNameAR;
     return loginEntity;

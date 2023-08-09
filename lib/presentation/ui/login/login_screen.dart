@@ -58,6 +58,11 @@ class LoginScreen extends StatelessWidget {
                         context.userDB.put(userFullNameArKey,
                             state.loginEntity.entity?.fullNameAR ?? '');
                         context.userDB.put(oracleLoginIdKey, oracleLoginId);
+                        context.userDB.put(
+                            isMaangerKey,
+                            (state.loginEntity.entity?.iSMANAGER ?? '') == 'Y'
+                                ? true
+                                : false);
                         context.userDB
                             .put(userNameKey, _nameTextController.text);
                         if (_isRememberd.value) {
