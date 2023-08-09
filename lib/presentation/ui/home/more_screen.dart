@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../core/enum.dart';
@@ -334,24 +335,29 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp20,
                       ),
-                      Row(children: [
-                        ImageWidget(
-                                path: DrawableAssets.icMail,
-                                backgroundTint: resources.iconBgColor)
-                            .loadImage,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        Text(
-                          'info.malomatiapp@gov.ae',
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
-                        ),
-                        const Spacer(),
-                        ImageWidget(path: DrawableAssets.icChevronRight)
-                            .loadImage,
-                      ]),
+                      InkWell(
+                        onTap: () {
+                          sendEmail(context, supportEmailId);
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icMail,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            supportEmailId,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.dimen.dp15),
+                          ),
+                          const Spacer(),
+                          ImageWidget(path: DrawableAssets.icChevronRight)
+                              .loadImage,
+                        ]),
+                      ),
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
@@ -362,21 +368,26 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
-                      Row(children: [
-                        ImageWidget(
-                                path: DrawableAssets.icCall,
-                                backgroundTint: resources.iconBgColor)
-                            .loadImage,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        Text(
-                          '06 764 1000',
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
-                        ),
-                      ]),
+                      InkWell(
+                        onTap: () {
+                          callNumber(context, supportMobileNumber);
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icCall,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            supportMobileNumber,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.dimen.dp15),
+                          ),
+                        ]),
+                      ),
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),

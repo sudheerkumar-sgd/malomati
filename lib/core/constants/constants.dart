@@ -18,6 +18,9 @@ const String favoriteKey = "favorites";
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";
 
+const String supportMobileNumber = '06 764 1000';
+const String supportEmailId = 'info.malomatiapp@gov.ae';
+
 String authorizationToken = "";
 String oracleLoginId = "";
 

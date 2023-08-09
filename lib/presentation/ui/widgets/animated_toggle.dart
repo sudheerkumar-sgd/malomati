@@ -12,7 +12,8 @@ class AnimatedToggle extends StatefulWidget {
   final double height;
   final int selectedPossition;
 
-  const AnimatedToggle({super.key, 
+  const AnimatedToggle({
+    super.key,
     required this.values,
     required this.onToggleCallback,
     required this.width,
@@ -33,7 +34,7 @@ class AnimatedToggleState extends State<AnimatedToggle> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            final initialPosition = !(widget.selectedPossition==0);
+            final initialPosition = !(widget.selectedPossition == 0);
             var index = 0;
             if (!initialPosition) {
               index = 1;
@@ -47,8 +48,7 @@ class AnimatedToggleState extends State<AnimatedToggle> {
             decoration: BackgroundBoxDecoration(
               boxColor: widget.backgroundColor,
               radious: context.resources.dimen.dp10,
-              ).roundedCornerBox,
-            
+            ).roundedCornerBox,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
@@ -65,20 +65,26 @@ class AnimatedToggleState extends State<AnimatedToggle> {
         ),
         AnimatedAlign(
           duration: const Duration(milliseconds: 250),
-          alignment:
-              (widget.selectedPossition==0) ? Alignment.centerLeft : Alignment.centerRight,
+          alignment: context.resources.isLocalEn
+              ? ((widget.selectedPossition == 0)
+                  ? Alignment.centerLeft
+                  : Alignment.centerRight)
+              : ((widget.selectedPossition == 0)
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft),
           child: Container(
             margin: EdgeInsets.all(context.resources.dimen.dp1),
             width: widget.width / 2,
-            height: widget.height-2,
+            height: widget.height - 2,
             decoration: BackgroundBoxDecoration(
               boxColor: widget.buttonColor,
               radious: context.resources.dimen.dp10,
-              ).roundedCornerBox,
-            
+            ).roundedCornerBox,
             alignment: Alignment.center,
             child: Text(
-              (widget.selectedPossition==0) ? widget.values[0] : widget.values[1],
+              (widget.selectedPossition == 0)
+                  ? widget.values[0]
+                  : widget.values[1],
               style: context.textFontWeight400
                   .onColor(widget.textColor)
                   .onFontSize(context.resources.dimen.dp11),

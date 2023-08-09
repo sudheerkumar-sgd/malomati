@@ -14,15 +14,13 @@ class ItemDashboardService extends StatelessWidget {
   FavoriteEntity data;
   bool showDelete = false;
   ItemDashboardService(
-      {required this.data,
-      this.callback,
-      this.showDelete = false,
-      super.key});
+      {required this.data, this.callback, this.showDelete = false, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final title = context.resources.isLocalEn? data.name??'': data.nameAR??'';
-    final iconPath = data.iconPath??'';
+    final title =
+        context.resources.isLocalEn ? data.name ?? '' : data.nameAR ?? '';
+    final iconPath = data.iconPath ?? '';
     return Column(
       children: [
         Stack(
@@ -33,7 +31,9 @@ class ItemDashboardService extends StatelessWidget {
                   path: iconPath,
                   width: 30,
                   height: 30,
-                  backgroundTint: context.resources.iconBgColor,
+                  backgroundTint: title == favoriteAdd
+                      ? null
+                      : context.resources.iconBgColor,
                 ).loadImage,
                 boxDecoration: BackgroundBoxDecoration(
                         boxColor: title == favoriteAdd
@@ -43,18 +43,21 @@ class ItemDashboardService extends StatelessWidget {
             Align(
                 alignment: Alignment.topRight,
                 child: Visibility(
-                  visible: showDelete&&title!=favoriteAdd,
+                  visible: showDelete && title != favoriteAdd,
                   child: Container(
-                    margin: EdgeInsets.only(right: context.resources.dimen.dp20),
+                    margin:
+                        EdgeInsets.only(right: context.resources.dimen.dp20),
                     child: InkWell(
                         onTap: () {
                           if (callback != null) {
-                            callback!(context,
-                                FavoriteEntity(name: title, iconPath: iconPath));
+                            callback!(
+                                context,
+                                FavoriteEntity(
+                                    name: title, iconPath: iconPath));
                           }
                         },
-                        child:
-                            ImageWidget(path: DrawableAssets.icClose).loadImage),
+                        child: ImageWidget(path: DrawableAssets.icClose)
+                            .loadImage),
                   ),
                 ))
           ],
