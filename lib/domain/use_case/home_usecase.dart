@@ -82,7 +82,7 @@ class HomeUseCase extends BaseUseCase {
       var index = favorites
           .indexWhere((element) => element['name'] == favoriteEntity.name);
       favorites.removeAt(index);
-      favorites.insert(favoriteData.length - 1, {
+      favorites.insert(favoriteData.length, {
         'name': favoriteAdd,
         'nameAR': favoriteAddAR,
         'iconPath': DrawableAssets.icServiceAdd,

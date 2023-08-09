@@ -44,10 +44,10 @@ class ThemeBlueColors implements BaseColors {
   Color get bgColor => Colors.white;
 
   @override
-  Color get bgGradientEnd => const Color(0xff3b17e8);
+  Color get bgGradientEnd => Color.fromARGB(255, 42, 16, 174);
 
   @override
-  Color get bgGradientStart => const Color(0xff8974f1);
+  Color get bgGradientStart => Color.fromARGB(255, 101, 73, 244);
 
   @override
   Color get textColor => const Color(0xFF233057);
@@ -59,7 +59,7 @@ class ThemeBlueColors implements BaseColors {
   Color get viewBgColor => const Color(0xff6245ed);
 
   @override
-  Color get viewBgColorLight => const Color(0xffb0a2f6);
+  Color get viewBgColorLight => const Color.fromARGB(255, 101, 75, 230);
 
   @override
   Color get colorEDECEC => const Color(0xffEDECEC);
@@ -74,5 +74,17 @@ class ThemeBlueColors implements BaseColors {
   Color get appScaffoldBg => const Color(0xffF5F5F5);
   
   @override
-  Color get colorF5C3C3 => const Color(0xffF5C3C3);
+  Color get colorF5C3C3 => Color.fromARGB(255, 195, 186, 238);
+
+  @override
+  Color get textColor212B4B => const Color(0xff212B4B);
+
+  @override
+  Color get colorD6D6D6 => const Color(0xffD6D6D6);
+
+  @override
+  Color get colorD32030 => const Color(0xffD32030);
+
+  @override
+  Color get colorGreen26B757 => const Color(0xff26B757);
 }

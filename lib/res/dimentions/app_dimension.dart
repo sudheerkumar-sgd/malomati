@@ -35,6 +35,8 @@ class AppDimension {
   double get dp3 => 3;
   double get dp4 => 4;
   double get dp5 => 5;
+  double get dp6 => 6;
+  double get dp7 => 7;
   double get dp8 => 8;
   double get dp10 => 10;
   double get dp11 => 11;
@@ -48,6 +50,7 @@ class AppDimension {
   double get dp30 => 30;
   double get dp40 => 40;
   double get dp50 => 50;
+  double get dp60 => 60;
   double get dp75 => 75;
   double get dp100 => 100;
   double get dp300 => 300;

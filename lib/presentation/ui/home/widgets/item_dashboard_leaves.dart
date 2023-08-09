@@ -6,11 +6,13 @@ import 'package:malomati/res/drawables/background_box_decoration.dart';
 class ItemDashboardLeaves extends StatelessWidget {
   final balanceCount;
   final balancetype;
-  final title;
-  const ItemDashboardLeaves(
+  String title;
+  double padding = 10;
+  ItemDashboardLeaves(
       {required this.balanceCount,
       required this.balancetype,
-      this.title,
+      this.title = '',
+      this.padding = 10,
       super.key});
 
   @override
@@ -18,7 +20,7 @@ class ItemDashboardLeaves extends StatelessWidget {
     return Column(
       children: [
         CustomBgWidgets().roundedCornerWidget(
-            padding: EdgeInsets.all(context.resources.dimen.dp10),
+            padding: EdgeInsets.all(padding),
             widget: Column(
               children: [
                 Text(

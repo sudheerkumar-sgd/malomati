@@ -39,6 +39,7 @@ class Resources {
     (theme == ThemeEnum.blue.name)
         ? context.settingDB.put(appThemeKey, ThemeEnum.red.name)
         : context.settingDB.put(appThemeKey, ThemeEnum.blue.name);
+    Phoenix.rebirth(context);
   }
 
   bool get isLocalEn => getLocal();
@@ -61,6 +62,16 @@ class Resources {
         context.settingDB.get(appLocalKey, defaultValue: LocalEnum.en.name);
     return (local == LocalEnum.en.name);
   }
+
+  bool get isRedTheme => getTheme();
+
+  bool getTheme() {
+    final theme =
+        context.settingDB.get(appThemeKey, defaultValue: ThemeEnum.red.name);
+    return (theme == ThemeEnum.red.name);
+  }
+
+  Color get iconBgColor => color.bgGradientStart;
 
   static Resources of(BuildContext context) {
     return Resources(context);

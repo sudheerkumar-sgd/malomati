@@ -23,8 +23,8 @@ class _MainState extends State<MainScreen> {
   final _screens = <Widget>[
     const HomeNavigatorScreen(),
     const ServicesScreen(),
-    const RequestsScreen(),
-    const MoreScreen(),
+    RequestsScreen(),
+    MoreScreen(),
   ];
 
   void _onItemTapped(int index) {

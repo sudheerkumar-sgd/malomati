@@ -5,22 +5,22 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
-import '../../../domain/entities/favorite_entity.dart';
+import '../../../../domain/entities/favorite_entity.dart';
 
 class ItemDashboardService extends StatelessWidget {
   Function(BuildContext, FavoriteEntity)? callback;
-  String title;
-  String iconPath;
+  FavoriteEntity data;
   bool showDelete = false;
   ItemDashboardService(
-      {required this.title,
-      required this.iconPath,
+      {required this.data,
       this.callback,
       this.showDelete = false,
       super.key});
 
   @override
   Widget build(BuildContext context) {
+    final title = context.resources.isLocalEn? data.name??'': data.nameAR??'';
+    final iconPath = data.iconPath??'';
     return Column(
       children: [
         Stack(
@@ -31,6 +31,7 @@ class ItemDashboardService extends StatelessWidget {
                   path: iconPath,
                   width: 30,
                   height: 30,
+                  backgroundTint: context.resources.iconBgColor,
                 ).loadImage,
                 boxDecoration: BackgroundBoxDecoration(
                         boxColor: title == favoriteAdd
@@ -59,12 +60,15 @@ class ItemDashboardService extends StatelessWidget {
         SizedBox(
           height: context.resources.dimen.dp10,
         ),
-        Text(
-          title == favoriteAdd ? '' : title,
-          textAlign: TextAlign.center,
-          style: context.textFontWeight400
-              .onColor(context.resources.color.textColor)
-              .onFontSize(context.resources.dimen.dp12),
+        Expanded(
+          child: Text(
+            title == favoriteAdd ? '' : title,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: context.textFontWeight400
+                .onColor(context.resources.color.textColor)
+                .onFontSize(context.resources.dimen.dp12),
+          ),
         ),
       ],
     );

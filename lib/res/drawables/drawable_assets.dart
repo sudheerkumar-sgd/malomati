@@ -35,4 +35,18 @@ class DrawableAssets {
   static const icHrApprovals = '${drawablePath}ic_hrapprovals.svg';
   static const icFinanceApprovals = '${drawablePath}ic_financeapprovals.svg';
   static const icMyteam = '${drawablePath}ic_myteam.svg';
+  static const icChevronDown = '${drawablePath}ic_chevron_down.svg';
+  static const icChevronUp = '${drawablePath}ic_chevron_up.svg';
+  static const icApprovedCircle = '${drawablePath}ic_approved_circle.svg';
+  static const icRejectCircle = '${drawablePath}ic_reject_circle.svg';
+  static const icInfoCircle = '${drawablePath}ic_info_circle.svg';
+  static const icPendingCircle = '${drawablePath}ic_pending_circle.svg';
+  static const icSettings = '${drawablePath}ic_settings.svg';
+  static const icLaw = '${drawablePath}ic_law.svg';
+  static const icLanguage = '${drawablePath}ic_language.svg';
+  static const icTheme = '${drawablePath}ic_theme.svg';
+  static const icPrivacy = '${drawablePath}ic_privacy.svg';
+  static const icMail = '${drawablePath}ic_mail.svg';
+  static const icCall = '${drawablePath}ic_call.svg';
+  static const icChevronRight = '${drawablePath}ic_chevron_right.svg';
 }

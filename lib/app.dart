@@ -13,6 +13,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     var value = context.userDB;
     final Locale locale =
         Locale(value.get(appLocalKey, defaultValue: LocalEnum.en.name));
@@ -35,7 +39,7 @@ class App extends StatelessWidget {
       onGenerateTitle: (BuildContext context) => context.string.appTitle,
       initialRoute: value.get(isSplashDoneKey, defaultValue: false)
           ? oracleLoginId.isEmpty
-              ? AppRoutes.loginRoute
+              ? AppRoutes.mainRoute
               : AppRoutes.mainRoute
           : AppRoutes.initialRoute,
       routes: AppRoutes.getRoutes(),

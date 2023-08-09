@@ -48,6 +48,28 @@ class BackgroundBoxDecoration {
             bottomRight: Radius.circular(radious ?? 4)));
   }
 
+  BoxDecoration get rightCornersBox {
+    return BoxDecoration(
+        color: boxColor,
+        border: Border.all(
+            color: boarderColor ?? const Color(0x00000000),
+            width: boarderWidth ?? 0),
+        borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(radious ?? 4),
+            topRight: Radius.circular(radious ?? 4)));
+  }
+
+  BoxDecoration get leftCornersBox {
+    return BoxDecoration(
+        color: boxColor,
+        border: Border.all(
+            color: boarderColor ?? const Color(0x00000000),
+            width: boarderWidth ?? 0),
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(radious ?? 4),
+            topLeft: Radius.circular(radious ?? 4)));
+  }
+
   BoxDecoration get bottomCornersBoxWithShadow {
     return bottomCornersBox.copyWith(
       boxShadow: kElevationToShadow[5],

@@ -12,19 +12,21 @@ class ServicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: context.resources.color.appScaffoldBg,
-          body: Column(
-              children: [
-                SizedBox(height: context.resources.dimen.dp10,),
-                Container(
-                    margin: EdgeInsets.symmetric(
-                        vertical: context.resources.dimen.dp20,
-                        horizontal: context.resources.dimen.dp25),
-                    child: ServicesAppBarWidget(title: context.string.selfService)),
-                const Expanded(child: SingleChildScrollView(child:  FavoriteScreen())),
-              ],
+        backgroundColor: context.resources.color.appScaffoldBg,
+        body: Column(
+          children: [
+            SizedBox(
+              height: context.resources.dimen.dp10,
             ),
-          ),
+            Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: context.resources.dimen.dp20,
+                    horizontal: context.resources.dimen.dp25),
+                child: ServicesAppBarWidget(title: context.string.selfService)),
+            const FavoriteScreen(),
+          ],
+        ),
+      ),
     );
   }
 }

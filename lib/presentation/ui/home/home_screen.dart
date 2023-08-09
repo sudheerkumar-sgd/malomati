@@ -11,11 +11,11 @@ import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/home/favorite_screen.dart';
+import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
+import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
+import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import 'package:malomati/presentation/ui/widgets/item_dashboard_events.dart';
-import 'package:malomati/presentation/ui/widgets/item_dashboard_leaves.dart';
-import 'package:malomati/presentation/ui/widgets/item_dashboard_service.dart';
 import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
 import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -159,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                                       ],
                                     ),
                                     const Spacer(),
-                                    ImageWidget(path: DrawableAssets.icWeather)
+                                    ImageWidget(path: DrawableAssets.icWeather, backgroundTint: context.resources.iconBgColor)
                                         .loadImage
                                   ],
                                 ),
@@ -569,10 +569,7 @@ class HomeScreen extends StatelessWidget {
                                           }
                                         },
                                         child: ItemDashboardService(
-                                          title: (favoriteEntity[i]).name ?? '',
-                                          iconPath:
-                                              (favoriteEntity[i]).iconPath ??
-                                                  '',
+                                          data: favoriteEntity[i],
                                           callback: _removeFavorite,
                                           showDelete: _isFavoriteEdited.value,
                                         ),

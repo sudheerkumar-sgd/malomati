@@ -39,8 +39,8 @@ class ThemeBlue extends ApplicationTheme {
         scaffoldBackgroundColor: const Color(0xfffafafa),
         cardColor: const Color(0xffffffff),
         dividerColor: const Color(0x1f000000),
-        highlightColor: const Color(0x66bcbcbc),
-        splashColor: const Color(0x66c8c8c8),
+        highlightColor: const Color(0x00000000),
+        splashColor: const Color(0x00000000),
         unselectedWidgetColor: const Color(0x8a000000),
         disabledColor: const Color(0x61000000),
         secondaryHeaderColor: const Color(0xffebe8fd),
@@ -48,6 +48,10 @@ class ThemeBlue extends ApplicationTheme {
         indicatorColor: const Color(0xff3b17e8),
         hintColor: const Color(0x8a000000),
         fontFamily: _fontFamily ?? 'Inter',
+        scrollbarTheme: const ScrollbarThemeData().copyWith(
+          radius: const Radius.circular(10.0),
+          thumbColor: MaterialStateProperty.all(const Color(0xff3b17e8)),
+        ),
         buttonTheme: const ButtonThemeData(
           textTheme: ButtonTextTheme.normal,
           minWidth: 88,

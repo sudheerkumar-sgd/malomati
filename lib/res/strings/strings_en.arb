@@ -188,6 +188,58 @@
     "@selfService": {
         "type": "text"
     },
+    "requests": "Requests",
+    "@requests": {
+        "type": "text"
+    },
+    "approved": "Approved",
+    "@approved": {
+        "type": "text"
+    },
+    "pending": "Pending",
+    "@pending": {
+        "type": "text"
+    },
+    "rejected": "Rejected",
+    "@rejected": {
+        "type": "text"
+    },
+    "historyLogs": "History Logs",
+    "@historyLogs": {
+        "type": "text"
+    },
+    "notificationSetting": "Notification Setting",
+    "@notificationSetting": {
+        "type": "text"
+    },
+    "hRGovernmentLaw": "HR Government Law",
+    "@hRGovernmentLaw": {
+        "type": "text"
+    },
+    "language": "Language",
+    "@language": {
+        "type": "text"
+    },
+    "color": "Color",
+    "@color": {
+        "type": "text"
+    },
+    "privacyAndPolicy": "Privacy and Policy",
+    "@privacyAndPolicy": {
+        "type": "text"
+    },
+    "aboutMalomati": "About Ma’lomati",
+    "@aboutMalomati": {
+        "type": "text"
+    },
+    "contactAssistance": "Contact Assistance",
+    "@contactAssistance": {
+        "type": "text"
+    },
+    "logout": "Log out",
+    "@logout": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

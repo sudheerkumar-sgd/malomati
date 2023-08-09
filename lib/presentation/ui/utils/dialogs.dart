@@ -3,6 +3,8 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/favorite_screen.dart';
 
 import '../../../res/drawables/background_box_decoration.dart';
+import '../../../res/drawables/drawable_assets.dart';
+import '../widgets/image_widget.dart';
 
 class Dialogs {
   static Future<T?> loader<T>(BuildContext context) {
@@ -80,13 +82,28 @@ class Dialogs {
 
   static showBottomSheetDialog(BuildContext context, Widget widget) {
     showBottomSheet(
-      shape: RoundedRectangleBorder(
-     borderRadius: BorderRadius.circular(30.0),
+      shape: const RoundedRectangleBorder(
+     borderRadius:  BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30.0)),
   ),
         context: context,
         builder: (context) => Container(
           height: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: context.resources.dimen.dp20),
-            child: widget));
+            padding: EdgeInsets.symmetric(vertical: context.resources.dimen.dp10),
+            child: Column(
+              children: [
+                Align(
+            alignment: Alignment.topRight,
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  padding: EdgeInsets.all(context.resources.dimen.dp5),
+                  margin: EdgeInsets.only(right: context.resources.dimen.dp10),
+                  child: ImageWidget(path: DrawableAssets.icClose).loadImage),
+            )),
+                widget,
+              ],
+            )));
   }
 }

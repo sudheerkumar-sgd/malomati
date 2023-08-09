@@ -40,8 +40,8 @@ class ThemeRed extends ApplicationTheme {
         scaffoldBackgroundColor: const Color(0xfffafafa),
         cardColor: const Color(0xffffffff),
         dividerColor: const Color(0x1f233057),
-        highlightColor: const Color(0x66bcbcbc),
-        splashColor: const Color(0x66c8c8c8),
+        highlightColor: const Color(0x00000000),
+        splashColor: const Color(0x00000000),
         unselectedWidgetColor: const Color(0x8a000000),
         disabledColor: const Color(0x61000000),
         secondaryHeaderColor: const Color(0xfffde8ea),
@@ -49,6 +49,10 @@ class ThemeRed extends ApplicationTheme {
         indicatorColor: const Color(0xffea152d),
         hintColor: const Color(0x8a000000),
         fontFamily: _fontFamily ?? 'Inter',
+        scrollbarTheme: const ScrollbarThemeData().copyWith(
+          radius: const Radius.circular(10.0),
+          thumbColor: MaterialStateProperty.all(const Color(0xffEC294E)),
+        ),
         buttonTheme: const ButtonThemeData(
           textTheme: ButtonTextTheme.normal,
           minWidth: 88,
@@ -65,8 +69,8 @@ class ThemeRed extends ApplicationTheme {
           alignedDropdown: false,
           buttonColor: Color(0xffe0e0e0),
           disabledColor: Color(0x61000000),
-          highlightColor: Color(0x29000000),
-          splashColor: Color(0x1f000000),
+          highlightColor: Color(0x00000000),
+          splashColor: Color(0x00000000),
           focusColor: Color(0x1f000000),
           hoverColor: Color(0x0a000000),
           colorScheme: ColorScheme(

@@ -7,77 +7,79 @@ class ConstantConfig {
   final services = [
     FavoriteEntity(
         name: 'HR Approvals',
-        nameAR: 'HR Approvals',
+        nameAR: 'موافقات الموارد البشرية',
         iconPath: DrawableAssets.icHrApprovals),
     FavoriteEntity(
         name: 'Finance Approvals',
-        nameAR: 'Finance Approvals',
+        nameAR: 'الموافقات المالية',
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
         name: 'Annual Leaves',
-        nameAR: 'Annual Leaves',
+        nameAR: 'الإجازات السنوية',
         iconPath: DrawableAssets.icAnualleaves),
     FavoriteEntity(
         name: 'Permission',
-        nameAR: 'Leaves',
+        nameAR: 'إستئذان',
         iconPath: DrawableAssets.icServicePermission),
     FavoriteEntity(
         name: 'Sick Leaves',
-        nameAR: 'Leaves',
+        nameAR: 'الإجازات المرضية',
         iconPath: DrawableAssets.icSickleaves),
     FavoriteEntity(
         name: 'Mission Leaves',
-        nameAR: 'Leaves',
+        nameAR: 'Mission Leaves',
         iconPath: DrawableAssets.icMissionleaves),
     FavoriteEntity(
         name: 'Other Leaves',
-        nameAR: 'Leaves',
+        nameAR: 'Other Leaves',
         iconPath: DrawableAssets.icServiceLeave),
     FavoriteEntity(
         name: 'Attendance',
-        nameAR: 'Leaves',
+        nameAR: 'حضور',
         iconPath: DrawableAssets.icServiceAttendance),
     FavoriteEntity(
         name: 'Initiatives',
-        nameAR: 'Leaves',
+        nameAR: 'المبادرات',
         iconPath: DrawableAssets.icInitiatives),
     FavoriteEntity(
         name: 'Certificates',
-        nameAR: 'Leaves',
+        nameAR: 'شهادات',
         iconPath: DrawableAssets.icServiceCertificate),
     FavoriteEntity(
         name: 'Thank You',
-        nameAR: 'Leaves',
+        nameAR: 'شكراً لك',
         iconPath: DrawableAssets.icServiceThankyou),
     FavoriteEntity(
-        name: 'Payslip', nameAR: 'Leaves', iconPath: DrawableAssets.icPayslip),
+        name: 'Payslip',
+        nameAR: 'كشف الراتب',
+        iconPath: DrawableAssets.icPayslip),
     FavoriteEntity(
         name: 'Advance Salary',
-        nameAR: 'Leaves',
+        nameAR: 'راتب مقدما',
         iconPath: DrawableAssets.icAdvancesalary),
     FavoriteEntity(
         name: 'Overtime',
-        nameAR: 'Leaves',
+        nameAR: 'العمل الإضافي',
         iconPath: DrawableAssets.icOvertime),
     FavoriteEntity(
-        name: 'Badge', nameAR: 'Leaves', iconPath: DrawableAssets.icBadge),
+        name: 'Badge', nameAR: 'Badge', iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
-        name: 'My Team', nameAR: 'My Team', iconPath: DrawableAssets.icMyteam),
+        name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
   final dashboardFavorites = [
     {
-      'name': 'Leaves',
-      'nameAR': 'Leaves',
-      'iconPath': DrawableAssets.icServiceLeave
+      'name': 'Annual Leaves',
+      'nameAR': 'الإجازات السنوية',
+      'iconPath': DrawableAssets.icAnualleaves
     },
     {
       'name': 'Permission',
-      'nameAR': 'Leaves',
+      'nameAR': 'إستئذان',
       'iconPath': DrawableAssets.icServicePermission
     },
     {
       'name': 'Attendance',
-      'nameAR': 'Leaves',
+      'nameAR': 'حضور',
       'iconPath': DrawableAssets.icServiceAttendance
     },
     {
