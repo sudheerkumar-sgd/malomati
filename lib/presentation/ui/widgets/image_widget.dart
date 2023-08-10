@@ -9,13 +9,18 @@ class ImageWidget {
   double? height;
   BoxFit? boxType;
   Color? backgroundTint;
+  EdgeInsetsGeometry padding;
   ImageWidget(
       {required this.path,
       this.width,
       this.height,
       this.boxType,
-      this.backgroundTint});
+      this.backgroundTint,
+      this.padding = const EdgeInsets.all(5)});
+
   Widget get loadImage => getImage();
+
+  Widget get loadImageWithMoreTapArea => getImageWithMoreTapArea();
 
   Widget getImage() {
     {
@@ -36,6 +41,15 @@ class ImageWidget {
       } else {
         return Image.file(File(path));
       }
+    }
+  }
+
+  Widget getImageWithMoreTapArea() {
+    {
+      return Padding(
+        padding: padding,
+        child: getImage(),
+      );
     }
   }
 }

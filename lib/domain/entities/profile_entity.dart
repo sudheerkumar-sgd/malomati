@@ -26,6 +26,28 @@ class ProfileEntity extends BaseEntity {
   String? JOB_NAME_AR = "";
   String? BASIC_SALARY = "";
 
+  String getFullName(bool isLocalEn) {
+    return isLocalEn ? FULL_NAME_US ?? '' : FULL_NAME_US ?? '';
+  }
+
+  String getJobName(bool isLocalEn) {
+    return isLocalEn ? JOB_NAME ?? '' : JOB_NAME_AR ?? '';
+  }
+
+  String getDepartmentName(bool isLocalEn) {
+    return isLocalEn ? DEPARTMENT_NAME_US ?? '' : DEPARTMENT_NAME ?? '';
+  }
+
+  String getMaritalStatus(bool isLocalEn) {
+    return isLocalEn ? MARITAL_STATUS ?? '' : MARITAL_STATUS ?? '';
+  }
+
+  String getManager(bool isLocalEn) {
+    return isLocalEn
+        ? SUPERVISOR_NAME_ENGLISH ?? ''
+        : SUPERVISOR_NAME_ARABIC ?? '';
+  }
+
   ProfileEntity();
   @override
   List<Object?> get props => [

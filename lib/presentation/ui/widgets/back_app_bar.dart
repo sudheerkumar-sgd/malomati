@@ -19,7 +19,6 @@ class BackAppBarWidget extends StatelessWidget {
           child: Container(
             width: context.resources.dimen.dp30,
             height: context.resources.dimen.dp30,
-            margin: EdgeInsets.only(right: context.resources.dimen.dp5),
             decoration: BackgroundBoxDecoration(
                     boxColor: context.resources.color.colorWhite)
                 .circularBox,
@@ -29,6 +28,9 @@ class BackAppBarWidget extends StatelessWidget {
                     boxType: BoxFit.none)
                 .loadImage,
           ),
+        ),
+        SizedBox(
+          width: context.resources.dimen.dp5,
         ),
         Expanded(
             child: Text(

@@ -531,17 +531,20 @@ class HomeScreen extends StatelessWidget {
                                             _favoriteEntity.value = [];
                                             _favoriteEntity.value = favoraties;
                                           },
-                                          child: Text(
-                                            isFavoriteEdited
-                                                ? context.string.done
-                                                : context.string.edit,
-                                            style: context.textFontWeight400
-                                                .onColor(context.resources.color
-                                                    .textColorLight)
-                                                .onFontFamily(
-                                                    fontFamily: fontFamilyEN)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp12),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              isFavoriteEdited
+                                                  ? context.string.done
+                                                  : context.string.edit,
+                                              style: context.textFontWeight400
+                                                  .onColor(context.resources
+                                                      .color.textColorLight)
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp12),
+                                            ),
                                           ),
                                         );
                                       }),

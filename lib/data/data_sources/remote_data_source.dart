@@ -69,25 +69,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<ApiResponse<ProfileModel>> getProfile(
       {required Map<String, dynamic> requestParams}) async {
     try {
-      var response = await dio.get(
-        'Profile',
+      var response = await dio.post(
+        getProfileApiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
-        queryParameters: requestParams,
+        data: jsonEncode(requestParams),
       );
 
-      switch (response.statusCode) {
-        case 200:
-          var apiResponse = ApiResponse<ProfileModel>.fromJson(
-              response.data, (p0) => ProfileModel.fromJson(response.data));
-          return apiResponse;
-        default:
-          throw _getExceptionType(response);
-      }
-    } catch (e) {
-      if (e is ServerException) rethrow;
-      throw e.toString();
+      var apiResponse = ApiResponse<ProfileModel>.fromJson(
+          response.data, (p0) => ProfileModel.fromJson(response.data));
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
     }
   }
 

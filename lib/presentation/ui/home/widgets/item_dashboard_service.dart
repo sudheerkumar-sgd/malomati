@@ -44,18 +44,16 @@ class ItemDashboardService extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: Visibility(
                   visible: showDelete && title != favoriteAdd,
-                  child: Container(
-                    margin:
-                        EdgeInsets.only(right: context.resources.dimen.dp20),
-                    child: InkWell(
-                        onTap: () {
-                          if (callback != null) {
-                            callback!(
-                                context,
-                                FavoriteEntity(
-                                    name: title, iconPath: iconPath));
-                          }
-                        },
+                  child: InkWell(
+                    onTap: () {
+                      if (callback != null) {
+                        callback!(context,
+                            FavoriteEntity(name: title, iconPath: iconPath));
+                      }
+                    },
+                    child: Container(
+                        padding: EdgeInsets.only(
+                            right: context.resources.dimen.dp20),
                         child: ImageWidget(path: DrawableAssets.icClose)
                             .loadImage),
                   ),

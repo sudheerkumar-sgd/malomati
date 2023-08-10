@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/home/user_profile_screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import 'package:page_transition/page_transition.dart';
 
 class UserAppBarWidget extends StatelessWidget {
   final String title;
@@ -58,14 +60,25 @@ class UserAppBarWidget extends StatelessWidget {
               SizedBox(
                 width: context.resources.dimen.dp5,
               ),
-              Container(
-                  padding: EdgeInsets.only(
-                    left: context.resources.dimen.dp5,
-                    top: context.resources.dimen.dp5,
-                    bottom: context.resources.dimen.dp5,
-                  ),
-                  child:
-                      ImageWidget(path: DrawableAssets.icUserCircle).loadImage),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: UserProfileScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                    padding: EdgeInsets.only(
+                      left: context.resources.dimen.dp5,
+                      top: context.resources.dimen.dp5,
+                      bottom: context.resources.dimen.dp5,
+                    ),
+                    child: ImageWidget(path: DrawableAssets.icUserCircle)
+                        .loadImage),
+              ),
             ],
           ),
         )

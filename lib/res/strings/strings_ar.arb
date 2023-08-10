@@ -57,5 +57,19 @@
     "privacyAndPolicy": "الخصوصية والسياسة",
     "aboutMalomati": "عن معلوماتي",
     "contactAssistance": "مساعدة الاتصال",
-    "logout": "تسجيل خروج"
+    "logout": "تسجيل خروج",
+    "profile": "حساب تعريفي",
+    "employeeID": "معرف الموظف",
+    "designation": "الوظيفي",
+    "emailID": "البريد الإلكتروني",
+    "departmentName": "إسم الدائرة",
+    "departmentName": "إسم الدائرة",
+    "maritalStatus": "الحالة الإجتماعية",
+    "dob": "تاريخ الميلاد",
+    "mobile": "الهاتف المتحرك",
+    "joiningDate": "تاريخ الإنضمام",
+    "managerName": "إسم المدير",
+    "yearOfService": "سنة الخدمة",
+    "basicSalary": "الراتب الأساسي"
+
 }

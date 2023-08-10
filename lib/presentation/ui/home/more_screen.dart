@@ -9,6 +9,7 @@ import 'package:malomati/presentation/ui/more/about_malomati.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
 import 'package:malomati/presentation/ui/more/privacy_and_policy.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
@@ -98,8 +99,12 @@ class MoreScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context, rootNavigator: false).pushNamed(
-                            HRGovernmentLaw.route,
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: const HRGovernmentLaw(),
+                            ),
                           );
                         },
                         child: Row(children: [
@@ -290,8 +295,12 @@ class MoreScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context, rootNavigator: false).pushNamed(
-                            PrivacyAndPolicy.route,
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: const PrivacyAndPolicy(),
+                            ),
                           );
                         },
                         child: Row(children: [
@@ -323,8 +332,15 @@ class MoreScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context, rootNavigator: false).pushNamed(
-                            AboutMalomati.route,
+                          // Navigator.of(context, rootNavigator: false).pushNamed(
+                          //   AboutMalomati.route,
+                          // );
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: const AboutMalomati(),
+                            ),
                           );
                         },
                         child: Row(children: [

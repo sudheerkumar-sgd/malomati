@@ -240,6 +240,54 @@
     "@logout": {
         "type": "text"
     },
+    "profile": "Profile",
+    "@profile": {
+        "type": "text"
+    },
+    "employeeID": "Employee ID",
+    "@employeeID": {
+        "type": "text"
+    },
+    "designation": "Designation",
+    "@designation": {
+        "type": "text"
+    },
+    "emailID": "Email ID",
+    "@emailID": {
+        "type": "text"
+    },
+    "departmentName": "Department Name",
+    "@departmentName": {
+        "type": "text"
+    },
+    "maritalStatus": "Marital Status",
+    "@maritalStatus": {
+        "type": "text"
+    },
+    "dob": "Date of Birth",
+    "@dob": {
+        "type": "text"
+    },
+    "mobile": "Mobile",
+    "@mobile": {
+        "type": "text"
+    },
+    "joiningDate": "Joining Date",
+    "@joiningDate": {
+        "type": "text"
+    },
+    "managerName": "Manager Name",
+    "@managerName": {
+        "type": "text"
+    },
+    "yearOfService": "Year of Service",
+    "@yearOfService": {
+        "type": "text"
+    },
+    "basicSalary": "Basic Salary",
+    "@basicSalary": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

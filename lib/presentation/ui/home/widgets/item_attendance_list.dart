@@ -14,18 +14,18 @@ class ItemAttendanceList extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: _isExpanded,
         builder: (context, isExpaned, widget) {
-          return Container(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            margin:
-                EdgeInsets.symmetric(horizontal: context.resources.dimen.dp5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _isExpanded.value = !isExpaned;
-                  },
-                  child: Row(
+          return InkWell(
+            onTap: () {
+              _isExpanded.value = !isExpaned;
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              margin:
+                  EdgeInsets.symmetric(horizontal: context.resources.dimen.dp5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
@@ -55,77 +55,77 @@ class ItemAttendanceList extends StatelessWidget {
                           .loadImage
                     ],
                   ),
-                ),
-                Visibility(
-                  visible: isExpaned,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        left: context.resources.dimen.dp15,
-                        top: context.resources.dimen.dp8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Absent',
-                                  style: context.textFontWeight400
-                                      .onColor(
-                                          context.resources.color.textColor212B4B)
-                                      .onFontSize(context.resources.dimen.dp11),
-                                ),
-                                 SizedBox(
-                          height: context.resources.dimen.dp5,
-                        ),
-                                Text(
-                              'SGD Office',
-                              style: context.textFontWeight400
-                                  .onColor(
-                                      context.resources.color.textColor212B4B)
-                                  .onFontSize(context.resources.dimen.dp11),
-                            ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Short Leave In: 08:03:00',
-                                  style: context.textFontWeight400
-                                      .onColor(
-                                          context.resources.color.textColor212B4B)
-                                      .onFontSize(context.resources.dimen.dp11),
-                                ),
-                                 SizedBox(
-                          height: context.resources.dimen.dp5,
-                        ),
-                                Text(
-                              'Reg Out: 14:04:00',
-                              style: context.textFontWeight400
-                                  .onColor(
-                                      context.resources.color.textColor212B4B)
-                                  .onFontSize(context.resources.dimen.dp11),
-                            ),
-                              ],
-                            ),
-                          ],
-                        ),
-                       
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            
-                            
-                          ],
-                        ),
-                      ],
+                  Visibility(
+                    visible: isExpaned,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: context.resources.dimen.dp15,
+                          top: context.resources.dimen.dp8),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Absent',
+                                    style: context.textFontWeight400
+                                        .onColor(context
+                                            .resources.color.textColor212B4B)
+                                        .onFontSize(
+                                            context.resources.dimen.dp11),
+                                  ),
+                                  SizedBox(
+                                    height: context.resources.dimen.dp5,
+                                  ),
+                                  Text(
+                                    'SGD Office',
+                                    style: context.textFontWeight400
+                                        .onColor(context
+                                            .resources.color.textColor212B4B)
+                                        .onFontSize(
+                                            context.resources.dimen.dp11),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Short Leave In: 08:03:00',
+                                    style: context.textFontWeight400
+                                        .onColor(context
+                                            .resources.color.textColor212B4B)
+                                        .onFontSize(
+                                            context.resources.dimen.dp11),
+                                  ),
+                                  SizedBox(
+                                    height: context.resources.dimen.dp5,
+                                  ),
+                                  Text(
+                                    'Reg Out: 14:04:00',
+                                    style: context.textFontWeight400
+                                        .onColor(context
+                                            .resources.color.textColor212B4B)
+                                        .onFontSize(
+                                            context.resources.dimen.dp11),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });

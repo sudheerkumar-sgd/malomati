@@ -63,8 +63,8 @@ class LoginScreen extends StatelessWidget {
                             (state.loginEntity.entity?.iSMANAGER ?? '') == 'Y'
                                 ? true
                                 : false);
-                        context.userDB
-                            .put(userNameKey, _nameTextController.text);
+                        context.userDB.put(userNameKey,
+                            _nameTextController.text.toUpperCase());
                         if (_isRememberd.value) {
                           context.userDB
                               .put(passwordKey, _pwdTextController.text);
@@ -112,7 +112,9 @@ class LoginScreen extends StatelessWidget {
                                 child: ImageWidget(
                                         path: context.resources.isLocalEn
                                             ? DrawableAssets.icLangAr
-                                            : DrawableAssets.icLangEn)
+                                            : DrawableAssets.icLangEn,
+                                        backgroundTint:
+                                            context.resources.iconBgColor)
                                     .loadImage,
                               ),
                             ),
@@ -223,7 +225,8 @@ class LoginScreen extends StatelessWidget {
                                   onTap: () {
                                     Map<String, dynamic> requestParams = {
                                       "user_name".toUpperCase():
-                                          _nameTextController.text,
+                                          _nameTextController.text
+                                              .toUpperCase(),
                                       "password".toUpperCase():
                                           _pwdTextController.text,
                                     };

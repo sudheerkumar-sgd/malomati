@@ -8,9 +8,10 @@ import 'about_malomati.dart';
 
 class MoreNavigatorScreen extends StatelessWidget {
   const MoreNavigatorScreen({Key? key}) : super(key: key);
-  static final moreKey = GlobalKey<NavigatorState>();
+  static var moreKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
+    moreKey = GlobalKey<NavigatorState>();
     return Navigator(
         key: moreKey,
         initialRoute: '/',

@@ -22,16 +22,15 @@ class ProfileModel extends BaseModel {
   String? AS_OF_DATE = "";
   String? AS_OF_DATE_CHAR = "";
   String? USER_NAME = "";
-  String? YEARS_OF_SERVICE = "";
+  double? YEARS_OF_SERVICE = 0.0;
   String? NEXT_GLOBAL_HOLIDAY = "";
   String? JOB_NAME = "";
   String? JOB_NAME_AR = "";
-  String? BASIC_SALARY = "";
+  int? BASIC_SALARY = 0;
 
   ProfileModel();
 
-  factory ProfileModel.fromJson(Map<String, dynamic> data) {
-    var json = data['Data'];
+  factory ProfileModel.fromJson(Map<String, dynamic> json) {
     var profileModel = ProfileModel();
     profileModel.PERSON_ID = json["PERSON_ID"];
     profileModel.MARITAL_STATUS = json["MARITAL_STATUS"];
@@ -50,7 +49,7 @@ class ProfileModel extends BaseModel {
     profileModel.AS_OF_DATE_CHAR = json["AS_OF_DATE_CHAR"];
     profileModel.USER_NAME = json["USER_NAME"];
     profileModel.YEARS_OF_SERVICE = json["YEARS_OF_SERVICE"];
-    profileModel.NEXT_GLOBAL_HOLIDAY = json["NEXT_GLOBAL_HOLIDAY"];
+    //profileModel.NEXT_GLOBAL_HOLIDAY = json["NEXT_GLOBAL_HOLIDAY"];
     profileModel.JOB_NAME = json["JOB_NAME"];
     profileModel.JOB_NAME_AR = json["JOB_NAME_AR"];
     profileModel.BASIC_SALARY = json["BASIC_SALARY"];
@@ -88,11 +87,11 @@ extension SourceModelExtension on ProfileModel {
     profileEntity.AS_OF_DATE = AS_OF_DATE;
     profileEntity.AS_OF_DATE_CHAR = AS_OF_DATE_CHAR;
     profileEntity.USER_NAME = USER_NAME;
-    profileEntity.YEARS_OF_SERVICE = YEARS_OF_SERVICE;
+    profileEntity.YEARS_OF_SERVICE = '$YEARS_OF_SERVICE';
     profileEntity.NEXT_GLOBAL_HOLIDAY = NEXT_GLOBAL_HOLIDAY;
     profileEntity.JOB_NAME = JOB_NAME;
     profileEntity.JOB_NAME_AR = JOB_NAME_AR;
-    profileEntity.BASIC_SALARY = BASIC_SALARY;
+    profileEntity.BASIC_SALARY = '$BASIC_SALARY';
     return profileEntity;
   }
 }
