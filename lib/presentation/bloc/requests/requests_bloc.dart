@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
-import '../../../core/common/common_utils.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';

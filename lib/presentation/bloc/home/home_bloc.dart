@@ -5,7 +5,6 @@ import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
-import '../../../domain/entities/attendance_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';
 import '../../../domain/use_case/home_usecase.dart';
 

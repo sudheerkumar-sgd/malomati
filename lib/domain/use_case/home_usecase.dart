@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
-import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';

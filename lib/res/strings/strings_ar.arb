@@ -70,6 +70,7 @@
     "joiningDate": "تاريخ الإنضمام",
     "managerName": "إسم المدير",
     "yearOfService": "سنة الخدمة",
-    "basicSalary": "الراتب الأساسي"
+    "basicSalary": "الراتب الأساسي",
+    "timeAttendance": "وقت الحضور"
 
 }

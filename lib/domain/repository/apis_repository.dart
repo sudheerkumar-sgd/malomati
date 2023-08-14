@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
-import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 

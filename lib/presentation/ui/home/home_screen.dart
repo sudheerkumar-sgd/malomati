@@ -11,6 +11,7 @@ import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
+import 'package:malomati/presentation/ui/home/attendance_screen.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
@@ -20,6 +21,7 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
 import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/custom_bg_widgets.dart';
@@ -216,43 +218,60 @@ class HomeScreen extends StatelessWidget {
                                         constraints: const BoxConstraints(
                                           minWidth: double.infinity,
                                         ),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  context.resources.dimen.dp5,
-                                              horizontal:
-                                                  context.resources.dimen.dp10),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  context.resources.dimen.dp10),
-                                          decoration: BackgroundBoxDecoration(
-                                                  boxColor: context.resources
-                                                      .color.viewBgColor,
-                                                  radious: context
-                                                      .resources.dimen.dp25,
-                                                  shadowColor: context.resources
-                                                      .color.textColorLight,
-                                                  shadowBlurRadius: context
-                                                      .resources.dimen.dp5)
-                                              .roundedBoxWithShadow
-                                              .copyWith(
-                                                  gradient: LinearGradient(
-                                                colors: [
-                                                  context.resources.color
-                                                      .bgGradientStart,
-                                                  context.resources.color
-                                                      .bgGradientEnd,
-                                                ],
-                                              )),
-                                          child: Text(
-                                            context.string.punchIn,
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: context.textFontWeight400
-                                                .onColor(context
-                                                    .resources.color.colorWhite)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp14),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: AttendanceScreen(
+                                                  attendanceType:
+                                                      AttendanceType.punchIn,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical:
+                                                    context.resources.dimen.dp5,
+                                                horizontal: context
+                                                    .resources.dimen.dp10),
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: context
+                                                    .resources.dimen.dp10),
+                                            decoration: BackgroundBoxDecoration(
+                                                    boxColor: context.resources
+                                                        .color.viewBgColor,
+                                                    radious: context
+                                                        .resources.dimen.dp25,
+                                                    shadowColor: context
+                                                        .resources
+                                                        .color
+                                                        .textColorLight,
+                                                    shadowBlurRadius: context
+                                                        .resources.dimen.dp5)
+                                                .roundedBoxWithShadow
+                                                .copyWith(
+                                                    gradient: LinearGradient(
+                                                  colors: [
+                                                    context.resources.color
+                                                        .bgGradientStart,
+                                                    context.resources.color
+                                                        .bgGradientEnd,
+                                                  ],
+                                                )),
+                                            child: Text(
+                                              context.string.punchIn,
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: context.textFontWeight400
+                                                  .onColor(context.resources
+                                                      .color.colorWhite)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp14),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -293,43 +312,60 @@ class HomeScreen extends StatelessWidget {
                                         constraints: const BoxConstraints(
                                           minWidth: double.infinity,
                                         ),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  context.resources.dimen.dp5,
-                                              horizontal:
-                                                  context.resources.dimen.dp20),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  context.resources.dimen.dp10),
-                                          decoration: BackgroundBoxDecoration(
-                                                  boxColor: context.resources
-                                                      .color.viewBgColor,
-                                                  radious: context
-                                                      .resources.dimen.dp25,
-                                                  shadowColor: context.resources
-                                                      .color.textColorLight,
-                                                  shadowBlurRadius: context
-                                                      .resources.dimen.dp5)
-                                              .roundedBoxWithShadow
-                                              .copyWith(
-                                                  gradient: LinearGradient(
-                                                colors: [
-                                                  context.resources.color
-                                                      .bgGradientStart,
-                                                  context.resources.color
-                                                      .bgGradientEnd,
-                                                ],
-                                              )),
-                                          child: Text(
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.ellipsis,
-                                            context.string.punchOut,
-                                            style: context.textFontWeight400
-                                                .onColor(context
-                                                    .resources.color.colorWhite)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp14),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: AttendanceScreen(
+                                                  attendanceType:
+                                                      AttendanceType.punchOut,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical:
+                                                    context.resources.dimen.dp5,
+                                                horizontal: context
+                                                    .resources.dimen.dp20),
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: context
+                                                    .resources.dimen.dp10),
+                                            decoration: BackgroundBoxDecoration(
+                                                    boxColor: context.resources
+                                                        .color.viewBgColor,
+                                                    radious: context
+                                                        .resources.dimen.dp25,
+                                                    shadowColor: context
+                                                        .resources
+                                                        .color
+                                                        .textColorLight,
+                                                    shadowBlurRadius: context
+                                                        .resources.dimen.dp5)
+                                                .roundedBoxWithShadow
+                                                .copyWith(
+                                                    gradient: LinearGradient(
+                                                  colors: [
+                                                    context.resources.color
+                                                        .bgGradientStart,
+                                                    context.resources.color
+                                                        .bgGradientEnd,
+                                                  ],
+                                                )),
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              context.string.punchOut,
+                                              style: context.textFontWeight400
+                                                  .onColor(context.resources
+                                                      .color.colorWhite)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp14),
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -112,4 +114,12 @@ String getDepartmentsLocation(double lat, double long) {
     }
   }
   return departmentsLocation;
+}
+
+String getCurrentDateByformat(String format) {
+  return DateFormat(format).format(DateTime.now());
+}
+
+startTimer({required double duration, required Function callback}) {
+  Timer.periodic(const Duration(seconds: 1), (Timer t) => callback());
 }

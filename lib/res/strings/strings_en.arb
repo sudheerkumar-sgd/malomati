@@ -288,6 +288,42 @@
     "@basicSalary": {
         "type": "text"
     },
+    "timeAttendance": "Time Attendance",
+    "@timeAttendance": {
+        "type": "text"
+    },
+    "regularIn": "Regular In",
+    "@regularIn": {
+        "type": "text"
+    },
+    "officialWorkIn": "Official Work In",
+    "@officialWorkIn": {
+        "type": "text"
+    },
+    "overtimeIn": "Overtime In",
+    "@overtimeIn": {
+        "type": "text"
+    },
+    "shortLeaveIn": "Short Leave In",
+    "@shortLeaveIn": {
+        "type": "text"
+    },
+    "regularOut": "Regular Out",
+    "@regularOut": {
+        "type": "text"
+    },
+    "officialWorkOut": "Official Work Out",
+    "@officialWorkOut": {
+        "type": "text"
+    },
+    "overtimeOut": "Overtime Out",
+    "@overtimeOut": {
+        "type": "text"
+    },
+    "shortLeaveOut": "Short Leave Out",
+    "@shortLeaveOut": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/presentation/ui/home/home_screen.dart';
-import 'package:malomati/presentation/ui/home/more_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
 
