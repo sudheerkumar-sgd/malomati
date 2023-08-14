@@ -125,7 +125,7 @@ class DashboardModel extends BaseModel {
     tHANKYOUINYEAR = json['THANK_YOU_IN_YEAR'];
     sUGGESTOVERALLRATING = json['SUGGEST_OVERALL_RATING'];
     tHANKYOUCOUNT = json['THANKYOU_COUNT'];
-    eventListModel = getEventList(json['EVENTLIST']);
+    eventListModel = json['EVENTLIST'] != null ? (json['EVENTLIST']) : [];
   }
 
   Map<String, dynamic> toJson() {

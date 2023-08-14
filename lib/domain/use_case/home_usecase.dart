@@ -11,13 +11,14 @@ import '../../config/constant_config.dart';
 import '../../core/constants/constants.dart';
 import '../../core/error/failures.dart';
 import '../../injection_container.dart';
+import '../entities/attendance_list_entity.dart';
 import '../entities/favorite_entity.dart';
 
 class HomeUseCase extends BaseUseCase {
   final ApisRepository apisRepository;
   HomeUseCase({required this.apisRepository});
 
-  Future<Either<Failure, ApiEntity<AttendanceEntity>>> getAttendance(
+  Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendance(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getAttendance(requestParams: requestParams);
   }

@@ -3,6 +3,9 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import 'package:page_transition/page_transition.dart';
+
+import '../home/user_profile_screen.dart';
 
 class BackAppBarWidget extends StatelessWidget {
   final String title;
@@ -71,16 +74,27 @@ class BackAppBarWidget extends StatelessWidget {
               SizedBox(
                 width: context.resources.dimen.dp5,
               ),
-              Container(
-                  padding: EdgeInsets.only(
-                    left: context.resources.dimen.dp5,
-                    top: context.resources.dimen.dp5,
-                    bottom: context.resources.dimen.dp5,
-                  ),
-                  child: ImageWidget(
-                          path: DrawableAssets.icUserCircle,
-                          backgroundTint: context.resources.color.textColor)
-                      .loadImage),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: UserProfileScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                    padding: EdgeInsets.only(
+                      left: context.resources.dimen.dp5,
+                      top: context.resources.dimen.dp5,
+                      bottom: context.resources.dimen.dp5,
+                    ),
+                    child: ImageWidget(
+                            path: DrawableAssets.icUserCircle,
+                            backgroundTint: context.resources.color.textColor)
+                        .loadImage),
+              ),
             ],
           ),
         )

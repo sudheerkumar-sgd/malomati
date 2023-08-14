@@ -42,6 +42,7 @@ class LoginScreen extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Image(
                     width: double.infinity,
+                    fit: BoxFit.fill,
                     image: AssetImage(DrawableAssets.loginCoveImage),
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:malomati/core/constants/constants.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -94,4 +95,21 @@ double distance(double lat1, double lon1, double lat2, double lon2) {
 
 double deg2rad(deg) {
   return deg * (pi / 180);
+}
+
+String getDepartmentsLocation(double lat, double long) {
+  String departmentsLocation = '';
+  for (var departments in departmentsLocations) {
+    var departmentDistance = distance(
+            double.parse(departments['latitude'] as String),
+            double.parse(departments['longitude'] as String),
+            lat,
+            long) *
+        1000;
+    if (departmentDistance <= (departments['radius'] as int)) {
+      departmentsLocation = '${departments['name']}';
+      break;
+    }
+  }
+  return departmentsLocation;
 }

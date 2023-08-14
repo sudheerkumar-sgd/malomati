@@ -5,8 +5,10 @@ import 'package:malomati/data/repository/apis_repository_impl.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/home_usecase.dart';
 import 'package:malomati/domain/use_case/login_usecase.dart';
+import 'package:malomati/domain/use_case/requests_usecase.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
+import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
 
 import 'config/constant_config.dart';
 import 'config/flavor_config.dart';
@@ -32,9 +34,15 @@ Future<void> init() async {
       homeUseCase: sl(),
     ),
   );
+  sl.registerFactory(
+    () => RequestsBloc(
+      requestsUseCase: sl(),
+    ),
+  );
   // Use Case
   sl.registerLazySingleton(() => LoginUseCase(apisRepository: sl()));
   sl.registerLazySingleton(() => HomeUseCase(apisRepository: sl()));
+  sl.registerLazySingleton(() => RequestsUseCase(apisRepository: sl()));
   // Repository
   sl.registerLazySingleton<ApisRepository>(
       () => ApisRepositoryImpl(dataSource: sl(), networkInfo: sl()));

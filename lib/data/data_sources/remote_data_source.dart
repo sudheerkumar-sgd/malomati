@@ -11,6 +11,7 @@ import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
+import '../model/attendance_List_model.dart';
 import 'api_urls.dart';
 import 'dio_logging_interceptor.dart';
 
@@ -19,7 +20,9 @@ abstract class RemoteDataSource {
       {required apiPath, required Map<String, dynamic> requestParams});
   Future<ApiResponse<ProfileModel>> getProfile(
       {required Map<String, dynamic> requestParams});
-  Future<ApiResponse<AttendanceModel>> getAttendance(
+  Future<ApiResponse<AttendanceListModel>> getAttendance(
+      {required Map<String, dynamic> requestParams});
+  Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<DashboardModel>> getDashboardData(
       {required Map<String, dynamic> requestParams});
@@ -87,7 +90,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<ApiResponse<AttendanceModel>> getAttendance(
+  Future<ApiResponse<AttendanceListModel>> getAttendance(
       {required Map<String, dynamic> requestParams}) async {
     final dio2 = Dio();
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
@@ -102,8 +105,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
       switch (response.statusCode) {
         case 200:
-          var apiResponse = ApiResponse<AttendanceModel>.fromJson(
-              response.data, (p0) => AttendanceModel.fromJson(response.data));
+          var apiResponse = ApiResponse<AttendanceListModel>.fromJson(
+              response.data,
+              (p0) => AttendanceListModel.fromJson(response.data));
+          return apiResponse;
+        default:
+          throw _getExceptionType(response);
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrlAttendanceDevelopment;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var response = await dio2.get(
+        '${attendanceDetailsApiUrl}date-range=${requestParams['date-range']}$attendanceDetailsRequestedParams',
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          var apiResponse = ApiResponse<AttendanceListModel>.fromJson(
+              response.data,
+              (p0) => AttendanceListModel.fromJson(response.data));
           return apiResponse;
         default:
           throw _getExceptionType(response);

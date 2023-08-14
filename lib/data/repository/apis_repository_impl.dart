@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:malomati/core/error/failures.dart';
 import 'package:malomati/data/data_sources/remote_data_source.dart';
 import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/attendance_List_model.dart';
 import 'package:malomati/data/model/attendance_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/login_model.dart';
@@ -14,6 +15,7 @@ import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
 import '../../core/network/network_info.dart';
+import '../../domain/entities/attendance_list_entity.dart';
 import '../../domain/repository/apis_repository.dart';
 
 class ApisRepositoryImpl extends ApisRepository {
@@ -61,15 +63,34 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, ApiEntity<AttendanceEntity>>> getAttendance(
+  Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendance(
       {required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
         final apiResponse =
             await dataSource.getAttendance(requestParams: requestParams);
-        final apiEntity = apiResponse
-            .toEntity<AttendanceEntity>(apiResponse.data!.toAttendanceEntity());
+        final apiEntity = apiResponse.toEntity<AttendanceListEntity>(
+            apiResponse.data!.toAttendanceList());
+        return Right(apiEntity);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getAttendanceDetails(requestParams: requestParams);
+        final apiEntity = apiResponse.toEntity<AttendanceListEntity>(
+            apiResponse.data!.toAttendanceList());
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

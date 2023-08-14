@@ -69,14 +69,13 @@ class UserProfileScreen extends StatelessWidget {
                                         .onColor(resources.color.colorWhite),
                                   ),
                                   SizedBox(
-                                    height: resources.dimen.dp20,
+                                    height: resources.dimen.dp15,
                                   ),
                                   Text(
                                     '${context.string.employeeID}: ${profileEntity?.EMPLOYEE_NUMBER ?? ''}',
                                     style: context.textFontWeight400
                                         .onFontSize(resources.dimen.dp14)
-                                        .onColor(resources.color.colorWhite)
-                                        .onFontFamily(fontFamily: fontFamilyEN),
+                                        .onColor(resources.color.colorWhite),
                                   ),
                                   SizedBox(
                                     height: resources.dimen.dp5,

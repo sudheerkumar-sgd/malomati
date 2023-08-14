@@ -72,7 +72,8 @@ class HomeScreen extends StatelessWidget {
                     Dialogs.loader(context);
                   } else if (state is OnAttendanceSuccess) {
                     _attendanceEntity.value =
-                        state.attendanceEntity.entity ?? AttendanceEntity();
+                        state.attendanceEntity.entity?.attendanceList[0] ??
+                            AttendanceEntity();
                   } else if (state is OnDashboardSuccess) {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();

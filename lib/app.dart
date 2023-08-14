@@ -38,7 +38,7 @@ class App extends StatelessWidget {
       onGenerateTitle: (BuildContext context) => context.string.appTitle,
       initialRoute: value.get(isSplashDoneKey, defaultValue: false)
           ? oracleLoginId.isEmpty
-              ? AppRoutes.mainRoute
+              ? AppRoutes.loginRoute
               : AppRoutes.mainRoute
           : AppRoutes.initialRoute,
       routes: AppRoutes.getRoutes(),

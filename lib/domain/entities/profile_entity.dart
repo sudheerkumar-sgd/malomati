@@ -27,7 +27,7 @@ class ProfileEntity extends BaseEntity {
   String? BASIC_SALARY = "";
 
   String getFullName(bool isLocalEn) {
-    return isLocalEn ? FULL_NAME_US ?? '' : FULL_NAME_US ?? '';
+    return isLocalEn ? FULL_NAME_US ?? '' : FULL_NAME_AR ?? '';
   }
 
   String getJobName(bool isLocalEn) {
