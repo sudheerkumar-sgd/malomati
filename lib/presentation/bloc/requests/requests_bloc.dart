@@ -21,7 +21,7 @@ class RequestsBloc extends Cubit<RequestsState> {
       BehaviorSubject<ApiEntity<AttendanceListEntity>>();
 
   Future<void> getAttendance({required String dateRange}) async {
-    emit(OnLoading());
+    emit(OnRequestsDataLoading());
 
     Map<String, dynamic> requestParams = {
       'date-range': dateRange,
@@ -35,7 +35,7 @@ class RequestsBloc extends Cubit<RequestsState> {
   }
 
   Future<void> getAttendanceDetails({required String dateRange}) async {
-    emit(OnLoading());
+    emit(OnRequestsDataLoading());
 
     Map<String, dynamic> requestParams = {
       'date-range': dateRange,

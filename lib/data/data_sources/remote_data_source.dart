@@ -22,6 +22,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
       {required Map<String, dynamic> requestParams});
+  Future<String> submitAttendanceDetails(
+      {required Map<String, dynamic> requestParams});
   Future<ApiResponse<DashboardModel>> getDashboardData(
       {required Map<String, dynamic> requestParams});
 }
@@ -136,6 +138,34 @@ class RemoteDataSourceImpl implements RemoteDataSource {
               response.data,
               (p0) => AttendanceListModel.fromJson(response.data));
           return apiResponse;
+        default:
+          throw _getExceptionType(response);
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<String> submitAttendanceDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrlAttendanceDevelopment;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var query =
+          'String query = "userid=${requestParams['userid']};event-datetime=${requestParams['date']};in-out=isInOut;dtype=12;did=1;gps_latitude=${requestParams['latitude']};gps_longitude=${requestParams['longitude']};spfid=${requestParams['method']}';
+      var response = await dio2.get(
+        '$attendanceSubmitApiUrl$query',
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          return response.data;
         default:
           throw _getExceptionType(response);
       }

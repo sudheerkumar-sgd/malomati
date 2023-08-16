@@ -54,16 +54,16 @@ class AttendanceModel extends BaseModel {
     attendanceModel.punch8Time = attendanceJson['punch8_time'];
     attendanceModel.punch9Time = attendanceJson['punch9_time'];
     attendanceModel.punch10Time = attendanceJson['punch10_time'];
-    attendanceModel.spfid1 = attendanceJson['SPFID1'];
-    attendanceModel.spfid2 = attendanceJson['SPFID2'];
-    attendanceModel.spfid3 = attendanceJson['SPFID3'];
-    attendanceModel.spfid4 = attendanceJson['SPFID4'];
-    attendanceModel.spfid5 = attendanceJson['SPFID5'];
-    attendanceModel.spfid6 = attendanceJson['SPFID6'];
-    attendanceModel.spfid7 = attendanceJson['SPFID7'];
-    attendanceModel.spfid8 = attendanceJson['SPFID8'];
-    attendanceModel.spfid9 = attendanceJson['SPFID9'];
-    attendanceModel.spfid10 = attendanceJson['SPFID10'];
+    attendanceModel.spfid1 = attendanceJson['spfid1'];
+    attendanceModel.spfid2 = attendanceJson['spfid2'];
+    attendanceModel.spfid3 = attendanceJson['spfid3'];
+    attendanceModel.spfid4 = attendanceJson['spfid4'];
+    attendanceModel.spfid5 = attendanceJson['spfid5'];
+    attendanceModel.spfid6 = attendanceJson['spfid6'];
+    attendanceModel.spfid7 = attendanceJson['spfid7'];
+    attendanceModel.spfid8 = attendanceJson['spfid8'];
+    attendanceModel.spfid9 = attendanceJson['spfid9'];
+    attendanceModel.spfid10 = attendanceJson['spfid10'];
     return attendanceModel;
   }
 
@@ -89,10 +89,28 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.processdate = processdate;
     attendanceEntity.firsthalf = firsthalf;
     attendanceEntity.secondhalf = secondhalf;
-    attendanceEntity.punch1Time = punch1Time;
-    attendanceEntity.punch2Time = punch2Time;
     attendanceEntity.gpsLatitude = gpsLatitude;
     attendanceEntity.gpsLongitude = gpsLongitude;
+    attendanceEntity.punch1Time = punch1Time;
+    attendanceEntity.punch2Time = punch2Time;
+    attendanceEntity.punch3Time = punch3Time;
+    attendanceEntity.punch4Time = punch4Time;
+    attendanceEntity.punch5Time = punch5Time;
+    attendanceEntity.punch6Time = punch6Time;
+    attendanceEntity.punch7Time = punch7Time;
+    attendanceEntity.punch8Time = punch8Time;
+    attendanceEntity.punch9Time = punch9Time;
+    attendanceEntity.punch10Time = punch10Time;
+    attendanceEntity.spfid1 = spfid1;
+    attendanceEntity.spfid2 = spfid2;
+    attendanceEntity.spfid3 = spfid3;
+    attendanceEntity.spfid4 = spfid4;
+    attendanceEntity.spfid5 = spfid5;
+    attendanceEntity.spfid6 = spfid6;
+    attendanceEntity.spfid7 = spfid7;
+    attendanceEntity.spfid8 = spfid8;
+    attendanceEntity.spfid9 = spfid9;
+    attendanceEntity.spfid10 = spfid10;
     return attendanceEntity;
   }
 }

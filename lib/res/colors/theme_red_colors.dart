@@ -78,7 +78,7 @@ class ThemeRedColors implements BaseColors {
 
   @override
   Color get textColor212B4B => const Color(0xff212B4B);
-  
+
   @override
   Color get colorD6D6D6 => const Color(0xffD6D6D6);
 
@@ -87,4 +87,7 @@ class ThemeRedColors implements BaseColors {
 
   @override
   Color get colorGreen26B757 => const Color(0xff26B757);
+
+  @override
+  Color get colorBlue356DCE => const Color(0xff356DCE);
 }

@@ -71,6 +71,24 @@
     "managerName": "إسم المدير",
     "yearOfService": "سنة الخدمة",
     "basicSalary": "الراتب الأساسي",
-    "timeAttendance": "وقت الحضور"
+    "timeAttendance": "وقت الحضور",
+    "regularIn": "دخول عادي",
+    "officialWorkIn": "مهمة رسمية - دخول",
+    "overtimeIn": "العمل الإضافي – دخول",
+    "shortLeaveIn": "إذن خروج",
+    "regularOut": "خروج عادي",
+    "officialWorkOut": "مهمة رسمية - خروج",
+    "overtimeOut": "العمل الإضافي - خروج",
+    "shortLeaveOut": "إذن دخول",
+    "officialIn": "مهمة رسمية - دخول",
+    "officialOut": "مهمة رسمية - خروج",
+    "lunchIn": "lunch In",
+    "lunchOut": "Lunch Out",
+    "cancel": "إلغاء",
+    "success": "تمت العملية بنجاح",
+    "opps": "Opps",
+    "remaining": "المتيقيه",
+    "location": "لموقع",
+    "attendancelocationErrorMessage": "ليس في موقع المكتب"
 
 }

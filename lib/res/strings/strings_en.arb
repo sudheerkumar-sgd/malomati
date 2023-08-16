@@ -324,6 +324,46 @@
     "@shortLeaveOut": {
         "type": "text"
     },
+    "officialIn": "Official In",
+    "@officialIn": {
+        "type": "text"
+    },
+    "officialOut": "Official Out",
+    "@officialOut": {
+        "type": "text"
+    },
+    "lunchIn": "Lunch In",
+    "@lunchIn": {
+        "type": "text"
+    },
+    "lunchOut": "Lunch Out",
+    "@lunchOut": {
+        "type": "text"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "type": "text"
+    },
+    "success": "Success",
+    "@'success'": {
+        "type": "text"
+    },
+    "opps": "Opps",
+    "@opps": {
+        "type": "text"
+    },
+    "remaining": "Remaining",
+    "@remaining": {
+        "type": "text"
+    },
+    "location": "Location",
+    "@location": {
+        "type": "text"
+    },
+    "attendancelocationErrorMessage": "Not in Office Location!",
+    "@attendancelocationErrorMessage": {
+        "type": "text"
+    },
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

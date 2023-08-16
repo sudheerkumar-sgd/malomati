@@ -72,7 +72,7 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get appScaffoldBg => const Color(0xffF5F5F5);
-  
+
   @override
   Color get colorF5C3C3 => Color.fromARGB(255, 195, 186, 238);
 
@@ -87,4 +87,7 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get colorGreen26B757 => const Color(0xff26B757);
+
+  @override
+  Color get colorBlue356DCE => const Color(0xff356DCE);
 }

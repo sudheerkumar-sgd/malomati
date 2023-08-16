@@ -99,8 +99,8 @@ double deg2rad(deg) {
   return deg * (pi / 180);
 }
 
-String getDepartmentsLocation(double lat, double long) {
-  String departmentsLocation = '';
+Map getDepartmentByLocation(double lat, double long) {
+  Map departmentsLocation = {};
   for (var departments in departmentsLocations) {
     var departmentDistance = distance(
             double.parse(departments['latitude'] as String),
@@ -109,7 +109,7 @@ String getDepartmentsLocation(double lat, double long) {
             long) *
         1000;
     if (departmentDistance <= (departments['radius'] as int)) {
-      departmentsLocation = '${departments['name']}';
+      departmentsLocation = departments;
       break;
     }
   }
@@ -122,4 +122,29 @@ String getCurrentDateByformat(String format) {
 
 startTimer({required double duration, required Function callback}) {
   Timer.periodic(const Duration(seconds: 1), (Timer t) => callback());
+}
+
+int daysBetween(DateTime from, DateTime to) {
+  return (to.difference(from).inSeconds);
+}
+
+int getHours(DateTime from, DateTime to) {
+  return (daysBetween(from, to) / (60 * 60)).round();
+}
+
+int getMinutes(DateTime from, DateTime to) {
+  return (daysBetween(from, to) / (60)).round();
+}
+
+String getHoursMinutesFormat(DateTime from, DateTime to) {
+  var minutes = getMinutes(from, to);
+  return '${(minutes / 60).round()}.${minutes % 60} hrs';
+}
+
+String getRemainingHoursMinutesFormat(DateTime from, DateTime to) {
+  var minutes = 480 - getMinutes(from, to);
+  if (minutes < 1) {
+    return '0';
+  }
+  return '${(minutes / 60).round()}.${minutes % 60} hrs';
 }

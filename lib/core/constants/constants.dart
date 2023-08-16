@@ -14,6 +14,7 @@ const String userFullNameArKey = "user_full_name_ar";
 const String isRememberdKey = "is_rememberd";
 const String isMaangerKey = "is_manager";
 const String favoriteKey = "favorites";
+const String departmentIdKey = "department_id";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";
@@ -42,7 +43,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_FALAJMUS_office.png",
   },
   {
     "code": "02",
@@ -58,7 +60,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_MD_office.png",
   },
   {
     "code": "06",
@@ -74,7 +77,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_ICA_PWD_LAB_office.png",
   },
   {
     "code": "12",
@@ -90,7 +94,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_RAFA_office.png",
   },
   {
     "code": "Mat",
@@ -106,7 +111,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_Matrix_office.png",
   },
   {
     "code": "01",
@@ -122,7 +128,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_SGD_office.png",
   },
   {
     "code": "03",
@@ -138,7 +145,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_BDC_office.png",
   },
   {
     "code": "13",
@@ -154,7 +162,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_ANIMAL_MARKET_office.png",
   },
   {
     "code": "14",
@@ -170,7 +179,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_FISH_MARKET_office.png",
   },
   {
     "code": "2",
@@ -186,7 +196,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_SGD2_office.png",
   },
   {
     "code": "04",
@@ -202,7 +213,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_TAD_office.png",
   },
   {
     "code": "05",
@@ -218,7 +230,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_FALAJ_MUN_office.png",
   },
   {
     "code": "09",
@@ -234,7 +247,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_COURT_office.png",
   },
   {
     "code": "08",
@@ -250,7 +264,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_DED_office.png",
   },
   {
     "code": "10",
@@ -266,7 +281,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_FAD_office.png",
   },
   {
     "code": "11",
@@ -282,7 +298,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_MOC_office.png",
   },
   {
     "code": "99",
@@ -298,7 +315,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_SGD99_office.png",
   },
   {
     "code": "100",
@@ -314,7 +332,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_MD_office.png",
   },
   {
     "code": "15",
@@ -330,7 +349,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_GARAGE_office.png",
   },
   {
     "code": "16",
@@ -346,7 +366,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_Mangroove_office.png",
   },
   {
     "code": "17",
@@ -362,7 +383,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_EC_office.png",
   },
   {
     "code": "18",
@@ -378,7 +400,8 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_DIWAN_office.png",
   },
   {
     "code": "19",
@@ -394,6 +417,7 @@ const departmentsLocations = [
     "mid": "",
     "did": "",
     "ip": "",
-    "event_type": 0
+    "event_type": 0,
+    "map": "assets/images/map/map_DC_office.png",
   }
 ];

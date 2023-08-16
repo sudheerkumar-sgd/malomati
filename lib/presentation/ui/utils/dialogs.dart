@@ -79,28 +79,50 @@ class Dialogs {
 
   static showBottomSheetDialog(BuildContext context, Widget widget) {
     showBottomSheet(
-      shape: const RoundedRectangleBorder(
-     borderRadius:  BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30.0)),
-  ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30.0)),
+        ),
         context: context,
         builder: (context) => Container(
-          height: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: context.resources.dimen.dp10),
+            height: double.infinity,
+            padding:
+                EdgeInsets.symmetric(vertical: context.resources.dimen.dp10),
             child: Column(
               children: [
                 Align(
-            alignment: Alignment.topRight,
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                  padding: EdgeInsets.all(context.resources.dimen.dp5),
-                  margin: EdgeInsets.only(right: context.resources.dimen.dp10),
-                  child: ImageWidget(path: DrawableAssets.icClose).loadImage),
-            )),
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(context.resources.dimen.dp5),
+                          margin: EdgeInsets.only(
+                              right: context.resources.dimen.dp10),
+                          child: ImageWidget(path: DrawableAssets.icClose)
+                              .loadImage),
+                    )),
                 widget,
               ],
             )));
+  }
+
+  static showBottomSheetDialogTransperrent(
+      BuildContext context, Widget widget) {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30.0)),
+        ),
+        context: context,
+        builder: (context) => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(alignment: Alignment.bottomCenter, child: widget),
+              ],
+            ));
   }
 }

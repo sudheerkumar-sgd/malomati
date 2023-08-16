@@ -59,6 +59,8 @@ class LoginScreen extends StatelessWidget {
                         context.userDB.put(userFullNameArKey,
                             state.loginEntity.entity?.fullNameAR ?? '');
                         context.userDB.put(oracleLoginIdKey, oracleLoginId);
+                        context.userDB.put(departmentIdKey,
+                            state.loginEntity.entity?.departmentId ?? '');
                         context.userDB.put(
                             isMaangerKey,
                             (state.loginEntity.entity?.iSMANAGER ?? '') == 'Y'

@@ -3,9 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:malomati/data/repository/apis_repository_impl.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
+import 'package:malomati/domain/use_case/attendance_usecase.dart';
 import 'package:malomati/domain/use_case/home_usecase.dart';
 import 'package:malomati/domain/use_case/login_usecase.dart';
 import 'package:malomati/domain/use_case/requests_usecase.dart';
+import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
@@ -30,6 +32,12 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
+    () => AttendanceBloc(
+      attendanceUseCase: sl(),
+    ),
+  );
+
+  sl.registerFactory(
     () => HomeBloc(
       homeUseCase: sl(),
     ),
@@ -41,6 +49,7 @@ Future<void> init() async {
   );
   // Use Case
   sl.registerLazySingleton(() => LoginUseCase(apisRepository: sl()));
+  sl.registerLazySingleton(() => AttendanceUseCase(apisRepository: sl()));
   sl.registerLazySingleton(() => HomeUseCase(apisRepository: sl()));
   sl.registerLazySingleton(() => RequestsUseCase(apisRepository: sl()));
   // Repository

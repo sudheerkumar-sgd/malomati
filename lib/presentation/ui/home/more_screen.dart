@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/presentation/ui/home/widgets/call_confirmation.dart';
 import 'package:malomati/presentation/ui/more/about_malomati.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
 import 'package:malomati/presentation/ui/more/privacy_and_policy.dart';
+import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -410,7 +412,10 @@ class MoreScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          callNumber(context, supportMobileNumber);
+                          Dialogs.showBottomSheetDialogTransperrent(
+                              context,
+                              const CallConfirmationWidget(
+                                  mobileNumber: supportMobileNumber));
                         },
                         child: Row(children: [
                           ImageWidget(

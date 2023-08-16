@@ -14,17 +14,17 @@ class HomeBloc extends Cubit<HomeState> {
   final HomeUseCase homeUseCase;
   HomeBloc({required this.homeUseCase}) : super(Init());
 
-  Future<void> getAttendance({required String dateRange}) async {
-    emit(OnLoading());
+  // Future<void> getAttendance({required String dateRange}) async {
+  //   emit(OnLoading());
 
-    Map<String, dynamic> requestParams = {
-      'date-range': dateRange,
-    };
-    final result =
-        await homeUseCase.getAttendance(requestParams: requestParams);
-    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
-        (r) => OnAttendanceSuccess(attendanceEntity: r)));
-  }
+  //   Map<String, dynamic> requestParams = {
+  //     'date-range': dateRange,
+  //   };
+  //   final result =
+  //       await homeUseCase.getAttendance(requestParams: requestParams);
+  //   emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+  //       (r) => OnAttendanceSuccess(attendanceEntity: r)));
+  // }
 
   Future<void> getDashboardData({required String userName}) async {
     emit(OnLoading());

@@ -19,4 +19,10 @@ class RequestsUseCase extends BaseUseCase {
     return await apisRepository.getAttendanceDetails(
         requestParams: requestParams);
   }
+
+  Future<Either<Failure, String>> submitAttendanceDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitAttendanceDetails(
+        requestParams: requestParams);
+  }
 }

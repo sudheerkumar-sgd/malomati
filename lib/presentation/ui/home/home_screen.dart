@@ -24,11 +24,13 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../res/drawables/background_box_decoration.dart';
+import '../../bloc/requests/requests_bloc.dart';
 import '../widgets/custom_bg_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final _homeBloc = sl<HomeBloc>();
+  final _requestsBloc = sl<RequestsBloc>();
   final ValueNotifier<AttendanceEntity> _attendanceEntity =
       ValueNotifier<AttendanceEntity>(AttendanceEntity());
   final ValueNotifier<DashboardEntity> _dashboardEntity =
@@ -59,7 +61,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    _homeBloc.getAttendance(dateRange: '$date-$date');
+    _requestsBloc.getAttendance(dateRange: '$date-$date');
+    _requestsBloc.getAttendanceDetails(
+        dateRange: '${date}000000-${date}235959');
     _homeBloc.getDashboardData(
         userName: context.userDB.get(userNameKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
@@ -72,11 +76,13 @@ class HomeScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is OnLoading) {
                     Dialogs.loader(context);
-                  } else if (state is OnAttendanceSuccess) {
-                    _attendanceEntity.value =
-                        state.attendanceEntity.entity?.attendanceList[0] ??
-                            AttendanceEntity();
-                  } else if (state is OnDashboardSuccess) {
+                  }
+                  // else if (state is OnAttendanceSuccess) {
+                  //   _attendanceEntity.value =
+                  //       state.attendanceEntity.entity?.attendanceList[0] ??
+                  //           AttendanceEntity();
+                  // }
+                  else if (state is OnDashboardSuccess) {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();
                   } else if (state is OnFavoriteSuccess) {
@@ -189,9 +195,14 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ValueListenableBuilder(
-                        valueListenable: _attendanceEntity,
-                        builder: (context, attendanceEntity, widget) {
+                    StreamBuilder(
+                        stream: _requestsBloc.getAttendanceReport,
+                        builder: (context, attendanceEntityList) {
+                          var attendanceEntity = AttendanceEntity();
+                          if (attendanceEntityList.data?.isNotEmpty ?? false) {
+                            attendanceEntity = attendanceEntityList.data?[0] ??
+                                AttendanceEntity();
+                          }
                           return Container(
                             padding: EdgeInsets.only(
                               left: context.resources.dimen.dp15,
@@ -226,9 +237,10 @@ class HomeScreen extends StatelessWidget {
                                                 type: PageTransitionType
                                                     .rightToLeft,
                                                 child: AttendanceScreen(
-                                                  attendanceType:
-                                                      AttendanceType.punchIn,
-                                                ),
+                                                    attendanceType:
+                                                        AttendanceType.punchIn,
+                                                    attendanceEntity:
+                                                        attendanceEntity),
                                               ),
                                             );
                                           },
@@ -322,6 +334,8 @@ class HomeScreen extends StatelessWidget {
                                                 child: AttendanceScreen(
                                                   attendanceType:
                                                       AttendanceType.punchOut,
+                                                  attendanceEntity:
+                                                      attendanceEntity,
                                                 ),
                                               ),
                                             );

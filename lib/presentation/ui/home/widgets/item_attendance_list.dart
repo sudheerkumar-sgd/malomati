@@ -31,10 +31,35 @@ class ItemAttendanceList extends StatelessWidget {
     }
   }
 
-  String _getDepartmentLocation() {
-    return getDepartmentsLocation(
+  Map _getDepartmentLocation() {
+    return getDepartmentByLocation(
         double.parse(attendanceEntity.gpsLatitude ?? ''),
         double.parse(attendanceEntity.gpsLongitude ?? ''));
+  }
+
+  String _getPunchType(BuildContext context, String spfid) {
+    switch (spfid) {
+      case '1':
+        return context.string.officialIn;
+      case '2':
+        return context.string.officialOut;
+      case '3':
+        return context.string.shortLeaveIn;
+      case '4':
+        return context.string.shortLeaveOut;
+      case '5':
+        return context.string.regularIn;
+      case '6':
+        return context.string.regularOut;
+      case '7':
+        return context.string.lunchIn;
+      case '8':
+        return context.string.lunchOut;
+      case '9':
+        return context.string.overtimeIn;
+      default:
+        return context.string.overtimeOut;
+    }
   }
 
   Widget _getAttendanceLog(BuildContext context) {
@@ -49,7 +74,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg In:',
+                '${_getPunchType(context, attendanceEntity.spfid1 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -73,7 +98,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg Out:',
+                '${_getPunchType(context, attendanceEntity.spfid2 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -97,7 +122,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg In:',
+                '${_getPunchType(context, attendanceEntity.spfid3 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -121,7 +146,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg Out:',
+                '${_getPunchType(context, attendanceEntity.spfid4 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -145,7 +170,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg In:',
+                '${_getPunchType(context, attendanceEntity.spfid5 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -169,7 +194,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg Out:',
+                '${_getPunchType(context, attendanceEntity.spfid6 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -193,7 +218,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg In:',
+                '${_getPunchType(context, attendanceEntity.spfid7 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -217,7 +242,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg Out:',
+                '${_getPunchType(context, attendanceEntity.spfid8 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -241,7 +266,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg In:',
+                '${_getPunchType(context, attendanceEntity.spfid9 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -265,7 +290,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                'Reg Out:',
+                '${_getPunchType(context, attendanceEntity.spfid10 ?? '')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -291,7 +316,7 @@ class ItemAttendanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    attendanceEntity.departmentLocation = _getDepartmentLocation();
+    attendanceEntity.departmentLocation = _getDepartmentLocation()['name'];
     return ValueListenableBuilder(
         valueListenable: _isExpanded,
         builder: (context, isExpaned, widget) {

@@ -7,7 +7,7 @@ class Init extends RequestsState {
   List<Object?> get props => [];
 }
 
-class OnLoading extends RequestsState {
+class OnRequestsDataLoading extends RequestsState {
   @override
   List<Object?> get props => [];
 }
@@ -20,26 +20,10 @@ class OnAttendanceSuccess extends RequestsState {
   List<Object?> get props => [attendanceEntity];
 }
 
-class OnDashboardSuccess extends RequestsState {
-  final ApiEntity<DashboardEntity> dashboardEntity;
-
-  OnDashboardSuccess({required this.dashboardEntity});
-  @override
-  List<Object?> get props => [dashboardEntity];
-}
-
-class OnFavoriteSuccess extends RequestsState {
-  final List<FavoriteEntity> favoriteEntity;
-
-  OnFavoriteSuccess({required this.favoriteEntity});
-  @override
-  List<Object?> get props => [favoriteEntity];
-}
-
-class OnApiError extends RequestsState {
+class OnRequestsApiError extends RequestsState {
   final String message;
 
-  OnApiError({required this.message});
+  OnRequestsApiError({required this.message});
   @override
   List<Object?> get props => [message];
 }
