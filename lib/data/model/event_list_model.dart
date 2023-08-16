@@ -1,63 +1,65 @@
+import 'package:malomati/data/model/base_model.dart';
+import 'package:malomati/data/model/event_model.dart';
+import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
+import 'package:malomati/domain/entities/events_list_entity.dart';
+import '../../domain/entities/attendance_entity.dart';
 
-class EventListModel {
-  int? pERSONID;
-  String? eMPLOYEENUMBER;
-  String? dEPARTMENTENG;
-  String? fULLNAMEAR;
-  String? fULLNAMEUS;
-  String? eMAILADDRESS;
-  String? nATIONALITY;
-  String? dATEOFBIRTH;
-  String? dEPARTMENTNAME;
-  String? uSERNAME;
+// ignore: must_be_immutable
+class EventListModel extends BaseModel {
+  List<EventsEntity> eventsList = [];
 
-  EventListModel(
-      {this.pERSONID,
-      this.eMPLOYEENUMBER,
-      this.dEPARTMENTENG,
-      this.fULLNAMEAR,
-      this.fULLNAMEUS,
-      this.eMAILADDRESS,
-      this.nATIONALITY,
-      this.dATEOFBIRTH,
-      this.dEPARTMENTNAME,
-      this.uSERNAME});
+  EventListModel();
 
-  EventListModel.fromJson(Map<String, dynamic> json) {
-    pERSONID = json['PERSON_ID'];
-    eMPLOYEENUMBER = json['EMPLOYEE_NUMBER'];
-    dEPARTMENTENG = json['DEPARTMENT_ENG'];
-    fULLNAMEAR = json['FULL_NAME_AR'];
-    fULLNAMEUS = json['FULL_NAME_US'];
-    eMAILADDRESS = json['EMAIL_ADDRESS'];
-    nATIONALITY = json['NATIONALITY'];
-    dATEOFBIRTH = json['DATE_OF_BIRTH'];
-    dEPARTMENTNAME = json['DEPARTMENT_NAME'];
-    uSERNAME = json['USER_NAME'];
+  factory EventListModel.fromJson(Map<String, dynamic> json) {
+    var birthdayListJson = [];
+    var anniversaryListJson = [];
+    var newJoineeListJson = [];
+    if (json['BirthdayList'] != null) {
+      birthdayListJson = json['BirthdayList'] as List;
+    }
+    if (json['AnniversaryList'] != null) {
+      anniversaryListJson = json['AnniversaryList'] as List;
+    }
+    if (json['NewJoineeList'] != null) {
+      newJoineeListJson = json['NewJoineeList'] as List;
+    }
+
+    final birthdayList = birthdayListJson
+        .map((birthday) => EventModel.fromJson(birthday).toEventsEntity())
+        .toList();
+    final anniversaryList = anniversaryListJson
+        .map((anniversary) => EventModel.fromJson(anniversary).toEventsEntity())
+        .toList();
+    final newJoineeList = newJoineeListJson
+        .map((newJoinee) => EventModel.fromJson(newJoinee).toEventsEntity())
+        .toList();
+    var eventListModel = EventListModel();
+    eventListModel.eventsList.addAll(birthdayList);
+    eventListModel.eventsList.addAll(anniversaryList);
+    eventListModel.eventsList.addAll(newJoineeList);
+    if (eventListModel.eventsList.isEmpty) {
+      eventListModel.eventsList.add(EventsEntity());
+    }
+    return eventListModel;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['PERSON_ID'] = this.pERSONID;
-    data['EMPLOYEE_NUMBER'] = this.eMPLOYEENUMBER;
-    data['DEPARTMENT_ENG'] = this.dEPARTMENTENG;
-    data['FULL_NAME_AR'] = this.fULLNAMEAR;
-    data['FULL_NAME_US'] = this.fULLNAMEUS;
-    data['EMAIL_ADDRESS'] = this.eMAILADDRESS;
-    data['NATIONALITY'] = this.nATIONALITY;
-    data['DATE_OF_BIRTH'] = this.dATEOFBIRTH;
-    data['DEPARTMENT_NAME'] = this.dEPARTMENTNAME;
-    data['USER_NAME'] = this.uSERNAME;
-    return data;
+  @override
+  Map<String, dynamic> toJson() => {};
+
+  @override
+  List<Object?> get props => [eventsList];
+
+  @override
+  BaseEntity toEntity<T>() {
+    return AttendanceEntity();
   }
 }
 
 extension SourceModelExtension on EventListModel {
-  EventsEntity toEventsEntity() {
-    var eventsEntity = EventsEntity();
-    eventsEntity.fULLNAMEAR = fULLNAMEAR;
-    eventsEntity.fULLNAMEUS = fULLNAMEUS;
-    return eventsEntity;
+  EventsListEntity toEventsListEntity() {
+    EventsListEntity eventsListEntity = EventsListEntity();
+    eventsListEntity.eventsList = eventsList;
+    return eventsListEntity;
   }
 }

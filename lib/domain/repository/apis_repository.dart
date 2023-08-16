@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
 import '../../core/error/failures.dart';
@@ -19,5 +20,7 @@ abstract class ApisRepository {
   Future<Either<Failure, String>> submitAttendanceDetails(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<DashboardEntity>>> getDashboardData(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiEntity<EventsListEntity>>> getEventsData(
       {required Map<String, dynamic> requestParams});
 }

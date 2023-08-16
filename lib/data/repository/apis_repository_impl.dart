@@ -5,10 +5,12 @@ import 'package:malomati/data/data_sources/remote_data_source.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_List_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
+import 'package:malomati/data/model/event_list_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
@@ -125,6 +127,25 @@ class ApisRepositoryImpl extends ApisRepository {
             await dataSource.getDashboardData(requestParams: requestParams);
         final apiEntity = apiResponse
             .toEntity<DashboardEntity>(apiResponse.data!.toDashboardEntity());
+        return Right(apiEntity);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiEntity<EventsListEntity>>> getEventsData(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getEventsData(requestParams: requestParams);
+        final apiEntity = apiResponse
+            .toEntity<EventsListEntity>(apiResponse.data!.toEventsListEntity());
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

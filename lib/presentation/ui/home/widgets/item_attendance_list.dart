@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 enum AttendanceStatus {
-  weekOff('Week Off'),
-  present('Present'),
-  absent('Absent');
+  weekOff('Week Off', Color(0xffEB920C)),
+  present('Present', Color(0xff26B757)),
+  absent('Absent', Color(0xffD32030));
 
-  final name;
-  const AttendanceStatus(this.name);
+  final String name;
+  final Color color;
+  const AttendanceStatus(this.name, this.color);
 }
 
 class ItemAttendanceList extends StatelessWidget {
@@ -21,6 +23,15 @@ class ItemAttendanceList extends StatelessWidget {
   AttendanceStatus _getAttendanceStatus() {
     var caseText =
         '${attendanceEntity.firsthalf}${attendanceEntity.secondhalf}';
+    var dateParams = (attendanceEntity.processdate ?? '').split('/');
+    var dayOfMonth = getDateByformat(
+        'EEEE',
+        DateTime(int.parse(dateParams[2]), int.parse(dateParams[1]),
+            int.parse(dateParams[0])));
+    printLog(message: dayOfMonth);
+    if (dayOfMonth == 'Saturday' || dayOfMonth == 'Sunday') {
+      return AttendanceStatus.weekOff;
+    }
     switch (caseText) {
       case "WOWO":
         return AttendanceStatus.weekOff;
@@ -339,10 +350,7 @@ class ItemAttendanceList extends StatelessWidget {
                         height: 7,
                         decoration: ShapeDecoration(
                             shape: const CircleBorder(),
-                            color: _getAttendanceStatus() ==
-                                    AttendanceStatus.absent
-                                ? context.resources.color.colorD32030
-                                : context.resources.color.colorGreen26B757),
+                            color: _getAttendanceStatus().color),
                       ),
                       SizedBox(
                         width: context.resources.dimen.dp8,
@@ -369,8 +377,10 @@ class ItemAttendanceList extends StatelessWidget {
                           left: context.resources.dimen.dp15,
                           top: context.resources.dimen.dp8),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(

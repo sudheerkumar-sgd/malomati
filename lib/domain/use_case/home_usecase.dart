@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -25,6 +26,11 @@ class HomeUseCase extends BaseUseCase {
   Future<Either<Failure, ApiEntity<DashboardEntity>>> getDashboardData(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getDashboardData(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, ApiEntity<EventsListEntity>>> getEventsData(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getEventsData(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<FavoriteEntity>>> getFavoritesData(

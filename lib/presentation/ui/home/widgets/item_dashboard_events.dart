@@ -9,6 +9,28 @@ class ItemDashboardEvent extends StatelessWidget {
   final EventsEntity eventsEntity;
   const ItemDashboardEvent({required this.eventsEntity, super.key});
 
+  String _getWishTitle() {
+    if (eventsEntity.eVENTTYPE == '2') {
+      return 'We’re happy to have you on OUR TEAM';
+    } else if (eventsEntity.eVENTTYPE == '1' || eventsEntity.eVENTTYPE == '3') {
+      return 'Its Time To Wish Your Colleague Today';
+    } else {
+      return '';
+    }
+  }
+
+  String _getWishText() {
+    if (eventsEntity.eVENTTYPE == '1') {
+      return 'Happy Birthday';
+    } else if (eventsEntity.eVENTTYPE == '2') {
+      return 'WELCOME!';
+    } else if (eventsEntity.eVENTTYPE == '3') {
+      return 'Happy WORK ANNIVERSARY';
+    } else {
+      return 'OOPS!\nNO ANY CELEBRATIONS TODAY';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,21 +62,28 @@ class ItemDashboardEvent extends StatelessWidget {
             ),
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Visibility(
+                    visible: eventsEntity.eVENTTYPE?.isNotEmpty ?? false,
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      _getWishTitle().toUpperCase(),
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textFontWeight400
+                          .onColor(context.resources.color.colorWhite)
+                          .onFontSize(context.resources.dimen.dp11),
+                    ),
+                  ),
+                  Visibility(
+                    visible: eventsEntity.eVENTTYPE?.isNotEmpty ?? false,
+                    child: SizedBox(
+                      height: context.resources.dimen.dp5,
+                    ),
+                  ),
                   Text(
                     textAlign: TextAlign.center,
-                    'Its Time To Wish Your Colleague Today'.toUpperCase(),
-                    overflow: TextOverflow.ellipsis,
-                    style: context.textFontWeight400
-                        .onColor(context.resources.color.colorWhite)
-                        .onFontSize(context.resources.dimen.dp11),
-                  ),
-                  SizedBox(
-                    height: context.resources.dimen.dp5,
-                  ),
-                  Text(
-                    textAlign: TextAlign.center,
-                    'Happy Birthday'.toUpperCase(),
+                    _getWishText().toUpperCase(),
                     style: context.textFontWeight900
                         .onFontFamily(fontFamily: fontFamilyEN)
                         .onColor(context.resources.color.colorWhite)
@@ -64,18 +93,21 @@ class ItemDashboardEvent extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp5,
                   ),
-                  Expanded(
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      (context.resources.isLocalEn
-                                  ? eventsEntity.fULLNAMEUS
-                                  : eventsEntity.fULLNAMEAR)
-                              ?.toUpperCase() ??
-                          '',
-                      overflow: TextOverflow.ellipsis,
-                      style: context.textFontWeight900
-                          .onColor(context.resources.color.colorWhite)
-                          .onFontSize(context.resources.dimen.dp12),
+                  Visibility(
+                    visible: eventsEntity.eVENTTYPE?.isNotEmpty ?? false,
+                    child: Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        (context.resources.isLocalEn
+                                    ? eventsEntity.fULLNAMEUS
+                                    : eventsEntity.fULLNAMEAR)
+                                ?.toUpperCase() ??
+                            '',
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textFontWeight900
+                            .onColor(context.resources.color.colorWhite)
+                            .onFontSize(context.resources.dimen.dp12),
+                      ),
                     ),
                   ),
                 ],

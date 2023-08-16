@@ -120,6 +120,10 @@ String getCurrentDateByformat(String format) {
   return DateFormat(format).format(DateTime.now());
 }
 
+String getDateByformat(String format, DateTime dateTime) {
+  return DateFormat(format).format(dateTime);
+}
+
 startTimer({required double duration, required Function callback}) {
   Timer.periodic(const Duration(seconds: 1), (Timer t) => callback());
 }

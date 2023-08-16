@@ -98,24 +98,31 @@ class AttendanceScreen extends StatelessWidget {
   }
 
   bool canPunchInEnable() {
-    return ((attendanceEntity?.punch2Time?.isNotEmpty ?? true) ||
-        (attendanceEntity?.punch4Time?.isNotEmpty ?? true) ||
-        (attendanceEntity?.punch6Time?.isNotEmpty ?? true) ||
-        (attendanceEntity?.punch8Time?.isNotEmpty ?? true) ||
-        (attendanceEntity?.punch10Time?.isNotEmpty ?? true));
+    return true;
+    // return ((attendanceEntity?.punch2Time?.isNotEmpty ?? true) ||
+    //     (attendanceEntity?.punch4Time?.isNotEmpty ?? true) ||
+    //     (attendanceEntity?.punch6Time?.isNotEmpty ?? true) ||
+    //     (attendanceEntity?.punch8Time?.isNotEmpty ?? true) ||
+    //     (attendanceEntity?.punch10Time?.isNotEmpty ?? true));
   }
 
   bool canPunchOutEnable() {
-    return ((attendanceEntity?.punch1Time?.isNotEmpty ?? false) ||
-        (attendanceEntity?.punch3Time?.isNotEmpty ?? false) ||
-        (attendanceEntity?.punch5Time?.isNotEmpty ?? false) ||
-        (attendanceEntity?.punch7Time?.isNotEmpty ?? false) ||
-        (attendanceEntity?.punch9Time?.isNotEmpty ?? false));
+    return true;
+    // return ((attendanceEntity?.punch1Time?.isNotEmpty ?? false) ||
+    //     (attendanceEntity?.punch3Time?.isNotEmpty ?? false) ||
+    //     (attendanceEntity?.punch5Time?.isNotEmpty ?? false) ||
+    //     (attendanceEntity?.punch7Time?.isNotEmpty ?? false) ||
+    //     (attendanceEntity?.punch9Time?.isNotEmpty ?? false));
   }
 
   bool canUserShortLeaveIn() {
     return canPunchInEnable() &&
         (attendanceEntity?.punch1Time?.isEmpty ?? true);
+  }
+
+  bool canUserRegularIn() {
+    var time = DateTime.now().hour;
+    return (time >= 7 && time < 8);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {
@@ -124,7 +131,7 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.regularIn,
           'id': '6',
-          'isEnabled': canPunchInEnable()
+          'isEnabled': canUserRegularIn()
         },
         {
           'name': context.string.officialIn,
@@ -139,7 +146,7 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.shortLeaveIn,
           'id': '4',
-          'isEnabled': canUserShortLeaveIn()
+          'isEnabled': canPunchInEnable()
         },
       ];
     } else {
@@ -329,7 +336,7 @@ class AttendanceScreen extends StatelessWidget {
                               ),
                             ),
                             Visibility(
-                              visible: _getReamainingHours().isNotEmpty,
+                              visible: false,
                               child: Row(
                                 children: [
                                   ImageWidget(

@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:malomati/data/model/base_model.dart';
-import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/event_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 
@@ -44,7 +44,7 @@ class DashboardModel extends BaseModel {
   int? tHANKYOUINYEAR;
   int? sUGGESTOVERALLRATING;
   int? tHANKYOUCOUNT;
-  List<EventListModel>? eventListModel;
+  List<EventModel>? eventListModel;
 
   DashboardModel(
       {this.isSuccess,
@@ -181,11 +181,10 @@ class DashboardModel extends BaseModel {
     throw UnimplementedError();
   }
 
-  List<EventListModel>? getEventList(dynamic jsonEventArray) {
+  List<EventModel>? getEventList(dynamic jsonEventArray) {
     var eventsJson = jsonEventArray as List;
-    List<EventListModel> events = eventsJson
-        .map((eventJson) => EventListModel.fromJson(eventJson))
-        .toList();
+    List<EventModel> events =
+        eventsJson.map((eventJson) => EventModel.fromJson(eventJson)).toList();
     return events;
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/events_list_entity.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';
@@ -14,18 +15,6 @@ class HomeBloc extends Cubit<HomeState> {
   final HomeUseCase homeUseCase;
   HomeBloc({required this.homeUseCase}) : super(Init());
 
-  // Future<void> getAttendance({required String dateRange}) async {
-  //   emit(OnLoading());
-
-  //   Map<String, dynamic> requestParams = {
-  //     'date-range': dateRange,
-  //   };
-  //   final result =
-  //       await homeUseCase.getAttendance(requestParams: requestParams);
-  //   emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
-  //       (r) => OnAttendanceSuccess(attendanceEntity: r)));
-  // }
-
   Future<void> getDashboardData({required String userName}) async {
     emit(OnLoading());
     Map<String, dynamic> requestParams = {
@@ -35,6 +24,17 @@ class HomeBloc extends Cubit<HomeState> {
         await homeUseCase.getDashboardData(requestParams: requestParams);
     emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
         (r) => OnDashboardSuccess(dashboardEntity: r)));
+  }
+
+  Future<void> getEventsData({required String departmentId}) async {
+    emit(OnLoading());
+    Map<String, dynamic> requestParams = {
+      'DEPARTMENT_ID': departmentId,
+    };
+    final result =
+        await homeUseCase.getEventsData(requestParams: requestParams);
+    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnEventsSuccess(eventsListEntity: r)));
   }
 
   Future<void> getFavoritesdData({required Box userDB}) async {

@@ -1,5 +1,6 @@
 class EventsEntity {
   int? pERSONID;
+  String? eVENTTYPE;
   String? eMPLOYEENUMBER;
   String? dEPARTMENTENG;
   String? fULLNAMEAR;

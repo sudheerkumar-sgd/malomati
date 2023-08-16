@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:malomati/core/common/log.dart';
 
 class Location {

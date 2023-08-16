@@ -28,6 +28,14 @@ class OnDashboardSuccess extends HomeState {
   List<Object?> get props => [dashboardEntity];
 }
 
+class OnEventsSuccess extends HomeState {
+  final ApiEntity<EventsListEntity> eventsListEntity;
+
+  OnEventsSuccess({required this.eventsListEntity});
+  @override
+  List<Object?> get props => [eventsListEntity];
+}
+
 class OnFavoriteSuccess extends HomeState {
   final List<FavoriteEntity> favoriteEntity;
 

@@ -10,6 +10,7 @@ import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/injection_container.dart';
+import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/home/attendance_screen.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
@@ -24,17 +25,16 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../res/drawables/background_box_decoration.dart';
-import '../../bloc/requests/requests_bloc.dart';
 import '../widgets/custom_bg_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final _homeBloc = sl<HomeBloc>();
-  final _requestsBloc = sl<RequestsBloc>();
-  final ValueNotifier<AttendanceEntity> _attendanceEntity =
-      ValueNotifier<AttendanceEntity>(AttendanceEntity());
+  final _attendanceBloc = sl<AttendanceBloc>();
   final ValueNotifier<DashboardEntity> _dashboardEntity =
       ValueNotifier<DashboardEntity>(DashboardEntity());
+  final ValueNotifier<List<EventsEntity>> _eventsListEntity =
+      ValueNotifier<List<EventsEntity>>([]);
   final ValueNotifier<List<FavoriteEntity>> _favoriteEntity =
       ValueNotifier<List<FavoriteEntity>>([]);
   final ValueNotifier _eventBannerChange = ValueNotifier<int>(0);
@@ -61,11 +61,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    _requestsBloc.getAttendance(dateRange: '$date-$date');
-    _requestsBloc.getAttendanceDetails(
+    _attendanceBloc.getAttendance(dateRange: '$date-$date');
+    _attendanceBloc.getAttendanceDetails(
         dateRange: '${date}000000-${date}235959');
     _homeBloc.getDashboardData(
         userName: context.userDB.get(userNameKey, defaultValue: ''));
+    _homeBloc.getEventsData(
+        departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
     return SafeArea(
       child: Scaffold(
@@ -85,6 +87,9 @@ class HomeScreen extends StatelessWidget {
                   else if (state is OnDashboardSuccess) {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();
+                  } else if (state is OnEventsSuccess) {
+                    _eventsListEntity.value =
+                        state.eventsListEntity.entity?.eventsList ?? [];
                   } else if (state is OnFavoriteSuccess) {
                     _favoriteEntity.value = [];
                     _favoriteEntity.value = state.favoriteEntity;
@@ -196,7 +201,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     StreamBuilder(
-                        stream: _requestsBloc.getAttendanceReport,
+                        stream: _attendanceBloc.getAttendanceReport,
                         builder: (context, attendanceEntityList) {
                           var attendanceEntity = AttendanceEntity();
                           if (attendanceEntityList.data?.isNotEmpty ?? false) {
@@ -498,6 +503,14 @@ class HomeScreen extends StatelessWidget {
                                           }
                                         },
                                       ),
+                                    ],
+                                  );
+                                }),
+                            ValueListenableBuilder(
+                                valueListenable: _eventsListEntity,
+                                builder: (context, eventsList, widget) {
+                                  return Column(
+                                    children: [
                                       SizedBox(
                                         height: context.resources.dimen.dp20,
                                       ),
@@ -509,22 +522,13 @@ class HomeScreen extends StatelessWidget {
                                         child: PageView(
                                           clipBehavior: Clip.none,
                                           children: [
-                                            if (dashboardEntity.eventsEntity !=
-                                                null)
-                                              for (int i = 0;
-                                                  i <
-                                                      dashboardEntity
-                                                          .eventsEntity!.length;
-                                                  i++) ...[
-                                                ItemDashboardEvent(
-                                                  eventsEntity: dashboardEntity
-                                                              .eventsEntity !=
-                                                          null
-                                                      ? dashboardEntity
-                                                          .eventsEntity![i]
-                                                      : EventsEntity(),
-                                                )
-                                              ]
+                                            for (int i = 0;
+                                                i < eventsList.length;
+                                                i++) ...[
+                                              ItemDashboardEvent(
+                                                eventsEntity: eventsList[i],
+                                              )
+                                            ]
                                           ],
                                           onPageChanged: (value) {
                                             _eventBannerChange.value = value;
@@ -538,20 +542,16 @@ class HomeScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          if (dashboardEntity.eventsEntity !=
-                                              null)
-                                            for (int i = 0;
-                                                i <
-                                                    dashboardEntity
-                                                        .eventsEntity!.length;
-                                                i++) ...[
-                                              PageIndicator(
-                                                  size: context
-                                                      .resources.dimen.dp5,
-                                                  position: i,
-                                                  eventBannerChange:
-                                                      _eventBannerChange)
-                                            ]
+                                          for (int i = 0;
+                                              i < eventsList.length;
+                                              i++) ...[
+                                            PageIndicator(
+                                                size:
+                                                    context.resources.dimen.dp5,
+                                                position: i,
+                                                eventBannerChange:
+                                                    _eventBannerChange)
+                                          ]
                                         ],
                                       ),
                                     ],

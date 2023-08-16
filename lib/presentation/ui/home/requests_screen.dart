@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_attendance_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_requests_list.dart';
-
-import '../../../domain/entities/attendance_entity.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/services_app_bar.dart';
@@ -20,22 +19,21 @@ enum SelectedListType {
 }
 
 class RequestsScreen extends StatelessWidget {
+  final _attendanceBloc = sl<AttendanceBloc>();
   final _requestsBloc = sl<RequestsBloc>();
   final ValueNotifier _selectedListType =
       ValueNotifier<SelectedListType>(SelectedListType.attendance);
-  final ValueNotifier<List<AttendanceEntity>> _attendanceEntity =
-      ValueNotifier<List<AttendanceEntity>>([]);
   ScrollController controller = ScrollController();
   RequestsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.now();
+    final date = DateTime.now().subtract(const Duration(days: 1));
     var dateCurrent = DateFormat('ddMMyyyy').format(date);
     var dateStart =
         DateFormat('ddMMyyyy').format(DateTime(date.year, date.month, 1));
-    _requestsBloc.getAttendance(dateRange: '$dateStart-$dateCurrent');
-    _requestsBloc.getAttendanceDetails(
+    _attendanceBloc.getAttendance(dateRange: '$dateStart-$dateCurrent');
+    _attendanceBloc.getAttendanceDetails(
         dateRange: '${dateStart}000000-${dateCurrent}235959');
     return SafeArea(
       child: Scaffold(
@@ -43,12 +41,7 @@ class RequestsScreen extends StatelessWidget {
         body: BlocProvider<RequestsBloc>(
           create: (context) => _requestsBloc,
           child: BlocListener<RequestsBloc, RequestsState>(
-            listener: (context, state) {
-              if (state is OnAttendanceSuccess) {
-                _attendanceEntity.value =
-                    state.attendanceEntity.entity?.attendanceList ?? [];
-              }
-            },
+            listener: (context, state) {},
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -234,7 +227,7 @@ class RequestsScreen extends StatelessWidget {
                             child: (_selectedListType.value ==
                                     SelectedListType.attendance)
                                 ? StreamBuilder(
-                                    stream: _requestsBloc.getAttendanceReport,
+                                    stream: _attendanceBloc.getAttendanceReport,
                                     builder: (context, snapshot) {
                                       return ListView.separated(
                                           itemCount: snapshot.data?.length ?? 0,
