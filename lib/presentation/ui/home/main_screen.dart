@@ -39,17 +39,17 @@ class _MainState extends State<MainScreen> {
 
   void initAudio() {
     _player.setLoopMode(LoopMode.off);
-    _player.setAsset(DrawableAssets.audioAnniversay);
+    _player.setAsset(DrawableAssets.audioBirthday);
     _player.play();
   }
 
   _showBirthday(BuildContext context) async {
     initAudio();
     showDialog(
-        context: context,
-        builder: (context) => Dialog(
-            child: ImageWidget(path: DrawableAssets.gifAnniversay)
-                .loadImage)).then((value) => _player.dispose());
+            context: context,
+            builder: (context) => Dialog(
+                child: ImageWidget(path: DrawableAssets.gifBirthday).loadImage))
+        .then((value) => _player.dispose());
   }
 
   @override

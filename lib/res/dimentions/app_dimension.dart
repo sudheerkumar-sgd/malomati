@@ -47,6 +47,7 @@ class AppDimension {
   double get dp17 => 17;
   double get dp20 => 20;
   double get dp25 => 25;
+  double get dp27 => 27;
   double get dp30 => 30;
   double get dp40 => 40;
   double get dp50 => 50;

@@ -1,8 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 
-class AnimatedToggle extends StatefulWidget {
+class AnimatedToggle extends StatelessWidget {
   final List<String> values;
   final ValueChanged onToggleCallback;
   final Color backgroundColor;
@@ -10,9 +12,11 @@ class AnimatedToggle extends StatefulWidget {
   final Color textColor;
   final double width;
   final double height;
+  final double boxRadious;
+  final double textFontSize;
   final int selectedPossition;
-
-  const AnimatedToggle({
+  ValueNotifier<bool> initialPosition = ValueNotifier<bool>(true);
+  AnimatedToggle({
     super.key,
     required this.values,
     required this.onToggleCallback,
@@ -21,76 +25,72 @@ class AnimatedToggle extends StatefulWidget {
     this.backgroundColor = const Color(0xFFe7e7e8),
     this.buttonColor = const Color(0xFFFFFFFF),
     this.textColor = const Color(0xFF000000),
+    this.boxRadious = 10,
+    this.textFontSize = 11,
     this.selectedPossition = 0,
   });
-  @override
-  AnimatedToggleState createState() => AnimatedToggleState();
-}
 
-class AnimatedToggleState extends State<AnimatedToggle> {
   @override
   Widget build(BuildContext context) {
+    initialPosition.value = selectedPossition == 0;
     return Stack(
       children: <Widget>[
-        GestureDetector(
+        InkWell(
           onTap: () {
-            final initialPosition = !(widget.selectedPossition == 0);
+            initialPosition.value = !initialPosition.value;
             var index = 0;
-            if (!initialPosition) {
+            if (!initialPosition.value) {
               index = 1;
             }
-            widget.onToggleCallback(index);
-            setState(() {});
+            onToggleCallback(index);
           },
           child: Container(
-            width: widget.width,
-            height: widget.height,
+            width: width,
+            height: height,
             decoration: BackgroundBoxDecoration(
-              boxColor: widget.backgroundColor,
-              radious: context.resources.dimen.dp10,
+              boxColor: backgroundColor,
+              radious: boxRadious,
             ).roundedCornerBox,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
-                widget.values.length,
+                values.length,
                 (index) => Text(
-                  widget.values[index],
+                  values[index],
                   style: context.textFontWeight400
                       .onColor(context.resources.color.textColor)
-                      .onFontSize(context.resources.dimen.dp11),
+                      .onFontSize(textFontSize)
+                      .copyWith(height: 1),
                 ),
               ),
             ),
           ),
         ),
-        AnimatedAlign(
-          duration: const Duration(milliseconds: 250),
-          alignment: context.resources.isLocalEn
-              ? ((widget.selectedPossition == 0)
-                  ? Alignment.centerLeft
-                  : Alignment.centerRight)
-              : ((widget.selectedPossition == 0)
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft),
-          child: Container(
-            margin: EdgeInsets.all(context.resources.dimen.dp1),
-            width: widget.width / 2,
-            height: widget.height - 2,
-            decoration: BackgroundBoxDecoration(
-              boxColor: widget.buttonColor,
-              radious: context.resources.dimen.dp10,
-            ).roundedCornerBox,
-            alignment: Alignment.center,
-            child: Text(
-              (widget.selectedPossition == 0)
-                  ? widget.values[0]
-                  : widget.values[1],
-              style: context.textFontWeight400
-                  .onColor(widget.textColor)
-                  .onFontSize(context.resources.dimen.dp11),
-            ),
-          ),
-        ),
+        ValueListenableBuilder(
+            valueListenable: initialPosition,
+            builder: (context, value, widget) {
+              return AnimatedAlign(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.decelerate,
+                alignment: value ? Alignment.centerLeft : Alignment.centerRight,
+                child: Container(
+                  width: width / 2,
+                  height: height - 2,
+                  decoration: BackgroundBoxDecoration(
+                    boxColor: buttonColor,
+                    radious: boxRadious,
+                  ).roundedCornerBox,
+                  alignment: Alignment.center,
+                  child: Text(
+                    (value) ? values[0] : values[1],
+                    style: context.textFontWeight400
+                        .onColor(textColor)
+                        .onFontSize(textFontSize)
+                        .copyWith(height: 1),
+                  ),
+                ),
+              );
+            }),
       ],
     );
   }

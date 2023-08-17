@@ -36,9 +36,9 @@ class NavbarNotifier extends ChangeNotifier {
         }
         break;
       case 1:
-        if (ServicesNavigatorScreen.moreKey.currentState != null &&
-            ServicesNavigatorScreen.moreKey.currentState!.canPop()) {
-          ServicesNavigatorScreen.moreKey.currentState!.pop();
+        if (ServicesNavigatorScreen.servicesKey.currentState != null &&
+            ServicesNavigatorScreen.servicesKey.currentState!.canPop()) {
+          ServicesNavigatorScreen.servicesKey.currentState!.pop();
           exitingApp = false;
         }
         break;

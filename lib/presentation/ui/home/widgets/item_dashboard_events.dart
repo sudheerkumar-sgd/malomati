@@ -50,12 +50,16 @@ class ItemDashboardEvent extends StatelessWidget {
             ),
         child: Row(
           children: [
-            Container(
-              padding: EdgeInsets.all(context.resources.dimen.dp10),
-              decoration: BackgroundBoxDecoration(
-                boxColor: context.resources.color.bgGradientEnd,
-              ).circularBox,
-              child: ImageWidget(path: DrawableAssets.icCelebration).loadImage,
+            Visibility(
+              visible: eventsEntity.eVENTTYPE?.isNotEmpty ?? false,
+              child: Container(
+                padding: EdgeInsets.all(context.resources.dimen.dp10),
+                decoration: BackgroundBoxDecoration(
+                  boxColor: context.resources.color.bgGradientEnd,
+                ).circularBox,
+                child:
+                    ImageWidget(path: DrawableAssets.icCelebration).loadImage,
+              ),
             ),
             SizedBox(
               width: context.resources.dimen.dp8,

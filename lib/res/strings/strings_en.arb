@@ -128,6 +128,10 @@
     "@leaves": {
         "type": "text"
     },
+    "otherLeaves": "Other Leaves",
+    "@otherLeaves": {
+        "type": "text"
+    },
     "permission": "Permission",
     "@permission": {
         "type": "text"
@@ -364,6 +368,27 @@
     "@attendancelocationErrorMessage": {
         "type": "text"
     },
+    "currentBalance": "Current Balance",
+    "@currentBalance": {
+        "type": "text"
+    },
+    "planned": "Planned",
+    "confirmed": "Confirmed",
+    "type": "Type",
+    "absenceType": "Absence Type",
+    "chooseAbsenceType": "Choose a absence type",
+    "startDate": "Start Date",
+    "chooseStartDate": "Choose a start date",
+    "endDate": "End Date",
+    "chooseEndDate": "Choose a end date",
+    "startTime": "Start Time",
+    "chooseStartTime": "Choose start time",
+    "endTime": "End Time",
+    "chooseEndTime": "Choose end time",
+    "upload": "Upload",
+    "chooseFiles": "Choose files",
+    "comments": "Comments",
+    "submit": "Submit",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

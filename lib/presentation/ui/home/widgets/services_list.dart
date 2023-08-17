@@ -28,13 +28,15 @@ class ServicesList extends StatelessWidget {
           itemBuilder: (ctx, i) {
             return InkWell(
               onTap: () {
-                Navigator.pop(context);
                 if (callback != null) {
                   callback!(context, services[i]);
                 }
               },
               child: ItemDashboardService(
-                data: FavoriteEntity(name: services[i].name,nameAR:services[i].nameAR, iconPath: services[i].iconPath),
+                data: FavoriteEntity(
+                    name: services[i].name,
+                    nameAR: services[i].nameAR,
+                    iconPath: services[i].iconPath),
               ),
             );
           },

@@ -48,6 +48,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   _addFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
+    Navigator.pop(context);
     _homeBloc.saveFavoritesdData(
         userDB: context.userDB, favoriteEntity: favoriteEntity);
   }

@@ -124,6 +124,10 @@ String getDateByformat(String format, DateTime dateTime) {
   return DateFormat(format).format(dateTime);
 }
 
+DateTime getDateTimeByString(String format, String date) {
+  return DateFormat(format).parse(date);
+}
+
 startTimer({required double duration, required Function callback}) {
   Timer.periodic(const Duration(seconds: 1), (Timer t) => callback());
 }

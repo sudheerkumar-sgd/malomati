@@ -42,6 +42,7 @@
     "missionLeaves": "Mission Leaves",
     "sickLeaves": "الإجازات المرضية",
     "anualLeaves": "الإجازات السنوية",
+    "otherLeaves": "إجازة أخرى" ,
     "edit": "يحرر",
     "done": "منتهي",
     "selfService": "الخدمة الذاتية",
@@ -89,6 +90,24 @@
     "opps": "Opps",
     "remaining": "المتيقيه",
     "location": "لموقع",
-    "attendancelocationErrorMessage": "ليس في موقع المكتب"
+    "attendancelocationErrorMessage": "ليس في موقع المكتب",
+    "currentBalance": "الرصيد الحالي",
+    "planned": "مخطط",
+    "confirmed": "مؤكد",
+    "type": "النوع",
+    "absenceType": "نوع الغياب",
+    "chooseAbsenceType": "اختر نوع الغياب",
+    "startDate": "التاريخ",
+    "chooseStartDate": "اختر تاريخ البدء",
+    "endDate": "تاريخ الإنتهاء",
+    "chooseEndDate": "اختر تاريخ الانتهاء",
+    "startTime": "وقت البدء",
+    "chooseStartTime": "اختر وقت البدء",
+    "endTime": "وقت الإنتهاء",
+    "chooseEndTime": "اختر وقت الانتهاء",
+    "upload": "تحميل",
+    "chooseFiles": "اختر الملفات",
+    "comments": "ملاحظات",
+    "submit": "ملاحظات"
 
 }

@@ -455,7 +455,7 @@ class MoreScreen extends StatelessWidget {
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: resources.dimen.dp60),
-                padding: EdgeInsets.all(resources.dimen.dp5),
+                padding: EdgeInsets.all(resources.dimen.dp7),
                 decoration: BackgroundBoxDecoration(
                   boxColor: resources.color.viewBgColor,
                   radious: context.resources.dimen.dp20,
@@ -465,7 +465,8 @@ class MoreScreen extends StatelessWidget {
                   context.string.logout,
                   style: context.textFontWeight400
                       .onColor(resources.color.colorWhite)
-                      .onFontSize(context.resources.dimen.dp17),
+                      .onFontSize(context.resources.dimen.dp17)
+                      .copyWith(height: 1),
                 ),
               ),
             ),

@@ -57,5 +57,9 @@ class DrawableAssets {
   static const icCall = '${drawablePath}ic_call.svg';
   static const icChevronRight = '${drawablePath}ic_chevron_right.svg';
   static const icChevronBack = '${drawablePath}ic_chevron_back.svg';
+  static const icCalendar = '${drawablePath}ic_calendar.svg';
+  static const icUpload = '${drawablePath}ic_upload.svg';
+  static const icPlusCircle = '${drawablePath}ic_plus_circle.svg';
+  static const icTime = '${drawablePath}ic_time.svg';
   static const icMap = '${drawablePath}ic_map.png';
 }

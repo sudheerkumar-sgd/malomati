@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
-import 'package:malomati/presentation/ui/more/hr_government_law.dart';
 
 class ServicesNavigatorScreen extends StatelessWidget {
   const ServicesNavigatorScreen({Key? key}) : super(key: key);
-  static final moreKey = GlobalKey<NavigatorState>();
+  static final servicesKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return Navigator(
-        key: moreKey,
+        key: servicesKey,
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
           WidgetBuilder builder;
@@ -17,13 +15,9 @@ class ServicesNavigatorScreen extends StatelessWidget {
             case '/':
               builder = (BuildContext _) => const ServicesScreen();
               break;
-            case HRGovernmentLaw.route:
-              builder = (BuildContext _) {
-                return const ServicesScreen();
-              };
             // break;
             default:
-              builder = (BuildContext _) => HomeScreen();
+              builder = (BuildContext _) => const ServicesScreen();
           }
           return MaterialPageRoute(builder: builder, settings: settings);
         });
