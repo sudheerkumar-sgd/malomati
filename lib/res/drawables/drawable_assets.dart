@@ -1,5 +1,12 @@
 class DrawableAssets {
   static const drawablePath = 'assets/images/';
+  //audios
+  static const audioAnniversay = 'assets/audio/anniversay.mp3';
+  static const audioBirthday = 'assets/audio/birthday.mp3';
+  //gif images
+  static const gifAnniversay = '${drawablePath}gif/anniversay.gif';
+  static const gifBirthday = '${drawablePath}gif/birthday.gif';
+  //app icons
   static const loginCoveImage = '${drawablePath}login_cover_image.png';
   static const icLangAr = '${drawablePath}ic_lang_ar.svg';
   static const icLangEn = '${drawablePath}ic_lang_en.svg';

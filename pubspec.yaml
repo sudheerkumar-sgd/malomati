@@ -56,6 +56,7 @@ dependencies:
   url_launcher: ^6.1.12
   rxdart: ^0.27.7
   geolocator: ^9.0.2
+  just_audio: ^0.9.34
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -88,6 +89,39 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+  # audios images:
+     - assets/audio/anniversay.mp3
+     - assets/audio/birthday.mp3
+  # gif images:
+     - assets/images/gif/anniversay.gif
+     - assets/images/gif/birthday.gif
+  # static map images:
+     - assets/images/ic_map.png
+     - assets/images/sdg_office_map.png
+     - assets/images/map/map_FALAJMUS_office.png
+     - assets/images/map/map_MD_office.png
+     - assets/images/map/map_ICA_PWD_LAB_office.png
+     - assets/images/map/map_RAFA_office.png
+     - assets/images/map/map_Matrix_office.png
+     - assets/images/map/map_SGD_office.png
+     - assets/images/map/map_BDC_office.png
+     - assets/images/map/map_ANIMAL_MARKET_office.png
+     - assets/images/map/map_FISH_MARKET_office.png
+     - assets/images/map/map_SGD2_office.png
+     - assets/images/map/map_TAD_office.png
+     - assets/images/map/map_FALAJ_MUN_office.png
+     - assets/images/map/map_COURT_office.png
+     - assets/images/map/map_DED_office.png
+     - assets/images/map/map_FAD_office.png
+     - assets/images/map/map_MOC_office.png
+     - assets/images/map/map_SGD99_office.png
+     - assets/images/map/map_MD_office.png
+     - assets/images/map/map_GARAGE_office.png
+     - assets/images/map/map_Mangroove_office.png
+     - assets/images/map/map_EC_office.png
+     - assets/images/map/map_DIWAN_office.png
+     - assets/images/map/map_DC_office.png
+  # app images:
      - assets/images/app_icon.png
      - assets/images/login_cover_image.png
      - assets/images/1.5x/login_cover_image.png
@@ -146,31 +180,6 @@ flutter:
      - assets/images/ic_call.svg
      - assets/images/ic_chevron_right.svg
      - assets/images/ic_chevron_back.svg
-     - assets/images/ic_map.png
-     - assets/images/sdg_office_map.png
-     - assets/images/map/map_FALAJMUS_office.png
-     - assets/images/map/map_MD_office.png
-     - assets/images/map/map_ICA_PWD_LAB_office.png
-     - assets/images/map/map_RAFA_office.png
-     - assets/images/map/map_Matrix_office.png
-     - assets/images/map/map_SGD_office.png
-     - assets/images/map/map_BDC_office.png
-     - assets/images/map/map_ANIMAL_MARKET_office.png
-     - assets/images/map/map_FISH_MARKET_office.png
-     - assets/images/map/map_SGD2_office.png
-     - assets/images/map/map_TAD_office.png
-     - assets/images/map/map_FALAJ_MUN_office.png
-     - assets/images/map/map_COURT_office.png
-     - assets/images/map/map_DED_office.png
-     - assets/images/map/map_FAD_office.png
-     - assets/images/map/map_MOC_office.png
-     - assets/images/map/map_SGD99_office.png
-     - assets/images/map/map_MD_office.png
-     - assets/images/map/map_GARAGE_office.png
-     - assets/images/map/map_Mangroove_office.png
-     - assets/images/map/map_EC_office.png
-     - assets/images/map/map_DIWAN_office.png
-     - assets/images/map/map_DC_office.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
