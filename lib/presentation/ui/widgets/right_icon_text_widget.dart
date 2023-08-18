@@ -58,6 +58,9 @@ class RightIconTextWidget extends StatelessWidget {
                 constraints:
                     BoxConstraints(maxHeight: height, minHeight: height),
                 hintText: hintText,
+                hintStyle: context.textFontWeight400
+                    .onFontSize(context.resources.dimen.dp12)
+                    .onColor(context.resources.color.colorD6D6D6),
                 suffixIconConstraints:
                     BoxConstraints(maxHeight: height, minHeight: height),
                 suffixIcon: (suffixIconPath ?? '').isNotEmpty

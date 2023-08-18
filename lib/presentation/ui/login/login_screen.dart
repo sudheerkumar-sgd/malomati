@@ -79,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                         }
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
+                                builder: (context) => MainScreen()),
                             (_) => false);
                       } else {
                         Navigator.pop(context);

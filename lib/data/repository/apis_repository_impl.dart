@@ -6,17 +6,22 @@ import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_List_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/leave_submit_response_model.dart';
+import 'package:malomati/data/model/leave_type_list_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
+import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
+import '../../config/constant_config.dart';
 import '../../core/network/network_info.dart';
 import '../../domain/entities/attendance_list_entity.dart';
 import '../../domain/repository/apis_repository.dart';
+import '../../injection_container.dart';
 
 class ApisRepositoryImpl extends ApisRepository {
   final RemoteDataSource dataSource;
@@ -147,6 +152,35 @@ class ApisRepositoryImpl extends ApisRepository {
         final apiEntity = apiResponse
             .toEntity<EventsListEntity>(apiResponse.data!.toEventsListEntity());
         return Right(apiEntity);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, LeaveTypeListEntity>> getLeaveTypes(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      final leaveTypeJson = sl<ConstantConfig>().leaveTypes;
+      final list = LeaveTypeListModel.fromJson(leaveTypeJson).toleaveTypeList();
+      return Right(list);
+    } on DioException catch (error) {
+      return Left(ServerFailure(error.message ?? ''));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> submitLeaveRequest(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final leaveSubmitResponse =
+            await dataSource.submitLeaveRequest(requestParams: requestParams);
+        return Right(leaveSubmitResponse.isSuccess());
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       }

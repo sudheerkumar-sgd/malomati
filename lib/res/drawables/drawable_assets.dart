@@ -4,8 +4,10 @@ class DrawableAssets {
   static const audioAnniversay = 'assets/audio/anniversay.mp3';
   static const audioBirthday = 'assets/audio/birthday.mp3';
   //gif images
-  static const gifAnniversay = '${drawablePath}gif/anniversay.gif';
-  static const gifBirthday = '${drawablePath}gif/birthday.gif';
+  static const gifAnniversayEn = '${drawablePath}gif/work_anniversary_en.gif';
+  static const gifAnniversayAr = '${drawablePath}gif/work_anniversary_ar.gif';
+  static const gifBirthdayEn = '${drawablePath}gif/birthday_en.gif';
+  static const gifBirthdayAr = '${drawablePath}gif/birthday_ar.gif';
   //app icons
   static const loginCoveImage = '${drawablePath}login_cover_image.png';
   static const icLangAr = '${drawablePath}ic_lang_ar.svg';

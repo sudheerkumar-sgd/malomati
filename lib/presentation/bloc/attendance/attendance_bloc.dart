@@ -1,13 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/utils.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
-import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/use_case/attendance_usecase.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
-import '../../../domain/entities/favorite_entity.dart';
-import '../../../domain/use_case/requests_usecase.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'attendance_state.dart';
@@ -49,7 +48,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
   }
 
-  Stream<List<AttendanceEntity>> get getAttendanceReport =>
+  Stream<AttendanceEntity> get getAttendanceData =>
       Rx.combineLatest2(_attendanceReport.stream, _attendanceDetails.stream,
           (ApiEntity<AttendanceListEntity> attendanceReport,
               ApiEntity<AttendanceListEntity> attendanceDetails) {
@@ -59,6 +58,25 @@ class AttendanceBloc extends Cubit<AttendanceState> {
             attendance.gpsLongitude = details.gpsLongitude;
           }
         }
+        return attendanceReport.entity?.attendanceList.firstOrNull ??
+            AttendanceEntity();
+      });
+  Stream<List<AttendanceEntity>> get getAttendanceReport =>
+      Rx.combineLatest2(_attendanceReport.stream, _attendanceDetails.stream,
+          (ApiEntity<AttendanceListEntity> attendanceReport,
+              ApiEntity<AttendanceListEntity> attendanceDetails) {
+        for (var attendance in attendanceReport.entity?.attendanceList ?? []) {
+          final details = attendanceDetails.entity?.attendanceList
+              .firstWhereOrNull(
+                  (element) => element.edate == attendance.processdate);
+          printLog(message: details?.toString() ?? '');
+          printLog(message: details?.gpsLatitude?.toString() ?? '');
+          printLog(message: details?.gpsLongitude?.toString() ?? '');
+          attendance.gpsLatitude = details?.gpsLatitude;
+          attendance.gpsLongitude = details?.gpsLongitude;
+        }
+        final details = attendanceReport.entity?.attendanceList[4];
+        printLog(message: details?.toString() ?? '');
         return (attendanceReport.entity?.attendanceList ?? [])
             .reversed
             .toList();

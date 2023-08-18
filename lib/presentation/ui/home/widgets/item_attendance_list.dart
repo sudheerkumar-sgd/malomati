@@ -20,7 +20,7 @@ class ItemAttendanceList extends StatelessWidget {
   final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
   final AttendanceEntity attendanceEntity;
   ItemAttendanceList({required this.attendanceEntity, super.key});
-  AttendanceStatus _getAttendanceStatus() {
+  AttendanceStatus? _getAttendanceStatus() {
     var caseText =
         '${attendanceEntity.firsthalf}${attendanceEntity.secondhalf}';
     var dateParams = (attendanceEntity.processdate ?? '').split('/');
@@ -28,7 +28,6 @@ class ItemAttendanceList extends StatelessWidget {
         'EEEE',
         DateTime(int.parse(dateParams[2]), int.parse(dateParams[1]),
             int.parse(dateParams[0])));
-    printLog(message: dayOfMonth);
     if (dayOfMonth == 'Saturday' || dayOfMonth == 'Sunday') {
       return AttendanceStatus.weekOff;
     }
@@ -37,15 +36,22 @@ class ItemAttendanceList extends StatelessWidget {
         return AttendanceStatus.weekOff;
       case "PRPR" || "PRIN" || "INPR":
         return AttendanceStatus.present;
-      default:
+      case "ABAB" || "ABIN" || "INAB" || "IN" || "PR" || "AB" || "":
         return AttendanceStatus.absent;
+      default:
+        return null;
     }
   }
 
   Map _getDepartmentLocation() {
-    return getDepartmentByLocation(
-        double.parse(attendanceEntity.gpsLatitude ?? ''),
-        double.parse(attendanceEntity.gpsLongitude ?? ''));
+    printLog(message: attendanceEntity?.toString() ?? '');
+    if ((attendanceEntity.gpsLatitude ?? '').isNotEmpty) {
+      return getDepartmentByLocation(
+          double.parse(attendanceEntity.gpsLatitude ?? '0.0'),
+          double.parse(attendanceEntity.gpsLongitude ?? '0.0'));
+    } else {
+      return {};
+    }
   }
 
   String _getPunchType(BuildContext context, String spfid) {
@@ -350,7 +356,7 @@ class ItemAttendanceList extends StatelessWidget {
                         height: 7,
                         decoration: ShapeDecoration(
                             shape: const CircleBorder(),
-                            color: _getAttendanceStatus().color),
+                            color: _getAttendanceStatus()?.color),
                       ),
                       SizedBox(
                         width: context.resources.dimen.dp8,
@@ -386,13 +392,16 @@ class ItemAttendanceList extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    _getAttendanceStatus().name,
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.dimen.dp11),
+                                  Visibility(
+                                    visible: _getAttendanceStatus() != null,
+                                    child: Text(
+                                      _getAttendanceStatus()?.name ?? '',
+                                      style: context.textFontWeight400
+                                          .onColor(context
+                                              .resources.color.textColor212B4B)
+                                          .onFontSize(
+                                              context.resources.dimen.dp11),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: context.resources.dimen.dp5,

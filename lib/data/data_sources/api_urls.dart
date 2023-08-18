@@ -13,3 +13,5 @@ const String getProfileApiUrl = 'UAQSGD_MOB_ERP_GetProfile/GetProfile';
 const String dashboardApiUrl =
     'UAQSGD_MOB_ERP_EmployeeDashboard/LeavesAndThankyouCount';
 const String eventApiUrl = 'UAQSGD_MOB_ERP_GetEvents/GetEvents';
+const String leaveSubmitApiUrl =
+    'UAQSGD_MOB_ERP_RequestForLeaves/RequestLeaves';

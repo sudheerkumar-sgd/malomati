@@ -1,4 +1,4 @@
-import 'dart:async';
+// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,17 +12,11 @@ import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _MainState();
-}
-
-class _MainState extends State<MainScreen> {
-  int _selectedIndex = 0;
+class MainScreen extends StatelessWidget {
+  MainScreen({super.key});
   final NavbarNotifier _navbarNotifier = NavbarNotifier();
   int backpressCount = 0;
+  ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
   final _screens = <Widget>[
     const HomeNavigatorScreen(),
     const ServicesNavigatorScreen(),
@@ -32,9 +26,7 @@ class _MainState extends State<MainScreen> {
   final AudioPlayer _player = AudioPlayer();
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    _selectedIndex.value = index;
   }
 
   void initAudio() {
@@ -46,10 +38,13 @@ class _MainState extends State<MainScreen> {
   _showBirthday(BuildContext context) async {
     initAudio();
     showDialog(
-            context: context,
-            builder: (context) => Dialog(
-                child: ImageWidget(path: DrawableAssets.gifBirthday).loadImage))
-        .then((value) => _player.dispose());
+        context: context,
+        builder: (context) => Dialog(
+            child: ImageWidget(
+                    path: context.resources.isLocalEn
+                        ? DrawableAssets.gifBirthdayEn
+                        : DrawableAssets.gifBirthdayAr)
+                .loadImage)).then((value) => _player.dispose());
   }
 
   @override
@@ -60,13 +55,13 @@ class _MainState extends State<MainScreen> {
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =
-            await _navbarNotifier.onBackButtonPressed(_selectedIndex);
+            await _navbarNotifier.onBackButtonPressed(_selectedIndex.value);
         if (isExitingApp) {
           if (backpressCount > 1) {
             return isExitingApp;
           } else {
             backpressCount++;
-            if (mounted) {
+            if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Center(child: Text("press again to exit app")),
               ));
@@ -78,87 +73,99 @@ class _MainState extends State<MainScreen> {
         }
       },
       child: SafeArea(
-        child: Scaffold(
-          body: IndexedStack(
-              index: _selectedIndex,
-              children: _screens), //_widgetOptions(context),
-          backgroundColor: context.resources.color.appScaffoldBg,
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                  Radius.circular(context.resources.dimen.dp20)),
-              boxShadow: kElevationToShadow[4],
-            ),
-            margin: EdgeInsets.all(context.resources.dimen.dp10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(
-                Radius.circular(context.resources.dimen.dp20),
-              ),
-              child: BottomNavigationBar(
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      DrawableAssets.icHome,
-                      width: 24,
-                      height: 24,
-                      fit: BoxFit.fill,
-                      color: _selectedIndex == 0
-                          ? context.resources.color.bottomSheetIconSelected
-                          : context.resources.color.bottomSheetIconUnSelected,
-                    ),
-                    label: context.string.home,
+        child: ValueListenableBuilder(
+            valueListenable: _selectedIndex,
+            builder: (context, value, widget) {
+              return Scaffold(
+                body: IndexedStack(
+                    index: _selectedIndex.value, children: _screens),
+                //_widgetOptions(context),
+                backgroundColor: context.resources.color.appScaffoldBg,
+                bottomNavigationBar: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(context.resources.dimen.dp20)),
+                    boxShadow: kElevationToShadow[4],
                   ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      DrawableAssets.icSelfService,
-                      width: 24,
-                      height: 24,
-                      fit: BoxFit.fill,
-                      color: _selectedIndex == 1
-                          ? context.resources.color.bottomSheetIconSelected
-                          : context.resources.color.bottomSheetIconUnSelected,
+                  margin: EdgeInsets.all(context.resources.dimen.dp10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(context.resources.dimen.dp20),
                     ),
-                    label: context.string.services,
-                  ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      DrawableAssets.icRequest,
-                      width: 24,
-                      height: 24,
-                      fit: BoxFit.fill,
-                      color: _selectedIndex == 2
-                          ? context.resources.color.bottomSheetIconSelected
-                          : context.resources.color.bottomSheetIconUnSelected,
+                    child: BottomNavigationBar(
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                            DrawableAssets.icHome,
+                            width: 24,
+                            height: 24,
+                            fit: BoxFit.fill,
+                            color: _selectedIndex.value == 0
+                                ? context
+                                    .resources.color.bottomSheetIconSelected
+                                : context
+                                    .resources.color.bottomSheetIconUnSelected,
+                          ),
+                          label: context.string.home,
+                        ),
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                            DrawableAssets.icSelfService,
+                            width: 24,
+                            height: 24,
+                            fit: BoxFit.fill,
+                            color: _selectedIndex.value == 1
+                                ? context
+                                    .resources.color.bottomSheetIconSelected
+                                : context
+                                    .resources.color.bottomSheetIconUnSelected,
+                          ),
+                          label: context.string.services,
+                        ),
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                            DrawableAssets.icRequest,
+                            width: 24,
+                            height: 24,
+                            fit: BoxFit.fill,
+                            color: _selectedIndex.value == 2
+                                ? context
+                                    .resources.color.bottomSheetIconSelected
+                                : context
+                                    .resources.color.bottomSheetIconUnSelected,
+                          ),
+                          label: context.string.requests,
+                        ),
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                            DrawableAssets.icMore,
+                            width: 24,
+                            height: 24,
+                            fit: BoxFit.fill,
+                            color: _selectedIndex.value == 3
+                                ? context
+                                    .resources.color.bottomSheetIconSelected
+                                : context
+                                    .resources.color.bottomSheetIconUnSelected,
+                          ),
+                          label: context.string.more,
+                        ),
+                      ],
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: _selectedIndex.value,
+                      selectedItemColor:
+                          context.resources.color.bottomSheetIconSelected,
+                      unselectedItemColor:
+                          context.resources.color.bottomSheetIconUnSelected,
+                      backgroundColor: Colors.white,
+                      selectedFontSize: 12,
+                      unselectedFontSize: 12,
+                      onTap: _onItemTapped,
                     ),
-                    label: context.string.requests,
                   ),
-                  BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      DrawableAssets.icMore,
-                      width: 24,
-                      height: 24,
-                      fit: BoxFit.fill,
-                      color: _selectedIndex == 3
-                          ? context.resources.color.bottomSheetIconSelected
-                          : context.resources.color.bottomSheetIconUnSelected,
-                    ),
-                    label: context.string.more,
-                  ),
-                ],
-                type: BottomNavigationBarType.fixed,
-                currentIndex: _selectedIndex,
-                selectedItemColor:
-                    context.resources.color.bottomSheetIconSelected,
-                unselectedItemColor:
-                    context.resources.color.bottomSheetIconUnSelected,
-                backgroundColor: Colors.white,
-                selectedFontSize: 12,
-                unselectedFontSize: 12,
-                onTap: _onItemTapped,
-              ),
-            ),
-          ),
-        ),
+                ),
+              );
+            }),
       ),
     );
   }

@@ -202,13 +202,10 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     StreamBuilder(
-                        stream: _attendanceBloc.getAttendanceReport,
-                        builder: (context, attendanceEntityList) {
-                          var attendanceEntity = AttendanceEntity();
-                          if (attendanceEntityList.data?.isNotEmpty ?? false) {
-                            attendanceEntity = attendanceEntityList.data?[0] ??
-                                AttendanceEntity();
-                          }
+                        stream: _attendanceBloc.getAttendanceData,
+                        builder: (context, attendanceData) {
+                          var attendanceEntity =
+                              attendanceData.data ?? AttendanceEntity();
                           return Container(
                             padding: EdgeInsets.only(
                               left: context.resources.dimen.dp15,

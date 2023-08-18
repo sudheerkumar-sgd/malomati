@@ -8,6 +8,7 @@ class AttendanceModel extends BaseModel {
   String? userid = "";
   String? username = "";
   String? processdate = "";
+  String? edate = "";
   String? firsthalf = "";
   String? secondhalf = "";
   String? gpsLatitude = "";
@@ -40,10 +41,16 @@ class AttendanceModel extends BaseModel {
     attendanceModel.userid = attendanceJson['userid'];
     attendanceModel.username = attendanceJson['username'];
     attendanceModel.processdate = attendanceJson['processdate'];
+    attendanceModel.edate = attendanceJson['edate'];
     attendanceModel.firsthalf = attendanceJson['firsthalf'];
     attendanceModel.secondhalf = attendanceJson['secondhalf'];
-    attendanceModel.gpsLatitude = attendanceJson['gps_latitude'];
-    attendanceModel.gpsLongitude = attendanceJson['gps_longitude'];
+    attendanceModel.gpsLatitude = '${attendanceJson['gps_latitude']}'.isNotEmpty
+        ? '${attendanceJson['gps_latitude']}'
+        : '0.0';
+    attendanceModel.gpsLongitude =
+        '${attendanceJson['gps_longitude']}'.isNotEmpty
+            ? '${attendanceJson['gps_longitude']}'
+            : '0.0';
     attendanceModel.punch1Time = attendanceJson['punch1_time'];
     attendanceModel.punch2Time = attendanceJson['punch2_time'];
     attendanceModel.punch3Time = attendanceJson['punch3_time'];
@@ -87,6 +94,7 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.userid = userid;
     attendanceEntity.username = username;
     attendanceEntity.processdate = processdate;
+    attendanceEntity.edate = edate;
     attendanceEntity.firsthalf = firsthalf;
     attendanceEntity.secondhalf = secondhalf;
     attendanceEntity.gpsLatitude = gpsLatitude;

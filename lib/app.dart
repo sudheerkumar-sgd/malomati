@@ -27,7 +27,7 @@ class App extends StatelessWidget {
         locale.languageCode == LocalEnum.ar.name ? fontFamilyAR : fontFamilyEN);
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: theme.theme?.primaryColor));
-    oracleLoginId = value.get(oracleLoginIdKey, defaultValue: 'SD032');
+    oracleLoginId = value.get(oracleLoginIdKey, defaultValue: '');
     return MaterialApp(
       locale: locale,
       debugShowCheckedModeBanner: false,

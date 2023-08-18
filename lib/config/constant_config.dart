@@ -118,4 +118,124 @@ class ConstantConfig {
             .where((element) => !managerServices.contains(element))
             .toList();
   }
+
+  final leaveTypes = {
+    "LeaveTypeList": [
+      {
+        "NAME": "Annual Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 61,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Compassionate Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 62,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Escort Leave International",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 2062,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Escort Leave National",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 64,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Exam Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 66,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Exam day leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 67,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Exceptional Mission Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 68,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Hajj Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 69,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Maternity Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 70,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "National Service",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 71,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Nursing Hours",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 72,
+        "HOURS_OR_DAYS": "H"
+      },
+      {
+        "NAME": "Occupational Injury",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 73,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Overtime leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 63,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Paternity Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 74,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Permission",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 75,
+        "HOURS_OR_DAYS": "H"
+      },
+      {
+        "NAME": "Sick Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 76,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Sick Leave Extension",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 77,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Spouse Escort Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1061,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Study Leave Full",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1062,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Study Leave Partial Permission",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1063,
+        "HOURS_OR_DAYS": "H"
+      },
+      {
+        "NAME": "Uddah Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1064,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Unauthorized Absence",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1066,
+        "HOURS_OR_DAYS": "D"
+      },
+      {
+        "NAME": "Unpaid Leave",
+        "ABSENCE_ATTENDANCE_TYPE_ID": 1065,
+        "HOURS_OR_DAYS": "D"
+      }
+    ]
+  };
 }

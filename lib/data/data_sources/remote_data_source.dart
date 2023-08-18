@@ -6,6 +6,7 @@ import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import '../../config/base_url_config.dart';
@@ -28,6 +29,8 @@ abstract class RemoteDataSource {
   Future<ApiResponse<DashboardModel>> getDashboardData(
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<EventListModel>> getEventsData(
+      {required Map<String, dynamic> requestParams});
+  Future<LeaveSubmitResponseModel> submitLeaveRequest(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -214,6 +217,27 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       var apiResponse = ApiResponse<EventListModel>.fromJson(
           response.data, (p0) => EventListModel.fromJson(response.data));
       return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<LeaveSubmitResponseModel> submitLeaveRequest(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.post(
+        leaveSubmitApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: jsonEncode(requestParams),
+      );
+
+      var leaveSubmitResponseModel =
+          LeaveSubmitResponseModel.fromJson(response.data);
+      return leaveSubmitResponseModel;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

@@ -94,8 +94,10 @@ flutter:
      - assets/audio/anniversay.mp3
      - assets/audio/birthday.mp3
   # gif images:
-     - assets/images/gif/anniversay.gif
-     - assets/images/gif/birthday.gif
+     - assets/images/gif/work_anniversary_en.gif
+     - assets/images/gif/work_anniversary_ar.gif
+     - assets/images/gif/birthday_en.gif
+     - assets/images/gif/birthday_ar.gif
   # static map images:
      - assets/images/ic_map.png
      - assets/images/sdg_office_map.png
