@@ -7,20 +7,29 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../../domain/entities/favorite_entity.dart';
 import '../../../injection_container.dart';
+import '../services/initiatives_screen.dart';
 import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
   static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
+    Widget? screenWidget = InitiativesScreen();
+    ;
+    if ((favoriteEntity.name ?? '').toLowerCase().contains('leave') ||
+        (favoriteEntity.name ?? '').toLowerCase().contains('permission')) {
+      screenWidget = LeavesScreen(
+        leaveType: LeaveType.values.firstWhere(
+            ((element) => element.name == (favoriteEntity.name ?? ''))),
+      );
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('initiatives')) {
+      screenWidget = InitiativesScreen();
+    }
+
     Navigator.push(
       context,
-      PageTransition(
-        type: PageTransitionType.rightToLeft,
-        child: LeavesScreen(
-          leaveType: LeaveType.values.firstWhere(
-              ((element) => element.name == (favoriteEntity.name ?? ''))),
-        ),
-      ),
+      PageTransition(type: PageTransitionType.rightToLeft, child: screenWidget),
     );
   }
 

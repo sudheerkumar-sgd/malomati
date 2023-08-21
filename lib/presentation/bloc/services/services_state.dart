@@ -28,6 +28,14 @@ class OnLeaveSubmittedSuccess extends ServicesState {
   List<Object?> get props => [leaveSubmitResponse];
 }
 
+class OnInitiativeSuccess extends ServicesState {
+  final ApiEntity<LeaveSubmitResponseEntity> initiativeSubmitResponse;
+
+  OnInitiativeSuccess({required this.initiativeSubmitResponse});
+  @override
+  List<Object?> get props => [initiativeSubmitResponse];
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

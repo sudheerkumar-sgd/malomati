@@ -108,6 +108,13 @@
     "upload": "تحميل",
     "chooseFiles": "اختر الملفات",
     "comments": "ملاحظات",
-    "submit": "ملاحظات"
+    "submit": "ملاحظات",
+    "initiativeName": "Initiative Name",
+    "initiativeDescription": "Initiative Description",
+    "applicability": "Applicability",
+    "specilizationRelation": "Specilization Relation",
+    "serveDepartmentStrategy": "Serve Department Strategy",
+    "initiativeYear": "Initiative Year",
+    "estimatedCostifAny": "Estimated Cost if Any"
 
 }

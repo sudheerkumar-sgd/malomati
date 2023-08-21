@@ -389,6 +389,13 @@
     "chooseFiles": "Choose files",
     "comments": "Comments",
     "submit": "Submit",
+    "initiativeName": "Initiative Name",
+    "initiativeDescription": "Initiative Description",
+    "applicability": "Applicability",
+    "specilizationRelation": "Specilization Relation",
+    "serveDepartmentStrategy": "Serve Department Strategy",
+    "initiativeYear": "Initiative Year",
+    "estimatedCostifAny": "Estimated Cost if Any",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

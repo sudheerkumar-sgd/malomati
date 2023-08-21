@@ -11,6 +11,7 @@ import 'package:malomati/data/model/leave_request_model.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
+import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -62,19 +63,23 @@ class LeavesScreen extends StatelessWidget {
   final ValueNotifier<bool> _isUploadChanged = ValueNotifier(false);
   final ValueNotifier<bool> _isleaveTypeChanged = ValueNotifier(false);
   final _uploadFiles = [];
+  String currentBalanceText = '';
 
   String _getTitleByLeaveType(BuildContext context) {
     switch (leaveType) {
       case LeaveType.anualLeave:
         {
+          currentBalanceText = HomeScreen.anualLeaveBalance;
           return context.string.anualLeaves;
         }
       case LeaveType.permission:
         {
+          currentBalanceText = HomeScreen.permissionBalance;
           return context.string.permission;
         }
       case LeaveType.sickLeave:
         {
+          currentBalanceText = HomeScreen.sickLeaveBalance;
           return context.string.sickLeaves;
         }
       case LeaveType.missionLeave:
@@ -243,23 +248,48 @@ class LeavesScreen extends StatelessWidget {
                     height: context.resources.dimen.dp10,
                   ),
                   BackAppBarWidget(title: _getTitleByLeaveType(context)),
-                  SizedBox(
-                    height: context.resources.dimen.dp20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: context.resources.dimen.dp15,
-                        vertical: resources.dimen.dp5),
-                    decoration: BackgroundBoxDecoration(
-                            boxColor: context
-                                .resources.color.bottomSheetIconUnSelected,
-                            radious: context.resources.dimen.dp15)
-                        .roundedCornerBox,
-                    child: Text(
-                      context.string.currentBalance,
-                      style: context.textFontWeight400
-                          .onFontSize(context.resources.dimen.dp12)
-                          .copyWith(height: 1),
+                  Visibility(
+                    visible: leaveType == LeaveType.anualLeave ||
+                        leaveType == LeaveType.sickLeave ||
+                        leaveType == LeaveType.permission,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: context.resources.dimen.dp20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.resources.dimen.dp20,
+                              vertical: resources.dimen.dp5),
+                          decoration: BackgroundBoxDecoration(
+                                  boxColor: context.resources.color
+                                      .bottomSheetIconUnSelected,
+                                  radious: context.resources.dimen.dp15)
+                              .roundedCornerBox,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                context.string.currentBalance,
+                                style: context.textFontWeight600
+                                    .onFontSize(context.resources.dimen.dp12)
+                                    .onColor(resources.color.textColor212B4B)
+                                    .copyWith(height: 1),
+                              ),
+                              SizedBox(
+                                width: resources.dimen.dp5,
+                              ),
+                              Text(
+                                currentBalanceText,
+                                style: context.textFontWeight600
+                                    .onFontSize(context.resources.dimen.dp12)
+                                    .onColor(resources.color.viewBgColor)
+                                    .copyWith(height: 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -561,22 +591,27 @@ class LeavesScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp15,
-                              vertical: resources.dimen.dp7),
-                          decoration: BackgroundBoxDecoration(
-                                  boxColor:
-                                      context.resources.color.textColorLight,
-                                  radious: context.resources.dimen.dp15)
-                              .roundedCornerBox,
-                          child: Text(
-                            context.string.cancel,
-                            style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp17)
-                                .onColor(resources.color.colorWhite)
-                                .copyWith(height: 1),
-                            textAlign: TextAlign.center,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: context.resources.dimen.dp15,
+                                vertical: resources.dimen.dp7),
+                            decoration: BackgroundBoxDecoration(
+                                    boxColor:
+                                        context.resources.color.textColorLight,
+                                    radious: context.resources.dimen.dp15)
+                                .roundedCornerBox,
+                            child: Text(
+                              context.string.cancel,
+                              style: context.textFontWeight600
+                                  .onFontSize(context.resources.dimen.dp17)
+                                  .onColor(resources.color.colorWhite)
+                                  .copyWith(height: 1),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

@@ -32,6 +32,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<LeaveSubmitResponseModel>> submitLeaveRequest(
       {required Map<String, dynamic> requestParams});
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitInitiative(
+      {required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -229,6 +231,27 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       var response = await dio.post(
         leaveSubmitApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: jsonEncode(requestParams),
+      );
+      var apiResponse = ApiResponse<LeaveSubmitResponseModel>.fromJson(
+          response.data,
+          (p0) => LeaveSubmitResponseModel.fromJson(response.data));
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitInitiative(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.post(
+        initiativeSubmitApiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),

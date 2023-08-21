@@ -10,6 +10,7 @@ class RightIconTextWidget extends StatelessWidget {
   final bool isEnabled;
   final String labelText;
   final String hintText;
+  final TextInputType? textInputType;
   final TextEditingController? textController;
   final String? suffixIconPath;
   const RightIconTextWidget(
@@ -19,6 +20,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.hintText = '',
       this.textController,
       this.suffixIconPath,
+      this.textInputType,
       super.key});
 
   @override
@@ -39,40 +41,49 @@ class RightIconTextWidget extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.only(
-              left: context.resources.dimen.dp10,
-              top: context.resources.dimen.dp5,
-              right: context.resources.dimen.dp15,
-              bottom: context.resources.dimen.dp5),
+            left: context.resources.dimen.dp10,
+            top: context.resources.dimen.dp5,
+            right: context.resources.dimen.dp15,
+            bottom: context.resources.dimen.dp5,
+          ),
           decoration: BackgroundBoxDecoration(
                   boxColor: context.resources.color.colorWhite,
                   radious: context.resources.dimen.dp10)
               .roundedCornerBox,
-          child: TextField(
-            enabled: isEnabled,
-            maxLines: null,
-            controller: textController,
-            textAlignVertical: TextAlignVertical.center,
-            decoration: InputDecoration(
-                isDense: true,
-                contentPadding: const EdgeInsets.all(0),
-                constraints:
-                    BoxConstraints(maxHeight: height, minHeight: height),
-                hintText: hintText,
-                hintStyle: context.textFontWeight400
-                    .onFontSize(context.resources.dimen.dp12)
-                    .onColor(context.resources.color.colorD6D6D6),
-                suffixIconConstraints:
-                    BoxConstraints(maxHeight: height, minHeight: height),
-                suffixIcon: (suffixIconPath ?? '').isNotEmpty
-                    ? ImageWidget(
-                            path: suffixIconPath ?? '',
-                            backgroundTint: context.resources.color.viewBgColor)
-                        .loadImage
-                    : null,
-                fillColor: context.resources.color.colorWhite,
-                border: InputBorder.none),
-            style: context.textFontWeight400
-                .onFontSize(context.resources.dimen.dp12),
+          child: Align(
+            alignment: Alignment.center,
+            child: TextField(
+              enabled: isEnabled,
+              maxLines: null,
+              keyboardType: textInputType,
+              controller: textController,
+              textAlign: TextAlign.left,
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                  filled: true,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: context.resources.dimen.dp5),
+                  constraints:
+                      BoxConstraints(maxHeight: height, minHeight: height),
+                  hintText: hintText,
+                  hintStyle: context.textFontWeight400
+                      .onFontSize(context.resources.dimen.dp12)
+                      .onColor(context.resources.color.colorD6D6D6),
+                  suffixIconConstraints:
+                      BoxConstraints(maxHeight: height, minHeight: height),
+                  suffixIcon: (suffixIconPath ?? '').isNotEmpty
+                      ? ImageWidget(
+                              path: suffixIconPath ?? '',
+                              backgroundTint:
+                                  context.resources.color.viewBgColor)
+                          .loadImage
+                      : null,
+                  fillColor: context.resources.color.colorWhite,
+                  border: InputBorder.none),
+              style: context.textFontWeight400
+                  .onFontSize(context.resources.dimen.dp12),
+            ),
           ),
         ),
       ],

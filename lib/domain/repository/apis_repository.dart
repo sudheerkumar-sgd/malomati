@@ -29,4 +29,6 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
       submitLeaveRequest({required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitInitiative({required Map<String, dynamic> requestParams});
 }

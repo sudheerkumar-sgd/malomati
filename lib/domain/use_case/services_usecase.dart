@@ -20,4 +20,9 @@ class ServicesUseCase extends BaseUseCase {
     return await apisRepository.submitLeaveRequest(
         requestParams: requestParams);
   }
+
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitInitiative({required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitInitiative(requestParams: requestParams);
+  }
 }

@@ -29,6 +29,9 @@ import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/custom_bg_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
+  static String anualLeaveBalance = '';
+  static String sickLeaveBalance = '';
+  static String permissionBalance = '';
   HomeScreen({super.key});
   final _homeBloc = sl<HomeBloc>();
   final _attendanceBloc = sl<AttendanceBloc>();
@@ -453,6 +456,8 @@ class HomeScreen extends StatelessWidget {
                                           switch (i) {
                                             case 0:
                                               {
+                                                anualLeaveBalance =
+                                                    '${dashboardEntity.aNNUALACCRUAL ?? '0'} ${context.string.days}';
                                                 return ItemDashboardLeaves(
                                                   balanceCount: dashboardEntity
                                                           .aNNUALACCRUAL ??
@@ -465,6 +470,8 @@ class HomeScreen extends StatelessWidget {
                                               }
                                             case 1:
                                               {
+                                                sickLeaveBalance =
+                                                    '${dashboardEntity.sICKACCRUAL ?? '0'} ${context.string.days}';
                                                 return ItemDashboardLeaves(
                                                   balanceCount: dashboardEntity
                                                           .sICKACCRUAL ??
@@ -477,6 +484,8 @@ class HomeScreen extends StatelessWidget {
                                               }
                                             case 2:
                                               {
+                                                permissionBalance =
+                                                    '${dashboardEntity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}';
                                                 return ItemDashboardLeaves(
                                                   balanceCount: dashboardEntity
                                                           .pERMISSIONACCRUAL ??

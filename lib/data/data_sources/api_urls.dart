@@ -15,3 +15,5 @@ const String dashboardApiUrl =
 const String eventApiUrl = 'UAQSGD_MOB_ERP_GetEvents/GetEvents';
 const String leaveSubmitApiUrl =
     'UAQSGD_MOB_ERP_RequestForLeaves/RequestLeaves';
+const String initiativeSubmitApiUrl =
+    'UAQSGD_MOB_ERP_InitiateRequest/InitiativeRequest';

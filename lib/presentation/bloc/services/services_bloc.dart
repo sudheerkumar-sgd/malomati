@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
@@ -32,6 +31,16 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.submitLeaveRequest(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnLeaveSubmittedSuccess(leaveSubmitResponse: r)));
+  }
+
+  Future<void> submitInitiative(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+
+    final result =
+        await servicesUseCase.submitInitiative(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnInitiativeSuccess(initiativeSubmitResponse: r)));
   }
 
   String _getErrorMessage(Failure failure) {
