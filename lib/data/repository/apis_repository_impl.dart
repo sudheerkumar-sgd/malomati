@@ -13,6 +13,7 @@ import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
+import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
@@ -173,14 +174,16 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> submitLeaveRequest(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitLeaveRequest({required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
-        final leaveSubmitResponse =
+        final apiResponse =
             await dataSource.submitLeaveRequest(requestParams: requestParams);
-        return Right(leaveSubmitResponse.isSuccess());
+        final apiEntity = apiResponse.toEntity<LeaveSubmitResponseEntity>(
+            apiResponse.data!.toLeaveSubmitResponseEntity());
+        return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       }

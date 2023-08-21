@@ -55,12 +55,15 @@ class AnimatedToggle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
                 values.length,
-                (index) => Text(
-                  values[index],
-                  style: context.textFontWeight400
-                      .onColor(context.resources.color.textColor)
-                      .onFontSize(textFontSize)
-                      .copyWith(height: 1),
+                (index) => Expanded(
+                  child: Text(
+                    values[index],
+                    textAlign: TextAlign.center,
+                    style: context.textFontWeight400
+                        .onColor(context.resources.color.textColor)
+                        .onFontSize(textFontSize)
+                        .copyWith(height: 1),
+                  ),
                 ),
               ),
             ),

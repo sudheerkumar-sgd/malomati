@@ -10,8 +10,11 @@ class LeaveRequestModel {
   String? eNDTIME;
   String? uSERCOMMENTS;
   String? fILENAME;
+  String? bLOBFILE;
   String? fILENAMENEW_;
+  String? bLOBFILENEW_;
   String? fILENAMENEW;
+  String? bLOBFILENEW;
   String? aBSENCEATTENDANCEID;
 
   LeaveRequestModel();
@@ -29,8 +32,11 @@ extension SourceModelExtension on LeaveRequestModel {
         "END_TIME": eNDTIME ?? '',
         "USER_COMMENTS": uSERCOMMENTS,
         "FILE_NAME": fILENAME,
+        "BLOB_FILE": bLOBFILE,
         "FILE_NAME_NEW_": fILENAMENEW_,
+        "BLOB_FILE_NEW_": bLOBFILENEW_,
         "FILE_NAME_NEW": fILENAMENEW,
+        "BLOB_FILE_NEW": bLOBFILENEW,
         "ABSENCE_ATTENDANCE_ID": aBSENCEATTENDANCEID,
       };
 }

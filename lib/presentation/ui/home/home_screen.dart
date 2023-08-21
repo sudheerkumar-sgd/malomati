@@ -13,6 +13,7 @@ import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/home/attendance_screen.dart';
+import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
@@ -643,6 +644,9 @@ class HomeScreen extends StatelessWidget {
                                                 ServicesList(
                                                     services: services,
                                                     callback: _addFavorite));
+                                          } else {
+                                            ServicesScreen.onServiceClick(
+                                                context, favoriteEntity[i]);
                                           }
                                         },
                                         child: ItemDashboardService(

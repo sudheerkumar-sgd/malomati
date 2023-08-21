@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
+import 'package:malomati/presentation/ui/widgets/item_attachment.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -54,10 +56,12 @@ class LeavesScreen extends StatelessWidget {
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  final TextEditingController _uploadController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   final dateFormat = 'dd-MMM-yyyy';
   final timeFormat = 'hh:mm a';
+  final ValueNotifier<bool> _isUploadChanged = ValueNotifier(false);
+  final ValueNotifier<bool> _isleaveTypeChanged = ValueNotifier(false);
+  final _uploadFiles = [];
 
   String _getTitleByLeaveType(BuildContext context) {
     switch (leaveType) {
@@ -87,10 +91,12 @@ class LeavesScreen extends StatelessWidget {
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
       {DateTime? firstDate, DateTime? lastDate}) async {
+    final currentDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: firstDate ?? DateTime.now(),
-        firstDate: firstDate ?? DateTime.now(),
+        initialDate: firstDate ?? currentDate,
+        firstDate:
+            firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
         lastDate: lastDate ?? DateTime(2024));
     if (picked != null) {
       controller.text = getDateByformat(dateFormat, picked);
@@ -107,24 +113,41 @@ class LeavesScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _selectFile(
-    TextEditingController controller,
-  ) async {
+  Future<void> _selectFile(BuildContext context) async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.media);
 
     if (result != null) {
-      controller.text = result.files.single.name;
-      if (controller.text.isNotEmpty) {
+      final fileName = result.files.single.name;
+      if (fileName.isNotEmpty) {
         File file = File(result.files.single.path ?? '');
+        printLog(message: '${file.lengthSync()}');
+        if (file.lengthSync() <= maxUploadFilesize) {
+          final bytes = file.readAsBytesSync();
+          final data = {
+            'fileName': fileName,
+            'fileNamebase64data': base64Encode(bytes),
+          };
+          _uploadFiles.add(data);
+          _isUploadChanged.value = !_isUploadChanged.value;
+        } else if (context.mounted) {
+          Dialogs.showInfoDialog(
+              context, "Opps", "Upload file should not be more then 1mb");
+        }
       }
     } else {
       printLog(message: 'message');
     }
   }
 
+  _onDeleteUpload(int id) {
+    _uploadFiles.removeAt(id);
+    _isUploadChanged.value = !_isUploadChanged.value;
+  }
+
   onLeaveTypeSelected(LeaveTypeEntity? leaveTypeEntity) {
     selectedLeaveType = leaveTypeEntity;
+    _isleaveTypeChanged.value = !_isleaveTypeChanged.value;
   }
 
   _submitLeaveRequest(BuildContext context) {
@@ -143,8 +166,30 @@ class LeavesScreen extends StatelessWidget {
       leaveRequestModel.sTARTTIME = _startTimeController.text;
       leaveRequestModel.eNDTIME = _endTimeController.text;
     }
-    leaveRequestModel.uSERCOMMENTS = _commentController.text;
-    _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
+    for (int i = 0; i < _uploadFiles.length; i++) {
+      switch (i) {
+        case 0:
+          {
+            leaveRequestModel.fILENAME = _uploadFiles[i]['fileName'];
+            leaveRequestModel.bLOBFILE = _uploadFiles[i]['fileNamebase64data'];
+          }
+        case 1:
+          {
+            leaveRequestModel.fILENAMENEW = _uploadFiles[i]['fileName'];
+            leaveRequestModel.bLOBFILENEW =
+                _uploadFiles[i]['fileNamebase64data'];
+          }
+        case 2:
+          {
+            leaveRequestModel.fILENAMENEW_ = _uploadFiles[i]['fileName'];
+            leaveRequestModel.bLOBFILENEW_ =
+                _uploadFiles[i]['fileNamebase64data'];
+          }
+      }
+      leaveRequestModel.uSERCOMMENTS = _commentController.text;
+      _servicesBloc.submitLeaveRequest(
+          requestParams: leaveRequestModel.toJson());
+    }
   }
 
   @override
@@ -168,11 +213,24 @@ class LeavesScreen extends StatelessWidget {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
               } else if (state is OnLeaveTypesSuccess) {
-                //Navigator.pop(context);
                 _leaveTypeList.value = state.leaveTypeEntity;
               } else if (state is OnLeaveSubmittedSuccess) {
-                //Navigator.pop(context);
-                printLog(message: '${state.leaveSubmitResponse}');
+                Navigator.of(context, rootNavigator: true).pop();
+                if (state.leaveSubmitResponse.isSuccess ?? false) {
+                  Dialogs.showInfoDialog(
+                          context,
+                          context.string.success,
+                          state.leaveSubmitResponse
+                              .getDisplayMessage(resources))
+                      .then((value) => Navigator.pop(context));
+                } else {
+                  Dialogs.showInfoDialog(context, context.string.opps,
+                      state.leaveSubmitResponse.getDisplayMessage(resources));
+                }
+              } else if (state is OnServicesError) {
+                Navigator.of(context, rootNavigator: true).pop();
+                Dialogs.showInfoDialog(
+                    context, context.string.opps, state.message);
               }
             },
             child: Container(
@@ -250,6 +308,7 @@ class LeavesScreen extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Visibility(
                             visible: leaveType == LeaveType.otherLeave,
@@ -303,84 +362,184 @@ class LeavesScreen extends StatelessWidget {
                               textController: _endDateController,
                             ),
                           ),
-                          Visibility(
-                            visible: leaveType == LeaveType.permission,
-                            child: SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                          ),
-                          Visibility(
-                            visible: leaveType == LeaveType.permission,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      _selectTime(
-                                          context, _startTimeController);
-                                    },
-                                    child: RightIconTextWidget(
-                                      height: resources.dimen.dp27,
-                                      labelText: context.string.startTime,
-                                      hintText: context.string.chooseStartTime,
-                                      suffixIconPath: DrawableAssets.icTime,
-                                      textController: _startTimeController,
-                                    ),
+                          ValueListenableBuilder(
+                              valueListenable: _isleaveTypeChanged,
+                              builder: (contex, value, widget) {
+                                return Visibility(
+                                  visible:
+                                      leaveType.id == LeaveType.permission.id ||
+                                          '${selectedLeaveType?.id ?? ''}' ==
+                                              LeaveType.permission.id,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: resources.dimen.dp20,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                _selectTime(context,
+                                                    _startTimeController);
+                                              },
+                                              child: RightIconTextWidget(
+                                                height: resources.dimen.dp27,
+                                                labelText:
+                                                    context.string.startTime,
+                                                hintText: context
+                                                    .string.chooseStartTime,
+                                                suffixIconPath:
+                                                    DrawableAssets.icTime,
+                                                textController:
+                                                    _startTimeController,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: resources.dimen.dp20,
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                final startTime = TimeOfDay
+                                                    .fromDateTime(getDateTimeByString(
+                                                        '$dateFormat $timeFormat',
+                                                        '${_startDateController.text} ${_startTimeController.text}'));
+                                                _selectTime(
+                                                    context, _endTimeController,
+                                                    startTime: startTime);
+                                              },
+                                              child: RightIconTextWidget(
+                                                height: resources.dimen.dp27,
+                                                labelText:
+                                                    context.string.endTime,
+                                                hintText: context
+                                                    .string.chooseEndTime,
+                                                suffixIconPath:
+                                                    DrawableAssets.icTime,
+                                                textController:
+                                                    _endTimeController,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp20,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      final startTime = TimeOfDay.fromDateTime(
-                                          getDateTimeByString(
-                                              '$dateFormat $timeFormat',
-                                              '${_startDateController.text} ${_startTimeController.text}'));
-                                      _selectTime(context, _endTimeController,
-                                          startTime: startTime);
-                                    },
-                                    child: RightIconTextWidget(
-                                      height: resources.dimen.dp27,
-                                      labelText: context.string.endTime,
-                                      hintText: context.string.chooseEndTime,
-                                      suffixIconPath: DrawableAssets.icTime,
-                                      textController: _endTimeController,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                );
+                              }),
                           SizedBox(
                             height: resources.dimen.dp20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              _selectFile(_uploadController);
-                            },
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: RightIconTextWidget(
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.upload,
-                                    hintText: context.string.chooseFiles,
-                                    suffixIconPath: DrawableAssets.icUpload,
-                                    textController: _uploadController,
-                                  ),
-                                ),
-                                Container(
+                          Text(
+                            context.string.upload,
+                            style: context.textFontWeight400
+                                .onFontSize(context.resources.dimen.dp12),
+                          ),
+                          SizedBox(
+                            height: context.resources.dimen.dp10,
+                          ),
+                          Row(
+                            children: [
+                              ValueListenableBuilder(
+                                  valueListenable: _isUploadChanged,
+                                  builder: (context, isChanged, widget) {
+                                    return Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: context.resources.dimen.dp10,
+                                            top: context.resources.dimen.dp5,
+                                            right: context.resources.dimen.dp15,
+                                            bottom:
+                                                context.resources.dimen.dp5),
+                                        decoration: BackgroundBoxDecoration(
+                                                boxColor: context
+                                                    .resources.color.colorWhite,
+                                                radious: context
+                                                    .resources.dimen.dp10)
+                                            .roundedCornerBox,
+                                        child: _uploadFiles.isNotEmpty
+                                            ? Wrap(
+                                                runSpacing:
+                                                    resources.dimen.dp10,
+                                                children: List.generate(
+                                                    _uploadFiles.length,
+                                                    (index) => ItemAttachment(
+                                                          id: index,
+                                                          name: _uploadFiles[
+                                                                  index]
+                                                              ['fileName'],
+                                                          callBack:
+                                                              _onDeleteUpload,
+                                                        )),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  _selectFile(context);
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: context
+                                                          .resources.dimen.dp5,
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        context.string.upload,
+                                                        style: context
+                                                            .textFontWeight400
+                                                            .onFontSize(context
+                                                                .resources
+                                                                .dimen
+                                                                .dp12)
+                                                            .onColor(context
+                                                                .resources
+                                                                .color
+                                                                .colorD6D6D6)
+                                                            .copyWith(
+                                                                height: 1),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: context
+                                                          .resources.dimen.dp10,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical:
+                                                                  resources
+                                                                      .dimen
+                                                                      .dp8),
+                                                      child: ImageWidget(
+                                                              // width: 13,
+                                                              // height: 13,
+                                                              path:
+                                                                  DrawableAssets
+                                                                      .icUpload)
+                                                          .loadImage,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                      ),
+                                    );
+                                  }),
+                              InkWell(
+                                onTap: () {
+                                  _selectFile(context);
+                                },
+                                child: Container(
                                   padding: EdgeInsets.only(
-                                      left: resources.dimen.dp10,
-                                      top: resources.dimen.dp20),
+                                    left: resources.dimen.dp10,
+                                  ),
                                   child: ImageWidget(
                                           path: DrawableAssets.icPlusCircle)
                                       .loadImage,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: resources.dimen.dp20,

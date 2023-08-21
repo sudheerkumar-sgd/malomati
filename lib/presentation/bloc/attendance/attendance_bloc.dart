@@ -69,14 +69,9 @@ class AttendanceBloc extends Cubit<AttendanceState> {
           final details = attendanceDetails.entity?.attendanceList
               .firstWhereOrNull(
                   (element) => element.edate == attendance.processdate);
-          printLog(message: details?.toString() ?? '');
-          printLog(message: details?.gpsLatitude?.toString() ?? '');
-          printLog(message: details?.gpsLongitude?.toString() ?? '');
           attendance.gpsLatitude = details?.gpsLatitude;
           attendance.gpsLongitude = details?.gpsLongitude;
         }
-        final details = attendanceReport.entity?.attendanceList[4];
-        printLog(message: details?.toString() ?? '');
         return (attendanceReport.entity?.attendanceList ?? [])
             .reversed
             .toList();

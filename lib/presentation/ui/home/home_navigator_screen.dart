@@ -16,11 +16,6 @@ class HomeNavigatorScreen extends StatelessWidget {
             case '/':
               builder = (BuildContext _) => HomeScreen();
               break;
-            // case InfoListScreen.route:
-            //   builder = (BuildContext _) {
-            //     return InfoListScreen();
-            //   };
-            // break;
             default:
               builder = (BuildContext _) => HomeScreen();
           }

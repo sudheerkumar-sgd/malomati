@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
+import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
+import '../entities/leave_submit_response_entity.dart';
 
 class ServicesUseCase extends BaseUseCase {
   final ApisRepository apisRepository;
@@ -13,8 +15,8 @@ class ServicesUseCase extends BaseUseCase {
     return await apisRepository.getLeaveTypes(requestParams: requestParams);
   }
 
-  Future<Either<Failure, bool>> submitLeaveRequest(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitLeaveRequest({required Map<String, dynamic> requestParams}) async {
     return await apisRepository.submitLeaveRequest(
         requestParams: requestParams);
   }

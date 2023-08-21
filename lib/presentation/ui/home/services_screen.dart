@@ -11,7 +11,7 @@ import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
-  _onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
+  static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
     Navigator.push(
       context,
       PageTransition(
@@ -43,7 +43,7 @@ class ServicesScreen extends StatelessWidget {
               services: sl<ConstantConfig>().getServicesByManager(
                   isManager:
                       context.userDB.get(isMaangerKey, defaultValue: false)),
-              callback: _onServiceClick,
+              callback: onServiceClick,
             ),
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:malomati/domain/entities/profile_entity.dart';
 
 import '../../core/error/failures.dart';
 import '../entities/attendance_list_entity.dart';
+import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
 
 abstract class ApisRepository {
@@ -26,6 +27,6 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, LeaveTypeListEntity>> getLeaveTypes(
       {required Map<String, dynamic> requestParams});
-  Future<Either<Failure, bool>> submitLeaveRequest(
-      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitLeaveRequest({required Map<String, dynamic> requestParams});
 }

@@ -2,6 +2,7 @@
 
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 
 import '../../domain/entities/login_entity.dart';
 
@@ -14,6 +15,8 @@ class LeaveSubmitResponseModel extends BaseModel {
 
   factory LeaveSubmitResponseModel.fromJson(Map<String, dynamic> json) {
     var leaveSubmitResponseModel = LeaveSubmitResponseModel();
+    leaveSubmitResponseModel.sTATUS = json['STATUS'];
+    leaveSubmitResponseModel.sTATUS = json['STATUS'];
     leaveSubmitResponseModel.sTATUS = json['STATUS'];
     leaveSubmitResponseModel.nTFID = '${json['NTF_ID']}';
     leaveSubmitResponseModel.iTEMKEY = '${json['ITEM_KEY']}';
@@ -35,7 +38,11 @@ class LeaveSubmitResponseModel extends BaseModel {
 }
 
 extension SourceModelExtension on LeaveSubmitResponseModel {
-  bool isSuccess() {
-    return sTATUS == 'SUCCESS';
+  LeaveSubmitResponseEntity toLeaveSubmitResponseEntity() {
+    final leaveSubmitResponseEntity = LeaveSubmitResponseEntity();
+    leaveSubmitResponseEntity.sTATUS = sTATUS;
+    leaveSubmitResponseEntity.iTEMKEY = iTEMKEY;
+    leaveSubmitResponseEntity.nTFID = nTFID;
+    return leaveSubmitResponseEntity;
   }
 }

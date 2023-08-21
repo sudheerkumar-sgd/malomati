@@ -3,9 +3,10 @@ import 'package:malomati/presentation/ui/home/services_screen.dart';
 
 class ServicesNavigatorScreen extends StatelessWidget {
   const ServicesNavigatorScreen({Key? key}) : super(key: key);
-  static final servicesKey = GlobalKey<NavigatorState>();
+  static var servicesKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
+    servicesKey = GlobalKey<NavigatorState>();
     return Navigator(
         key: servicesKey,
         initialRoute: '/',

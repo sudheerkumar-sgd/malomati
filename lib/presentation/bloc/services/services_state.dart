@@ -21,7 +21,7 @@ class OnLeaveTypesSuccess extends ServicesState {
 }
 
 class OnLeaveSubmittedSuccess extends ServicesState {
-  final bool leaveSubmitResponse;
+  final ApiEntity<LeaveSubmitResponseEntity> leaveSubmitResponse;
 
   OnLeaveSubmittedSuccess({required this.leaveSubmitResponse});
   @override

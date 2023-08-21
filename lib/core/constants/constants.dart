@@ -28,6 +28,8 @@ String oracleLoginId = "";
 String favoriteAdd = "add";
 String favoriteAddAR = "add";
 
+const int maxUploadFilesize = 1024 * 1024;
+
 const departmentsLocations = [
   {
     "code": "07",
