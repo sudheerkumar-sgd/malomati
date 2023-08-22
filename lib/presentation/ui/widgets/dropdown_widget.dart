@@ -13,6 +13,7 @@ class DropDownWidget<T> extends StatelessWidget {
   final bool isEnabled;
   final String labelText;
   final String hintText;
+  final String errorMessage;
   final TextEditingController? textController;
   final String? suffixIconPath;
   final List<T> list;
@@ -25,6 +26,7 @@ class DropDownWidget<T> extends StatelessWidget {
       this.isEnabled = false,
       this.labelText = '',
       this.hintText = '',
+      this.errorMessage = '',
       this.textController,
       this.suffixIconPath,
       this.selectedValue,
@@ -47,54 +49,67 @@ class DropDownWidget<T> extends StatelessWidget {
         SizedBox(
           height: context.resources.dimen.dp10,
         ),
-        Container(
-          padding: EdgeInsets.only(
-              left: context.resources.dimen.dp10,
-              top: context.resources.dimen.dp5,
-              right: context.resources.dimen.dp15,
-              bottom: context.resources.dimen.dp5),
-          decoration: BackgroundBoxDecoration(
-                  boxColor: context.resources.color.colorWhite,
-                  radious: context.resources.dimen.dp10)
-              .roundedCornerBox,
-          child: ValueListenableBuilder(
-              valueListenable: _onItemChanged,
-              builder: (context, value, widget) {
-                return DropdownButton<T>(
-                  padding: EdgeInsets.symmetric(
-                      vertical: context.resources.dimen.dp2),
-                  isExpanded: true,
+        ValueListenableBuilder(
+            valueListenable: _onItemChanged,
+            builder: (context, value, widget) {
+              return DropdownButtonFormField<T>(
+                padding:
+                    EdgeInsets.symmetric(vertical: context.resources.dimen.dp2),
+                isExpanded: true,
+                isDense: true,
+                decoration: InputDecoration(
+                  filled: true,
                   isDense: true,
-                  hint: Text(
-                    hintText,
-                    style: context.textFontWeight400
-                        .onFontSize(context.resources.dimen.dp12)
-                        .onColor(context.resources.color.colorD6D6D6),
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: context.resources.dimen.dp5,
+                      horizontal: context.resources.dimen.dp10),
+                  hintText: hintText,
+                  hintStyle: context.textFontWeight400
+                      .onFontSize(context.resources.dimen.dp12)
+                      .onColor(context.resources.color.colorD6D6D6),
+                  fillColor: context.resources.color.colorWhite,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(context.resources.dimen.dp10),
+                    ),
                   ),
-                  value: selectedValue,
-                  icon: ImageWidget(
-                          path: DrawableAssets.icChevronDown,
-                          backgroundTint: context.resources.color.viewBgColor)
-                      .loadImage,
+                  errorStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                hint: Text(
+                  hintText,
                   style: context.textFontWeight400
-                      .onFontSize(context.resources.dimen.dp12),
-                  underline: Container(
-                    height: 0,
-                  ),
-                  onChanged: (T? value) {
-                    _onItemChanged.value = !_onItemChanged.value;
-                    selectedValue = value;
-                    callback!(value);
-                  },
-                  items: list.map<DropdownMenuItem<T>>((T value) {
-                    return DropdownMenuItem<T>(
-                      value: value,
-                      child: Text(value.toString()),
-                    );
-                  }).toList(),
-                );
-              }),
-        ),
+                      .onFontSize(context.resources.dimen.dp12)
+                      .onColor(context.resources.color.colorD6D6D6),
+                ),
+                validator: (value) {
+                  if (value == null || value.toString().isEmpty) {
+                    return errorMessage.isNotEmpty ? errorMessage : null;
+                  }
+                  return null;
+                },
+                value: selectedValue,
+                icon: ImageWidget(
+                        path: DrawableAssets.icChevronDown,
+                        backgroundTint: context.resources.color.viewBgColor)
+                    .loadImage,
+                style: context.textFontWeight400
+                    .onFontSize(context.resources.dimen.dp12),
+                onChanged: (T? value) {
+                  _onItemChanged.value = !_onItemChanged.value;
+                  selectedValue = value;
+                  callback!(value);
+                },
+                items: list.map<DropdownMenuItem<T>>((T value) {
+                  return DropdownMenuItem<T>(
+                    value: value,
+                    child: Text(value.toString()),
+                  );
+                }).toList(),
+              );
+            }),
       ],
     );
   }
