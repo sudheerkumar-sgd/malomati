@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
@@ -22,7 +23,16 @@ class ServicesUseCase extends BaseUseCase {
   }
 
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
-      submitInitiative({required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitInitiative(requestParams: requestParams);
+      submitServicesRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitServicesRequest(
+        apiUrl: apiUrl, requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getEmployeesByDepartment(
+        requestParams: requestParams);
   }
 }

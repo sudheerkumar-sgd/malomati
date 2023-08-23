@@ -5,12 +5,14 @@ import 'package:dio/dio.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
+import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
+import '../../domain/entities/employee_entity.dart';
 import '../model/attendance_List_model.dart';
 import 'api_urls.dart';
 import 'dio_logging_interceptor.dart';
@@ -32,7 +34,9 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<LeaveSubmitResponseModel>> submitLeaveRequest(
       {required Map<String, dynamic> requestParams});
-  Future<ApiResponse<LeaveSubmitResponseModel>> submitInitiative(
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitServicesRequest(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
+  Future<List<EmployeeEntity>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -247,11 +251,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<ApiResponse<LeaveSubmitResponseModel>> submitInitiative(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitServicesRequest(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.post(
-        initiativeSubmitApiUrl,
+        apiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -261,6 +266,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           response.data,
           (p0) => LeaveSubmitResponseModel.fromJson(response.data));
       return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<EmployeeEntity>> getEmployeesByDepartment(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        employeesApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var deptEmployeesListJson = response.data['DeptEmployeesList'] as List;
+      var deptEmployeesList = deptEmployeesListJson
+          .map((employeeEntity) =>
+              EmployeeModel.fromJson(employeeEntity).toEmployeeEntity())
+          .toList();
+      return deptEmployeesList;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

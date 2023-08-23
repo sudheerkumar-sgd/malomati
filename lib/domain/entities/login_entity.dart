@@ -8,9 +8,18 @@ class LoginEntity extends BaseEntity {
   String? fullNameAR;
   String? fullNameUS;
   String? departmentId;
+  String? jobName;
+  String? jobNameAr;
 
   LoginEntity();
   @override
-  List<Object?> get props =>
-      [oracleLoginId, fullNameAR, fullNameUS, iSMANAGER, departmentId];
+  List<Object?> get props => [
+        oracleLoginId,
+        fullNameAR,
+        fullNameUS,
+        iSMANAGER,
+        departmentId,
+        jobName,
+        jobNameAr
+      ];
 }

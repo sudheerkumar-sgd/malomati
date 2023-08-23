@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
@@ -33,14 +34,27 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnLeaveSubmittedSuccess(leaveSubmitResponse: r)));
   }
 
-  Future<void> submitInitiative(
+  Future<void> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams}) async {
     emit(OnServicesLoading());
 
-    final result =
-        await servicesUseCase.submitInitiative(requestParams: requestParams);
+    final result = await servicesUseCase.getEmployeesByDepartment(
+        requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
-        (r) => OnInitiativeSuccess(initiativeSubmitResponse: r)));
+        (r) => OnEmployeesSuccess(employeesList: r)));
+  }
+
+  Future<void> submitServicesRequest(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+
+    final result = await servicesUseCase.submitServicesRequest(
+        apiUrl: apiUrl, requestParams: requestParams);
+    emit(result.fold(
+        (l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) =>
+            OnServicesRequestSubmitSuccess(servicesRequestSuccessResponse: r)));
   }
 
   String _getErrorMessage(Failure failure) {

@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/presentation/ui/home/widgets/call_confirmation.dart';
@@ -446,12 +445,7 @@ class MoreScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.userDB.delete(oracleLoginIdKey);
-                context.userDB.delete(userFullNameUsKey);
-                context.userDB.delete(userFullNameArKey);
-                context.userDB.delete(isMaangerKey);
-                context.userDB.delete(favoriteKey);
-                Phoenix.rebirth(context);
+                logout(context);
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: resources.dimen.dp60),

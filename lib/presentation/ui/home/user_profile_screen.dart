@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 import 'package:malomati/presentation/ui/widgets/back_app_bar.dart';
 
+import '../../../core/common/common_utils.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/resources.dart';
@@ -418,12 +418,7 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                context.userDB.delete(oracleLoginIdKey);
-                                context.userDB.delete(userFullNameUsKey);
-                                context.userDB.delete(userFullNameArKey);
-                                context.userDB.delete(isMaangerKey);
-                                context.userDB.delete(favoriteKey);
-                                Phoenix.rebirth(context);
+                                logout(context);
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(

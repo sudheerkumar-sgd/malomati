@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
+import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
+import 'package:malomati/presentation/ui/services/badge_screen.dart';
+import 'package:malomati/presentation/ui/services/certificates_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
+import 'package:malomati/presentation/ui/services/overtime_screen.dart';
+import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../domain/entities/favorite_entity.dart';
@@ -25,6 +30,20 @@ class ServicesScreen extends StatelessWidget {
         .toLowerCase()
         .contains('initiatives')) {
       screenWidget = InitiativesScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('certificate')) {
+      screenWidget = CertificatesScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('thank')) {
+      screenWidget = ThankyouScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('advance salary')) {
+      screenWidget = AdvanceSalaryScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('overtime')) {
+      screenWidget = OvertimeScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('badge')) {
+      screenWidget = BadgeScreen();
     }
 
     Navigator.push(

@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/constants/constants.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -155,4 +158,28 @@ String getRemainingHoursMinutesFormat(DateTime from, DateTime to) {
     return '0';
   }
   return '${(minutes / 60).round()}.${minutes % 60} hrs';
+}
+
+List<NameIdEntity> getDropDownYesNo(BuildContext context) {
+  return [
+    NameIdEntity('Y', context.string.yes),
+    NameIdEntity('N', context.string.no)
+  ];
+}
+
+List<NameIdEntity> getSalaryTypes(BuildContext context) {
+  return [
+    NameIdEntity('D', context.string.detailedSalary),
+    NameIdEntity('N', context.string.noSalary),
+    NameIdEntity('T', context.string.totalSalary)
+  ];
+}
+
+logout(BuildContext context) {
+  context.userDB.delete(oracleLoginIdKey);
+  context.userDB.delete(userFullNameUsKey);
+  context.userDB.delete(userFullNameArKey);
+  context.userDB.delete(isMaangerKey);
+  context.userDB.delete(favoriteKey);
+  Phoenix.rebirth(context);
 }

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/initiative_request_model.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
@@ -12,61 +10,46 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
-import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
+import '../../../data/data_sources/api_urls.dart';
+import '../../../data/model/api_request_model.dart';
 import '../widgets/back_app_bar.dart';
 
-class InitiativesScreen extends StatelessWidget {
-  static const String route = '/InitiativesScreen';
-  InitiativesScreen({super.key});
+class CertificatesScreen extends StatelessWidget {
+  static const String route = '/Certificates';
+  CertificatesScreen({super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _costController = TextEditingController();
-  NameIdEntity? applicability;
-  NameIdEntity? specilizationRelation;
-  NameIdEntity? serveDepartmentStrategy;
-  String? initiativeYear;
+  final TextEditingController _jobTitleController = TextEditingController();
+  final TextEditingController _toController = TextEditingController();
+  String? showSalary;
 
-  onApplicabilitySelected(NameIdEntity? value) {
-    applicability = value;
-  }
-
-  onSpecilizationRelationSelected(NameIdEntity? value) {
-    specilizationRelation = value;
-  }
-
-  onServeDepartmentStrategySelected(NameIdEntity? value) {
-    serveDepartmentStrategy = value;
-  }
-
-  onInitiativeYearSelected(String? value) {
-    initiativeYear = value ?? '';
+  onShowSalarySelected(NameIdEntity? value) {
+    showSalary = value?.id ?? '';
   }
 
   _submitInitiativeRequest(BuildContext context) {
-    final initiativeRequestModel = InitiativeRequestModel();
-    initiativeRequestModel.uSERNAME =
+    final certificateRequestModel = ApiRequestModel();
+    certificateRequestModel.uSERNAME =
         context.userDB.get(userNameKey, defaultValue: '');
-    initiativeRequestModel.iNITIATIVENAME = _nameController.text;
-    initiativeRequestModel.iNITIATIVEDESCRIPTION = _descriptionController.text;
-    initiativeRequestModel.aPPLICABILITY = applicability?.id ?? '';
-    initiativeRequestModel.sPECILIZATIONRELATION =
-        specilizationRelation?.id ?? '';
-    initiativeRequestModel.sERVEDEPARTMENTSTRATEGY =
-        serveDepartmentStrategy?.id ?? '';
-    initiativeRequestModel.iNITIATIVEYEAR = initiativeYear;
-    initiativeRequestModel.eSTIMATEDCOSTIFANY = _costController.text;
+    certificateRequestModel.eNTITYNAME = _toController.text;
+    certificateRequestModel.sHOWSALARY = showSalary;
     _servicesBloc.submitServicesRequest(
-        apiUrl: initiativeSubmitApiUrl,
-        requestParams: initiativeRequestModel.toJson());
+        apiUrl: certificateApiUrl,
+        requestParams: certificateRequestModel.toCertificateRequest());
   }
 
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
+    _nameController.text = context.userDB.get(
+        resources.isLocalEn ? userFullNameUsKey : userFullNameArKey,
+        defaultValue: '');
+    _jobTitleController.text = context.userDB.get(
+        resources.isLocalEn ? userJobNameEnKey : userJobNameArKey,
+        defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -107,7 +90,7 @@ class InitiativesScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.initiatives),
+                  BackAppBarWidget(title: context.string.certificate),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
@@ -119,102 +102,19 @@ class InitiativesScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RightIconTextWidget(
-                              isEnabled: true,
+                              isEnabled: false,
                               height: resources.dimen.dp27,
-                              labelText: context.string.initiativeName,
-                              errorMessage: context.string.initiativeName,
+                              labelText: context.string.fullName,
                               textController: _nameController,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
                             RightIconTextWidget(
-                              isEnabled: true,
-                              height: resources.dimen.dp100,
-                              labelText: context.string.initiativeDescription,
-                              errorMessage:
-                                  context.string.initiativeDescription,
-                              textController: _descriptionController,
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.applicability,
-                                    errorMessage: context.string.applicability,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: applicability,
-                                    callback: onApplicabilitySelected,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp20,
-                                ),
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText:
-                                        context.string.specilizationRelation,
-                                    errorMessage:
-                                        context.string.specilizationRelation,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: specilizationRelation,
-                                    callback: onSpecilizationRelationSelected,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText:
-                                        context.string.serveDepartmentStrategy,
-                                    errorMessage:
-                                        context.string.serveDepartmentStrategy,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: serveDepartmentStrategy,
-                                    callback: onServeDepartmentStrategySelected,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp20,
-                                ),
-                                Expanded(
-                                  child: DropDownWidget<String>(
-                                    list: const [
-                                      '2023',
-                                      '2024',
-                                      '2025',
-                                      '2026',
-                                      '2027'
-                                    ],
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.initiativeYear,
-                                    errorMessage: context.string.initiativeYear,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: initiativeYear,
-                                    callback: onInitiativeYearSelected,
-                                  ),
-                                ),
-                              ],
+                              isEnabled: false,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.jobTitle,
+                              textController: _jobTitleController,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
@@ -222,9 +122,19 @@ class InitiativesScreen extends StatelessWidget {
                             RightIconTextWidget(
                               isEnabled: true,
                               height: resources.dimen.dp27,
-                              labelText: context.string.estimatedCostifAny,
-                              textController: _costController,
-                              textInputType: TextInputType.number,
+                              labelText: context.string.entityName,
+                              errorMessage: context.string.entityName,
+                              textController: _toController,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            DropDownWidget<NameIdEntity>(
+                              list: getSalaryTypes(context),
+                              height: resources.dimen.dp27,
+                              labelText: context.string.showSalary,
+                              errorMessage: context.string.showSalary,
+                              callback: onShowSalarySelected,
                             ),
                           ],
                         ),

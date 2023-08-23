@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
@@ -30,5 +31,9 @@ abstract class ApisRepository {
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
       submitLeaveRequest({required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
-      submitInitiative({required Map<String, dynamic> requestParams});
+      submitServicesRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
+      {required Map<String, dynamic> requestParams});
 }

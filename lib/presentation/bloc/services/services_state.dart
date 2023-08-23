@@ -36,6 +36,23 @@ class OnInitiativeSuccess extends ServicesState {
   List<Object?> get props => [initiativeSubmitResponse];
 }
 
+class OnServicesRequestSubmitSuccess extends ServicesState {
+  final ApiEntity<LeaveSubmitResponseEntity> servicesRequestSuccessResponse;
+
+  OnServicesRequestSubmitSuccess(
+      {required this.servicesRequestSuccessResponse});
+  @override
+  List<Object?> get props => [servicesRequestSuccessResponse];
+}
+
+class OnEmployeesSuccess extends ServicesState {
+  final List<EmployeeEntity> employeesList;
+
+  OnEmployeesSuccess({required this.employeesList});
+  @override
+  List<Object?> get props => [employeesList];
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

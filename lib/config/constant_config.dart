@@ -34,10 +34,6 @@ class ConstantConfig {
         nameAR: 'Other Leaves',
         iconPath: DrawableAssets.icServiceLeave),
     FavoriteEntity(
-        name: 'Attendance',
-        nameAR: 'حضور',
-        iconPath: DrawableAssets.icServiceAttendance),
-    FavoriteEntity(
         name: 'Initiatives',
         nameAR: 'المبادرات',
         iconPath: DrawableAssets.icInitiatives),

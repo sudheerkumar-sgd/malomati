@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
 const double defaultHeight = 27;
@@ -42,6 +41,8 @@ class DropDownWidget<T> extends StatelessWidget {
           visible: labelText.isNotEmpty,
           child: Text(
             labelText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: context.textFontWeight400
                 .onFontSize(context.resources.dimen.dp12),
           ),
@@ -51,7 +52,7 @@ class DropDownWidget<T> extends StatelessWidget {
         ),
         ValueListenableBuilder(
             valueListenable: _onItemChanged,
-            builder: (context, value, widget) {
+            builder: (context, onItemChanged, widget) {
               return DropdownButtonFormField<T>(
                 padding:
                     EdgeInsets.symmetric(vertical: context.resources.dimen.dp2),
@@ -91,10 +92,13 @@ class DropDownWidget<T> extends StatelessWidget {
                   return null;
                 },
                 value: selectedValue,
-                icon: ImageWidget(
-                        path: DrawableAssets.icChevronDown,
-                        backgroundTint: context.resources.color.viewBgColor)
-                    .loadImage,
+                icon: Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: ImageWidget(
+                          path: DrawableAssets.icChevronDown,
+                          backgroundTint: context.resources.color.viewBgColor)
+                      .loadImage,
+                ),
                 style: context.textFontWeight400
                     .onFontSize(context.resources.dimen.dp12),
                 onChanged: (T? value) {

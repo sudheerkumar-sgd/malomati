@@ -12,6 +12,7 @@ import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
@@ -194,15 +195,34 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
-      submitInitiative({required Map<String, dynamic> requestParams}) async {
+      submitServicesRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
-        final apiResponse =
-            await dataSource.submitInitiative(requestParams: requestParams);
+        final apiResponse = await dataSource.submitServicesRequest(
+            apiUrl: apiUrl, requestParams: requestParams);
         final apiEntity = apiResponse.toEntity<LeaveSubmitResponseEntity>(
             apiResponse.data!.toLeaveSubmitResponseEntity());
         return Right(apiEntity);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.getEmployeesByDepartment(
+            requestParams: requestParams);
+        return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       }

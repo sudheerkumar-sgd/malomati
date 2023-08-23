@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/presentation/ui/home/user_profile_screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -37,6 +38,21 @@ class UserAppBarWidget extends StatelessWidget {
           alignment: Alignment.center,
           child: Row(
             children: [
+              InkWell(
+                onTap: () {
+                  logout(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(context.resources.dimen.dp5),
+                  child: ImageWidget(
+                          path: DrawableAssets.icLogout,
+                          backgroundTint: Colors.white)
+                      .loadImage,
+                ),
+              ),
+              SizedBox(
+                width: context.resources.dimen.dp5,
+              ),
               Container(
                   padding: EdgeInsets.all(context.resources.dimen.dp5),
                   child: ImageWidget(path: DrawableAssets.icBell).loadImage),

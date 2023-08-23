@@ -68,6 +68,10 @@ class LoginScreen extends StatelessWidget {
                                 : false);
                         context.userDB.put(userNameKey,
                             _nameTextController.text.toUpperCase());
+                        context.userDB.put(userJobNameEnKey,
+                            state.loginEntity.entity?.jobName ?? '');
+                        context.userDB.put(userJobNameArKey,
+                            state.loginEntity.entity?.jobNameAr ?? '');
                         if (_isRememberd.value) {
                           context.userDB
                               .put(passwordKey, _pwdTextController.text);

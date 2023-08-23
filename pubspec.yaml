@@ -187,6 +187,8 @@ flutter:
      - assets/images/ic_upload.svg
      - assets/images/ic_plus_circle.svg
      - assets/images/ic_time.svg
+     - assets/images/ic_chevron_left.svg
+     - assets/images/ic_logout.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

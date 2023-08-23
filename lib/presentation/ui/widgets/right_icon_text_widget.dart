@@ -35,6 +35,8 @@ class RightIconTextWidget extends StatelessWidget {
           visible: labelText.isNotEmpty,
           child: Text(
             labelText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: context.textFontWeight400
                 .onFontSize(context.resources.dimen.dp12),
           ),

@@ -17,3 +17,12 @@ const String leaveSubmitApiUrl =
     'UAQSGD_MOB_ERP_RequestForLeaves/RequestLeaves';
 const String initiativeSubmitApiUrl =
     'UAQSGD_MOB_ERP_InitiateRequest/InitiativeRequest';
+const String submitThankyouApiUrl =
+    'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouRequest';
+const String employeesApiUrl =
+    'UAQSGD_MOB_ERP_Department/DepartmentRS/DeptEmpsList';
+const String certificateApiUrl =
+    'UAQSGD_MOB_ERP_SalaryCertificateRequest/SalaryCertificate';
+const String advanceSalaryApiUrl =
+    'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary';
+const String overtimeApiUrl = 'UAQSGD_MOB_ERP_OvertimeRequest/OvertimeRequest';
