@@ -58,6 +58,7 @@ dependencies:
   geolocator: ^9.0.2
   just_audio: ^0.9.34
   file_picker: ^5.3.3
+  syncfusion_flutter_pdfviewer: ^22.2.10
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -90,6 +91,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+  # files:
+     - assets/json/hr_law.pdf
   # audios images:
      - assets/audio/anniversay.mp3
      - assets/audio/birthday.mp3
