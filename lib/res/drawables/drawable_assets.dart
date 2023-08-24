@@ -65,5 +65,6 @@ class DrawableAssets {
   static const icTime = '${drawablePath}ic_time.svg';
   static const icChevronLeft = '${drawablePath}ic_chevron_left.svg';
   static const icLogout = '${drawablePath}ic_logout.svg';
+  static const icCheckmarkCircle = '${drawablePath}ic_checkmark_circle.svg';
   static const icMap = '${drawablePath}ic_map.png';
 }

@@ -60,9 +60,9 @@ class HomeUseCase extends BaseUseCase {
           favorites.indexWhere((element) => element['name'] == favoriteAdd);
       favorites.removeAt(index);
       favorites.insert(index, {
-        'name': favoriteEntity.name,
-        'nameAR': favoriteEntity.nameAR,
-        'iconPath': favoriteEntity.iconPath,
+        'name': '${favoriteEntity.name}',
+        'nameAR': '${favoriteEntity.nameAR}',
+        'iconPath': '${favoriteEntity.iconPath}',
       });
       userDB.put(favoriteKey, favorites);
       favoriteData = userDB.get(favoriteKey, defaultValue: []) as List;

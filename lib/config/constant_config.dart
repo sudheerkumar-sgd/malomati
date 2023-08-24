@@ -58,7 +58,7 @@ class ConstantConfig {
         nameAR: 'العمل الإضافي',
         iconPath: DrawableAssets.icOvertime),
     FavoriteEntity(
-        name: 'Badge', nameAR: 'Badge', iconPath: DrawableAssets.icBadge),
+        name: 'Badge', nameAR: 'بطاقة', iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
@@ -86,9 +86,9 @@ class ConstantConfig {
       'iconPath': DrawableAssets.icServicePermission
     },
     {
-      'name': 'Attendance',
-      'nameAR': 'حضور',
-      'iconPath': DrawableAssets.icServiceAttendance
+      'name': 'Thank You',
+      'nameAR': 'شكراً لك',
+      'iconPath': DrawableAssets.icServiceThankyou
     },
     {
       'name': favoriteAdd,

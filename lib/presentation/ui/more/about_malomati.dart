@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/constants/data_constants.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import '../widgets/back_app_bar.dart';
 
@@ -49,7 +50,7 @@ class AboutMalomati extends StatelessWidget {
                         height: context.resources.dimen.dp10,
                       ),
                       Text(
-                        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text',
+                        aboutMalomati,
                         style: context.textFontWeight400
                             .onFontSize(context.resources.dimen.dp11),
                       ),

@@ -10,6 +10,7 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../data/model/api_request_model.dart';
+import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
 class BadgeScreen extends StatelessWidget {
@@ -45,15 +46,12 @@ class BadgeScreen extends StatelessWidget {
     empNumberController.text = context.userDB.get(
         resources.isLocalEn ? userJobIdEnKey : userJobIdArKey,
         defaultValue: '');
-    nationalityController.text = context.userDB.get(
-        resources.isLocalEn ? userNationalityEnKey : userNationalityArKey,
-        defaultValue: '');
-    hiringDateController.text = context.userDB.get(
-        resources.isLocalEn ? userJoiningDateEnKey : userJoiningDateArKey,
-        defaultValue: '');
-    jobTitleController.text = context.userDB.get(
-        resources.isLocalEn ? userJobNameEnKey : userJobNameArKey,
-        defaultValue: '');
+    nationalityController.text =
+        context.userDB.get(userNationalityEnKey, defaultValue: '');
+    hiringDateController.text =
+        context.userDB.get(userJoiningDateEnKey, defaultValue: '');
+    jobTitleController.text =
+        context.userDB.get(userJobNameEnKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -68,21 +66,20 @@ class BadgeScreen extends StatelessWidget {
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
-                          context.string.success,
+                          PopupType.success,
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
                 } else {
                   Dialogs.showInfoDialog(
                       context,
-                      context.string.opps,
+                      PopupType.fail,
                       state.servicesRequestSuccessResponse
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
-                Dialogs.showInfoDialog(
-                    context, context.string.opps, state.message);
+                Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
             child: Container(
@@ -106,7 +103,6 @@ class BadgeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RightIconTextWidget(
-                              isEnabled: true,
                               height: resources.dimen.dp27,
                               labelText: context.string.employeeNumber,
                               textController: empNumberController,
@@ -115,7 +111,6 @@ class BadgeScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             RightIconTextWidget(
-                              isEnabled: true,
                               height: resources.dimen.dp27,
                               labelText: context.string.nationality,
                               textController: nationalityController,
@@ -124,7 +119,6 @@ class BadgeScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             RightIconTextWidget(
-                              isEnabled: true,
                               height: resources.dimen.dp27,
                               labelText: context.string.hiringDate,
                               textController: hiringDateController,
@@ -133,7 +127,6 @@ class BadgeScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             RightIconTextWidget(
-                              isEnabled: true,
                               height: resources.dimen.dp27,
                               labelText: context.string.jobTitle,
                               textController: jobTitleController,

@@ -4,6 +4,7 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 import 'package:malomati/presentation/ui/home/main_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -72,6 +73,12 @@ class LoginScreen extends StatelessWidget {
                             state.loginEntity.entity?.jobName ?? '');
                         context.userDB.put(userJobNameArKey,
                             state.loginEntity.entity?.jobNameAr ?? '');
+                        context.userDB.put(userJoiningDateEnKey,
+                            state.loginEntity.entity?.hireDate ?? '');
+                        context.userDB.put(userJobIdEnKey,
+                            state.loginEntity.entity?.employeeNumber ?? '');
+                        context.userDB.put(userNationalityEnKey,
+                            state.loginEntity.entity?.nationality ?? '');
                         if (_isRememberd.value) {
                           context.userDB
                               .put(passwordKey, _pwdTextController.text);
@@ -87,12 +94,13 @@ class LoginScreen extends StatelessWidget {
                             (_) => false);
                       } else {
                         Navigator.pop(context);
-                        Dialogs.showInfoDialog(
-                            context, "Failed", state.loginEntity.message ?? '');
+                        Dialogs.showInfoDialog(context, PopupType.fail,
+                            state.loginEntity.message ?? '');
                       }
                     } else if (state is OnLoginError) {
                       Navigator.pop(context);
-                      Dialogs.showInfoDialog(context, "Failed", state.message);
+                      Dialogs.showInfoDialog(
+                          context, PopupType.fail, state.message);
                     }
                   },
                   child: SingleChildScrollView(

@@ -11,6 +11,7 @@ import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../data/model/api_request_model.dart';
+import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
 class AdvanceSalaryScreen extends StatelessWidget {
@@ -62,21 +63,20 @@ class AdvanceSalaryScreen extends StatelessWidget {
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
-                          context.string.success,
+                          PopupType.success,
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
                 } else {
                   Dialogs.showInfoDialog(
                       context,
-                      context.string.opps,
+                      PopupType.fail,
                       state.servicesRequestSuccessResponse
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
-                Dialogs.showInfoDialog(
-                    context, context.string.opps, state.message);
+                Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
             child: Container(

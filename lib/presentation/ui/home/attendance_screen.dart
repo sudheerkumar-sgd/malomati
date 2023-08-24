@@ -7,8 +7,10 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/utils/location.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
@@ -180,7 +182,7 @@ class AttendanceScreen extends StatelessWidget {
       var department = getDepartmentByLocation(
           position?.latitude ?? 0, position?.longitude ?? 0);
       if ((department['name'] ?? '').isEmpty) {
-        Dialogs.showInfoDialog(context, context.string.opps,
+        Dialogs.showInfoDialog(context, PopupType.fail,
             context.string.attendancelocationErrorMessage);
       } else {
         Map<String, dynamic> requestParams = {
@@ -191,19 +193,25 @@ class AttendanceScreen extends StatelessWidget {
           "method": option['id'],
         };
         printLog(message: requestParams.toString());
-        //_attendanceBloc.submitAttendance(requestParams: requestParams);
+        _attendanceBloc.submitAttendance(requestParams: requestParams);
       }
     } else {
       var isLocationOn = await Location.checkGps();
       if (isLocationOn) {
         if (context.mounted) {
-          Dialogs.showInfoDialog(context, context.string.opps,
-              'Featching Location Details, please try again');
+          Dialogs.showInfoDialog(
+            context,
+            PopupType.fail,
+            'Featching Location Details, please try again',
+          );
         }
         position = await Location.getLocation();
       } else if (context.mounted) {
-        Dialogs.showInfoDialog(context, context.string.opps,
-            'please Enable Location to submit attendance');
+        Dialogs.showInfoDialog(
+          context,
+          PopupType.fail,
+          'please Enable Location to submit attendance',
+        );
       }
     }
   }
@@ -228,9 +236,13 @@ class AttendanceScreen extends StatelessWidget {
                   if (state is OnAttendanceDataLoading) {
                     Dialogs.loader(context);
                   } else if (state is OnAttendanceSubmitSuccess) {
-                    Navigator.pop(context);
-                    Dialogs.showInfoDialog(context, context.string.success,
+                    Navigator.of(context, rootNavigator: true).pop();
+                    Dialogs.showInfoDialog(context, PopupType.success,
                         state.attendanceSubmitResponse);
+                  } else if (state is OnAttendanceApiError) {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    Dialogs.showInfoDialog(
+                        context, PopupType.fail, state.message);
                   }
                 },
                 child: Container(
@@ -254,6 +266,7 @@ class AttendanceScreen extends StatelessWidget {
                           maxScale: 4,
                           scaleFactor: 3,
                           child: ImageWidget(
+                                  width: double.infinity,
                                   height: 100,
                                   path:
                                       department['map'] ?? DrawableAssets.icMap,
@@ -287,14 +300,14 @@ class AttendanceScreen extends StatelessWidget {
                           height: resources.dimen.dp10,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Visibility(
                               visible: canPunchOutEnable(),
                               child: Row(
                                 children: [
                                   ImageWidget(
-                                          height: 23,
+                                          height: 25,
                                           path: DrawableAssets.icPunchIn,
                                           backgroundTint:
                                               resources.color.viewBgColor)
@@ -315,7 +328,7 @@ class AttendanceScreen extends StatelessWidget {
                                             .onColor(context
                                                 .resources.color.textColor)
                                             .onFontSize(
-                                                context.resources.dimen.dp10),
+                                                context.resources.dimen.dp12),
                                       ),
                                       Text(
                                         (attendanceEntity?.punch1Time ?? '')
@@ -328,7 +341,7 @@ class AttendanceScreen extends StatelessWidget {
                                             .onColor(context
                                                 .resources.color.textColor)
                                             .onFontSize(
-                                                context.resources.dimen.dp10),
+                                                context.resources.dimen.dp12),
                                       ),
                                     ],
                                   ),

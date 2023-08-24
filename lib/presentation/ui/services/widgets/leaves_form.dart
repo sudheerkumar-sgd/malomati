@@ -20,10 +20,10 @@ import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
-import '../widgets/alert_dialog_widget.dart';
-import '../widgets/animated_toggle.dart';
-import '../widgets/back_app_bar.dart';
 import 'package:file_picker/file_picker.dart';
+
+import '../../widgets/alert_dialog_widget.dart';
+import '../../widgets/animated_toggle.dart';
 
 enum LeaveType {
   anualLeave('Annual Leaves', '61'),
@@ -245,57 +245,6 @@ class LeavesScreen extends StatelessWidget {
                   horizontal: context.resources.dimen.dp25),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: context.resources.dimen.dp10,
-                  ),
-                  BackAppBarWidget(title: _getTitleByLeaveType(context)),
-                  Visibility(
-                    visible: leaveType == LeaveType.anualLeave ||
-                        leaveType == LeaveType.sickLeave ||
-                        leaveType == LeaveType.permission,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: context.resources.dimen.dp20,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp20,
-                              vertical: resources.dimen.dp5),
-                          decoration: BackgroundBoxDecoration(
-                                  boxColor: context.resources.color
-                                      .bottomSheetIconUnSelected,
-                                  radious: context.resources.dimen.dp15)
-                              .roundedCornerBox,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                context.string.currentBalance,
-                                style: context.textFontWeight600
-                                    .onFontSize(context.resources.dimen.dp12)
-                                    .onColor(resources.color.textColor212B4B)
-                                    .copyWith(height: 1),
-                              ),
-                              SizedBox(
-                                width: resources.dimen.dp5,
-                              ),
-                              Text(
-                                currentBalanceText,
-                                style: context.textFontWeight600
-                                    .onFontSize(context.resources.dimen.dp12)
-                                    .onColor(resources.color.viewBgColor)
-                                    .copyWith(height: 1),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: context.resources.dimen.dp20,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

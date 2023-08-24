@@ -115,3 +115,6 @@ const thankYouReasonList = [
     "attribute8": "العمل في ساعات غير رسمية لإنجاز مهمة معينة"
   }
 ];
+
+const aboutMalomati =
+    'Malomati is Umm Al Quwain Government Self Service Mobile Application for its employees. The application is developed by UAQ Department of eGovernment and will enable employees to use features of the Oracle EBS self-services features over mobile using with the same credentials as the ERP login. Malomati smart application provides six relevant services, which are listed below.';

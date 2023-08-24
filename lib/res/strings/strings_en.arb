@@ -152,6 +152,10 @@
     "@badge": {
         "type": "text"
     },
+    "myTeam": "My Team",
+    "@myTeam": {
+        "type": "text"
+    },
     "overtime": "Overtime",
     "@overtime": {
         "type": "text"
@@ -425,6 +429,16 @@
     "nationality": "Nationality",
     "hiringDate": "Hiring Date",
     "nationality": "Nationality",
+    "attendanceRate": "Attendance Rate",
+    "createAbsence": "Create Absence",
+    "teamStatusText": "The team attendance status today",
+    "numberOfEmployee": "Number of Employee",
+    "employeesOnLeaves": "Employees on Leaves",
+    "teamAttendanceReport": "Team Attendance Report",
+    "view": "View",
+    "close": "Close",
+    "thanks": "Thanks",
+    "sorry": "Sorry",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

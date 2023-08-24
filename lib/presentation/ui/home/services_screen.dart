@@ -13,6 +13,7 @@ import 'package:page_transition/page_transition.dart';
 import '../../../domain/entities/favorite_entity.dart';
 import '../../../injection_container.dart';
 import '../services/initiatives_screen.dart';
+import '../services/myteam_screen.dart';
 import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
@@ -44,6 +45,8 @@ class ServicesScreen extends StatelessWidget {
       screenWidget = OvertimeScreen();
     } else if ((favoriteEntity.name ?? '').toLowerCase().contains('badge')) {
       screenWidget = BadgeScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
+      screenWidget = MyTeamScreen();
     }
 
     Navigator.push(

@@ -10,6 +10,9 @@ class LoginEntity extends BaseEntity {
   String? departmentId;
   String? jobName;
   String? jobNameAr;
+  String? employeeNumber;
+  String? hireDate;
+  String? nationality;
 
   LoginEntity();
   @override
@@ -20,6 +23,9 @@ class LoginEntity extends BaseEntity {
         iSMANAGER,
         departmentId,
         jobName,
-        jobNameAr
+        jobNameAr,
+        employeeNumber,
+        hireDate,
+        nationality,
       ];
 }

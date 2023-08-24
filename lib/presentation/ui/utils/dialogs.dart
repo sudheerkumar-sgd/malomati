@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import '../../../res/drawables/drawable_assets.dart';
 import '../widgets/image_widget.dart';
 
@@ -53,26 +54,14 @@ class Dialogs {
   }
 
   static Future showInfoDialog(
-    BuildContext context,
-    String title,
-    String message,
-  ) async {
+      BuildContext context, PopupType popupType, String message,
+      {String title = ''}) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        content: Text(
-          message,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => {Navigator.pop(context)},
-              child: const Text("Okay")),
-        ],
+      builder: (context) => AlertDialogWidget(
+        type: popupType,
+        message: message,
+        title: title,
       ),
     );
   }

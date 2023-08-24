@@ -19,6 +19,7 @@ import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
+import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -97,8 +98,8 @@ class OvertimeScreen extends StatelessWidget {
           _uploadFiles.add(data);
           _isUploadChanged.value = !_isUploadChanged.value;
         } else if (context.mounted) {
-          Dialogs.showInfoDialog(
-              context, "Opps", "Upload file should not be more then 1mb");
+          Dialogs.showInfoDialog(context, PopupType.fail,
+              "Upload file should not be more then 1mb");
         }
       }
     } else {
@@ -175,21 +176,20 @@ class OvertimeScreen extends StatelessWidget {
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
-                          context.string.success,
+                          PopupType.success,
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
                 } else {
                   Dialogs.showInfoDialog(
                       context,
-                      context.string.opps,
+                      PopupType.fail,
                       state.servicesRequestSuccessResponse
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
-                Dialogs.showInfoDialog(
-                    context, context.string.opps, state.message);
+                Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
             child: Container(

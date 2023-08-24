@@ -13,6 +13,9 @@ class LoginModel extends BaseModel {
   String? departmentId;
   String? jobName;
   String? jobNameAr;
+  String? employeeNumber;
+  String? hireDate;
+  String? nationality;
 
   LoginModel();
 
@@ -25,6 +28,9 @@ class LoginModel extends BaseModel {
     loginModel.departmentId = '${json['DEPARTMENT_ID']}';
     loginModel.jobName = '${json['JOB_NAME']}';
     loginModel.jobNameAr = '${json['JOB_NAME_AR']}';
+    loginModel.employeeNumber = '${json['EMPLOYEE_NUMBER']}';
+    loginModel.hireDate = '${json['HIRE_DATE']}';
+    loginModel.nationality = '${json['NATIONALITY']}';
     return loginModel;
   }
 
@@ -52,6 +58,9 @@ extension SourceModelExtension on LoginModel {
     loginEntity.departmentId = departmentId;
     loginEntity.jobName = jobName;
     loginEntity.jobNameAr = jobNameAr;
+    loginEntity.employeeNumber = employeeNumber;
+    loginEntity.hireDate = hireDate;
+    loginEntity.nationality = nationality;
     return loginEntity;
   }
 }

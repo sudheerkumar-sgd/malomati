@@ -46,7 +46,8 @@ class HomeScreen extends StatelessWidget {
   final _currentDate = DateFormat('EEE, dd MMMM yyyy').format(DateTime.now());
   final ValueNotifier _timeString =
       ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
-
+  final ValueNotifier<int> _punchStatus = ValueNotifier<int>(0);
+  final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(0);
   void _getTime() {
     _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
   }
@@ -62,6 +63,16 @@ class HomeScreen extends StatelessWidget {
         userDB: context.userDB, favoriteEntity: favoriteEntity);
   }
 
+  String _getPunchTextByStatus(BuildContext context, int status) {
+    if (status == 0) {
+      return context.string.morningPunch;
+    } else if (status == 1) {
+      return context.string.thankYouForPunchIn;
+    } else {
+      return context.string.thankYouForPunchOut;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
@@ -74,6 +85,13 @@ class HomeScreen extends StatelessWidget {
     _homeBloc.getEventsData(
         departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
+    _onAttendanceRespose.addListener(
+      () {
+        Timer(const Duration(seconds: 1), () {
+          _punchStatus.value = _onAttendanceRespose.value;
+        });
+      },
+    );
     return SafeArea(
       child: Scaffold(
           backgroundColor: context.resources.color.appScaffoldBg,
@@ -83,13 +101,7 @@ class HomeScreen extends StatelessWidget {
                 listener: (context, state) {
                   if (state is OnLoading) {
                     Dialogs.loader(context);
-                  }
-                  // else if (state is OnAttendanceSuccess) {
-                  //   _attendanceEntity.value =
-                  //       state.attendanceEntity.entity?.attendanceList[0] ??
-                  //           AttendanceEntity();
-                  // }
-                  else if (state is OnDashboardSuccess) {
+                  } else if (state is OnDashboardSuccess) {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();
                   } else if (state is OnEventsSuccess) {
@@ -189,11 +201,17 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(
                                   height: context.resources.dimen.dp20,
                                 ),
-                                Text(
-                                  context.string.morningPunch,
-                                  style: context.textFontWeight400
-                                      .onFontSize(context.resources.dimen.dp14),
-                                ),
+                                ValueListenableBuilder(
+                                    valueListenable: _punchStatus,
+                                    builder: (context, punchStatus, widget) {
+                                      return Text(
+                                        _getPunchTextByStatus(
+                                            context, punchStatus),
+                                        style: context.textFontWeight400
+                                            .onFontSize(
+                                                context.resources.dimen.dp14),
+                                      );
+                                    }),
                               ],
                             ),
                             boxDecoration: BackgroundBoxDecoration(
@@ -210,6 +228,14 @@ class HomeScreen extends StatelessWidget {
                         builder: (context, attendanceData) {
                           var attendanceEntity =
                               attendanceData.data ?? AttendanceEntity();
+                          if ((attendanceEntity.punch2Time ?? '').isNotEmpty) {
+                            _onAttendanceRespose.value = 2;
+                          } else if ((attendanceEntity.punch1Time ?? '')
+                              .isNotEmpty) {
+                            _onAttendanceRespose.value = 1;
+                          } else {
+                            _onAttendanceRespose.value = 0;
+                          }
                           return Container(
                             padding: EdgeInsets.only(
                               left: context.resources.dimen.dp15,
@@ -634,28 +660,31 @@ class HomeScreen extends StatelessWidget {
                                     itemBuilder: (ctx, i) {
                                       return InkWell(
                                         onTap: () {
-                                          if (favoriteEntity[i].name ==
-                                              favoriteAdd) {
-                                            final services =
-                                                sl<ConstantConfig>()
-                                                    .getServicesByManager(
-                                                        isManager: context
-                                                            .userDB
-                                                            .get(isMaangerKey,
-                                                                defaultValue:
-                                                                    false))
-                                                    .where((element) =>
-                                                        !favoriteEntity
-                                                            .contains(element))
-                                                    .toList();
-                                            Dialogs.showBottomSheetDialog(
-                                                context,
-                                                ServicesList(
-                                                    services: services,
-                                                    callback: _addFavorite));
-                                          } else {
-                                            ServicesScreen.onServiceClick(
-                                                context, favoriteEntity[i]);
+                                          if (!_isFavoriteEdited.value) {
+                                            if (favoriteEntity[i].name ==
+                                                favoriteAdd) {
+                                              final services =
+                                                  sl<ConstantConfig>()
+                                                      .getServicesByManager(
+                                                          isManager: context
+                                                              .userDB
+                                                              .get(isMaangerKey,
+                                                                  defaultValue:
+                                                                      false))
+                                                      .where((element) =>
+                                                          !favoriteEntity
+                                                              .contains(
+                                                                  element))
+                                                      .toList();
+                                              Dialogs.showBottomSheetDialog(
+                                                  context,
+                                                  ServicesList(
+                                                      services: services,
+                                                      callback: _addFavorite));
+                                            } else {
+                                              ServicesScreen.onServiceClick(
+                                                  context, favoriteEntity[i]);
+                                            }
                                           }
                                         },
                                         child: ItemDashboardService(

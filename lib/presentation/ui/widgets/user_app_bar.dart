@@ -25,7 +25,7 @@ class UserAppBarWidget extends StatelessWidget {
               ),
               Text(
                 title,
-                overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.clip,
                 style: context.textFontWeight600
                     .onFontFamily(fontFamily: fontFamilyEN)
                     .onColor(context.resources.color.colorEDECEC)
