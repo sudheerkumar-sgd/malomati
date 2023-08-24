@@ -30,19 +30,18 @@ class PrivacyAndPolicy extends StatelessWidget {
                 height: context.resources.dimen.dp20,
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: context.resources.dimen.dp15,
-                        vertical: context.resources.dimen.dp20),
-                    decoration: BackgroundBoxDecoration(
-                            boxColor: context.resources.color.colorWhite,
-                            radious: context.resources.dimen.dp10)
-                        .roundedCornerBox,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(
+                    context.resources.dimen.dp15,
+                  ),
+                  decoration: BackgroundBoxDecoration(
+                          boxColor: context.resources.color.colorWhite,
+                          radious: context.resources.dimen.dp10)
+                      .roundedCornerBox,
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
                       children: [
                         RichText(
                           text: TextSpan(
