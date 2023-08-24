@@ -7,7 +7,6 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
-import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/utils/location.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';

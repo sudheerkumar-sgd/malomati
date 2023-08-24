@@ -44,7 +44,7 @@ class ItemAttendanceList extends StatelessWidget {
   }
 
   Map _getDepartmentLocation() {
-    printLog(message: attendanceEntity?.toString() ?? '');
+    printLog(message: attendanceEntity.toString());
     if ((attendanceEntity.gpsLatitude ?? '').isNotEmpty) {
       return getDepartmentByLocation(
           double.parse(attendanceEntity.gpsLatitude ?? '0.0'),

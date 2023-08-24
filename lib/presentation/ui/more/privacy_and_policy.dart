@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
+import '../home/widgets/call_confirmation.dart';
+import '../utils/dialogs.dart';
 import '../widgets/back_app_bar.dart';
 
 class PrivacyAndPolicy extends StatelessWidget {
@@ -277,12 +279,12 @@ class PrivacyAndPolicy extends StatelessWidget {
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Assess your needs to determine suitable products or services;\n',
+                                      '\u2022 Assess your needs to determine suitable products or services;\n',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Send you requested product or service information;\n',
+                                      '\u2022 Send you requested product or service information;\n',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
@@ -292,7 +294,7 @@ class PrivacyAndPolicy extends StatelessWidget {
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Respond to customer service requests;\n',
+                                      '\u2022 Respond to customer service requests;\n',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
@@ -301,7 +303,7 @@ class PrivacyAndPolicy extends StatelessWidget {
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Send you push notifications when you are using Malomati. If you do not want these notifications, you can manage your preference either through your device or Malomatisettings depending on your device type. You can also contact us at ',
+                                      '\u2022 Send you push notifications when you are using Malomati. If you do not want these notifications, you can manage your preference either through your device or Malomatisettings depending on your device type. You can also contact us at ',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
@@ -327,12 +329,12 @@ class PrivacyAndPolicy extends StatelessWidget {
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Improve our Malomati and marketing efforts;\n',
+                                      '\u2022 Improve our Malomati and marketing efforts;\n',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
                                   text:
-                                      '\u2022  Conduct research and analysis;\n',
+                                      '\u2022 Conduct research and analysis;\n',
                                   style: context.textFontWeight400.onFontSize(
                                       context.resources.dimen.dp12)),
                               TextSpan(
@@ -382,7 +384,7 @@ class PrivacyAndPolicy extends StatelessWidget {
                               TextSpan(
                                   text: 'Sharing Your Information\n\n',
                                   style: context.textFontWeight700.onFontSize(
-                                      context.resources.dimen.dp12)),
+                                      context.resources.dimen.dp15)),
                               TextSpan(
                                   text:
                                       'We will share your information with third parties only in the ways that are described in this privacy policy.\n\n',
@@ -416,7 +418,7 @@ class PrivacyAndPolicy extends StatelessWidget {
                               TextSpan(
                                   text: 'Security\n\n',
                                   style: context.textFontWeight700.onFontSize(
-                                      context.resources.dimen.dp12)),
+                                      context.resources.dimen.dp15)),
                               TextSpan(
                                   text:
                                       'The security of your personal information is important to us. We follow generally accepted industry standards to protect the personal information submitted to us, both during transmission and once we receive it.\n\n',
@@ -497,7 +499,7 @@ class PrivacyAndPolicy extends StatelessWidget {
                               TextSpan(
                                   text: 'Contact\n\n',
                                   style: context.textFontWeight700.onFontSize(
-                                      context.resources.dimen.dp12)),
+                                      context.resources.dimen.dp15)),
                               TextSpan(
                                   text:
                                       'You can contact us about this privacy policy by writing or email us at the address below:\n\n',
@@ -515,7 +517,10 @@ class PrivacyAndPolicy extends StatelessWidget {
                                   text: '+971 6 7641000\n',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      callNumber(context, '+971 6 7641000');
+                                      Dialogs.showBottomSheetDialogTransperrent(
+                                          context,
+                                          const CallConfirmationWidget(
+                                              mobileNumber: '+971 6 7641000'));
                                     },
                                   style: context.textFontWeight400
                                       .onFontSize(context.resources.dimen.dp12)
@@ -532,7 +537,10 @@ class PrivacyAndPolicy extends StatelessWidget {
                                   text: '+971 6 7641777\n',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      sendEmail(context, '+971 6 7641777');
+                                      Dialogs.showBottomSheetDialogTransperrent(
+                                          context,
+                                          const CallConfirmationWidget(
+                                              mobileNumber: '+971 6 7641777'));
                                     },
                                   style: context.textFontWeight400
                                       .onFontSize(context.resources.dimen.dp12)
