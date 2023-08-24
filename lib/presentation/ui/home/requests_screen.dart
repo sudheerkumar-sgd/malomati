@@ -28,7 +28,7 @@ class RequestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.now().subtract(const Duration(days: 1));
+    final date = DateTime.now(); //.subtract(const Duration(days: 1));
     var dateCurrent = DateFormat('ddMMyyyy').format(date);
     var dateStart =
         DateFormat('ddMMyyyy').format(DateTime(date.year, date.month, 1));

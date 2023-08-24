@@ -190,6 +190,7 @@ class AttendanceScreen extends StatelessWidget {
           "latitude": department['latitude'],
           "longitude": department['longitude'],
           "method": option['id'],
+          "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
         };
         printLog(message: requestParams.toString());
         _attendanceBloc.submitAttendance(requestParams: requestParams);

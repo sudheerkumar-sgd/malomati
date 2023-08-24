@@ -167,7 +167,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
       var query =
-          'String query = "userid=${requestParams['userid']};event-datetime=${requestParams['date']};in-out=isInOut;dtype=12;did=1;gps_latitude=${requestParams['latitude']};gps_longitude=${requestParams['longitude']};spfid=${requestParams['method']}';
+          'userid=${requestParams['userid']};event-datetime=${requestParams['date']};in-out=${requestParams['isInOut']};dtype=12;did=1;gps_latitude=${requestParams['latitude']};gps_longitude=${requestParams['longitude']};spfid=${requestParams['method']}';
       var response = await dio2.get(
         '$attendanceSubmitApiUrl$query',
         options: Options(headers: {
