@@ -35,7 +35,7 @@ class ApisRepositoryImpl extends ApisRepository {
   Future<Either<Failure, ApiEntity<LoginEntity>>> login(
       {required String apiPath,
       required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse = await dataSource.login(
@@ -54,7 +54,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<ProfileEntity>>> getProfile(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -73,7 +73,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendance(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -92,7 +92,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -111,7 +111,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, String>> submitAttendanceDetails(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse = await dataSource.submitAttendanceDetails(
@@ -128,7 +128,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<DashboardEntity>>> getDashboardData(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -147,7 +147,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<EventsListEntity>>> getEventsData(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -178,7 +178,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
       submitLeaveRequest({required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
@@ -199,7 +199,7 @@ class ApisRepositoryImpl extends ApisRepository {
       submitServicesRequest(
           {required String apiUrl,
           required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse = await dataSource.submitServicesRequest(
@@ -218,7 +218,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse = await dataSource.getEmployeesByDepartment(
@@ -235,7 +235,7 @@ class ApisRepositoryImpl extends ApisRepository {
   @override
   Future<Either<Failure, List<NameIdEntity>>> getLeaves(
       {required Map<String, dynamic> requestParams}) async {
-    var isConnected = await networkInfo.isConnected;
+    var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =

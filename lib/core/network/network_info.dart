@@ -1,14 +1,24 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 abstract class NetworkInfo {
-  Future<bool> get isConnected;
+  Future<bool> isConnected();
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  final InternetConnectionChecker internetConnectionChecker;
-
-  NetworkInfoImpl(this.internetConnectionChecker);
+  NetworkInfoImpl();
 
   @override
-  Future<bool> get isConnected => internetConnectionChecker.hasConnection;
+  Future<bool> isConnected() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.ethernet) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.vpn) {
+      return true;
+    }
+    return false;
+  }
 }

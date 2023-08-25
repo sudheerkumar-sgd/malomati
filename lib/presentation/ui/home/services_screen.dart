@@ -46,6 +46,8 @@ class ServicesScreen extends StatelessWidget {
       screenWidget = BadgeScreen();
     } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
       screenWidget = MyTeamScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
+      screenWidget = MyTeamScreen();
     }
 
     Navigator.push(

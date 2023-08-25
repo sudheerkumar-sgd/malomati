@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:malomati/data/repository/apis_repository_impl.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/attendance_usecase.dart';
@@ -72,7 +71,7 @@ Future<void> init() async {
   /**
    * ! Core
    */
-  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
   /**
    * ! External
@@ -83,7 +82,5 @@ Future<void> init() async {
     dio.interceptors.add(DioLoggingInterceptor());
     return dio;
   });
-
-  sl.registerLazySingleton(() => InternetConnectionChecker());
   sl.registerFactory(() => ConstantConfig());
 }
