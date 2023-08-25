@@ -29,7 +29,9 @@ class AlertDialogWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ImageWidget(
-                    path: DrawableAssets.icCheckmarkCircle,
+                    path: type == PopupType.fail
+                        ? DrawableAssets.icCloseCircle
+                        : DrawableAssets.icCheckmarkCircle,
                     backgroundTint: context.resources.color.viewBgColor)
                 .loadImage,
             SizedBox(

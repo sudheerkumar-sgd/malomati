@@ -51,7 +51,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    _servicesBloc.getLeaves(requestParams: {'USER_NAME': userName});
+    _servicesBloc.getLeaves(requestParams: {'USER_NAME': 'TAREK.MAGDY'});
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -109,7 +109,6 @@ class AdvanceSalaryScreen extends StatelessWidget {
                                 builder: (context, leaves, widget) {
                                   return DropDownWidget<NameIdEntity>(
                                     list: leaves,
-                                    height: resources.dimen.dp27,
                                     labelText: context.string.leaves,
                                     errorMessage: context.string.leaves,
                                     callback: onLeavesSelected,

@@ -93,7 +93,9 @@ class DropDownWidget<T> extends StatelessWidget {
                 },
                 value: selectedValue,
                 icon: Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
+                  padding: context.resources.isLocalEn
+                      ? const EdgeInsets.only(right: 10.0)
+                      : const EdgeInsets.only(left: 10.0),
                   child: ImageWidget(
                           path: DrawableAssets.icChevronDown,
                           backgroundTint: context.resources.color.viewBgColor)
@@ -109,7 +111,14 @@ class DropDownWidget<T> extends StatelessWidget {
                 items: list.map<DropdownMenuItem<T>>((T value) {
                   return DropdownMenuItem<T>(
                     value: value,
-                    child: Text(value.toString()),
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        overflow: TextOverflow.visible,
+                        value.toString(),
+                        style: context.textFontWeight400,
+                      ),
+                    ),
                   );
                 }).toList(),
               );

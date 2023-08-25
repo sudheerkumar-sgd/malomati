@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';

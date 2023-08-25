@@ -14,7 +14,7 @@ class LeavesModel extends BaseModel {
   factory LeavesModel.fromJson(Map<String, dynamic> json) {
     var departmentModel = LeavesModel();
     departmentModel.lEAVEDETAIL = json['LEAVE_DETAIL'];
-    departmentModel.aBSENCEATTENDANCEID = json['ABSENCE_ATTENDANCE_ID'];
+    departmentModel.aBSENCEATTENDANCEID = '${json['ABSENCE_ATTENDANCE_ID']}';
     return departmentModel;
   }
 
