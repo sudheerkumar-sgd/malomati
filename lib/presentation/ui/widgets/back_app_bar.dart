@@ -26,10 +26,11 @@ class BackAppBarWidget extends StatelessWidget {
                     boxColor: context.resources.color.colorWhite)
                 .circularBox,
             child: ImageWidget(
-                    path: DrawableAssets.icChevronBack,
-                    backgroundTint: context.resources.iconBgColor,
-                    boxType: BoxFit.none)
-                .loadImage,
+              path: DrawableAssets.icChevronBack,
+              backgroundTint: context.resources.iconBgColor,
+              boxType: BoxFit.none,
+              isLocalEn: context.resources.isLocalEn,
+            ).loadImage,
           ),
         ),
         SizedBox(

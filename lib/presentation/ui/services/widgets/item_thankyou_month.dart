@@ -40,6 +40,7 @@ class ItemThankyouMonth extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: context.textFontWeight400
                         .onFontSize(context.resources.dimen.dp15)
+                        .onFontFamily(fontFamily: fontFamilyEN)
                         .onColor(value == month
                             ? context.resources.color.colorWhite
                             : context

@@ -52,6 +52,13 @@ class HomeScreen extends StatelessWidget {
     _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
   }
 
+  _refreshAttendance() {
+    var date = DateFormat('ddMMyyyy').format(DateTime.now());
+    _attendanceBloc.getAttendance(dateRange: '$date-$date');
+    _attendanceBloc.getAttendanceDetails(
+        dateRange: '${date}000000-${date}235959');
+  }
+
   _addFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
     Navigator.pop(context);
     _homeBloc.saveFavoritesdData(
@@ -75,11 +82,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var date = DateFormat('ddMMyyyy').format(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    _attendanceBloc.getAttendance(dateRange: '$date-$date');
-    _attendanceBloc.getAttendanceDetails(
-        dateRange: '${date}000000-${date}235959');
+    _refreshAttendance();
     _homeBloc.getDashboardData(
         userName: context.userDB.get(userNameKey, defaultValue: ''));
     _homeBloc.getEventsData(
@@ -199,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: context.resources.dimen.dp20,
+                                  height: context.resources.dimen.dp5,
                                 ),
                                 ValueListenableBuilder(
                                     valueListenable: _punchStatus,
@@ -275,7 +279,9 @@ class HomeScreen extends StatelessWidget {
                                                     attendanceEntity:
                                                         attendanceEntity),
                                               ),
-                                            );
+                                            ).then((value) {
+                                              _refreshAttendance();
+                                            });
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
@@ -371,7 +377,9 @@ class HomeScreen extends StatelessWidget {
                                                       attendanceEntity,
                                                 ),
                                               ),
-                                            );
+                                            ).then((value) {
+                                              _refreshAttendance();
+                                            });
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(

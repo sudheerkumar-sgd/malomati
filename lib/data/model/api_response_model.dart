@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
@@ -35,10 +37,11 @@ class ApiResponse<T extends BaseModel> extends Equatable {
 
 extension SourceModelExtension on ApiResponse {
   ApiEntity<T> toEntity<T extends BaseEntity>(T entity) {
-    return ApiEntity<T>(
-        isSuccess: isSuccess,
-        message: message,
-        messageAR: messageAR,
-        entity: entity);
+    final apiEntity = ApiEntity<T>();
+    apiEntity.isSuccess = isSuccess;
+    apiEntity.message = message;
+    apiEntity.messageAR = messageAR;
+    apiEntity.entity = entity;
+    return apiEntity;
   }
 }

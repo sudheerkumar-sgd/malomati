@@ -575,7 +575,12 @@ class LeavesScreen extends StatelessWidget {
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(
-                                      left: resources.dimen.dp10,
+                                      left: resources.isLocalEn
+                                          ? resources.dimen.dp10
+                                          : 0,
+                                      right: resources.isLocalEn
+                                          ? 0
+                                          : resources.dimen.dp10,
                                     ),
                                     child: ImageWidget(
                                             path: DrawableAssets.icPlusCircle)

@@ -75,9 +75,7 @@ class ThemeRed extends ApplicationTheme {
           hoverColor: Color(0x0a000000),
           colorScheme: ColorScheme(
             primary: Color(0xffec293f),
-            primaryVariant: Color(0xff8d0c1b),
             secondary: Color(0xffea152d),
-            secondaryVariant: Color(0xff8d0c1b),
             surface: Color(0xffffffff),
             background: Color(0xfff7a1ab),
             error: Color(0xffd32f2f),

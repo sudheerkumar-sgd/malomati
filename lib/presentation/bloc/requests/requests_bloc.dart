@@ -2,10 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
-import 'package:malomati/domain/entities/dashboard_entity.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
-import '../../../domain/entities/favorite_entity.dart';
 import '../../../domain/use_case/requests_usecase.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,8 +26,7 @@ class RequestsBloc extends Cubit<RequestsState> {
     };
     final result =
         await requestsUseCase.getAttendanceReport(requestParams: requestParams);
-    _attendanceReport.sink.add(
-        result.fold((l) => ApiEntity(message: _getErrorMessage(l)), (r) => r));
+    _attendanceReport.sink.add(result.fold((l) => ApiEntity(), (r) => r));
     // emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
     //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
   }
@@ -42,8 +39,7 @@ class RequestsBloc extends Cubit<RequestsState> {
     };
     final result = await requestsUseCase.getAttendanceDetails(
         requestParams: requestParams);
-    _attendanceDetails.sink.add(
-        result.fold((l) => ApiEntity(message: _getErrorMessage(l)), (r) => r));
+    _attendanceDetails.sink.add(result.fold((l) => ApiEntity(), (r) => r));
     // emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
     //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
   }

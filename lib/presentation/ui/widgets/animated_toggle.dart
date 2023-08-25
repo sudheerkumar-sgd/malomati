@@ -75,7 +75,9 @@ class AnimatedToggle extends StatelessWidget {
               return AnimatedAlign(
                 duration: const Duration(milliseconds: 250),
                 curve: Curves.decelerate,
-                alignment: value ? Alignment.centerLeft : Alignment.centerRight,
+                alignment: context.resources.isLocalEn
+                    ? (value ? Alignment.centerLeft : Alignment.centerRight)
+                    : (value ? Alignment.centerRight : Alignment.centerLeft),
                 child: Container(
                   width: width / 2,
                   height: height - 2,

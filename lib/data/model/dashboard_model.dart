@@ -172,13 +172,11 @@ class DashboardModel extends BaseModel {
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
   @override
   BaseEntity toEntity<T>() {
-    // TODO: implement toEntity
-    throw UnimplementedError();
+    return DashboardEntity();
   }
 
   List<EventModel>? getEventList(dynamic jsonEventArray) {

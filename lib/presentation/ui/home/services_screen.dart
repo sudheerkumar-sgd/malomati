@@ -20,7 +20,6 @@ class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
   static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
     Widget? screenWidget = InitiativesScreen();
-    ;
     if ((favoriteEntity.name ?? '').toLowerCase().contains('leave') ||
         (favoriteEntity.name ?? '').toLowerCase().contains('permission')) {
       screenWidget = LeavesScreen(

@@ -73,7 +73,9 @@ class RightIconTextWidget extends StatelessWidget {
                   BoxConstraints(maxHeight: height, minHeight: height),
               suffixIcon: (suffixIconPath ?? '').isNotEmpty
                   ? Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
+                      padding: context.resources.isLocalEn
+                          ? const EdgeInsets.only(right: 15.0)
+                          : const EdgeInsets.only(left: 15.0),
                       child: ImageWidget(
                               path: suffixIconPath ?? '',
                               backgroundTint:

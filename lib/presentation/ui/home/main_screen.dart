@@ -12,11 +12,16 @@ import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+  @override
+  State<StatefulWidget> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final NavbarNotifier _navbarNotifier = NavbarNotifier();
   int backpressCount = 0;
-  ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
+  final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
   final _screens = <Widget>[
     const HomeNavigatorScreen(),
     const ServicesNavigatorScreen(),

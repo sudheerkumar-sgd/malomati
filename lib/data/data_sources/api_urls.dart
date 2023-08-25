@@ -25,4 +25,5 @@ const String certificateApiUrl =
     'UAQSGD_MOB_ERP_SalaryCertificateRequest/SalaryCertificate';
 const String advanceSalaryApiUrl =
     'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary';
+const String badgeApiUrl = 'UAQSGD_MOB_ERP_BadgeRequest/CreateBadge';
 const String overtimeApiUrl = 'UAQSGD_MOB_ERP_OvertimeRequest/OvertimeRequest';

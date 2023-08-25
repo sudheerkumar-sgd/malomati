@@ -27,8 +27,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     };
     final result = await attendanceUseCase.getAttendanceReport(
         requestParams: requestParams);
-    _attendanceReport.sink.add(
-        result.fold((l) => ApiEntity(message: _getErrorMessage(l)), (r) => r));
+    _attendanceReport.sink.add(result.fold((l) => ApiEntity(), (r) => r));
     // emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
     //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
   }
@@ -41,8 +40,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     };
     final result = await attendanceUseCase.getAttendanceDetails(
         requestParams: requestParams);
-    _attendanceDetails.sink.add(
-        result.fold((l) => ApiEntity(message: _getErrorMessage(l)), (r) => r));
+    _attendanceDetails.sink.add(result.fold((l) => ApiEntity(), (r) => r));
     // emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
     //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
   }

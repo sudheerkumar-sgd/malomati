@@ -40,18 +40,18 @@ class EventModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['EVENT_TYPE'] = this.eVENTTYPE;
-    data['PERSON_ID'] = this.pERSONID;
-    data['EMPLOYEE_NUMBER'] = this.eMPLOYEENUMBER;
-    data['DEPARTMENT_ENG'] = this.dEPARTMENTENG;
-    data['FULL_NAME_AR'] = this.fULLNAMEAR;
-    data['FULL_NAME_US'] = this.fULLNAMEUS;
-    data['EMAIL_ADDRESS'] = this.eMAILADDRESS;
-    data['NATIONALITY'] = this.nATIONALITY;
-    data['DATE_OF_BIRTH'] = this.dATEOFBIRTH;
-    data['DEPARTMENT_NAME'] = this.dEPARTMENTNAME;
-    data['USER_NAME'] = this.uSERNAME;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['EVENT_TYPE'] = eVENTTYPE;
+    data['PERSON_ID'] = pERSONID;
+    data['EMPLOYEE_NUMBER'] = eMPLOYEENUMBER;
+    data['DEPARTMENT_ENG'] = dEPARTMENTENG;
+    data['FULL_NAME_AR'] = fULLNAMEAR;
+    data['FULL_NAME_US'] = fULLNAMEUS;
+    data['EMAIL_ADDRESS'] = eMAILADDRESS;
+    data['NATIONALITY'] = nATIONALITY;
+    data['DATE_OF_BIRTH'] = dATEOFBIRTH;
+    data['DEPARTMENT_NAME'] = dEPARTMENTNAME;
+    data['USER_NAME'] = uSERNAME;
     return data;
   }
 }

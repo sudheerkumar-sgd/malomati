@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
@@ -34,9 +35,11 @@ class BadgeScreen extends StatelessWidget {
   _submitAdvanceSalaryRequest() {
     final certificateRequestModel = ApiRequestModel();
     certificateRequestModel.uSERNAME = userName;
+    certificateRequestModel.hIRINGDATE = getDateByformat('dd-MM-yyyy',
+        getDateTimeByString('dd-MMM-yyyy', hiringDateController.text));
     _servicesBloc.submitServicesRequest(
-        apiUrl: advanceSalaryApiUrl,
-        requestParams: certificateRequestModel.toAdvanceSalaryRequest());
+        apiUrl: badgeApiUrl,
+        requestParams: certificateRequestModel.toBadgeRequest());
   }
 
   @override

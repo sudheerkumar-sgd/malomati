@@ -21,7 +21,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  ValueNotifier<List<String>> _leaves = ValueNotifier<List<String>>([]);
+  final ValueNotifier<List<String>> _leaves = ValueNotifier<List<String>>([]);
   final TextEditingController _commentsController = TextEditingController();
   String? leave;
 

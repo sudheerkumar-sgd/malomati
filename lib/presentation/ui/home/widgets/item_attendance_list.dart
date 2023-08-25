@@ -106,6 +106,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch1Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -130,6 +131,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch2Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -154,6 +156,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch3Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -178,6 +181,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch4Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -202,6 +206,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch5Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -226,6 +231,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch6Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -250,6 +256,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch7Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -274,6 +281,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch8Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -298,6 +306,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch9Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -322,6 +331,7 @@ class ItemAttendanceList extends StatelessWidget {
                 '${attendanceEntity.punch10Time}',
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .onFontSize(context.resources.dimen.dp11),
               ),
             )
@@ -366,6 +376,7 @@ class ItemAttendanceList extends StatelessWidget {
                           attendanceEntity.processdate ?? '',
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
+                              .onFontFamily(fontFamily: fontFamilyEN)
                               .onFontSize(context.resources.dimen.dp12),
                         ),
                       ),

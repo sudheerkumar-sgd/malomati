@@ -234,11 +234,12 @@ class AttendanceScreen extends StatelessWidget {
               child: BlocListener<AttendanceBloc, AttendanceState>(
                 listener: (context, state) {
                   if (state is OnAttendanceDataLoading) {
-                    Dialogs.loader(context);
+                    Dialogs.loader(context)
+                        .then((value) => Navigator.pop(context));
                   } else if (state is OnAttendanceSubmitSuccess) {
                     Navigator.of(context, rootNavigator: true).pop();
-                    Dialogs.showInfoDialog(context, PopupType.success,
-                        state.attendanceSubmitResponse);
+                    // Dialogs.showInfoDialog(context, PopupType.success,
+                    //     state.attendanceSubmitResponse);
                   } else if (state is OnAttendanceApiError) {
                     Navigator.of(context, rootNavigator: true).pop();
                     Dialogs.showInfoDialog(

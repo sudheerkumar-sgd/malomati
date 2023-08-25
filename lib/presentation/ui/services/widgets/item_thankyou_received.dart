@@ -11,7 +11,7 @@ class ItemThankyouReceived extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Received by:',
+              'Received by: ',
               style: context.textFontWeight400,
             ),
             Text(
@@ -26,7 +26,7 @@ class ItemThankyouReceived extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Dept. Name:',
+              'Dept. Name: ',
               style: context.textFontWeight400,
             ),
             Text(
@@ -41,7 +41,7 @@ class ItemThankyouReceived extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Reason:',
+              'Reason: ',
               style: context.textFontWeight400,
             ),
             Text(
@@ -56,12 +56,13 @@ class ItemThankyouReceived extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Date : :',
+              'Date : ',
               style: context.textFontWeight400,
             ),
             Text(
               '02/08/2023, 12:15 PM ',
-              style: context.textFontWeight600,
+              style: context.textFontWeight600
+                  .onFontFamily(fontFamily: fontFamilyEN),
             ),
           ],
         ),

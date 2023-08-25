@@ -10,15 +10,18 @@ class ImageWidget {
   BoxFit? boxType;
   Color? backgroundTint;
   EdgeInsetsGeometry padding;
+  final bool isLocalEn;
   ImageWidget(
       {required this.path,
       this.width,
       this.height,
       this.boxType,
       this.backgroundTint,
-      this.padding = const EdgeInsets.all(5)});
+      this.padding = const EdgeInsets.all(5),
+      this.isLocalEn = true});
 
-  Widget get loadImage => getImage();
+  Widget get loadImage =>
+      RotatedBox(quarterTurns: isLocalEn ? 0 : 2, child: getImage());
 
   Widget get loadImageWithMoreTapArea => getImageWithMoreTapArea();
 

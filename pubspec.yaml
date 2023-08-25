@@ -36,7 +36,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   hive_flutter: ^1.1.0
-  device_info: ^2.0.3
   get_it: ^7.6.0
   dio: ^5.3.0
   internet_connection_checker: ^1.0.0+1
@@ -55,7 +54,7 @@ dependencies:
   map_launcher: ^2.5.0+1
   url_launcher: ^6.1.12
   rxdart: ^0.27.7
-  geolocator: ^9.0.2
+  geolocator: ^10.0.0
   just_audio: ^0.9.34
   file_picker: ^5.3.3
   syncfusion_flutter_pdfviewer: ^22.2.10

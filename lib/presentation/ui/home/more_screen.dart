@@ -395,8 +395,10 @@ class MoreScreen extends StatelessWidget {
                                 .onFontSize(context.resources.dimen.dp15),
                           ),
                           const Spacer(),
-                          ImageWidget(path: DrawableAssets.icChevronRight)
-                              .loadImage,
+                          ImageWidget(
+                            path: DrawableAssets.icChevronRight,
+                            isLocalEn: context.resources.isLocalEn,
+                          ).loadImage,
                         ]),
                       ),
                       SizedBox(
@@ -428,6 +430,7 @@ class MoreScreen extends StatelessWidget {
                             supportMobileNumber,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
+                                .onFontFamily(fontFamily: fontFamilyEN)
                                 .onFontSize(context.resources.dimen.dp15),
                           ),
                         ]),

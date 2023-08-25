@@ -384,9 +384,9 @@ class ThankyouScreen extends StatelessWidget {
                                               right: 8.0,
                                               bottom: 8.0),
                                           child: ImageWidget(
-                                                  path: DrawableAssets
-                                                      .icChevronLeft)
-                                              .loadImage,
+                                            path: DrawableAssets.icChevronLeft,
+                                            isLocalEn: resources.isLocalEn,
+                                          ).loadImage,
                                         ),
                                       ),
                                       const SizedBox(width: 12),
@@ -427,9 +427,9 @@ class ThankyouScreen extends StatelessWidget {
                                             right: 8.0,
                                           ),
                                           child: ImageWidget(
-                                                  path: DrawableAssets
-                                                      .icChevronRight)
-                                              .loadImage,
+                                            path: DrawableAssets.icChevronRight,
+                                            isLocalEn: resources.isLocalEn,
+                                          ).loadImage,
                                         ),
                                       ),
                                     ],

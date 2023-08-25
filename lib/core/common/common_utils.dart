@@ -7,7 +7,6 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';

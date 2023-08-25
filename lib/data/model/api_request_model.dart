@@ -17,6 +17,9 @@ class ApiRequestModel {
   String? lEAVE;
   String? aPPROVALCOMMENT;
 
+  //Badge REQUEST PARAMS
+  String? hIRINGDATE;
+
   //Overtime REQUEST PARAMS
   String? oVERTIMEDATE;
   String? fROMTIME;
@@ -52,6 +55,10 @@ extension SourceModelExtension on ApiRequestModel {
         "CREATOR_USER_NAME": cREATORUSERNAME,
         "LEAVE": lEAVE,
         "APPROVAL_COMMENT": aPPROVALCOMMENT,
+      };
+  Map<String, dynamic> toBadgeRequest() => {
+        "USER_NAME": uSERNAME,
+        "HIRING_DATE": hIRINGDATE,
       };
   Map<String, dynamic> toOvertimeRequest() => {
         "USER_NAME": uSERNAME,
