@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
@@ -21,12 +22,13 @@ class AdvanceSalaryScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  final ValueNotifier<List<String>> _leaves = ValueNotifier<List<String>>([]);
+  final ValueNotifier<List<NameIdEntity>> _leaves =
+      ValueNotifier<List<NameIdEntity>>([]);
   final TextEditingController _commentsController = TextEditingController();
   String? leave;
 
-  onLeavesSelected(String? value) {
-    leave = value ?? '';
+  onLeavesSelected(NameIdEntity? value) {
+    leave = value?.id ?? '';
   }
 
   onSubmit(String clickedButton) {
@@ -49,6 +51,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
+    _servicesBloc.getLeaves(requestParams: {'USER_NAME': userName});
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -58,6 +61,8 @@ class AdvanceSalaryScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
+              } else if (state is OnLeavesSuccess) {
+                _leaves.value = state.leavesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
@@ -102,7 +107,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
                             ValueListenableBuilder(
                                 valueListenable: _leaves,
                                 builder: (context, leaves, widget) {
-                                  return DropDownWidget<String>(
+                                  return DropDownWidget<NameIdEntity>(
                                     list: leaves,
                                     height: resources.dimen.dp27,
                                     labelText: context.string.leaves,

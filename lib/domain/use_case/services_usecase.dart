@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
@@ -34,5 +35,10 @@ class ServicesUseCase extends BaseUseCase {
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getEmployeesByDepartment(
         requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<NameIdEntity>>> getLeaves(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getLeaves(requestParams: requestParams);
   }
 }

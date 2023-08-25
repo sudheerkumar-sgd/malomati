@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
 import '../../../core/error/failures.dart';
@@ -55,6 +56,13 @@ class ServicesBloc extends Cubit<ServicesState> {
         (l) => OnServicesError(message: _getErrorMessage(l)),
         (r) =>
             OnServicesRequestSubmitSuccess(servicesRequestSuccessResponse: r)));
+  }
+
+  Future<void> getLeaves({required Map<String, dynamic> requestParams}) async {
+    final result =
+        await servicesUseCase.getLeaves(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnLeavesSuccess(leavesList: r)));
   }
 
   String _getErrorMessage(Failure failure) {

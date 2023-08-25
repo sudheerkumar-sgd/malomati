@@ -53,6 +53,14 @@ class OnEmployeesSuccess extends ServicesState {
   List<Object?> get props => [employeesList];
 }
 
+class OnLeavesSuccess extends ServicesState {
+  final List<NameIdEntity> leavesList;
+
+  OnLeavesSuccess({required this.leavesList});
+  @override
+  List<Object?> get props => [leavesList];
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

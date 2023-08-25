@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:malomati/core/common/log.dart';
+import 'package:malomati/data/model/Leaves_model.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
@@ -10,6 +11,7 @@ import 'package:malomati/data/model/event_list_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
 import '../../domain/entities/employee_entity.dart';
@@ -37,6 +39,8 @@ abstract class RemoteDataSource {
   Future<ApiResponse<LeaveSubmitResponseModel>> submitServicesRequest(
       {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<List<EmployeeEntity>> getEmployeesByDepartment(
+      {required Map<String, dynamic> requestParams});
+  Future<List<NameIdEntity>> getLeaves(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -289,6 +293,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
               EmployeeModel.fromJson(employeeEntity).toEmployeeEntity())
           .toList();
       return deptEmployeesList;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<NameIdEntity>> getLeaves(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        leavesApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data['LeaveDetails'] != null) {
+        var leavesListJson = response.data['LeaveDetails'] as List;
+        var deptEmployeesList = leavesListJson
+            .map(
+                (leaveJson) => LeavesModel.fromJson(leaveJson).toNameIdEntity())
+            .toList();
+        return deptEmployeesList;
+      } else {
+        return [];
+      }
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

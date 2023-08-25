@@ -461,6 +461,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(
                               height: context.resources.dimen.dp20,
@@ -468,84 +469,61 @@ class HomeScreen extends StatelessWidget {
                             ValueListenableBuilder(
                                 valueListenable: _dashboardEntity,
                                 builder: (context, dashboardEntity, widget) {
-                                  return Column(
-                                    children: [
-                                      GridView.builder(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              context.resources.dimen.dp25,
+                                  anualLeaveBalance =
+                                      '${dashboardEntity.aNNUALACCRUAL ?? '0'} ${context.string.days}';
+                                  sickLeaveBalance =
+                                      '${dashboardEntity.sICKACCRUAL ?? '0'} ${context.string.days}';
+                                  permissionBalance =
+                                      '${dashboardEntity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}';
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            context.resources.dimen.dp25),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Flexible(
+                                          child: ItemDashboardLeaves(
+                                            balanceCount:
+                                                dashboardEntity.aNNUALACCRUAL ??
+                                                    '0',
+                                            balancetype: context.string.days,
+                                            title: context.string.balanceLeaves,
+                                          ),
                                         ),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: 4,
-                                        shrinkWrap: true,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 4,
-                                          childAspectRatio: 22 / 30,
-                                          crossAxisSpacing:
-                                              context.resources.dimen.dp10,
+                                        Flexible(
+                                          child: ItemDashboardLeaves(
+                                            balanceCount:
+                                                dashboardEntity.sICKACCRUAL ??
+                                                    '0',
+                                            balancetype: context.string.days,
+                                            title: context
+                                                .string.balanceSickLeaves,
+                                          ),
                                         ),
-                                        itemBuilder: (ctx, i) {
-                                          switch (i) {
-                                            case 0:
-                                              {
-                                                anualLeaveBalance =
-                                                    '${dashboardEntity.aNNUALACCRUAL ?? '0'} ${context.string.days}';
-                                                return ItemDashboardLeaves(
-                                                  balanceCount: dashboardEntity
-                                                          .aNNUALACCRUAL ??
-                                                      '0',
-                                                  balancetype:
-                                                      context.string.days,
-                                                  title: context
-                                                      .string.balanceLeaves,
-                                                );
-                                              }
-                                            case 1:
-                                              {
-                                                sickLeaveBalance =
-                                                    '${dashboardEntity.sICKACCRUAL ?? '0'} ${context.string.days}';
-                                                return ItemDashboardLeaves(
-                                                  balanceCount: dashboardEntity
-                                                          .sICKACCRUAL ??
-                                                      '0',
-                                                  balancetype:
-                                                      context.string.days,
-                                                  title: context
-                                                      .string.balanceSickLeaves,
-                                                );
-                                              }
-                                            case 2:
-                                              {
-                                                permissionBalance =
-                                                    '${dashboardEntity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}';
-                                                return ItemDashboardLeaves(
-                                                  balanceCount: dashboardEntity
-                                                          .pERMISSIONACCRUAL ??
-                                                      '0',
-                                                  balancetype:
-                                                      context.string.hours,
-                                                  title: context
-                                                      .string.balancePermission,
-                                                );
-                                              }
-                                            default:
-                                              {
-                                                return ItemDashboardLeaves(
-                                                  balanceCount: dashboardEntity
-                                                          .tHANKYOUCOUNT ??
-                                                      '0',
-                                                  balancetype:
-                                                      context.string.star,
-                                                  title: context
-                                                      .string.totalThankYou,
-                                                );
-                                              }
-                                          }
-                                        },
-                                      ),
-                                    ],
+                                        Flexible(
+                                          child: ItemDashboardLeaves(
+                                            balanceCount: dashboardEntity
+                                                    .pERMISSIONACCRUAL ??
+                                                '0',
+                                            balancetype: context.string.hours,
+                                            title: context
+                                                .string.balancePermission,
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: ItemDashboardLeaves(
+                                            balanceCount:
+                                                dashboardEntity.tHANKYOUCOUNT ??
+                                                    '0',
+                                            balancetype: context.string.star,
+                                            title: context.string.totalThankYou,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   );
                                 }),
                             ValueListenableBuilder(
