@@ -8,10 +8,10 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/leave_request_model.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
-import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -30,7 +30,8 @@ enum LeaveType {
   permission('Permission', '75'),
   sickLeave('Sick Leaves', '76'),
   missionLeave('Mission Leaves', '68'),
-  otherLeave('Other Leaves', '0');
+  otherLeave('Other Leaves', '0'),
+  createLeave('Create Leaves', '2');
 
   final String name;
   final String id;
@@ -52,7 +53,9 @@ class LeavesScreen extends StatelessWidget {
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<List<LeaveTypeEntity>> _leaveTypeList = ValueNotifier([]);
+  final ValueNotifier<List<EmployeeEntity>> _employeesList = ValueNotifier([]);
   LeaveTypeEntity? selectedLeaveType;
+  EmployeeEntity? selectedEmployee;
   LeaveSubType leaveSubType = LeaveSubType.planned;
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -65,35 +68,8 @@ class LeavesScreen extends StatelessWidget {
   final ValueNotifier<bool> _isleaveTypeChanged = ValueNotifier(false);
   final _uploadFiles = [];
   String currentBalanceText = '';
+  String userName = '';
   final _formKey = GlobalKey<FormState>();
-
-  String _getTitleByLeaveType(BuildContext context) {
-    switch (leaveType) {
-      case LeaveType.anualLeave:
-        {
-          currentBalanceText = HomeScreen.anualLeaveBalance;
-          return context.string.anualLeaves;
-        }
-      case LeaveType.permission:
-        {
-          currentBalanceText = HomeScreen.permissionBalance;
-          return context.string.permission;
-        }
-      case LeaveType.sickLeave:
-        {
-          currentBalanceText = HomeScreen.sickLeaveBalance;
-          return context.string.sickLeaves;
-        }
-      case LeaveType.missionLeave:
-        {
-          return context.string.missionLeaves;
-        }
-      default:
-        {
-          return context.string.otherLeaves;
-        }
-    }
-  }
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -157,12 +133,17 @@ class LeavesScreen extends StatelessWidget {
     _isleaveTypeChanged.value = !_isleaveTypeChanged.value;
   }
 
+  onEmployeeSelected(EmployeeEntity? employeeEntity) {
+    selectedEmployee = employeeEntity;
+  }
+
   _submitLeaveRequest(BuildContext context) {
     final leaveRequestModel = LeaveRequestModel();
     leaveRequestModel.lEAVETYPE = leaveSubType.name;
     leaveRequestModel.uSERNAME = context.userDB.get(userNameKey);
     leaveRequestModel.cREATORUSERNAME = '';
-    if (leaveType == LeaveType.otherLeave) {
+    if (leaveType == LeaveType.otherLeave ||
+        leaveType == LeaveType.createLeave) {
       leaveRequestModel.aBSENCETYPEID = '${selectedLeaveType?.id}';
     } else {
       leaveRequestModel.aBSENCETYPEID = leaveType.id;
@@ -201,8 +182,14 @@ class LeavesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (leaveType == LeaveType.otherLeave) {
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    if (leaveType == LeaveType.otherLeave ||
+        leaveType == LeaveType.createLeave) {
       _servicesBloc.getLeaveTypes(requestParams: {});
+    }
+    if (leaveType == LeaveType.createLeave) {
+      _servicesBloc
+          .getEmployeesByManager(requestParams: {'USER_NAME': userName});
     }
     resources = context.resources;
     _startDateController.addListener(
@@ -221,6 +208,8 @@ class LeavesScreen extends StatelessWidget {
                 Dialogs.loader(context);
               } else if (state is OnLeaveTypesSuccess) {
                 _leaveTypeList.value = state.leaveTypeEntity;
+              } else if (state is OnEmployeesSuccess) {
+                _employeesList.value = state.employeesList;
               } else if (state is OnLeaveSubmittedSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 if (state.leaveSubmitResponse.isSuccess ?? false) {
@@ -293,7 +282,32 @@ class LeavesScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Visibility(
-                              visible: leaveType == LeaveType.otherLeave,
+                              visible: leaveType == LeaveType.createLeave,
+                              child: ValueListenableBuilder(
+                                  valueListenable: _employeesList,
+                                  builder: (context, employeesList, widget) {
+                                    return DropDownWidget<EmployeeEntity>(
+                                      list: employeesList,
+                                      height: resources.dimen.dp27,
+                                      labelText: context.string.absenceType,
+                                      hintText:
+                                          context.string.chooseAbsenceType,
+                                      suffixIconPath:
+                                          DrawableAssets.icChevronDown,
+                                      selectedValue: selectedEmployee,
+                                      callback: onEmployeeSelected,
+                                    );
+                                  }),
+                            ),
+                            Visibility(
+                              visible: leaveType == LeaveType.createLeave,
+                              child: SizedBox(
+                                height: resources.dimen.dp20,
+                              ),
+                            ),
+                            Visibility(
+                              visible: leaveType == LeaveType.otherLeave ||
+                                  leaveType == LeaveType.createLeave,
                               child: ValueListenableBuilder(
                                   valueListenable: _leaveTypeList,
                                   builder: (context, leaveTypeList, widget) {
@@ -311,7 +325,8 @@ class LeavesScreen extends StatelessWidget {
                                   }),
                             ),
                             Visibility(
-                              visible: leaveType == LeaveType.otherLeave,
+                              visible: leaveType == LeaveType.otherLeave ||
+                                  leaveType == LeaveType.createLeave,
                               child: SizedBox(
                                 height: resources.dimen.dp20,
                               ),

@@ -40,6 +40,8 @@ abstract class RemoteDataSource {
       {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<List<EmployeeEntity>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams});
+  Future<List<EmployeeEntity>> getEmployeesByManager(
+      {required Map<String, dynamic> requestParams});
   Future<List<NameIdEntity>> getLeaves(
       {required Map<String, dynamic> requestParams});
 }
@@ -287,12 +289,43 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      var deptEmployeesListJson = response.data['DeptEmployeesList'] as List;
-      var deptEmployeesList = deptEmployeesListJson
-          .map((employeeEntity) =>
-              EmployeeModel.fromJson(employeeEntity).toEmployeeEntity())
-          .toList();
-      return deptEmployeesList;
+      if (response.data['DeptEmployeesList'] != null) {
+        var deptEmployeesListJson = response.data['DeptEmployeesList'] as List;
+        var deptEmployeesList = deptEmployeesListJson
+            .map((employeeEntity) =>
+                EmployeeModel.fromJson(employeeEntity).toEmployeeEntity())
+            .toList();
+        return deptEmployeesList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<EmployeeEntity>> getEmployeesByManager(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        employeesByManagerApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data['MY_TEAM'] != null) {
+        var deptEmployeesListJson = response.data['MY_TEAM'] as List;
+        var deptEmployeesList = deptEmployeesListJson
+            .map((employeeEntity) =>
+                EmployeeModel.fromJsonMyTeam(employeeEntity).toEmployeeEntity())
+            .toList();
+        return deptEmployeesList;
+      } else {
+        return [];
+      }
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

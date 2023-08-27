@@ -45,6 +45,16 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnEmployeesSuccess(employeesList: r)));
   }
 
+  Future<void> getEmployeesByManager(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+
+    final result = await servicesUseCase.getEmployeesByManager(
+        requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnEmployeesSuccess(employeesList: r)));
+  }
+
   Future<void> submitServicesRequest(
       {required String apiUrl,
       required Map<String, dynamic> requestParams}) async {

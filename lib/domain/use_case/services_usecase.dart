@@ -37,6 +37,12 @@ class ServicesUseCase extends BaseUseCase {
         requestParams: requestParams);
   }
 
+  Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByManager(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getEmployeesByManager(
+        requestParams: requestParams);
+  }
+
   Future<Either<Failure, List<NameIdEntity>>> getLeaves(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getLeaves(requestParams: requestParams);

@@ -52,7 +52,7 @@ class MyTeamScreen extends StatelessWidget {
                           )
                         : Expanded(
                             child:
-                                LeavesScreen(leaveType: LeaveType.otherLeave));
+                                LeavesScreen(leaveType: LeaveType.createLeave));
                   }),
             ],
           ),

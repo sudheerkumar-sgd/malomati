@@ -7,6 +7,7 @@ import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
+import 'package:malomati/presentation/ui/services/payslips_screen.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -46,8 +47,10 @@ class ServicesScreen extends StatelessWidget {
       screenWidget = BadgeScreen();
     } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
       screenWidget = MyTeamScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
-      screenWidget = MyTeamScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains(context.string.payslip.toLowerCase())) {
+      screenWidget = PayslipsScreen();
     }
 
     Navigator.push(

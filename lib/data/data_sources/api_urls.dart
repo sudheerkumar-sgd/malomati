@@ -29,3 +29,4 @@ const String badgeApiUrl = 'UAQSGD_MOB_ERP_BadgeRequest/CreateBadge';
 const String overtimeApiUrl = 'UAQSGD_MOB_ERP_OvertimeRequest/OvertimeRequest';
 const String leavesApiUrl =
     'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary/LeaveDetails';
+const String employeesByManagerApiUrl = 'UAQSGD_MOB_ERP_GetMyTeam/GetMyTeam';
