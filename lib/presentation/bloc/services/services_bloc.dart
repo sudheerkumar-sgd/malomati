@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
@@ -73,6 +74,31 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.getLeaves(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnLeavesSuccess(leavesList: r)));
+  }
+
+  Future<void> getHrApprovalsList(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result =
+        await servicesUseCase.getHrApprovalsList(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnHrApprovalsListSuccess(hrApprovalsList: r)));
+  }
+
+  Future<void> getHrApprovalDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    final result = await servicesUseCase.getHrApprovalDetails(
+        requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnHrApprovalsListSuccess(hrApprovalsList: r)));
+  }
+
+  Future<void> submitHrApproval(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await servicesUseCase.submitHrApproval(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnsubmitHrApprovalSuccess(apiEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {

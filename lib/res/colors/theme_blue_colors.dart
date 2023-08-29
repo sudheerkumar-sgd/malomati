@@ -90,4 +90,10 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get colorBlue356DCE => const Color(0xff356DCE);
+
+  @override
+  Color get colorOrangeEB920C => const Color(0xffEB920C);
+
+  @override
+  Color get colorLightBg => const Color(0xffF8F4F4);
 }

@@ -5,7 +5,9 @@ class TextInputWidget {
   String? hintText;
   double? width;
   double? height;
+  int? maxLines;
   TextEditingController? textController;
+  Color? fillColor;
   Color? focusedBorderColor;
   Color? enabledBorderColor;
   double? boarderWidth;
@@ -18,7 +20,9 @@ class TextInputWidget {
     this.hintText,
     this.width,
     this.height,
+    this.maxLines = 1,
     this.textController,
+    this.fillColor,
     this.focusedBorderColor,
     this.enabledBorderColor,
     this.boarderWidth,
@@ -39,12 +43,15 @@ class TextInputWidget {
         textInputAction: textInputAction ?? TextInputAction.next,
         obscureText:
             textInputType == TextInputType.visiblePassword ? true : false,
+        maxLines: maxLines,
         decoration: InputDecoration(
             isDense: true,
             hintText: hintText,
+            fillColor: fillColor,
+            filled: fillColor == null ? null : true,
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: focusedBorderColor ?? const Color(0xFF000000),
+                  color: focusedBorderColor ?? const Color(0x00000000),
                   width: width ?? 1),
               borderRadius: BorderRadius.all(
                 Radius.circular(boarderRadius ?? 4),
@@ -52,7 +59,7 @@ class TextInputWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                  color: enabledBorderColor ?? const Color(0xFF000000),
+                  color: enabledBorderColor ?? const Color(0x00000000),
                   width: width ?? 1),
               borderRadius: BorderRadius.all(
                 Radius.circular(boarderRadius ?? 4),

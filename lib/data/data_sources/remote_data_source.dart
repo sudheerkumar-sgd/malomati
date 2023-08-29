@@ -5,12 +5,16 @@ import 'package:dio/dio.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/Leaves_model.dart';
 import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/hr_approval_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
+import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
@@ -43,6 +47,12 @@ abstract class RemoteDataSource {
   Future<List<EmployeeEntity>> getEmployeesByManager(
       {required Map<String, dynamic> requestParams});
   Future<List<NameIdEntity>> getLeaves(
+      {required Map<String, dynamic> requestParams});
+  Future<List<HrApprovalEntity>> getHrApprovalsList(
+      {required Map<String, dynamic> requestParams});
+  Future<List<HrApprovalEntity>> getHrApprovalDetails(
+      {required Map<String, dynamic> requestParams});
+  Future<ApiEntity> submitHrApproval(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -353,6 +363,80 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       } else {
         return [];
       }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<HrApprovalEntity>> getHrApprovalsList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        hrApprovalListApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data['NotificationList'] != null) {
+        var hrApprovalsJson = response.data['NotificationList'] as List;
+        var hrApprovalList = hrApprovalsJson
+            .map((hrApprovalJson) =>
+                HrApprovalModel.fromJson(hrApprovalJson).toHrApprovalEntity())
+            .toList();
+        return hrApprovalList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<HrApprovalEntity>> getHrApprovalDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        hrApprovalDetailsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data['NotificationDetails'] != null) {
+        var hrApprovalsJson = response.data['NotificationDetails'] as List;
+        var hrApprovalList = hrApprovalsJson
+            .map((hrApprovalJson) =>
+                HrApprovalModel.fromJsonDetails(hrApprovalJson)
+                    .toHrApprovalDetailsEntity())
+            .toList();
+        return hrApprovalList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiEntity> submitHrApproval(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.post(
+        submitHrApprovalApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: jsonEncode(requestParams),
+      );
+      var apiResponse = ApiResponse<BaseModel>.fromJson(response.data, null);
+      return apiResponse.toApiEntity();
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

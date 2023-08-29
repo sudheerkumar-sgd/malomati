@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
+
+import '../../../../res/drawables/background_box_decoration.dart';
+
+class DialogRequestAnswerMoreInfo extends StatelessWidget {
+  final TextEditingController controller = TextEditingController();
+  DialogRequestAnswerMoreInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final resources = context.resources;
+    return Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.all(Radius.circular(resources.dimen.dp15))),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: resources.dimen.dp20, vertical: resources.dimen.dp15),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              context.string.returntext,
+              style: context.textFontWeight600.onFontSize(resources.dimen.dp17),
+            ),
+            SizedBox(
+              height: resources.dimen.dp10,
+            ),
+            Align(
+              alignment:
+                  resources.isLocalEn ? Alignment.topLeft : Alignment.topRight,
+              child: Text(
+                context.string.question,
+                style:
+                    context.textFontWeight400.onFontSize(resources.dimen.dp12),
+              ),
+            ),
+            SizedBox(
+              height: resources.dimen.dp5,
+            ),
+            TextInputWidget(
+              maxLines: 3,
+              textController: controller,
+              textStyle:
+                  context.textFontWeight400.onFontSize(resources.dimen.dp12),
+              fillColor: resources.color.colorLightBg,
+              boarderRadius: resources.dimen.dp8,
+            ).textInputFiled,
+            SizedBox(
+              height: context.resources.dimen.dp10,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, controller.text);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: context.resources.dimen.dp40,
+                    vertical: context.resources.dimen.dp7),
+                decoration: BackgroundBoxDecoration(
+                        boxColor: context.resources.color.bgGradientStart,
+                        radious: context.resources.dimen.dp15)
+                    .roundedCornerBox,
+                child: Text(
+                  context.string.ok,
+                  style: context.textFontWeight400
+                      .onFontSize(context.resources.dimen.dp15)
+                      .onColor(context.resources.color.colorWhite)
+                      .copyWith(height: 1),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

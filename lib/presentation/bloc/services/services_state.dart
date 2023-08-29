@@ -61,6 +61,22 @@ class OnLeavesSuccess extends ServicesState {
   List<Object?> get props => [leavesList];
 }
 
+class OnHrApprovalsListSuccess extends ServicesState {
+  final List<HrApprovalEntity> hrApprovalsList;
+
+  OnHrApprovalsListSuccess({required this.hrApprovalsList});
+  @override
+  List<Object?> get props => [hrApprovalsList];
+}
+
+class OnsubmitHrApprovalSuccess extends ServicesState {
+  final ApiEntity apiEntity;
+
+  OnsubmitHrApprovalSuccess({required this.apiEntity});
+  @override
+  List<Object?> get props => [apiEntity];
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

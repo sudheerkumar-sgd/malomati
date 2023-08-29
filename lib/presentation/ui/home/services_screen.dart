@@ -5,6 +5,7 @@ import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
 import 'package:malomati/presentation/ui/services/payslips_screen.dart';
@@ -51,6 +52,10 @@ class ServicesScreen extends StatelessWidget {
         .toLowerCase()
         .contains(context.string.payslip.toLowerCase())) {
       screenWidget = PayslipsScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('hr approvals')) {
+      screenWidget = HrApprovalsScreen();
     }
 
     Navigator.push(

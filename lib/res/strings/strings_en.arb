@@ -180,6 +180,7 @@
     "@anualLeaves": {
         "type": "text"
     },
+    "hrApprovals": "HR Approvals",
     "edit": "Edit",
     "@edit": {
         "type": "text"
@@ -443,6 +444,12 @@
     "happyBirthday": "Happy Birthday",
     "happyWorkAnniversary": "HAPPy WORK ANNIVERSARY",
     "noEventsMessage": "OOPS!\nNO ANY CELEBRATIONS TODAY",
+    "approve": "Approve",
+    "reject": "Reject",
+    "returntext": "Return",
+    "submittedOn": "Submitted on",
+    "question": "Question",
+    "ok": "Ok",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

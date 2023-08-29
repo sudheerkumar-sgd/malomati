@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
@@ -46,5 +47,22 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, List<NameIdEntity>>> getLeaves(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getLeaves(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalsList(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getHrApprovalsList(
+        requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getHrApprovalDetails(
+        requestParams: requestParams);
+  }
+
+  Future<Either<Failure, ApiEntity>> submitHrApproval(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitHrApproval(requestParams: requestParams);
   }
 }

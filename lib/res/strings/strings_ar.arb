@@ -19,8 +19,8 @@
     "punchIn": "الحضور",
     "punchOut": "الانصراف",
     "morningPunch": "صباح الخير، لم تقم بتسجيل حضورك بعد",
-    "thankYouForPunchIn": "شكرا لك ، لا تنسى أن تضرب",
-    "thankYouForPunchOut": "شكراً، لقد قمت بتسجيل الحضور",
+    "thankYouForPunchIn": "شكراً، لقد قمت بتسجيل الحضور",
+    "thankYouForPunchOut": "وداعًا، اتمنى لك يوم سعيد",
     "myFavoriteService": "خدماتي المفضلة",
     "balanceSickLeaves": "المرضية المتبقية",
     "balanceLeaves": "الإجازة المتبقية",
@@ -44,6 +44,7 @@
     "sickLeaves": "الإجازات المرضية",
     "anualLeaves": "الإجازات السنوية",
     "otherLeaves": "إجازة أخرى" ,
+    "hrApprovals": "موافقات الموارد البشرية",
     "edit": "تعديل",
     "done": "حفظ",
     "selfService": "الخدمة الذاتية",
@@ -161,5 +162,11 @@
     "eventBirthDayWishTitle": "حان الوقت لتتمنى لزميلك اليوم",
     "happyBirthday": "عيد ميلاد سعيد",
     "happyWorkAnniversary": "ذكرى عمل سعيدة",
-    "noEventsMessage": "لا يوجد أي احتفالات اليوم"
+    "noEventsMessage": "لا يوجد أي احتفالات اليوم",
+    "approve": "قبول",
+    "reject": "رفض",
+    "returntext": "الرجوع",
+    "submittedOn": "تم إرساله",
+    "question": "سؤال",
+    "ok": "نعم"
 }

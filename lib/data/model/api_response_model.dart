@@ -13,12 +13,12 @@ class ApiResponse<T extends BaseModel> extends Equatable {
   ApiResponse({this.isSuccess, this.message, this.messageAR, this.data});
 
   factory ApiResponse.fromJson(
-      Map<String, dynamic> json, Function(Map<String, dynamic>) create) {
+      Map<String, dynamic> json, Function(Map<String, dynamic>)? create) {
     return ApiResponse<T>(
       isSuccess: json["IsSuccess"],
       message: json["Message"],
       messageAR: json["MessageAR"],
-      data: create(json),
+      data: create != null ? create(json) : null,
     );
   }
 
@@ -40,6 +40,14 @@ extension SourceModelExtension on ApiResponse {
     apiEntity.message = message;
     apiEntity.messageAR = messageAR;
     apiEntity.entity = entity;
+    return apiEntity;
+  }
+
+  ApiEntity toApiEntity() {
+    final apiEntity = ApiEntity();
+    apiEntity.isSuccess = isSuccess;
+    apiEntity.message = message;
+    apiEntity.messageAR = messageAR;
     return apiEntity;
   }
 }
