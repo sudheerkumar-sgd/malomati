@@ -9,37 +9,25 @@ class ItemDashboardEvent extends StatelessWidget {
   final EventsEntity eventsEntity;
   const ItemDashboardEvent({required this.eventsEntity, super.key});
 
-  String _getWishTitle() {
+  String _getWishTitle(BuildContext context) {
     if (eventsEntity.eVENTTYPE == '2') {
-      return 'We’re happy to have you on OUR TEAM';
+      return context.string.eventNewjoinWishTitle;
     } else if (eventsEntity.eVENTTYPE == '1' || eventsEntity.eVENTTYPE == '3') {
-      return 'Its Time To Wish Your Colleague Today';
+      return context.string.eventBirthDayWishTitle;
     } else {
       return '';
     }
   }
 
-  String _getEnWishText() {
+  String _getWishText(BuildContext context) {
     if (eventsEntity.eVENTTYPE == '1') {
-      return 'Happy Birthday';
+      return context.string.happyBirthday;
     } else if (eventsEntity.eVENTTYPE == '2') {
-      return 'WELCOME!';
+      return '${context.string.welcome}!';
     } else if (eventsEntity.eVENTTYPE == '3') {
-      return 'Happy WORK ANNIVERSARY';
+      return context.string.happyWorkAnniversary;
     } else {
-      return 'OOPS!\nNO ANY CELEBRATIONS TODAY';
-    }
-  }
-
-  String _getArWishText() {
-    if (eventsEntity.eVENTTYPE == '1') {
-      return 'Happy Birthday';
-    } else if (eventsEntity.eVENTTYPE == '2') {
-      return 'مرحبًا بك !';
-    } else if (eventsEntity.eVENTTYPE == '3') {
-      return 'Happy WORK ANNIVERSARY';
-    } else {
-      return 'لا يوجد أي احتفالات اليوم';
+      return context.string.noEventsMessage;
     }
   }
 
@@ -84,7 +72,7 @@ class ItemDashboardEvent extends StatelessWidget {
                     visible: eventsEntity.eVENTTYPE?.isNotEmpty ?? false,
                     child: Text(
                       textAlign: TextAlign.center,
-                      _getWishTitle().toUpperCase(),
+                      _getWishTitle(context).toUpperCase(),
                       overflow: TextOverflow.ellipsis,
                       style: context.textFontWeight400
                           .onColor(context.resources.color.colorWhite)
@@ -99,9 +87,7 @@ class ItemDashboardEvent extends StatelessWidget {
                   ),
                   Text(
                       textAlign: TextAlign.center,
-                      context.resources.isLocalEn
-                          ? _getEnWishText().toUpperCase()
-                          : _getArWishText(),
+                      _getWishText(context).toUpperCase(),
                       style: context.textFontWeight700
                           .onColor(context.resources.color.colorWhite)
                           .onFontSize(context.resources.dimen.dp12)),

@@ -68,10 +68,6 @@
     "@welcome": {
         "type": "text"
     },
-    "welcome": "Welcome",
-    "@welcome": {
-        "type": "text"
-    },
     "punchIn": "Punch In",
     "@punchIn": {
         "type": "text"
@@ -442,6 +438,11 @@
     "close": "Close",
     "thanks": "Thanks",
     "sorry": "Sorry",
+    "eventNewjoinWishTitle": "We’re happy to have you on OUR TEAM",
+    "eventBirthDayWishTitle": "Its Time To Wish Your Colleague Today",
+    "happyBirthday": "Happy Birthday",
+    "happyWorkAnniversary": "HAPPy WORK ANNIVERSARY",
+    "noEventsMessage": "OOPS!\nNO ANY CELEBRATIONS TODAY",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

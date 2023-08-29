@@ -156,5 +156,10 @@
     "view": "المشاهدة",
     "close": "إلغاء",
     "thanks": "شكرًا",
-    "sorry": "عذرًا لقد حدث خطأ"
+    "sorry": "عذرًا لقد حدث خطأ",
+    "eventNewjoinWishTitle": "يسعدنا أن تكون ضمن فريقنا",
+    "eventBirthDayWishTitle": "حان الوقت لتتمنى لزميلك اليوم",
+    "happyBirthday": "عيد ميلاد سعيد",
+    "happyWorkAnniversary": "ذكرى عمل سعيدة",
+    "noEventsMessage": "لا يوجد أي احتفالات اليوم"
 }
