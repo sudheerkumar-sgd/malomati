@@ -84,7 +84,7 @@
     "@morningPunch": {
         "type": "text"
     },
-    "thankYouForPunchIn": "Thank You, Don't forget to punch out",
+    "thankYouForPunchIn": "Thank You, You have punched in",
     "@thankYouForPunchIn": {
         "type": "text"
     },
@@ -212,6 +212,9 @@
     "@rejected": {
         "type": "text"
     },
+    "absent": "Absent",
+    "present": "Present",
+    "weekOff": "Week Off",
     "historyLogs": "History Logs",
     "@historyLogs": {
         "type": "text"

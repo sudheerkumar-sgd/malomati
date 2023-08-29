@@ -139,85 +139,55 @@ class InitiativesScreen extends StatelessWidget {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.applicability,
-                                    errorMessage: context.string.applicability,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: applicability,
-                                    callback: onApplicabilitySelected,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp20,
-                                ),
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText:
-                                        context.string.specilizationRelation,
-                                    errorMessage:
-                                        context.string.specilizationRelation,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: specilizationRelation,
-                                    callback: onSpecilizationRelationSelected,
-                                  ),
-                                ),
-                              ],
+                            DropDownWidget<NameIdEntity>(
+                              list: getDropDownYesNo(context),
+                              height: resources.dimen.dp27,
+                              labelText: context.string.applicability,
+                              errorMessage: context.string.applicability,
+                              suffixIconPath: DrawableAssets.icChevronDown,
+                              selectedValue: applicability,
+                              callback: onApplicabilitySelected,
+                            ),
+                            DropDownWidget<NameIdEntity>(
+                              list: getDropDownYesNo(context),
+                              height: resources.dimen.dp27,
+                              labelText: context.string.specilizationRelation,
+                              errorMessage:
+                                  context.string.specilizationRelation,
+                              suffixIconPath: DrawableAssets.icChevronDown,
+                              selectedValue: specilizationRelation,
+                              callback: onSpecilizationRelationSelected,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: DropDownWidget<NameIdEntity>(
-                                    list: getDropDownYesNo(context),
-                                    height: resources.dimen.dp27,
-                                    labelText:
-                                        context.string.serveDepartmentStrategy,
-                                    errorMessage:
-                                        context.string.serveDepartmentStrategy,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: serveDepartmentStrategy,
-                                    callback: onServeDepartmentStrategySelected,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp20,
-                                ),
-                                Expanded(
-                                  child: DropDownWidget<String>(
-                                    list: const [
-                                      '2023',
-                                      '2024',
-                                      '2025',
-                                      '2026',
-                                      '2027',
-                                      '2028',
-                                      '2029',
-                                      '2030',
-                                    ],
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.initiativeYear,
-                                    errorMessage: context.string.initiativeYear,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: initiativeYear,
-                                    callback: onInitiativeYearSelected,
-                                  ),
-                                ),
+                            DropDownWidget<NameIdEntity>(
+                              list: getDropDownYesNo(context),
+                              height: resources.dimen.dp27,
+                              labelText: context.string.serveDepartmentStrategy,
+                              errorMessage:
+                                  context.string.serveDepartmentStrategy,
+                              suffixIconPath: DrawableAssets.icChevronDown,
+                              selectedValue: serveDepartmentStrategy,
+                              callback: onServeDepartmentStrategySelected,
+                            ),
+                            DropDownWidget<String>(
+                              list: const [
+                                '2023',
+                                '2024',
+                                '2025',
+                                '2026',
+                                '2027',
+                                '2028',
+                                '2029',
+                                '2030',
                               ],
+                              height: resources.dimen.dp27,
+                              labelText: context.string.initiativeYear,
+                              errorMessage: context.string.initiativeYear,
+                              suffixIconPath: DrawableAssets.icChevronDown,
+                              selectedValue: initiativeYear,
+                              callback: onInitiativeYearSelected,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

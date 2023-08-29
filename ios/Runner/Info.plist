@@ -61,6 +61,10 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Explain why your app uses photo library</string>
+	<string>uploading documents for approve requests</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To check login location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To play birthday wishes </string>
 </dict>
 </plist>

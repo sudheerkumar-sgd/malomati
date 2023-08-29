@@ -118,3 +118,54 @@ const thankYouReasonList = [
 
 const aboutMalomati =
     'Malomati is Umm Al Quwain Government Self Service Mobile Application for its employees. The application is developed by UAQ Department of eGovernment and will enable employees to use features of the Oracle EBS self-services features over mobile using with the same credentials as the ERP login. Malomati smart application provides six relevant services, which are listed below.';
+String getArabicDayName(String dayNameEn) {
+  switch (dayNameEn) {
+    case 'Sunday':
+      return 'الأحد';
+    case 'Monday':
+      return 'الإثنين';
+    case 'Tuesday':
+      return 'الثلاثاء';
+    case 'Wednesday':
+      return 'الأربعاء';
+    case 'Thursday':
+      return 'الخميس';
+    case 'Friday':
+      return 'جمعة';
+    case 'Saturday':
+      return 'الجمعة';
+    default:
+      return '';
+  }
+}
+
+String getArabicMonthName(String dayNameEn) {
+  switch (dayNameEn) {
+    case 'January':
+      return 'يناير';
+    case 'February':
+      return 'فبراير';
+    case 'March':
+      return 'مارس';
+    case 'April':
+      return 'أبريل';
+    case 'May':
+      return 'مايو';
+    case 'June':
+      return 'يونيو';
+    case 'July':
+      return 'يوليو';
+    case 'August':
+      return 'أغسطس';
+    case 'September':
+      return 'سبتمبر';
+    case 'October':
+      return 'أكتوبر';
+    case 'November':
+      return 'نوفمبر';
+    case 'December':
+      return 'ديسمبر';
+    default:
+      return '';
+  }
+}

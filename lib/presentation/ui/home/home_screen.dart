@@ -25,6 +25,7 @@ import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../../core/constants/data_constants.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/custom_bg_widgets.dart';
 
@@ -43,14 +44,13 @@ class HomeScreen extends StatelessWidget {
       ValueNotifier<List<FavoriteEntity>>([]);
   final ValueNotifier _eventBannerChange = ValueNotifier<int>(0);
   final ValueNotifier _isFavoriteEdited = ValueNotifier<bool>(false);
-  final _currentDate = DateFormat('EEE, dd MMMM yyyy').format(DateTime.now());
-  final ValueNotifier _timeString =
-      ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
-  final ValueNotifier<int> _punchStatus = ValueNotifier<int>(0);
+  // final ValueNotifier _timeString =
+  //     ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
+  final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
   final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(0);
-  void _getTime() {
-    _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
-  }
+  // void _getTime() {
+  //   _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
+  // }
 
   _refreshAttendance() {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
@@ -71,7 +71,9 @@ class HomeScreen extends StatelessWidget {
   }
 
   String _getPunchTextByStatus(BuildContext context, int status) {
-    if (status == 0) {
+    if (status == -1) {
+      return '';
+    } else if (status == 0) {
       return context.string.morningPunch;
     } else if (status == 1) {
       return context.string.thankYouForPunchIn;
@@ -82,7 +84,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     _refreshAttendance();
     _homeBloc.getDashboardData(
         userName: context.userDB.get(userNameKey, defaultValue: ''));
@@ -91,11 +93,16 @@ class HomeScreen extends StatelessWidget {
     _homeBloc.getFavoritesdData(userDB: context.userDB);
     _onAttendanceRespose.addListener(
       () {
-        Timer(const Duration(seconds: 1), () {
+        Timer(const Duration(milliseconds: 200), () {
           _punchStatus.value = _onAttendanceRespose.value;
         });
       },
     );
+    final currentDate = DateTime.now();
+    final currentDayName = DateFormat('EEEE').format(currentDate);
+    final currentDay = DateFormat('dd').format(currentDate);
+    final currentMonth = DateFormat('MMMM').format(DateTime.now());
+    final currentYear = DateTime.now().year;
     return SafeArea(
       child: Scaffold(
           backgroundColor: context.resources.color.appScaffoldBg,
@@ -164,35 +171,38 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _currentDate,
+                                    RichText(
+                                      text: TextSpan(
+                                          text:
+                                              '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
                                           style: context.textFontWeight600
-                                              .onFontFamily(
-                                                  fontFamily: fontFamilyEN)
                                               .onFontSize(
                                                   context.resources.dimen.dp17),
-                                        ),
-                                        SizedBox(
-                                          height: context.resources.dimen.dp5,
-                                        ),
-                                        ValueListenableBuilder(
-                                            valueListenable: _timeString,
-                                            builder: (context, value, widget) {
-                                              return Text(
-                                                value,
-                                                style: context.textFontWeight400
-                                                    .onFontFamily(
-                                                        fontFamily:
-                                                            fontFamilyEN)
-                                                    .onFontSize(context
-                                                        .resources.dimen.dp14),
-                                              );
-                                            }),
-                                      ],
+                                          children: [
+                                            TextSpan(
+                                              text: '$currentDay ',
+                                              style: context.textFontWeight600
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp17),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
+                                              style: context.textFontWeight600
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp17),
+                                            ),
+                                            TextSpan(
+                                              text: '$currentYear',
+                                              style: context.textFontWeight600
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN)
+                                                  .onFontSize(context
+                                                      .resources.dimen.dp17),
+                                            ),
+                                          ]),
                                     ),
                                     const Spacer(),
                                     ImageWidget(
@@ -482,6 +492,8 @@ class HomeScreen extends StatelessWidget {
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Flexible(

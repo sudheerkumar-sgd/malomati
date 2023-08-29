@@ -44,6 +44,10 @@ class DropDownWidget<T> extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: context.textFontWeight400
+                .onFontFamily(
+                    fontFamily: context.resources.isLocalEn
+                        ? fontFamilyEN
+                        : fontFamilyAR)
                 .onFontSize(context.resources.dimen.dp12),
           ),
         ),
@@ -64,10 +68,6 @@ class DropDownWidget<T> extends StatelessWidget {
                   contentPadding: EdgeInsets.symmetric(
                       vertical: context.resources.dimen.dp5,
                       horizontal: context.resources.dimen.dp10),
-                  hintText: hintText,
-                  hintStyle: context.textFontWeight400
-                      .onFontSize(context.resources.dimen.dp12)
-                      .onColor(context.resources.color.colorD6D6D6),
                   fillColor: context.resources.color.colorWhite,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -83,6 +83,10 @@ class DropDownWidget<T> extends StatelessWidget {
                   hintText,
                   style: context.textFontWeight400
                       .onFontSize(context.resources.dimen.dp12)
+                      .onFontFamily(
+                          fontFamily: context.resources.isLocalEn
+                              ? fontFamilyEN
+                              : fontFamilyAR)
                       .onColor(context.resources.color.colorD6D6D6),
                 ),
                 validator: (value) {
@@ -102,6 +106,10 @@ class DropDownWidget<T> extends StatelessWidget {
                       .loadImage,
                 ),
                 style: context.textFontWeight400
+                    .onFontFamily(
+                        fontFamily: context.resources.isLocalEn
+                            ? fontFamilyEN
+                            : fontFamilyAR)
                     .onFontSize(context.resources.dimen.dp12),
                 onChanged: (T? value) {
                   _onItemChanged.value = !_onItemChanged.value;
@@ -116,7 +124,10 @@ class DropDownWidget<T> extends StatelessWidget {
                       child: Text(
                         overflow: TextOverflow.visible,
                         value.toString(),
-                        style: context.textFontWeight400,
+                        style: context.textFontWeight400.onFontFamily(
+                            fontFamily: context.resources.isLocalEn
+                                ? fontFamilyEN
+                                : fontFamilyAR),
                       ),
                     ),
                   );

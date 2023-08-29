@@ -38,6 +38,10 @@ class RightIconTextWidget extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: context.textFontWeight400
+                .onFontFamily(
+                    fontFamily: context.resources.isLocalEn
+                        ? fontFamilyEN
+                        : fontFamilyAR)
                 .onFontSize(context.resources.dimen.dp12),
           ),
         ),
@@ -51,10 +55,9 @@ class RightIconTextWidget extends StatelessWidget {
             maxLines: maxLines,
             keyboardType: textInputType,
             controller: textController,
-            textAlign: TextAlign.left,
             textAlignVertical: TextAlignVertical.center,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (errorMessage.isNotEmpty && (value == null || value.isEmpty)) {
                 return errorMessage.isNotEmpty ? errorMessage : null;
               }
               return null;

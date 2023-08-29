@@ -11,6 +11,7 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/utils/location.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
+import '../../../core/constants/data_constants.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/drawables/drawable_assets.dart';
@@ -280,14 +281,31 @@ class AttendanceScreen extends StatelessWidget {
                         ValueListenableBuilder(
                             valueListenable: _timeString,
                             builder: (context, value, widget) {
-                              return Text(
-                                '${getCurrentDateByformat('EEEE')}, $value',
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: context.textFontWeight600
-                                    .onColor(context.resources.color.textColor)
-                                    .onFontSize(context.resources.dimen.dp17),
-                              );
+                              return RichText(
+                                  text: TextSpan(
+                                      text:
+                                          '${context.resources.isLocalEn ? getCurrentDateByformat('EEEE') : getArabicDayName(getCurrentDateByformat('EEEE'))}, ',
+                                      style: context.textFontWeight600
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontFamily(
+                                              fontFamily: resources.isLocalEn
+                                                  ? fontFamilyEN
+                                                  : fontFamilyAR)
+                                          .onFontSize(
+                                              context.resources.dimen.dp17),
+                                      children: [
+                                    TextSpan(
+                                      text: '$value',
+                                      style: context.textFontWeight600
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .onFontSize(
+                                              context.resources.dimen.dp17),
+                                    )
+                                  ]));
                             }),
                         Text(
                           '${context.string.location}: ${department['name'] ?? ''}',
@@ -300,99 +318,103 @@ class AttendanceScreen extends StatelessWidget {
                         SizedBox(
                           height: resources.dimen.dp10,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: canPunchOutEnable(),
-                              child: Row(
-                                children: [
-                                  ImageWidget(
-                                          height: 25,
-                                          path: DrawableAssets.icPunchIn,
-                                          backgroundTint:
-                                              resources.color.viewBgColor)
-                                      .loadImage,
-                                  SizedBox(
-                                    width: resources.dimen.dp5,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        getPunchTypeValue(context,
-                                            attendanceEntity?.spfid1 ?? ''),
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: context.textFontWeight400
-                                            .onColor(context
-                                                .resources.color.textColor)
-                                            .onFontSize(
-                                                context.resources.dimen.dp12),
-                                      ),
-                                      Text(
-                                        (attendanceEntity?.punch1Time ?? '')
-                                                .isNotEmpty
-                                            ? attendanceEntity?.punch1Time ?? ''
-                                            : '00:00:00',
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: context.textFontWeight600
-                                            .onColor(context
-                                                .resources.color.textColor)
-                                            .onFontSize(
-                                                context.resources.dimen.dp12),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                        Visibility(
+                          visible: false,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: canPunchOutEnable(),
+                                child: Row(
+                                  children: [
+                                    ImageWidget(
+                                            height: 25,
+                                            path: DrawableAssets.icPunchIn,
+                                            backgroundTint:
+                                                resources.color.viewBgColor)
+                                        .loadImage,
+                                    SizedBox(
+                                      width: resources.dimen.dp5,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          getPunchTypeValue(context,
+                                              attendanceEntity?.spfid1 ?? ''),
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: context.textFontWeight400
+                                              .onColor(context
+                                                  .resources.color.textColor)
+                                              .onFontSize(
+                                                  context.resources.dimen.dp12),
+                                        ),
+                                        Text(
+                                          (attendanceEntity?.punch1Time ?? '')
+                                                  .isNotEmpty
+                                              ? attendanceEntity?.punch1Time ??
+                                                  ''
+                                              : '00:00:00',
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: context.textFontWeight600
+                                              .onColor(context
+                                                  .resources.color.textColor)
+                                              .onFontSize(
+                                                  context.resources.dimen.dp12),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: Row(
-                                children: [
-                                  ImageWidget(
-                                          height: 23,
-                                          path: DrawableAssets
-                                              .icServiceAttendance,
-                                          backgroundTint:
-                                              resources.color.viewBgColor)
-                                      .loadImage,
-                                  SizedBox(
-                                    width: resources.dimen.dp5,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        context.string.remaining,
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: context.textFontWeight400
-                                            .onColor(context
-                                                .resources.color.textColor)
-                                            .onFontSize(
-                                                context.resources.dimen.dp10),
-                                      ),
-                                      Text(
-                                        _getReamainingHours(),
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: context.textFontWeight600
-                                            .onColor(context
-                                                .resources.color.textColor)
-                                            .onFontSize(
-                                                context.resources.dimen.dp10),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              Visibility(
+                                visible: false,
+                                child: Row(
+                                  children: [
+                                    ImageWidget(
+                                            height: 23,
+                                            path: DrawableAssets
+                                                .icServiceAttendance,
+                                            backgroundTint:
+                                                resources.color.viewBgColor)
+                                        .loadImage,
+                                    SizedBox(
+                                      width: resources.dimen.dp5,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          context.string.remaining,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: context.textFontWeight400
+                                              .onColor(context
+                                                  .resources.color.textColor)
+                                              .onFontSize(
+                                                  context.resources.dimen.dp10),
+                                        ),
+                                        Text(
+                                          _getReamainingHours(),
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: context.textFontWeight600
+                                              .onColor(context
+                                                  .resources.color.textColor)
+                                              .onFontSize(
+                                                  context.resources.dimen.dp10),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: resources.dimen.dp30,
@@ -407,7 +429,7 @@ class AttendanceScreen extends StatelessWidget {
                                       _submitAttendance(context, option);
                                     },
                                     child: Container(
-                                      width: 155,
+                                      width: 180,
                                       margin: EdgeInsets.only(
                                           bottom: resources.dimen.dp20),
                                       padding: EdgeInsets.symmetric(

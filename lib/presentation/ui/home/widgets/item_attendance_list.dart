@@ -43,6 +43,18 @@ class ItemAttendanceList extends StatelessWidget {
     }
   }
 
+  String _getAttendanceStatusName(
+      BuildContext context, AttendanceStatus? status) {
+    switch (status) {
+      case AttendanceStatus.absent:
+        return context.string.absent;
+      case AttendanceStatus.present:
+        return context.string.present;
+      default:
+        return context.string.weekOff;
+    }
+  }
+
   Map _getDepartmentLocation() {
     printLog(message: attendanceEntity.toString());
     if ((attendanceEntity.gpsLatitude ?? '').isNotEmpty) {
@@ -406,7 +418,8 @@ class ItemAttendanceList extends StatelessWidget {
                                   Visibility(
                                     visible: _getAttendanceStatus() != null,
                                     child: Text(
-                                      _getAttendanceStatus()?.name ?? '',
+                                      _getAttendanceStatusName(
+                                          context, _getAttendanceStatus()),
                                       style: context.textFontWeight400
                                           .onColor(context
                                               .resources.color.textColor212B4B)

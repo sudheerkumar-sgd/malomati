@@ -19,7 +19,7 @@ class ItemDashboardEvent extends StatelessWidget {
     }
   }
 
-  String _getWishText() {
+  String _getEnWishText() {
     if (eventsEntity.eVENTTYPE == '1') {
       return 'Happy Birthday';
     } else if (eventsEntity.eVENTTYPE == '2') {
@@ -28,6 +28,18 @@ class ItemDashboardEvent extends StatelessWidget {
       return 'Happy WORK ANNIVERSARY';
     } else {
       return 'OOPS!\nNO ANY CELEBRATIONS TODAY';
+    }
+  }
+
+  String _getArWishText() {
+    if (eventsEntity.eVENTTYPE == '1') {
+      return 'Happy Birthday';
+    } else if (eventsEntity.eVENTTYPE == '2') {
+      return 'مرحبًا بك !';
+    } else if (eventsEntity.eVENTTYPE == '3') {
+      return 'Happy WORK ANNIVERSARY';
+    } else {
+      return 'لا يوجد أي احتفالات اليوم';
     }
   }
 
@@ -86,14 +98,13 @@ class ItemDashboardEvent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    textAlign: TextAlign.center,
-                    _getWishText().toUpperCase(),
-                    style: context.textFontWeight900
-                        .onFontFamily(fontFamily: fontFamilyEN)
-                        .onColor(context.resources.color.colorWhite)
-                        .onFontSize(context.resources.dimen.dp12)
-                        .copyWith(fontWeight: FontWeight.w700),
-                  ),
+                      textAlign: TextAlign.center,
+                      context.resources.isLocalEn
+                          ? _getEnWishText().toUpperCase()
+                          : _getArWishText(),
+                      style: context.textFontWeight700
+                          .onColor(context.resources.color.colorWhite)
+                          .onFontSize(context.resources.dimen.dp12)),
                   SizedBox(
                     height: context.resources.dimen.dp5,
                   ),

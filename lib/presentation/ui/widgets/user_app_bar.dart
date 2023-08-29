@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/extensions/string_extension.dart';
 import 'package:malomati/presentation/ui/home/user_profile_screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -24,7 +25,7 @@ class UserAppBarWidget extends StatelessWidget {
                     .onColor(context.resources.color.colorEDECEC),
               ),
               Text(
-                title,
+                title.capitalize(),
                 overflow: TextOverflow.clip,
                 style: context.textFontWeight600
                     .onColor(context.resources.color.colorEDECEC)

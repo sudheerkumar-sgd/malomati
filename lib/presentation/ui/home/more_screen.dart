@@ -365,7 +365,9 @@ class MoreScreen extends StatelessWidget {
                         height: context.resources.dimen.dp50,
                       ),
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: resources.isLocalEn
+                            ? Alignment.topLeft
+                            : Alignment.topRight,
                         child: Text(
                           context.string.contactAssistance,
                           style: context.textFontWeight600

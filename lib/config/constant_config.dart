@@ -15,23 +15,23 @@ class ConstantConfig {
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
         name: 'Annual Leaves',
-        nameAR: 'الإجازات السنوية',
+        nameAR: 'الإجازة الدورية',
         iconPath: DrawableAssets.icAnualleaves),
     FavoriteEntity(
         name: 'Permission',
-        nameAR: 'إستئذان',
+        nameAR: 'إذن خروج',
         iconPath: DrawableAssets.icServicePermission),
     FavoriteEntity(
         name: 'Sick Leaves',
-        nameAR: 'الإجازات المرضية',
+        nameAR: 'اجازة مرضية',
         iconPath: DrawableAssets.icSickleaves),
     FavoriteEntity(
         name: 'Mission Leaves',
-        nameAR: 'Mission Leaves',
+        nameAR: 'إجازة مهمة الرسمية',
         iconPath: DrawableAssets.icMissionleaves),
     FavoriteEntity(
         name: 'Other Leaves',
-        nameAR: 'Other Leaves',
+        nameAR: 'الإجازات اخرى',
         iconPath: DrawableAssets.icServiceLeave),
     FavoriteEntity(
         name: 'Initiatives',
@@ -39,7 +39,7 @@ class ConstantConfig {
         iconPath: DrawableAssets.icInitiatives),
     FavoriteEntity(
         name: 'Certificates',
-        nameAR: 'شهادات',
+        nameAR: 'شهادة الراتب',
         iconPath: DrawableAssets.icServiceCertificate),
     FavoriteEntity(
         name: 'Thank You',
@@ -51,14 +51,14 @@ class ConstantConfig {
         iconPath: DrawableAssets.icPayslip),
     FavoriteEntity(
         name: 'Advance Salary',
-        nameAR: 'راتب مقدما',
+        nameAR: 'راتب الإجازة',
         iconPath: DrawableAssets.icAdvancesalary),
     FavoriteEntity(
         name: 'Overtime',
         nameAR: 'العمل الإضافي',
         iconPath: DrawableAssets.icOvertime),
     FavoriteEntity(
-        name: 'Badge', nameAR: 'بطاقة', iconPath: DrawableAssets.icBadge),
+        name: 'Badge', nameAR: 'بطاقة العمل', iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
@@ -77,12 +77,12 @@ class ConstantConfig {
   final dashboardFavorites = [
     {
       'name': 'Annual Leaves',
-      'nameAR': 'الإجازات السنوية',
+      'nameAR': 'الإجازة الدورية',
       'iconPath': DrawableAssets.icAnualleaves
     },
     {
       'name': 'Permission',
-      'nameAR': 'إستئذان',
+      'nameAR': 'إذن خروج',
       'iconPath': DrawableAssets.icServicePermission
     },
     {
