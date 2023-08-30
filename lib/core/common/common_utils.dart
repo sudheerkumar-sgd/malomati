@@ -138,6 +138,10 @@ int daysBetween(DateTime from, DateTime to) {
   return (to.difference(from).inSeconds);
 }
 
+int getDays(DateTime from, DateTime to) {
+  return (getHours(from, to) / 24).round();
+}
+
 int getHours(DateTime from, DateTime to) {
   return (daysBetween(from, to) / (60 * 60)).round();
 }

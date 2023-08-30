@@ -319,7 +319,7 @@ class AttendanceScreen extends StatelessWidget {
                           height: resources.dimen.dp10,
                         ),
                         Visibility(
-                          visible: false,
+                          visible: attendanceType == AttendanceType.punchOut,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

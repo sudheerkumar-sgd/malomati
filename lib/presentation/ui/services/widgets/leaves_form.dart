@@ -515,7 +515,11 @@ class LeavesForm extends StatelessWidget {
                                                               // height: 13,
                                                               path:
                                                                   DrawableAssets
-                                                                      .icUpload)
+                                                                      .icUpload,
+                                                              backgroundTint:
+                                                                  resources
+                                                                      .color
+                                                                      .viewBgColor)
                                                           .loadImage,
                                                     ),
                                                   ],
@@ -533,7 +537,9 @@ class LeavesForm extends StatelessWidget {
                                     left: resources.dimen.dp10,
                                   ),
                                   child: ImageWidget(
-                                          path: DrawableAssets.icPlusCircle)
+                                          path: DrawableAssets.icPlusCircle,
+                                          backgroundTint:
+                                              resources.color.viewBgColor)
                                       .loadImage,
                                 ),
                               ),

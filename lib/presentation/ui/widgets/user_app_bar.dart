@@ -25,7 +25,7 @@ class UserAppBarWidget extends StatelessWidget {
                     .onColor(context.resources.color.colorEDECEC),
               ),
               Text(
-                title.capitalize(),
+                title.trim().capitalize(),
                 overflow: TextOverflow.clip,
                 style: context.textFontWeight600
                     .onColor(context.resources.color.colorEDECEC)

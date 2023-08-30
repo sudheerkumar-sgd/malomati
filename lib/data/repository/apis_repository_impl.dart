@@ -45,7 +45,7 @@ class ApisRepositoryImpl extends ApisRepository {
             .toEntity<LoginEntity>(apiResponse.data!.toLoginEntity());
         return Right(apiEntity);
       } on DioException catch (error) {
-        return Left(ServerFailure(error.response?.data?.toString() ?? ''));
+        return Left(ServerFailure(error.error?.toString() ?? ''));
       }
     } else {
       return Left(ConnectionFailure());
@@ -63,7 +63,7 @@ class ApisRepositoryImpl extends ApisRepository {
         final apiEntity = apiResponse
             .toEntity<ProfileEntity>(apiResponse.data!.toProfileEntity());
         return Right(apiEntity);
-      } catch (error) {
+      } on DioException catch (error) {
         return Left(ServerFailure(error.toString()));
       }
     } else {

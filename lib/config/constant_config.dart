@@ -11,7 +11,7 @@ class ConstantConfig {
         iconPath: DrawableAssets.icHrApprovals),
     FavoriteEntity(
         name: 'Finance Approvals',
-        nameAR: 'الموافقات المالية',
+        nameAR: 'لموافقات المالية',
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
         name: 'Annual Leaves',
@@ -27,7 +27,7 @@ class ConstantConfig {
         iconPath: DrawableAssets.icSickleaves),
     FavoriteEntity(
         name: 'Mission Leaves',
-        nameAR: 'إجازة مهمة الرسمية',
+        nameAR: 'إجازة مهمة لرسمية',
         iconPath: DrawableAssets.icMissionleaves),
     FavoriteEntity(
         name: 'Other Leaves',

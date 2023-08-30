@@ -1,5 +1,10 @@
 class DrawableAssets {
   static const drawablePath = 'assets/images/';
+  //No event banners
+  static const appmenubannnerEnglish =
+      'https://eservices.uaq.ae/EGDApp/Images/AppmenubannnerEnglish.jpg';
+  static const appmenubannnerArabic =
+      'https://eservices.uaq.ae/EGDApp/Images/AppmenubannnerArabic.jpg';
   //audios
   static const audioAnniversay = 'assets/audio/anniversay.mp3';
   static const audioBirthday = 'assets/audio/birthday.mp3';

@@ -96,21 +96,6 @@ class MyTeamAttendance extends StatelessWidget {
         SizedBox(
           height: resources.dimen.dp15,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              context.string.teamAttendanceReport,
-              style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
-            ),
-            Text(
-              context.string.view,
-              style: context.textFontWeight600
-                  .onFontSize(resources.dimen.dp12)
-                  .copyWith(decoration: TextDecoration.underline),
-            ),
-          ],
-        ),
       ],
     );
   }

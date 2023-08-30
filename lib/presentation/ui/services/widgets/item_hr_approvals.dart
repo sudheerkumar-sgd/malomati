@@ -249,10 +249,9 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                           .resources.dimen.dp5),
                                                   decoration:
                                                       BackgroundBoxDecoration(
-                                                              boxColor: context
-                                                                  .resources
-                                                                  .color
-                                                                  .viewBgColor,
+                                                              boxColor:
+                                                                  const Color(
+                                                                      0xFFDD143A),
                                                               radious: context
                                                                   .resources
                                                                   .dimen

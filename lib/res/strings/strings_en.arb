@@ -450,6 +450,7 @@
     "submittedOn": "Submitted on",
     "question": "Question",
     "ok": "Ok",
+    "noInternet": "No Internet Connection",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

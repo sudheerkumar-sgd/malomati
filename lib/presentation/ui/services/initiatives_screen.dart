@@ -171,6 +171,9 @@ class InitiativesScreen extends StatelessWidget {
                               selectedValue: serveDepartmentStrategy,
                               callback: onServeDepartmentStrategySelected,
                             ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
                             DropDownWidget<String>(
                               list: const [
                                 '2023',

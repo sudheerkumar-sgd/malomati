@@ -31,7 +31,7 @@
     "star": "نجم",
     "leaves": "إجازة",
     "permission": "إستئذان",
-    "attendance": "الحضور والانصراف",
+    "attendance": "الحضور",
     "certificate": "شهادة",
     "thankYou": "شكراً لك",
     "badge": "بطاقة",
@@ -168,5 +168,6 @@
     "returntext": "الرجوع",
     "submittedOn": "تم إرساله",
     "question": "سؤال",
-    "ok": "نعم"
+    "ok": "نعم",
+    "noInternet": "يرجى التأكد من تشغيل Wi-Fi"
 }

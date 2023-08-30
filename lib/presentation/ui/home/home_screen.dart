@@ -170,12 +170,17 @@ class HomeScreen extends StatelessWidget {
                             widget: Column(
                               children: [
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     RichText(
                                       text: TextSpan(
                                           text:
                                               '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
                                           style: context.textFontWeight600
+                                              .onFontFamily(
+                                                  fontFamily: isLocalEn
+                                                      ? fontFamilyEN
+                                                      : fontFamilyAR)
                                               .onFontSize(
                                                   context.resources.dimen.dp17),
                                           children: [
@@ -204,16 +209,16 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                           ]),
                                     ),
-                                    const Spacer(),
-                                    ImageWidget(
-                                            path: DrawableAssets.icWeather,
-                                            backgroundTint:
-                                                context.resources.iconBgColor)
-                                        .loadImage
+                                    // const Spacer(),
+                                    // ImageWidget(
+                                    //         path: DrawableAssets.icWeather,
+                                    //         backgroundTint:
+                                    //             context.resources.iconBgColor)
+                                    //     .loadImage
                                   ],
                                 ),
                                 SizedBox(
-                                  height: context.resources.dimen.dp5,
+                                  height: context.resources.dimen.dp10,
                                 ),
                                 ValueListenableBuilder(
                                     valueListenable: _punchStatus,
@@ -550,42 +555,54 @@ class HomeScreen extends StatelessWidget {
                                         margin: EdgeInsets.symmetric(
                                             horizontal:
                                                 context.resources.dimen.dp15),
-                                        height: context.resources.dimen.dp75,
-                                        child: PageView(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            for (int i = 0;
-                                                i < eventsList.length;
-                                                i++) ...[
-                                              ItemDashboardEvent(
-                                                eventsEntity: eventsList[i],
-                                              )
-                                            ]
-                                          ],
-                                          onPageChanged: (value) {
-                                            _eventBannerChange.value = value;
-                                          },
-                                        ),
+                                        height: context.resources.dimen.dp80,
+                                        child: eventsList.isEmpty
+                                            ? ImageWidget(
+                                                path: isLocalEn
+                                                    ? DrawableAssets
+                                                        .appmenubannnerEnglish
+                                                    : DrawableAssets
+                                                        .appmenubannnerArabic,
+                                              ).loadImage
+                                            : PageView(
+                                                clipBehavior: Clip.none,
+                                                children: [
+                                                  for (int i = 0;
+                                                      i < eventsList.length;
+                                                      i++) ...[
+                                                    ItemDashboardEvent(
+                                                      eventsEntity:
+                                                          eventsList[i],
+                                                    )
+                                                  ]
+                                                ],
+                                                onPageChanged: (value) {
+                                                  _eventBannerChange.value =
+                                                      value;
+                                                },
+                                              ),
                                       ),
                                       SizedBox(
                                         height: context.resources.dimen.dp10,
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          for (int i = 0;
-                                              i < eventsList.length;
-                                              i++) ...[
-                                            PageIndicator(
-                                                size:
-                                                    context.resources.dimen.dp5,
-                                                position: i,
-                                                eventBannerChange:
-                                                    _eventBannerChange)
-                                          ]
-                                        ],
-                                      ),
+                                      if (eventsList.isEmpty) ...{
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            for (int i = 0;
+                                                i < eventsList.length;
+                                                i++) ...[
+                                              PageIndicator(
+                                                  size: context
+                                                      .resources.dimen.dp5,
+                                                  position: i,
+                                                  eventBannerChange:
+                                                      _eventBannerChange)
+                                            ]
+                                          ],
+                                        )
+                                      }
                                     ],
                                   );
                                 }),
@@ -623,8 +640,6 @@ class HomeScreen extends StatelessWidget {
                                               style: context.textFontWeight400
                                                   .onColor(context.resources
                                                       .color.textColorLight)
-                                                  .onFontFamily(
-                                                      fontFamily: fontFamilyEN)
                                                   .onFontSize(context
                                                       .resources.dimen.dp12),
                                             ),
@@ -651,7 +666,7 @@ class HomeScreen extends StatelessWidget {
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
-                                      childAspectRatio: 1.2,
+                                      childAspectRatio: 1.1,
                                       mainAxisSpacing:
                                           context.resources.dimen.dp20,
                                     ),

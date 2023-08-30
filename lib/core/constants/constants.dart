@@ -32,6 +32,7 @@ const String supportEmailId = 'info.malomatiapp@gov.ae';
 
 String authorizationToken = "";
 String oracleLoginId = "";
+bool isLocalEn = true;
 
 String favoriteAdd = "add";
 String favoriteAddAR = "add";

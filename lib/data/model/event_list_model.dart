@@ -38,9 +38,6 @@ class EventListModel extends BaseModel {
     eventListModel.eventsList.addAll(birthdayList);
     eventListModel.eventsList.addAll(anniversaryList);
     eventListModel.eventsList.addAll(newJoineeList);
-    if (eventListModel.eventsList.isEmpty) {
-      eventListModel.eventsList.add(EventsEntity());
-    }
     return eventListModel;
   }
 

@@ -40,11 +40,6 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   String _getErrorMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return (failure as ServerFailure).errorMessage;
-      default:
-        return 'An unknown error has occured';
-    }
+    return failure.errorMessage;
   }
 }

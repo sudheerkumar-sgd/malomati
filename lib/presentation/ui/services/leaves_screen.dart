@@ -66,6 +66,7 @@ class LeavesScreen extends StatelessWidget {
   final _uploadFiles = [];
   String currentBalanceText = '';
   final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<String> _durationText = ValueNotifier('0');
 
   String _getTitleByLeaveType(BuildContext context) {
     switch (leaveType) {
@@ -193,10 +194,9 @@ class LeavesScreen extends StatelessWidget {
                 _uploadFiles[i]['fileNamebase64data'];
           }
       }
-      leaveRequestModel.uSERCOMMENTS = _commentController.text;
-      _servicesBloc.submitLeaveRequest(
-          requestParams: leaveRequestModel.toJson());
     }
+    leaveRequestModel.uSERCOMMENTS = _commentController.text;
+    _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
   }
 
   @override
@@ -210,6 +210,33 @@ class LeavesScreen extends StatelessWidget {
         _endDateController.text = '';
       },
     );
+    _endDateController.addListener(
+      () {
+        if (leaveType != LeaveType.permission) {
+          _durationText.value =
+              '${getDays(getDateTimeByString(dateFormat, _startDateController.text), getDateTimeByString(dateFormat, _endDateController.text)) + 1} ${context.string.days}';
+        }
+      },
+    );
+    if (leaveType == LeaveType.permission) {
+      _endTimeController.addListener(
+        () {
+          final minutes = getMinutes(
+              getDateTimeByString('$dateFormat $timeFormat',
+                  '${_startDateController.text} ${_startTimeController.text}'),
+              getDateTimeByString('$dateFormat $timeFormat',
+                  '${_endDateController.text} ${_endTimeController.text}'));
+          var text = '';
+          if (minutes > 60) {
+            text =
+                '${(minutes / 60).round()}:${minutes % 60} ${context.string.hours}';
+          } else {
+            text = '$minutes min';
+          }
+          _durationText.value = text;
+        },
+      );
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -258,37 +285,93 @@ class LeavesScreen extends StatelessWidget {
                         SizedBox(
                           height: context.resources.dimen.dp20,
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp20,
-                              vertical: resources.dimen.dp5),
-                          decoration: BackgroundBoxDecoration(
-                                  boxColor: context.resources.color
-                                      .bottomSheetIconUnSelected,
-                                  radious: context.resources.dimen.dp15)
-                              .roundedCornerBox,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                context.string.currentBalance,
-                                style: context.textFontWeight600
-                                    .onFontSize(context.resources.dimen.dp12)
-                                    .onColor(resources.color.textColor212B4B)
-                                    .copyWith(height: 1),
-                              ),
-                              SizedBox(
-                                width: resources.dimen.dp5,
-                              ),
-                              Text(
-                                currentBalanceText,
-                                style: context.textFontWeight600
-                                    .onFontSize(context.resources.dimen.dp12)
-                                    .onColor(resources.color.viewBgColor)
-                                    .copyWith(height: 1),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                ImageWidget(
+                                        height: 25,
+                                        path: DrawableAssets.icCalendar,
+                                        backgroundTint:
+                                            resources.color.viewBgColor)
+                                    .loadImage,
+                                SizedBox(
+                                  width: resources.dimen.dp5,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      context.string.remaining,
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: context.textFontWeight400
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontSize(
+                                              context.resources.dimen.dp12),
+                                    ),
+                                    Text(
+                                      currentBalanceText,
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: context.textFontWeight600
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontSize(
+                                              context.resources.dimen.dp12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: resources.dimen.dp20,
+                            ),
+                            Row(
+                              children: [
+                                ImageWidget(
+                                        height: 25,
+                                        path: DrawableAssets.icCalendar,
+                                        backgroundTint:
+                                            resources.color.viewBgColor)
+                                    .loadImage,
+                                SizedBox(
+                                  width: resources.dimen.dp5,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Duration',
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: context.textFontWeight400
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontSize(
+                                              context.resources.dimen.dp12),
+                                    ),
+                                    ValueListenableBuilder(
+                                        valueListenable: _durationText,
+                                        builder: (context, value, child) {
+                                          return Text(
+                                            value,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: context.textFontWeight600
+                                                .onColor(context
+                                                    .resources.color.textColor)
+                                                .onFontSize(context
+                                                    .resources.dimen.dp12),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -385,9 +468,17 @@ class LeavesScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _selectDate(context, _endDateController,
-                                    firstDate: getDateTimeByString(
-                                        dateFormat, _startDateController.text));
+                                if (leaveType != LeaveType.permission) {
+                                  _selectDate(context, _endDateController,
+                                      firstDate: getDateTimeByString(dateFormat,
+                                          _startDateController.text));
+                                } else {
+                                  _selectDate(context, _endDateController,
+                                      firstDate: getDateTimeByString(dateFormat,
+                                          _startDateController.text),
+                                      lastDate: getDateTimeByString(dateFormat,
+                                          _startDateController.text));
+                                }
                               },
                               child: RightIconTextWidget(
                                 height: resources.dimen.dp27,
@@ -560,7 +651,11 @@ class LeavesScreen extends StatelessWidget {
                                                                 // width: 13,
                                                                 // height: 13,
                                                                 path: DrawableAssets
-                                                                    .icUpload)
+                                                                    .icUpload,
+                                                                backgroundTint:
+                                                                    resources
+                                                                        .color
+                                                                        .viewBgColor)
                                                             .loadImage,
                                                       ),
                                                     ],
@@ -583,7 +678,9 @@ class LeavesScreen extends StatelessWidget {
                                           : resources.dimen.dp10,
                                     ),
                                     child: ImageWidget(
-                                            path: DrawableAssets.icPlusCircle)
+                                            path: DrawableAssets.icPlusCircle,
+                                            backgroundTint:
+                                                resources.color.viewBgColor)
                                         .loadImage,
                                   ),
                                 ),

@@ -47,8 +47,7 @@ class ItemDashboardService extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       if (callback != null) {
-                        callback!(context,
-                            FavoriteEntity(name: title, iconPath: iconPath));
+                        callback!(context, data);
                       }
                     },
                     child: Container(
