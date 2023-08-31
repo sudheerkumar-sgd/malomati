@@ -132,20 +132,23 @@ class LeavesScreen extends StatelessWidget {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: startTime ?? TimeOfDay.now(),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: context.resources.color.viewBgColor,
-            onSurface: context.resources.color.viewBgColor, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor:
-                  context.resources.color.viewBgColor, // button text color
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: context.resources.color.viewBgColor,
+              onSurface: context.resources.color.viewBgColor, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    context.resources.color.viewBgColor, // button text color
+              ),
             ),
           ),
+          child: child!,
         ),
-        child: child!,
       ),
     );
     if (picked != null) {
@@ -563,11 +566,17 @@ class LeavesScreen extends StatelessWidget {
                                             Expanded(
                                               child: InkWell(
                                                 onTap: () {
-                                                  final startTime =
-                                                      TimeOfDay.fromDateTime(
-                                                          getDateTimeByString(
-                                                              '$dateFormat $timeFormat',
-                                                              '${_startDateController.text} ${_startTimeController.text}'));
+                                                  TimeOfDay? startTime;
+                                                  try {
+                                                    startTime = TimeOfDay.fromDateTime(
+                                                        getDateTimeByString(
+                                                            '$dateFormat $timeFormat',
+                                                            '${_startDateController.text} ${_startTimeController.text}'));
+                                                  } catch (err) {
+                                                    printLog(
+                                                        message:
+                                                            err.toString());
+                                                  }
                                                   _selectTime(context,
                                                       _endTimeController,
                                                       startTime: startTime);

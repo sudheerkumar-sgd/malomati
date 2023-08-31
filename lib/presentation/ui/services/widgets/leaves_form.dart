@@ -71,6 +71,7 @@ class LeavesForm extends StatelessWidget {
   String userName = '';
   String selectedEmpUserName = '';
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -239,12 +240,16 @@ class LeavesForm extends StatelessWidget {
             listener: (context, state) {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
+                isLoading = true;
               } else if (state is OnLeaveTypesSuccess) {
                 _leaveTypeList.value = state.leaveTypeEntity;
               } else if (state is OnEmployeesSuccess) {
                 _employeesList.value = state.employeesList;
               } else if (state is OnLeaveSubmittedSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  isLoading = false;
+                }
                 if (state.leaveSubmitResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -257,7 +262,10 @@ class LeavesForm extends StatelessWidget {
                       state.leaveSubmitResponse.getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  isLoading = false;
+                }
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },

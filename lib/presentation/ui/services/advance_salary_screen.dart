@@ -26,6 +26,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
       ValueNotifier<List<NameIdEntity>>([]);
   final TextEditingController _commentsController = TextEditingController();
   String? leave;
+  bool isLoading = false;
 
   onLeavesSelected(NameIdEntity? value) {
     leave = value?.id ?? '';
@@ -60,11 +61,15 @@ class AdvanceSalaryScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
+                isLoading = true;
                 Dialogs.loader(context);
               } else if (state is OnLeavesSuccess) {
                 _leaves.value = state.leavesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  isLoading = false;
+                }
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -80,7 +85,10 @@ class AdvanceSalaryScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  isLoading = false;
+                }
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
