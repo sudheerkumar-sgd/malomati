@@ -294,6 +294,46 @@ class MoreScreen extends StatelessWidget {
                       SizedBox(
                         height: context.resources.dimen.dp15,
                       ),
+                      Row(children: [
+                        ImageWidget(
+                                path: DrawableAssets.icFontBig,
+                                backgroundTint: resources.iconBgColor)
+                            .loadImage,
+                        SizedBox(
+                          width: resources.dimen.dp10,
+                        ),
+                        Text(
+                          context.string.fontsSize,
+                          style: context.textFontWeight400
+                              .onColor(context.resources.color.textColor)
+                              .onFontSize(context.resources.dimen.dp15),
+                        ),
+                        const Spacer(),
+                        ImageWidget(
+                          path: DrawableAssets.icFontBig,
+                          backgroundTint: resources.color.textColor,
+                        ).loadImageWithMoreTapArea,
+                        SizedBox(
+                          width: resources.dimen.dp10,
+                        ),
+                        ImageWidget(
+                            path: DrawableAssets.icFontSmall,
+                            padding: EdgeInsets.only(
+                              left: resources.dimen.dp5,
+                              top: resources.dimen.dp5,
+                              right: resources.dimen.dp5,
+                            )).loadImageWithMoreTapArea,
+                      ]),
+                      SizedBox(
+                        height: context.resources.dimen.dp15,
+                      ),
+                      Container(
+                        color: context.resources.color.colorD6D6D6,
+                        height: 0.5,
+                      ),
+                      SizedBox(
+                        height: context.resources.dimen.dp15,
+                      ),
                       InkWell(
                         onTap: () {
                           Navigator.push(

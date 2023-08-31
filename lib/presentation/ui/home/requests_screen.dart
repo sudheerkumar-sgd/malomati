@@ -32,7 +32,10 @@ class RequestsScreen extends StatelessWidget {
     var dateCurrent = DateFormat('ddMMyyyy').format(date);
     var dateStart =
         DateFormat('ddMMyyyy').format(DateTime(date.year, date.month, 1));
-    _attendanceBloc.getAttendance(dateRange: '$dateStart-$dateCurrent');
+    Map<String, dynamic> attendanceRequestParams = {
+      'date-range': '$dateStart-$dateCurrent',
+    };
+    _attendanceBloc.getAttendance(requestParams: attendanceRequestParams);
     _attendanceBloc.getAttendanceDetails(
         dateRange: '${dateStart}000000-${dateCurrent}235959');
     return SafeArea(

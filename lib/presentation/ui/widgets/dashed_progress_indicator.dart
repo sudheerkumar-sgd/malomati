@@ -33,8 +33,8 @@ class DashedProgressIndicator extends CustomPainter {
 
     // draw dashes
     var prevPos = (-pi / 2) - .1;
-    for (var i = 0; i < 31 * percent; i++) {
-      printLog(message: '$prevPos  $dashSize');
+    final range = percent >= 0.8 ? 32 * percent : 34 * percent;
+    for (var i = 0; i < range; i++) {
       prevPos = prevPos + (i == 0 ? 0 : 0.2);
       canvas.drawArc(
           Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),

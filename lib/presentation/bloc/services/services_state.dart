@@ -1,6 +1,6 @@
 part of 'services_bloc.dart';
 
-abstract class ServicesState extends Equatable {}
+abstract class ServicesState {}
 
 class Init extends ServicesState {
   @override

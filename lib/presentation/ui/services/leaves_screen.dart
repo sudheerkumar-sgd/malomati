@@ -101,11 +101,26 @@ class LeavesScreen extends StatelessWidget {
       {DateTime? firstDate, DateTime? lastDate}) async {
     final currentDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: firstDate ?? currentDate,
-        firstDate:
-            firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-        lastDate: lastDate ?? DateTime(2024));
+      context: context,
+      initialDate: firstDate ?? currentDate,
+      firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
+      lastDate: lastDate ?? DateTime(2024),
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: context.resources.color.viewBgColor, // header text color
+            onSurface: context.resources.color.viewBgColor, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor:
+                  context.resources.color.viewBgColor, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      ),
+    );
     if (picked != null) {
       controller.text = getDateByformat(dateFormat, picked);
     }
@@ -115,7 +130,24 @@ class LeavesScreen extends StatelessWidget {
       BuildContext context, TextEditingController controller,
       {TimeOfDay? startTime}) async {
     final TimeOfDay? picked = await showTimePicker(
-        context: context, initialTime: startTime ?? TimeOfDay.now());
+      context: context,
+      initialTime: startTime ?? TimeOfDay.now(),
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: context.resources.color.viewBgColor,
+            onSurface: context.resources.color.viewBgColor, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor:
+                  context.resources.color.viewBgColor, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      ),
+    );
     if (picked != null) {
       controller.text = picked.format(context);
     }

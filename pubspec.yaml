@@ -190,6 +190,9 @@ flutter:
      - assets/images/ic_logout.svg
      - assets/images/ic_checkmark_circle.svg
      - assets/images/ic_close_circle.svg
+     - assets/images/ic_close_blue.svg
+     - assets/images/ic_font_small.svg
+     - assets/images/ic_font_big.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

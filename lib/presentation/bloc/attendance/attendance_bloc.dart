@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/utils.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/use_case/attendance_usecase.dart';
@@ -19,17 +19,19 @@ class AttendanceBloc extends Cubit<AttendanceState> {
   final BehaviorSubject<ApiEntity<AttendanceListEntity>> _attendanceDetails =
       BehaviorSubject<ApiEntity<AttendanceListEntity>>();
 
-  Future<void> getAttendance({required String dateRange}) async {
-    emit(OnAttendanceDataLoading());
-
-    Map<String, dynamic> requestParams = {
-      'date-range': dateRange,
-    };
+  Future<void> getAttendance(
+      {required Map<String, dynamic> requestParams,
+      bool returnValue = false}) async {
+    //emit(OnAttendanceDataLoading());
     final result = await attendanceUseCase.getAttendanceReport(
         requestParams: requestParams);
     _attendanceReport.sink.add(result.fold((l) => ApiEntity(), (r) => r));
-    // emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
-    //     (r) => OnAttendanceSuccess(attendanceEntity: r)));
+    if (returnValue) {
+      printLog(message: 'returnValue');
+      emit(result.fold(
+          (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+          (r) => OnAttendanceSuccess(attendanceEntity: r)));
+    }
   }
 
   Future<void> getAttendanceDetails({required String dateRange}) async {

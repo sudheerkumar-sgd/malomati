@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
@@ -57,6 +58,17 @@ class _MainScreenState extends State<MainScreen> {
     // Timer(const Duration(seconds: 3), () {
     //   _showBirthday(context);
     // });
+    final Color background = context.resources.color.bgGradientStart;
+    final Color fill = context.resources.color.appScaffoldBg;
+    final List<Color> gradient = [
+      background,
+      background,
+      fill,
+      fill,
+    ];
+    const double fillPercent = 80; // fills 56.23% for container from bottom
+    const double fillStop = (100 - fillPercent) / 100;
+    final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =
@@ -78,8 +90,16 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
       child: Container(
-        color: context.resources.color.appScaffoldBg,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradient,
+            stops: stops,
+            end: Alignment.bottomCenter,
+            begin: Alignment.topCenter,
+          ),
+        ),
         child: SafeArea(
+          top: false,
           child: ValueListenableBuilder(
               valueListenable: _selectedIndex,
               builder: (context, value, widget) {

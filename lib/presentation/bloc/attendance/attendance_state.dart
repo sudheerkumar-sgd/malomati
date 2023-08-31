@@ -1,6 +1,6 @@
 part of 'attendance_bloc.dart';
 
-abstract class AttendanceState extends Equatable {}
+abstract class AttendanceState {}
 
 class Init extends AttendanceState {
   @override

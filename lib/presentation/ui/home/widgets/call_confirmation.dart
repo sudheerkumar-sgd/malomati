@@ -38,13 +38,21 @@ class CallConfirmationWidget extends StatelessWidget {
                 SizedBox(
                   width: context.resources.dimen.dp15,
                 ),
-                Text(
-                  'Call $mobileNumber',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textFontWeight400
-                      .onColor(context.resources.color.colorBlue356DCE)
-                      .onFontSize(context.resources.dimen.dp20),
+                RichText(
+                  text: TextSpan(
+                      text: '${context.string.call} ',
+                      style: context.textFontWeight400
+                          .onColor(context.resources.color.colorBlue356DCE)
+                          .onFontSize(context.resources.dimen.dp20),
+                      children: [
+                        TextSpan(
+                          text: mobileNumber,
+                          style: context.textFontWeight400
+                              .onColor(context.resources.color.colorBlue356DCE)
+                              .onFontFamily(fontFamily: fontFamilyEN)
+                              .onFontSize(context.resources.dimen.dp20),
+                        ),
+                      ]),
                 ),
               ],
             ),

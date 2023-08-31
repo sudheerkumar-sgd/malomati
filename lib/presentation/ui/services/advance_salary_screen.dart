@@ -51,7 +51,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    _servicesBloc.getLeaves(requestParams: {'USER_NAME': 'TAREK.MAGDY'});
+    _servicesBloc.getLeaves(requestParams: {'USER_NAME': userName});
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,

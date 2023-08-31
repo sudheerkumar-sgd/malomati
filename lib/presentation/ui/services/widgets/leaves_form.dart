@@ -69,6 +69,7 @@ class LeavesForm extends StatelessWidget {
   final _uploadFiles = [];
   String currentBalanceText = '';
   String userName = '';
+  String selectedEmpUserName = '';
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _selectDate(
@@ -76,11 +77,26 @@ class LeavesForm extends StatelessWidget {
       {DateTime? firstDate, DateTime? lastDate}) async {
     final currentDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: firstDate ?? currentDate,
-        firstDate:
-            firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-        lastDate: lastDate ?? DateTime(2024));
+      context: context,
+      initialDate: firstDate ?? currentDate,
+      firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
+      lastDate: lastDate ?? DateTime(2024),
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: context.resources.color.viewBgColor,
+            onSurface: context.resources.color.viewBgColor, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor:
+                  context.resources.color.viewBgColor, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      ),
+    );
     if (picked != null) {
       controller.text = getDateByformat(dateFormat, picked);
     }
@@ -90,7 +106,24 @@ class LeavesForm extends StatelessWidget {
       BuildContext context, TextEditingController controller,
       {TimeOfDay? startTime}) async {
     final TimeOfDay? picked = await showTimePicker(
-        context: context, initialTime: startTime ?? TimeOfDay.now());
+      context: context,
+      initialTime: startTime ?? TimeOfDay.now(),
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: context.resources.color.viewBgColor,
+            onSurface: context.resources.color.viewBgColor, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor:
+                  context.resources.color.viewBgColor, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      ),
+    );
     if (picked != null) {
       controller.text = picked.format(context);
     }
@@ -135,12 +168,13 @@ class LeavesForm extends StatelessWidget {
 
   onEmployeeSelected(EmployeeEntity? employeeEntity) {
     selectedEmployee = employeeEntity;
+    selectedEmpUserName = selectedEmployee?.uSERNAME ?? '';
   }
 
   _submitLeaveRequest(BuildContext context) {
     final leaveRequestModel = LeaveRequestModel();
     leaveRequestModel.lEAVETYPE = leaveSubType.name;
-    leaveRequestModel.uSERNAME = context.userDB.get(userNameKey);
+    leaveRequestModel.uSERNAME = selectedEmpUserName;
     leaveRequestModel.cREATORUSERNAME = '';
     if (leaveType == LeaveType.otherLeave ||
         leaveType == LeaveType.createLeave) {
@@ -174,10 +208,9 @@ class LeavesForm extends StatelessWidget {
                 _uploadFiles[i]['fileNamebase64data'];
           }
       }
-      leaveRequestModel.uSERCOMMENTS = _commentController.text;
-      _servicesBloc.submitLeaveRequest(
-          requestParams: leaveRequestModel.toJson());
     }
+    leaveRequestModel.uSERCOMMENTS = _commentController.text;
+    _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
   }
 
   @override
@@ -285,7 +318,7 @@ class LeavesForm extends StatelessWidget {
                                   return DropDownWidget<EmployeeEntity>(
                                     list: employeesList,
                                     height: resources.dimen.dp27,
-                                    labelText: context.string.absenceType,
+                                    labelText: context.string.employee,
                                     hintText: context.string.chooseAbsenceType,
                                     suffixIconPath:
                                         DrawableAssets.icChevronDown,
@@ -533,9 +566,13 @@ class LeavesForm extends StatelessWidget {
                                   _selectFile(context);
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.only(
-                                    left: resources.dimen.dp10,
-                                  ),
+                                  padding: isLocalEn
+                                      ? EdgeInsets.only(
+                                          left: resources.dimen.dp10,
+                                        )
+                                      : EdgeInsets.only(
+                                          right: resources.dimen.dp10,
+                                        ),
                                   child: ImageWidget(
                                           path: DrawableAssets.icPlusCircle,
                                           backgroundTint:

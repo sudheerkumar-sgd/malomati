@@ -1,102 +1,215 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/common/log.dart';
+import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 
+import '../../../../domain/entities/employee_entity.dart';
+import '../../../../injection_container.dart';
+import '../../../bloc/services/services_bloc.dart';
 import '../../widgets/dashed_progress_indicator.dart';
 
-class MyTeamAttendance extends StatelessWidget {
-  const MyTeamAttendance({super.key});
+class MyTeamAttendance extends StatefulWidget {
+  MyTeamAttendance({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _MyTeamAttendanceState();
+}
+
+class _MyTeamAttendanceState extends State<MyTeamAttendance>
+    with SingleTickerProviderStateMixin {
+  final _servicesBloc = sl<ServicesBloc>();
+  final _attendanceBloc = sl<AttendanceBloc>();
+  final ValueNotifier<List<EmployeeEntity>> _employeesList = ValueNotifier([]);
+  String userName = '';
+  ValueNotifier<double> _fraction = ValueNotifier(0.0);
+  int loggedInEmployees = 0;
+  late Animation<double> _animation;
+  late AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+  }
+
+  _startAnimation(double end) {
+    printLog(message: 'OnAttendanceSuccess $end');
+    _animation = Tween(begin: 0.0, end: end).animate(_controller)
+      ..addListener(() {
+        _fraction.value = _animation.value;
+      });
+
+    _controller.forward();
+  }
+
+  _getAttendanceByEmployee() {
+    var date = DateFormat('ddMMyyyy').format(DateTime.now());
+    for (int i = 0; i < _employeesList.value.length; i++) {
+      Map<String, dynamic> requestParams = {
+        'date-range': '$date-$date',
+        'oracle_id': _employeesList.value[i].pERSONID
+      };
+      _attendanceBloc.getAttendance(
+          requestParams: requestParams, returnValue: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    _controller.forward();
+    userName = context.userDB.get(userNameKey, defaultValue: '');
     final resources = context.resources;
-    var percentage = 90 / 100;
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            CustomPaint(
-              painter: DashedProgressIndicator(
-                  percent: percentage,
-                  strokeWidth: resources.dimen.dp15,
-                  color: percentage == 1
-                      ? resources.color.colorGreen26B757
-                      : resources.color.bgGradientStart),
-              size: const Size(200, 200),
-            ),
-            Text(
-              '${(percentage * 100).round()}%',
-              style: context.textFontWeight600.onFontSize(35),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          context.string.teamStatusText,
-          style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
-        ),
-        SizedBox(
-          height: resources.dimen.dp5,
-        ),
-        Text(
-          getCurrentDateByformat('dd/MM/yyyy'),
-          style: context.textFontWeight400
-              .onFontSize(resources.dimen.dp15)
-              .onColor(resources.color.bgGradientStart),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              context.string.numberOfEmployee,
-              style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
-            ),
-            Text(
-              '90',
-              style: context.textFontWeight600.onFontSize(resources.dimen.dp15),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: resources.dimen.dp15,
-        ),
-        Divider(
-          height: resources.dimen.dp1,
-          color: resources.color.bottomSheetIconUnSelected,
-        ),
-        SizedBox(
-          height: resources.dimen.dp15,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              context.string.employeesOnLeaves,
-              style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
-            ),
-            Text(
-              '10',
-              style: context.textFontWeight600.onFontSize(resources.dimen.dp15),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: resources.dimen.dp15,
-        ),
-        Divider(
-          height: resources.dimen.dp1,
-          color: resources.color.bottomSheetIconUnSelected,
-        ),
-        SizedBox(
-          height: resources.dimen.dp15,
-        ),
+    var percentage = 0.0;
+    _servicesBloc.getEmployeesByManager(requestParams: {'USER_NAME': userName});
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => _servicesBloc),
+        BlocProvider(create: (context) => _attendanceBloc)
       ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<ServicesBloc, ServicesState>(
+            listener: (context, state) {
+              if (state is OnEmployeesSuccess) {
+                _employeesList.value = state.employeesList;
+                _getAttendanceByEmployee();
+              }
+            },
+          ),
+          BlocListener<AttendanceBloc, AttendanceState>(
+            listener: (context, state) {
+              if (state is OnAttendanceSuccess) {
+                if (state.attendanceEntity.entity?.attendanceList.isNotEmpty ??
+                    false) {
+                  if (state.attendanceEntity.entity?.attendanceList[0]
+                          .punch1Time?.isNotEmpty ??
+                      false) {
+                    loggedInEmployees++;
+                    percentage =
+                        loggedInEmployees / _employeesList.value.length;
+                    _fraction.value = percentage;
+                  }
+                }
+              }
+            },
+          )
+        ],
+        child: Column(
+          children: [
+            ValueListenableBuilder(
+                valueListenable: _fraction,
+                builder: (context, value, child) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      value > 0
+                          ? CustomPaint(
+                              painter: DashedProgressIndicator(
+                                  percent: value,
+                                  strokeWidth: resources.dimen.dp15,
+                                  color: percentage == 1
+                                      ? resources.color.colorGreen26B757
+                                      : resources.color.bgGradientStart),
+                              size: const Size(200, 200))
+                          : const SizedBox(
+                              width: 200,
+                              height: 200,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 8,
+                              ),
+                            ),
+                      Text(
+                        '${(value * 100).round()}%',
+                        style: context.textFontWeight600.onFontSize(35),
+                      ),
+                    ],
+                  );
+                }),
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              context.string.teamStatusText,
+              style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
+            ),
+            SizedBox(
+              height: resources.dimen.dp5,
+            ),
+            Text(
+              getCurrentDateByformat('dd/MM/yyyy'),
+              style: context.textFontWeight400
+                  .onFontSize(resources.dimen.dp15)
+                  .onFontFamily(fontFamily: fontFamilyEN)
+                  .onColor(resources.color.bgGradientStart),
+            ),
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  context.string.numberOfEmployee,
+                  style: context.textFontWeight400
+                      .onFontSize(resources.dimen.dp15),
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _employeesList,
+                    builder: (context, employeesList, child) {
+                      return Text(
+                        '${employeesList.length}',
+                        style: context.textFontWeight600
+                            .onFontSize(resources.dimen.dp15),
+                      );
+                    }),
+              ],
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+            Divider(
+              height: resources.dimen.dp1,
+              color: resources.color.bottomSheetIconUnSelected,
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  context.string.employeesOnLeaves,
+                  style: context.textFontWeight400
+                      .onFontSize(resources.dimen.dp15),
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _fraction,
+                    builder: (context, value, child) {
+                      return Text(
+                        '${_employeesList.value.length - loggedInEmployees}',
+                        style: context.textFontWeight600
+                            .onFontSize(resources.dimen.dp15),
+                      );
+                    }),
+              ],
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+            Divider(
+              height: resources.dimen.dp1,
+              color: resources.color.bottomSheetIconUnSelected,
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

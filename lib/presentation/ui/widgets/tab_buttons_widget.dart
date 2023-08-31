@@ -28,12 +28,19 @@ class TabsButtonsWidget extends StatelessWidget {
                       selectedIndex.value = index;
                     },
                     child: Container(
-                      margin: EdgeInsets.only(
-                        left: index > 0 ? resources.dimen.dp10 : 0,
-                        right: index < buttons.length - 1
-                            ? resources.dimen.dp10
-                            : 0,
-                      ),
+                      margin: isLocalEn
+                          ? EdgeInsets.only(
+                              left: index > 0 ? resources.dimen.dp10 : 0,
+                              right: index < buttons.length - 1
+                                  ? resources.dimen.dp10
+                                  : 0,
+                            )
+                          : EdgeInsets.only(
+                              right: index > 0 ? resources.dimen.dp10 : 0,
+                              left: index < buttons.length - 1
+                                  ? resources.dimen.dp10
+                                  : 0,
+                            ),
                       padding: EdgeInsets.symmetric(
                           vertical: resources.dimen.dp5,
                           horizontal: context.resources.dimen.dp10),

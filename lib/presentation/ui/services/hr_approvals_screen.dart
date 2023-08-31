@@ -32,6 +32,7 @@ class HrApprovalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var noNotificationText = '';
     var resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     Timer(const Duration(milliseconds: 50), () {
@@ -48,6 +49,7 @@ class HrApprovalsScreen extends StatelessWidget {
                 Dialogs.loader(context);
               } else if (state is OnHrApprovalsListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
+                noNotificationText = context.string.noHrRequests;
                 _notificationList.value = state.hrApprovalsList;
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
@@ -71,17 +73,27 @@ class HrApprovalsScreen extends StatelessWidget {
                     child: ValueListenableBuilder(
                         valueListenable: _notificationList,
                         builder: (context, notificationList, child) {
-                          return ListView.separated(
-                              controller: ScrollController(),
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (context, index) => ItemHRApprovals(
-                                    data: notificationList[index],
-                                    callBack: _onActionClicked,
+                          return (notificationList.isEmpty &&
+                                  noNotificationText.isNotEmpty)
+                              ? Center(
+                                  child: Text(
+                                    noNotificationText,
+                                    style: context.textFontWeight600,
                                   ),
-                              separatorBuilder: (context, index) => SizedBox(
-                                    height: resources.dimen.dp20,
-                                  ),
-                              itemCount: notificationList.length);
+                                )
+                              : ListView.separated(
+                                  controller: ScrollController(),
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder: (context, index) =>
+                                      ItemHRApprovals(
+                                        data: notificationList[index],
+                                        callBack: _onActionClicked,
+                                      ),
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                        height: resources.dimen.dp20,
+                                      ),
+                                  itemCount: notificationList.length);
                         }),
                   ),
                 ],

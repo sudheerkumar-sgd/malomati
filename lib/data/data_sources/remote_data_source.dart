@@ -128,6 +128,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         '${attendanceApiUrl}date-range=${requestParams['date-range']}$attendanceRequestedParams',
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.authorizationHeader: requestParams['oracle_id'],
         }),
       );
 

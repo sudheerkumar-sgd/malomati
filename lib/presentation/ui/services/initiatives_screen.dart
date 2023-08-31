@@ -148,6 +148,9 @@ class InitiativesScreen extends StatelessWidget {
                               selectedValue: applicability,
                               callback: onApplicabilitySelected,
                             ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
                             DropDownWidget<NameIdEntity>(
                               list: getDropDownYesNo(context),
                               height: resources.dimen.dp27,

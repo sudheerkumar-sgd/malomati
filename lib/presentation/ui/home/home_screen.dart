@@ -54,7 +54,10 @@ class HomeScreen extends StatelessWidget {
 
   _refreshAttendance() {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
-    _attendanceBloc.getAttendance(dateRange: '$date-$date');
+    Map<String, dynamic> attendanceRequestParams = {
+      'date-range': '$date-$date',
+    };
+    _attendanceBloc.getAttendance(requestParams: attendanceRequestParams);
     _attendanceBloc.getAttendanceDetails(
         dateRange: '${date}000000-${date}235959');
   }

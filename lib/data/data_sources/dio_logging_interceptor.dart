@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:get/utils.dart';
 import 'package:malomati/config/base_url_config.dart';
 import 'package:malomati/core/common/common.dart';
 import '../../config/flavor_config.dart';
@@ -13,7 +14,13 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     var authString = 'soauser:soauser123';
     if (options.baseUrl == baseUrlAttendanceDevelopment) {
-      authString = '$oracleLoginId:12345';
+      var loginId = oracleLoginId;
+      options.headers.forEach((k, v) {
+        if (k == HttpHeaders.authorizationHeader && v != null) {
+          loginId = v;
+        }
+      });
+      authString = '$loginId:12345';
     }
     String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
     print(basicAuth);

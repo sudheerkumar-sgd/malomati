@@ -92,19 +92,19 @@
     "@myFavoriteService": {
         "type": "text"
     },
-    "balanceSickLeaves": "Balance Sick Leaves",
+    "balanceSickLeaves": "Balance\nSick Leaves",
     "@balanceSickLeaves": {
         "type": "text"
     },
-    "balanceLeaves": "Balance Leaves",
+    "balanceLeaves": "Balance\nLeaves",
     "@balanceLeaves": {
         "type": "text"
     },
-    "balancePermission": "Balance Permission",
+    "balancePermission": "Balance\nPermission",
     "@balancePermission": {
         "type": "text"
     },
-    "totalThankYou": "Total Thank You",
+    "totalThankYou": "Total\nThank You",
     "@totalThankYou": {
         "type": "text"
     },
@@ -451,6 +451,10 @@
     "question": "Question",
     "ok": "Ok",
     "noInternet": "No Internet Connection",
+    "noHrRequests": "there is not any requests",
+    "fontsSize": "Fonts size",
+    "call": "Call",
+    "usernameOrPasswordIsWrong": "username or password is wrong",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

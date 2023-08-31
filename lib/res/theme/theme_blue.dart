@@ -45,9 +45,13 @@ class ThemeBlue extends ApplicationTheme {
         disabledColor: const Color(0x61000000),
         secondaryHeaderColor: const Color(0xffe8f0fc),
         dialogBackgroundColor: const Color(0xffffffff),
-        indicatorColor: const Color(0xff1965e6),
+        indicatorColor: const Color(0xff175cd2),
         hintColor: const Color(0x8a000000),
         fontFamily: _fontFamily ?? 'Inter',
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(color: Color(0xff175cd2)),
+        datePickerTheme:
+            const DatePickerThemeData(headerBackgroundColor: Color(0xff175cd2)),
         scrollbarTheme: const ScrollbarThemeData().copyWith(
           radius: const Radius.circular(10.0),
           thumbColor: MaterialStateProperty.all(const Color(0xff175CD3)),

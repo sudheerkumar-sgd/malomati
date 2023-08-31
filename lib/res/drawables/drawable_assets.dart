@@ -72,5 +72,8 @@ class DrawableAssets {
   static const icLogout = '${drawablePath}ic_logout.svg';
   static const icCheckmarkCircle = '${drawablePath}ic_checkmark_circle.svg';
   static const icCloseCircle = '${drawablePath}ic_close_circle.svg';
+  static const icCloseBlue = '${drawablePath}ic_close_blue.svg';
+  static const icFontSmall = '${drawablePath}ic_font_small.svg';
+  static const icFontBig = '${drawablePath}ic_font_big.svg';
   static const icMap = '${drawablePath}ic_map.png';
 }

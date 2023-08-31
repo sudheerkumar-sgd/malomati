@@ -13,7 +13,6 @@ class MyTeamScreen extends StatelessWidget {
   late Resources resources;
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
   List<String> buttons = [];
-
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
@@ -45,7 +44,7 @@ class MyTeamScreen extends StatelessWidget {
                   valueListenable: selectedButtonIndex,
                   builder: (context, value, widget) {
                     return value == 0
-                        ? const Expanded(
+                        ? Expanded(
                             child: SingleChildScrollView(
                               child: MyTeamAttendance(),
                             ),

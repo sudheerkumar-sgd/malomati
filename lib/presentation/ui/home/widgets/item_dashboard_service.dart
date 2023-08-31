@@ -53,8 +53,11 @@ class ItemDashboardService extends StatelessWidget {
                     child: Container(
                         padding: EdgeInsets.only(
                             right: context.resources.dimen.dp20),
-                        child: ImageWidget(path: DrawableAssets.icClose)
-                            .loadImage),
+                        child: ImageWidget(
+                          path: context.resources.isRedTheme
+                              ? DrawableAssets.icClose
+                              : DrawableAssets.icCloseBlue,
+                        ).loadImage),
                   ),
                 ))
           ],
