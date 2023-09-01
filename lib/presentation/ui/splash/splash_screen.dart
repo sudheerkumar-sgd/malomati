@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:malomati/config/app_routes.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
@@ -13,6 +14,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark));
     return StreamBuilder<Object>(
         stream: null,
         builder: (context, snapshot) {

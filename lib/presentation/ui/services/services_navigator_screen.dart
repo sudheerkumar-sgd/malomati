@@ -16,7 +16,6 @@ class ServicesNavigatorScreen extends StatelessWidget {
             case '/':
               builder = (BuildContext _) => const ServicesScreen();
               break;
-            // break;
             default:
               builder = (BuildContext _) => const ServicesScreen();
           }

@@ -27,6 +27,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark));
     _isRememberd.value =
         context.userDB.get(isRememberdKey, defaultValue: false);
     if (_isRememberd.value) {
