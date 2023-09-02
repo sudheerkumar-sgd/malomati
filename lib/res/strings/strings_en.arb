@@ -455,6 +455,7 @@
     "fontsSize": "Fonts size",
     "call": "Call",
     "usernameOrPasswordIsWrong": "username or password is wrong",
+    "duration":"Duration",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

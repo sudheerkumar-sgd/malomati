@@ -375,6 +375,7 @@ class LeavesForm extends StatelessWidget {
                               labelText: context.string.startDate,
                               hintText: context.string.chooseStartDate,
                               errorMessage: context.string.chooseStartDate,
+                              fontFamily: fontFamilyEN,
                               suffixIconPath: DrawableAssets.icCalendar,
                               textController: _startDateController,
                             ),
@@ -393,6 +394,7 @@ class LeavesForm extends StatelessWidget {
                               labelText: context.string.endDate,
                               hintText: context.string.chooseEndDate,
                               errorMessage: context.string.chooseEndDate,
+                              fontFamily: fontFamilyEN,
                               suffixIconPath: DrawableAssets.icCalendar,
                               textController: _endDateController,
                             ),
@@ -426,6 +428,7 @@ class LeavesForm extends StatelessWidget {
                                                     .string.chooseStartTime,
                                                 errorMessage: context
                                                     .string.chooseStartTime,
+                                                fontFamily: fontFamilyEN,
                                                 suffixIconPath:
                                                     DrawableAssets.icTime,
                                                 textController:
@@ -455,6 +458,7 @@ class LeavesForm extends StatelessWidget {
                                                     .string.chooseEndTime,
                                                 errorMessage: context
                                                     .string.chooseEndTime,
+                                                fontFamily: fontFamilyEN,
                                                 suffixIconPath:
                                                     DrawableAssets.icTime,
                                                 textController:

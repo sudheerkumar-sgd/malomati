@@ -379,7 +379,7 @@ class LeavesScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Duration',
+                                      context.string.duration,
                                       textAlign: TextAlign.left,
                                       overflow: TextOverflow.ellipsis,
                                       style: context.textFontWeight400
@@ -493,6 +493,7 @@ class LeavesScreen extends StatelessWidget {
                                 height: resources.dimen.dp27,
                                 labelText: context.string.startDate,
                                 hintText: context.string.chooseStartDate,
+                                fontFamily: fontFamilyEN,
                                 errorMessage: context.string.chooseStartDate,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _startDateController,
@@ -519,6 +520,7 @@ class LeavesScreen extends StatelessWidget {
                                 height: resources.dimen.dp27,
                                 labelText: context.string.endDate,
                                 hintText: context.string.chooseEndDate,
+                                fontFamily: fontFamilyEN,
                                 errorMessage: context.string.chooseEndDate,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _endDateController,
@@ -553,6 +555,7 @@ class LeavesScreen extends StatelessWidget {
                                                       .string.chooseStartTime,
                                                   errorMessage: context
                                                       .string.chooseStartTime,
+                                                  fontFamily: fontFamilyEN,
                                                   suffixIconPath:
                                                       DrawableAssets.icTime,
                                                   textController:
@@ -589,6 +592,7 @@ class LeavesScreen extends StatelessWidget {
                                                       .string.chooseEndTime,
                                                   errorMessage: context
                                                       .string.chooseEndTime,
+                                                  fontFamily: fontFamilyEN,
                                                   suffixIconPath:
                                                       DrawableAssets.icTime,
                                                   textController:

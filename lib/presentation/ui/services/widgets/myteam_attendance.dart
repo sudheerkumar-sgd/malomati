@@ -124,7 +124,9 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                             ),
                       Text(
                         '${(value * 100).round()}%',
-                        style: context.textFontWeight600.onFontSize(35),
+                        style: context.textFontWeight600
+                            .onFontSize(35)
+                            .onFontFamily(fontFamily: fontFamilyEN),
                       ),
                     ],
                   );
@@ -163,6 +165,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                       return Text(
                         '${employeesList.length}',
                         style: context.textFontWeight600
+                            .onFontFamily(fontFamily: fontFamilyEN)
                             .onFontSize(resources.dimen.dp15),
                       );
                     }),
@@ -192,6 +195,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                       return Text(
                         '${_employeesList.value.length - loggedInEmployees}',
                         style: context.textFontWeight600
+                            .onFontFamily(fontFamily: fontFamilyEN)
                             .onFontSize(resources.dimen.dp15),
                       );
                     }),

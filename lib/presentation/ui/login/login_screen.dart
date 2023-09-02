@@ -92,6 +92,9 @@ class LoginScreen extends StatelessWidget {
                         context.userDB.delete(passwordKey);
                         context.userDB.delete(isRememberdKey);
                       }
+                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle
+                          .dark
+                          .copyWith(statusBarIconBrightness: Brightness.dark));
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => const MainScreen()),

@@ -131,9 +131,9 @@ String getArabicDayName(String dayNameEn) {
     case 'Thursday':
       return 'الخميس';
     case 'Friday':
-      return 'جمعة';
-    case 'Saturday':
       return 'الجمعة';
+    case 'Saturday':
+      return 'السبت';
     default:
       return '';
   }

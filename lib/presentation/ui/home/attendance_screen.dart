@@ -124,7 +124,7 @@ class AttendanceScreen extends StatelessWidget {
 
   bool canUserRegularIn() {
     var time = DateTime.now().hour;
-    return (time >= 7 && time < 8);
+    return (time < 8);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {

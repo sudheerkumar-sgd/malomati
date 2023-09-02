@@ -27,7 +27,6 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../../core/constants/data_constants.dart';
 import '../../../res/drawables/background_box_decoration.dart';
-import '../widgets/custom_bg_widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   static String anualLeaveBalance = '';
@@ -128,8 +127,38 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: context.resources.dimen.dp30,
+                    ),
                     Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: context.resources.dimen.dp25),
+                      child: UserAppBarWidget(
+                        title: context.userDB
+                            .get(
+                                context.resources.isLocalEn
+                                    ? userFullNameUsKey
+                                    : userFullNameArKey,
+                                defaultValue: '')
+                            .toString(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: context.resources.dimen.dp20,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: context.resources.dimen.dp15,
+                        top: context.resources.dimen.dp15,
+                        right: context.resources.dimen.dp20,
+                        bottom: context.resources.dimen.dp15,
+                      ),
+                      margin: EdgeInsets.symmetric(
+                        horizontal: context.resources.dimen.dp25,
+                      ),
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(context.resources.dimen.dp20)),
                           gradient: LinearGradient(
                             colors: [
                               context.resources.color.bgGradientStart,
@@ -141,341 +170,364 @@ class HomeScreen extends StatelessWidget {
                           )),
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: context.resources.dimen.dp30,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: context.resources.dimen.dp25),
-                            child: UserAppBarWidget(
-                              title: context.userDB
-                                  .get(
-                                      context.resources.isLocalEn
-                                          ? userFullNameUsKey
-                                          : userFullNameArKey,
-                                      defaultValue: '')
-                                  .toString(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: context.resources.dimen.dp20,
-                          ),
-                          CustomBgWidgets().roundedCornerWidget(
-                            padding: EdgeInsets.only(
-                              left: context.resources.dimen.dp15,
-                              top: context.resources.dimen.dp15,
-                              right: context.resources.dimen.dp20,
-                              bottom: context.resources.dimen.dp5,
-                            ),
-                            margin: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp25,
-                            ),
-                            widget: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                          text:
-                                              '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
-                                          style: context.textFontWeight600
-                                              .onFontFamily(
-                                                  fontFamily: isLocalEn
-                                                      ? fontFamilyEN
-                                                      : fontFamilyAR)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp17),
-                                          children: [
-                                            TextSpan(
-                                              text: '$currentDay ',
-                                              style: context.textFontWeight600
-                                                  .onFontFamily(
-                                                      fontFamily: fontFamilyEN)
-                                                  .onFontSize(context
-                                                      .resources.dimen.dp17),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
-                                              style: context.textFontWeight600
-                                                  .onFontSize(context
-                                                      .resources.dimen.dp17),
-                                            ),
-                                            TextSpan(
-                                              text: '$currentYear',
-                                              style: context.textFontWeight600
-                                                  .onFontFamily(
-                                                      fontFamily: fontFamilyEN)
-                                                  .onFontSize(context
-                                                      .resources.dimen.dp17),
-                                            ),
-                                          ]),
-                                    ),
-                                    // const Spacer(),
-                                    // ImageWidget(
-                                    //         path: DrawableAssets.icWeather,
-                                    //         backgroundTint:
-                                    //             context.resources.iconBgColor)
-                                    //     .loadImage
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: context.resources.dimen.dp10,
-                                ),
-                                ValueListenableBuilder(
-                                    valueListenable: _punchStatus,
-                                    builder: (context, punchStatus, widget) {
-                                      return Text(
-                                        _getPunchTextByStatus(
-                                            context, punchStatus),
-                                        style: context.textFontWeight400
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                        text:
+                                            '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
+                                        style: context.textFontWeight600
+                                            .onFontFamily(
+                                                fontFamily: isLocalEn
+                                                    ? fontFamilyEN
+                                                    : fontFamilyAR)
+                                            .onColor(context
+                                                .resources.color.colorWhite)
                                             .onFontSize(
-                                                context.resources.dimen.dp14),
-                                      );
-                                    }),
-                              ],
-                            ),
-                            boxDecoration: BackgroundBoxDecoration(
-                                    boxColor:
-                                        context.resources.color.colorWhite,
-                                    radious: context.resources.dimen.dp20)
-                                .topCornersBox,
+                                                context.resources.dimen.dp17),
+                                        children: [
+                                          TextSpan(
+                                            text: '$currentDay ',
+                                            style: context.textFontWeight600
+                                                .onFontFamily(
+                                                    fontFamily: fontFamilyEN)
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontSize(context
+                                                    .resources.dimen.dp17),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
+                                            style: context.textFontWeight600
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontSize(context
+                                                    .resources.dimen.dp17),
+                                          ),
+                                          TextSpan(
+                                            text: '$currentYear',
+                                            style: context.textFontWeight600
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontFamily(
+                                                    fontFamily: fontFamilyEN)
+                                                .onFontSize(context
+                                                    .resources.dimen.dp17),
+                                          ),
+                                        ]),
+                                  ),
+                                  // const Spacer(),
+                                  // ImageWidget(
+                                  //         path: DrawableAssets.icWeather,
+                                  //         backgroundTint:
+                                  //             context.resources.iconBgColor)
+                                  //     .loadImage
+                                ],
+                              ),
+                              SizedBox(
+                                height: context.resources.dimen.dp20,
+                              ),
+                              ValueListenableBuilder(
+                                  valueListenable: _punchStatus,
+                                  builder: (context, punchStatus, widget) {
+                                    return Text(
+                                      _getPunchTextByStatus(
+                                          context, punchStatus),
+                                      style: context.textFontWeight400
+                                          .onColor(context
+                                              .resources.color.colorWhite)
+                                          .onFontSize(
+                                              context.resources.dimen.dp14),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: context.resources.dimen.dp10,
+                              ),
+                              StreamBuilder(
+                                  stream: _attendanceBloc.getAttendanceData,
+                                  builder: (context, attendanceData) {
+                                    var attendanceEntity =
+                                        attendanceData.data ??
+                                            AttendanceEntity();
+                                    if ((attendanceEntity.punch2Time ?? '')
+                                        .isNotEmpty) {
+                                      _onAttendanceRespose.value = 2;
+                                    } else if ((attendanceEntity.punch1Time ??
+                                            '')
+                                        .isNotEmpty) {
+                                      _onAttendanceRespose.value = 1;
+                                    } else {
+                                      _onAttendanceRespose.value = 0;
+                                    }
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                  minWidth: double.infinity,
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child: AttendanceScreen(
+                                                            attendanceType:
+                                                                AttendanceType
+                                                                    .punchIn,
+                                                            attendanceEntity:
+                                                                attendanceEntity),
+                                                      ),
+                                                    ).then((value) {
+                                                      _refreshAttendance();
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp5,
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp10),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp10),
+                                                    decoration: BackgroundBoxDecoration(
+                                                            boxColor: context
+                                                                .resources
+                                                                .color
+                                                                .appScaffoldBg,
+                                                            radious: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp25,
+                                                            shadowColor: context
+                                                                .resources
+                                                                .color
+                                                                .textColorLight,
+                                                            shadowBlurRadius:
+                                                                context
+                                                                    .resources
+                                                                    .dimen
+                                                                    .dp5)
+                                                        .roundedBoxWithShadow,
+                                                    child: Text(
+                                                      context.string.punchIn,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: context
+                                                          .textFontWeight400
+                                                          .onFontSize(context
+                                                              .resources
+                                                              .dimen
+                                                              .dp14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height:
+                                                    context.resources.dimen.dp8,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ImageWidget(
+                                                          path: DrawableAssets
+                                                              .icPunchIn,
+                                                          backgroundTint:
+                                                              context
+                                                                  .resources
+                                                                  .color
+                                                                  .colorWhite)
+                                                      .loadImage,
+                                                  SizedBox(
+                                                    width: context
+                                                        .resources.dimen.dp10,
+                                                  ),
+                                                  Text(
+                                                    (attendanceEntity
+                                                                    .punch1Time ??
+                                                                '')
+                                                            .isNotEmpty
+                                                        ? attendanceEntity
+                                                            .punch1Time!
+                                                        : '00:00:00',
+                                                    style: context
+                                                        .textFontWeight400
+                                                        .onFontFamily(
+                                                            fontFamily:
+                                                                fontFamilyEN)
+                                                        .onColor(context
+                                                            .resources
+                                                            .color
+                                                            .colorWhite)
+                                                        .onFontSize(context
+                                                            .resources
+                                                            .dimen
+                                                            .dp12),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                  minWidth: double.infinity,
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child: AttendanceScreen(
+                                                          attendanceType:
+                                                              AttendanceType
+                                                                  .punchOut,
+                                                          attendanceEntity:
+                                                              attendanceEntity,
+                                                        ),
+                                                      ),
+                                                    ).then((value) {
+                                                      _refreshAttendance();
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp5,
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp20),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp10),
+                                                    decoration: BackgroundBoxDecoration(
+                                                            boxColor: context
+                                                                .resources
+                                                                .color
+                                                                .appScaffoldBg,
+                                                            radious: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp25,
+                                                            shadowColor: context
+                                                                .resources
+                                                                .color
+                                                                .textColorLight,
+                                                            shadowBlurRadius:
+                                                                context
+                                                                    .resources
+                                                                    .dimen
+                                                                    .dp5)
+                                                        .roundedBoxWithShadow,
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      context.string.punchOut,
+                                                      style: context
+                                                          .textFontWeight400
+                                                          .onFontSize(context
+                                                              .resources
+                                                              .dimen
+                                                              .dp14),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: context
+                                                    .resources.dimen.dp10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ImageWidget(
+                                                          path: DrawableAssets
+                                                              .icPunchOut,
+                                                          backgroundTint:
+                                                              context
+                                                                  .resources
+                                                                  .color
+                                                                  .colorWhite)
+                                                      .loadImage,
+                                                  SizedBox(
+                                                    width: context
+                                                        .resources.dimen.dp5,
+                                                  ),
+                                                  Text(
+                                                    (attendanceEntity
+                                                                    .punch2Time ??
+                                                                '')
+                                                            .isNotEmpty
+                                                        ? attendanceEntity
+                                                            .punch2Time!
+                                                        : '00:00:00',
+                                                    style: context
+                                                        .textFontWeight400
+                                                        .onFontFamily(
+                                                            fontFamily:
+                                                                fontFamilyEN)
+                                                        .onColor(context
+                                                            .resources
+                                                            .color
+                                                            .colorWhite)
+                                                        .onFontSize(context
+                                                            .resources
+                                                            .dimen
+                                                            .dp12),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    StreamBuilder(
-                        stream: _attendanceBloc.getAttendanceData,
-                        builder: (context, attendanceData) {
-                          var attendanceEntity =
-                              attendanceData.data ?? AttendanceEntity();
-                          if ((attendanceEntity.punch2Time ?? '').isNotEmpty) {
-                            _onAttendanceRespose.value = 2;
-                          } else if ((attendanceEntity.punch1Time ?? '')
-                              .isNotEmpty) {
-                            _onAttendanceRespose.value = 1;
-                          } else {
-                            _onAttendanceRespose.value = 0;
-                          }
-                          return Container(
-                            padding: EdgeInsets.only(
-                              left: context.resources.dimen.dp15,
-                              top: context.resources.dimen.dp5,
-                              right: context.resources.dimen.dp20,
-                              bottom: context.resources.dimen.dp15,
-                            ),
-                            margin: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp25,
-                            ),
-                            decoration: BackgroundBoxDecoration(
-                              boxColor: context.resources.color.colorWhite,
-                              radious: context.resources.dimen.dp20,
-                            ).bottomCornersBoxWithShadow,
-                            transform:
-                                Matrix4.translationValues(0.0, -1.0, 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          minWidth: double.infinity,
-                                        ),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: AttendanceScreen(
-                                                    attendanceType:
-                                                        AttendanceType.punchIn,
-                                                    attendanceEntity:
-                                                        attendanceEntity),
-                                              ),
-                                            ).then((value) {
-                                              _refreshAttendance();
-                                            });
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical:
-                                                    context.resources.dimen.dp5,
-                                                horizontal: context
-                                                    .resources.dimen.dp10),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: context
-                                                    .resources.dimen.dp10),
-                                            decoration: BackgroundBoxDecoration(
-                                                    boxColor: context.resources
-                                                        .color.viewBgColor,
-                                                    radious: context
-                                                        .resources.dimen.dp25,
-                                                    shadowColor: context
-                                                        .resources
-                                                        .color
-                                                        .textColorLight,
-                                                    shadowBlurRadius: context
-                                                        .resources.dimen.dp5)
-                                                .roundedBoxWithShadow
-                                                .copyWith(
-                                                    gradient: LinearGradient(
-                                                  colors: [
-                                                    context.resources.color
-                                                        .bgGradientStart,
-                                                    context.resources.color
-                                                        .bgGradientEnd,
-                                                  ],
-                                                )),
-                                            child: Text(
-                                              context.string.punchIn,
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: context.textFontWeight400
-                                                  .onColor(context.resources
-                                                      .color.colorWhite)
-                                                  .onFontSize(context
-                                                      .resources.dimen.dp14),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: context.resources.dimen.dp8,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ImageWidget(
-                                                  path:
-                                                      DrawableAssets.icPunchIn)
-                                              .loadImage,
-                                          SizedBox(
-                                            width: context.resources.dimen.dp5,
-                                          ),
-                                          Text(
-                                            (attendanceEntity.punch1Time ?? '')
-                                                    .isNotEmpty
-                                                ? attendanceEntity.punch1Time!
-                                                : '00:00:00',
-                                            style: context.textFontWeight400
-                                                .onFontFamily(
-                                                    fontFamily: fontFamilyEN)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp12),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          minWidth: double.infinity,
-                                        ),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: AttendanceScreen(
-                                                  attendanceType:
-                                                      AttendanceType.punchOut,
-                                                  attendanceEntity:
-                                                      attendanceEntity,
-                                                ),
-                                              ),
-                                            ).then((value) {
-                                              _refreshAttendance();
-                                            });
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical:
-                                                    context.resources.dimen.dp5,
-                                                horizontal: context
-                                                    .resources.dimen.dp20),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: context
-                                                    .resources.dimen.dp10),
-                                            decoration: BackgroundBoxDecoration(
-                                                    boxColor: context.resources
-                                                        .color.viewBgColor,
-                                                    radious: context
-                                                        .resources.dimen.dp25,
-                                                    shadowColor: context
-                                                        .resources
-                                                        .color
-                                                        .textColorLight,
-                                                    shadowBlurRadius: context
-                                                        .resources.dimen.dp5)
-                                                .roundedBoxWithShadow
-                                                .copyWith(
-                                                    gradient: LinearGradient(
-                                                  colors: [
-                                                    context.resources.color
-                                                        .bgGradientStart,
-                                                    context.resources.color
-                                                        .bgGradientEnd,
-                                                  ],
-                                                )),
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                              context.string.punchOut,
-                                              style: context.textFontWeight400
-                                                  .onColor(context.resources
-                                                      .color.colorWhite)
-                                                  .onFontSize(context
-                                                      .resources.dimen.dp14),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: context.resources.dimen.dp8,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ImageWidget(
-                                                  path:
-                                                      DrawableAssets.icPunchOut)
-                                              .loadImage,
-                                          SizedBox(
-                                            width: context.resources.dimen.dp5,
-                                          ),
-                                          Text(
-                                            (attendanceEntity.punch2Time ?? '')
-                                                    .isNotEmpty
-                                                ? attendanceEntity.punch2Time!
-                                                : '00:00:00',
-                                            style: context.textFontWeight400
-                                                .onFontFamily(
-                                                    fontFamily: fontFamilyEN)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp12),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(

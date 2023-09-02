@@ -73,6 +73,16 @@ class Resources {
 
   Color get iconBgColor => color.bgGradientStart;
 
+  FontSizeEnum getFontSize() {
+    final fontSize = context.settingDB.get(appFontSizeKey, defaultValue: 2);
+    return FontSizeEnum.fromSize(fontSize);
+  }
+
+  void setFontSize(FontSizeEnum size) {
+    context.settingDB.put(appFontSizeKey, size.size);
+    Phoenix.rebirth(context);
+  }
+
   static Resources of(BuildContext context) {
     return Resources(context);
   }

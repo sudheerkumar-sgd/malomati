@@ -22,13 +22,13 @@ class UserAppBarWidget extends StatelessWidget {
               Text(
                 context.string.welcome,
                 style: context.textFontWeight400
-                    .onColor(context.resources.color.colorEDECEC),
+                    .onColor(context.resources.color.viewBgColor),
               ),
               Text(
                 title.trim().capitalize(),
                 overflow: TextOverflow.clip,
                 style: context.textFontWeight600
-                    .onColor(context.resources.color.colorEDECEC)
+                    .onColor(context.resources.color.viewBgColor)
                     .onFontSize(context.resources.dimen.dp17),
               )
             ],
@@ -46,7 +46,7 @@ class UserAppBarWidget extends StatelessWidget {
                   padding: EdgeInsets.all(context.resources.dimen.dp5),
                   child: ImageWidget(
                           path: DrawableAssets.icLogout,
-                          backgroundTint: Colors.white)
+                          backgroundTint: context.resources.color.textColor)
                       .loadImage,
                 ),
               ),
@@ -55,7 +55,10 @@ class UserAppBarWidget extends StatelessWidget {
               ),
               Container(
                   padding: EdgeInsets.all(context.resources.dimen.dp5),
-                  child: ImageWidget(path: DrawableAssets.icBell).loadImage),
+                  child: ImageWidget(
+                          path: DrawableAssets.icBell,
+                          backgroundTint: context.resources.color.textColor)
+                      .loadImage),
               SizedBox(
                 width: context.resources.dimen.dp5,
               ),
@@ -69,7 +72,7 @@ class UserAppBarWidget extends StatelessWidget {
                           path: context.resources.isLocalEn
                               ? DrawableAssets.icLangAr
                               : DrawableAssets.icLangEn,
-                          backgroundTint: Colors.white)
+                          backgroundTint: context.resources.color.textColor)
                       .loadImage,
                 ),
               ),
@@ -92,7 +95,9 @@ class UserAppBarWidget extends StatelessWidget {
                       top: context.resources.dimen.dp5,
                       bottom: context.resources.dimen.dp5,
                     ),
-                    child: ImageWidget(path: DrawableAssets.icUserCircle)
+                    child: ImageWidget(
+                            path: DrawableAssets.icUserCircle,
+                            backgroundTint: context.resources.color.textColor)
                         .loadImage),
               ),
             ],

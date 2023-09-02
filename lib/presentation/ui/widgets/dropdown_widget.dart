@@ -15,6 +15,7 @@ class DropDownWidget<T> extends StatelessWidget {
   final String errorMessage;
   final TextEditingController? textController;
   final String? suffixIconPath;
+  final String fontFamily;
   final List<T> list;
   T? selectedValue;
   Function(T?)? callback;
@@ -28,6 +29,7 @@ class DropDownWidget<T> extends StatelessWidget {
       this.errorMessage = '',
       this.textController,
       this.suffixIconPath,
+      this.fontFamily = '',
       this.selectedValue,
       this.callback,
       super.key});
@@ -107,9 +109,11 @@ class DropDownWidget<T> extends StatelessWidget {
                 ),
                 style: context.textFontWeight400
                     .onFontFamily(
-                        fontFamily: context.resources.isLocalEn
-                            ? fontFamilyEN
-                            : fontFamilyAR)
+                        fontFamily: fontFamily.isNotEmpty
+                            ? fontFamily
+                            : context.resources.isLocalEn
+                                ? fontFamilyEN
+                                : fontFamilyAR)
                     .onFontSize(context.resources.dimen.dp12),
                 onChanged: (T? value) {
                   _onItemChanged.value = !_onItemChanged.value;

@@ -149,7 +149,7 @@
     "hiringDate": "تاريخ التوظيف",
     "nationality": "الجنسية",
     "attendanceRate": "معدل الحضور",
-    "createAbsence": "خلق الغياب",
+    "createAbsence": "اجازة الغياب للموظف",
     "teamStatusText": "حالة حضور الفريق اليوم",
     "numberOfEmployee": "عدد الموظفين",
     "employeesOnLeaves": "الموظفين على الإجازات",
@@ -173,5 +173,6 @@
     "noHrRequests": "لا يوجد أي طلب",
     "fontsSize": "حجم الخط",
     "call": "اتصل",
-    "usernameOrPasswordIsWrong": "اسم المستخدم أو كلمة المرور خاطئة"
+    "usernameOrPasswordIsWrong": "اسم المستخدم أو كلمة المرور خاطئة",
+    "duration":"المدة"
 }

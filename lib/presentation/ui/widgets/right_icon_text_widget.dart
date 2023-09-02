@@ -14,6 +14,7 @@ class RightIconTextWidget extends StatelessWidget {
   final TextEditingController? textController;
   final String? suffixIconPath;
   final int? maxLines;
+  final String fontFamily;
   const RightIconTextWidget(
       {this.height = defaultHeight,
       this.isEnabled = false,
@@ -24,6 +25,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.suffixIconPath,
       this.textInputType,
       this.maxLines,
+      this.fontFamily = '',
       super.key});
 
   @override
@@ -97,8 +99,12 @@ class RightIconTextWidget extends StatelessWidget {
                 color: Theme.of(context).colorScheme.error,
               ),
             ),
-            style: context.textFontWeight400
-                .onFontSize(context.resources.dimen.dp12),
+            style: fontFamily.isNotEmpty
+                ? context.textFontWeight400
+                    .onFontFamily(fontFamily: fontFamily)
+                    .onFontSize(context.resources.dimen.dp12)
+                : context.textFontWeight400
+                    .onFontSize(context.resources.dimen.dp12),
           ),
         ),
       ],

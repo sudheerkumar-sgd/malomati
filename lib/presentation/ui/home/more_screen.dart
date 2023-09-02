@@ -309,20 +309,92 @@ class MoreScreen extends StatelessWidget {
                               .onFontSize(context.resources.dimen.dp15),
                         ),
                         const Spacer(),
-                        ImageWidget(
-                          path: DrawableAssets.icFontBig,
-                          backgroundTint: resources.color.textColor,
-                        ).loadImageWithMoreTapArea,
-                        SizedBox(
-                          width: resources.dimen.dp10,
-                        ),
-                        ImageWidget(
-                            path: DrawableAssets.icFontSmall,
-                            padding: EdgeInsets.only(
-                              left: resources.dimen.dp5,
-                              top: resources.dimen.dp5,
-                              right: resources.dimen.dp5,
-                            )).loadImageWithMoreTapArea,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                resources.setFontSize(FontSizeEnum.bigSize);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 5.0, top: 5.0, right: 10.0),
+                                child: Text(
+                                  'A',
+                                  style: context.textFontWeight400
+                                      .onFontFamily(fontFamily: fontFamilyEN)
+                                      .onFontSize(resources.dimen.dp20)
+                                      .onColor(
+                                        resources.getFontSize() ==
+                                                FontSizeEnum.bigSize
+                                            ? resources.iconBgColor
+                                            : resources.color.textColor,
+                                      )
+                                      .copyWith(
+                                          fontWeight: resources.getFontSize() ==
+                                                  FontSizeEnum.bigSize
+                                              ? FontWeight.w700
+                                              : FontWeight.w400,
+                                          height: 1),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                resources.setFontSize(FontSizeEnum.defaultSize);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, top: 5.0, right: 10.0),
+                                child: Text(
+                                  'A',
+                                  style: context.textFontWeight400
+                                      .onFontFamily(fontFamily: fontFamilyEN)
+                                      .onFontSize(resources.dimen.dp15)
+                                      .onColor(
+                                        resources.getFontSize() ==
+                                                FontSizeEnum.defaultSize
+                                            ? resources.iconBgColor
+                                            : resources.color.textColor,
+                                      )
+                                      .copyWith(
+                                          fontWeight: resources.getFontSize() ==
+                                                  FontSizeEnum.defaultSize
+                                              ? FontWeight.w700
+                                              : FontWeight.w400,
+                                          height: 1),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                resources.setFontSize(FontSizeEnum.smallSize);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, top: 5.0, right: 5.0),
+                                child: Text(
+                                  'A',
+                                  style: context.textFontWeight400
+                                      .onFontFamily(fontFamily: fontFamilyEN)
+                                      .onFontSize(resources.dimen.dp10)
+                                      .onColor(
+                                        resources.getFontSize() ==
+                                                FontSizeEnum.smallSize
+                                            ? resources.iconBgColor
+                                            : resources.color.textColor,
+                                      )
+                                      .copyWith(
+                                          fontWeight: resources.getFontSize() ==
+                                                  FontSizeEnum.smallSize
+                                              ? FontWeight.w700
+                                              : FontWeight.w400,
+                                          height: 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ]),
                       SizedBox(
                         height: context.resources.dimen.dp15,
@@ -470,6 +542,7 @@ class MoreScreen extends StatelessWidget {
                           ),
                           Text(
                             supportMobileNumber,
+                            textDirection: TextDirection.ltr,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
                                 .onFontFamily(fontFamily: fontFamilyEN)
