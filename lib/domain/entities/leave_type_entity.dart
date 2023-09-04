@@ -1,8 +1,10 @@
 // ignore_for_file: must_be_immutable
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 
 class LeaveTypeEntity extends BaseEntity {
   String? name;
+  String? nameAr;
   int? id;
   String? hoursOrDays;
 
@@ -12,6 +14,6 @@ class LeaveTypeEntity extends BaseEntity {
   List<Object?> get props => [id, name, hoursOrDays];
   @override
   String toString() {
-    return name ?? '';
+    return isLocalEn ? name ?? '' : nameAr ?? (name ?? '');
   }
 }

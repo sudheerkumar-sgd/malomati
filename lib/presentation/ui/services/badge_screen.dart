@@ -49,12 +49,17 @@ class BadgeScreen extends StatelessWidget {
     empNumberController.text = context.userDB.get(
         resources.isLocalEn ? userJobIdEnKey : userJobIdArKey,
         defaultValue: '');
-    nationalityController.text =
-        context.userDB.get(userNationalityEnKey, defaultValue: '');
+    nationalityController.text = context.userDB.get(
+        isLocalEn ? userNationalityEnKey : userNationalityArKey,
+        defaultValue: '');
+    if (nationalityController.text.isEmpty) {
+      nationalityController.text =
+          context.userDB.get(userNationalityEnKey, defaultValue: '');
+    }
     hiringDateController.text =
         context.userDB.get(userJoiningDateEnKey, defaultValue: '');
-    jobTitleController.text =
-        context.userDB.get(userJobNameEnKey, defaultValue: '');
+    jobTitleController.text = context.userDB
+        .get(isLocalEn ? userJobNameEnKey : userJobNameArKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -125,6 +130,7 @@ class BadgeScreen extends StatelessWidget {
                               height: resources.dimen.dp27,
                               labelText: context.string.hiringDate,
                               textController: hiringDateController,
+                              fontFamily: fontFamilyEN,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

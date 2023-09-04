@@ -379,7 +379,6 @@ class ThankyouScreen extends StatelessWidget {
                                       isEnabled: true,
                                       height: resources.dimen.dp27,
                                       labelText: context.string.note,
-                                      errorMessage: context.string.note,
                                       maxLines: 5,
                                       textController: _noteController,
                                     ),

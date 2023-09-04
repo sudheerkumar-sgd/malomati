@@ -152,7 +152,8 @@ class LeavesScreen extends StatelessWidget {
       ),
     );
     if (picked != null) {
-      controller.text = picked.format(context);
+      controller.text =
+          '${picked.hour}:${picked.minute} ${picked.period.name.toUpperCase()}';
     }
   }
 
@@ -262,7 +263,7 @@ class LeavesScreen extends StatelessWidget {
               getDateTimeByString('$dateFormat $timeFormat',
                   '${_endDateController.text} ${_endTimeController.text}'));
           var text = '';
-          if (minutes > 60) {
+          if (minutes >= 60) {
             text =
                 '${(minutes / 60).round()}:${minutes % 60} ${context.string.hours}';
           } else {
@@ -677,6 +678,10 @@ class LeavesScreen extends StatelessWidget {
                                                                   .resources
                                                                   .color
                                                                   .colorD6D6D6)
+                                                              .onFontFamily(
+                                                                  fontFamily: isLocalEn
+                                                                      ? fontFamilyEN
+                                                                      : fontFamilyAR)
                                                               .copyWith(
                                                                   height: 1),
                                                         ),

@@ -43,8 +43,10 @@ String getPunchTypeValue(BuildContext context, String spfid) {
       return context.string.lunchOut;
     case '9':
       return context.string.overtimeIn;
-    default:
+    case '10':
       return context.string.overtimeOut;
+    default:
+      return context.string.regularIn;
   }
 }
 
@@ -362,6 +364,8 @@ class AttendanceScreen extends StatelessWidget {
                                           style: context.textFontWeight600
                                               .onColor(context
                                                   .resources.color.textColor)
+                                              .onFontFamily(
+                                                  fontFamily: fontFamilyEN)
                                               .onFontSize(
                                                   context.resources.dimen.dp12),
                                         ),

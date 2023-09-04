@@ -459,6 +459,9 @@
     "receivedBy":"Received by",
     "deptName":"Dept. Name",
     "date":"Date",
+    "lastUpdateText":"Last update was on",
+    "developedBy":"Developed by Smart Umm Al Quwain",
+    "version":"Version",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

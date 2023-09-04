@@ -39,7 +39,12 @@ class ImageWidget {
             color: backgroundTint,
           );
         } else {
-          return Image.asset(path);
+          return Image.asset(
+            path,
+            width: width,
+            height: height,
+            fit: boxType,
+          );
         }
       } else {
         return Image.file(File(path));

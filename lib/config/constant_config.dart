@@ -119,116 +119,139 @@ class ConstantConfig {
     "LeaveTypeList": [
       {
         "NAME": "Annual Leave",
+        "NAME_AR": "الأجازة الدورية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 61,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Compassionate Leave",
+        "NAME_AR": "إجازة حداد",
         "ABSENCE_ATTENDANCE_TYPE_ID": 62,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Escort Leave International",
+        "NAME_AR": "أجازة مرافقة دولية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 2062,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Escort Leave National",
+        "NAME_AR": "إجازة مرافقة محلية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 64,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Exam Leave",
+        "NAME_AR": "إجازة امتحان",
         "ABSENCE_ATTENDANCE_TYPE_ID": 66,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Exam day leave",
+        "NAME_AR": "إجازة يوم الامتحان",
         "ABSENCE_ATTENDANCE_TYPE_ID": 67,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Exceptional Mission Leave",
+        "NAME_AR": "أجازة مهمة رسمية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 68,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Hajj Leave",
+        "NAME_AR": "إجازة الحج",
         "ABSENCE_ATTENDANCE_TYPE_ID": 69,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Maternity Leave",
+        "NAME_AR": "إجازة أمومة",
         "ABSENCE_ATTENDANCE_TYPE_ID": 70,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "National Service",
+        "NAME_AR": "الخدمة الوطنية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 71,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Nursing Hours",
+        "NAME_AR": "ساعات الإرضاع",
         "ABSENCE_ATTENDANCE_TYPE_ID": 72,
         "HOURS_OR_DAYS": "H"
       },
       {
         "NAME": "Occupational Injury",
+        "NAME_AR": "إصابة عمل",
         "ABSENCE_ATTENDANCE_TYPE_ID": 73,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Overtime leave",
+        "NAME_AR": "إجازة الأيام البديلة",
         "ABSENCE_ATTENDANCE_TYPE_ID": 63,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Paternity Leave",
+        "NAME_AR": "إجازة الأبوة",
         "ABSENCE_ATTENDANCE_TYPE_ID": 74,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Permission",
+        "NAME_AR": "إذن خروج",
         "ABSENCE_ATTENDANCE_TYPE_ID": 75,
         "HOURS_OR_DAYS": "H"
       },
       {
         "NAME": "Sick Leave",
+        "NAME_AR": "إجازة مرضية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 76,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Sick Leave Extension",
+        "NAME_AR": "تمديد لإجازة مرضية",
         "ABSENCE_ATTENDANCE_TYPE_ID": 77,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Spouse Escort Leave",
+        "NAME_AR": "إجازة مرافقة الزوج",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1061,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Study Leave Full",
+        "NAME_AR": "إجازة دراسة كاملة",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1062,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Study Leave Partial Permission",
+        "NAME_AR": "إجازة دراسة بإذن جزئي",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1063,
         "HOURS_OR_DAYS": "H"
       },
       {
         "NAME": "Uddah Leave",
+        "NAME_AR": "إجازة العدّة",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1064,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Unauthorized Absence",
+        "NAME_AR": "إنقطاع عن العمل ",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1066,
         "HOURS_OR_DAYS": "D"
       },
       {
         "NAME": "Unpaid Leave",
+        "NAME_AR": "إجازة غير مدفوعة الاجر",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1065,
         "HOURS_OR_DAYS": "D"
       }

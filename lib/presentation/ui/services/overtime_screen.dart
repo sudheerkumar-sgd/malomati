@@ -61,7 +61,8 @@ class OvertimeScreen extends StatelessWidget {
     final TimeOfDay? picked = await showTimePicker(
         context: context, initialTime: startTime ?? TimeOfDay.now());
     if (picked != null && context.mounted) {
-      controller.text = picked.format(context);
+      controller.text =
+          '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
       if (controller == _toTimeController) {
         double hours = getMinutes(
                 getDateTimeByString('$dateFormat $timeFormat',
@@ -70,8 +71,9 @@ class OvertimeScreen extends StatelessWidget {
                     '${_startDateController.text} ${_toTimeController.text}')) /
             60;
         if (hours > 0) {
-          controller.text = picked.format(context);
-          _noOfHoursController.text = '$hours';
+          controller.text =
+              '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
+          _noOfHoursController.text = hours.toStringAsFixed(1);
         } else {
           _noOfHoursController.text = '';
           _toTimeController.text = '';
@@ -221,6 +223,7 @@ class OvertimeScreen extends StatelessWidget {
                                 labelText: context.string.overtimeDate,
                                 hintText: context.string.chooseOvertimeDate,
                                 errorMessage: context.string.chooseOvertimeDate,
+                                fontFamily: fontFamilyEN,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _startDateController,
                               ),
@@ -246,6 +249,7 @@ class OvertimeScreen extends StatelessWidget {
                                               context.string.chooseFromTime,
                                           errorMessage:
                                               context.string.chooseFromTime,
+                                          fontFamily: fontFamilyEN,
                                           suffixIconPath: DrawableAssets.icTime,
                                           textController: _fromTimeController,
                                         ),
@@ -271,6 +275,7 @@ class OvertimeScreen extends StatelessWidget {
                                           hintText: context.string.chooseTotime,
                                           errorMessage:
                                               context.string.chooseTotime,
+                                          fontFamily: fontFamilyEN,
                                           suffixIconPath: DrawableAssets.icTime,
                                           textController: _toTimeController,
                                         ),
@@ -289,6 +294,7 @@ class OvertimeScreen extends StatelessWidget {
                               textInputType: TextInputType.number,
                               labelText: context.string.noOfHours,
                               errorMessage: context.string.noOfHours,
+                              fontFamily: fontFamilyEN,
                               textController: _noOfHoursController,
                             ),
                             SizedBox(
@@ -362,6 +368,10 @@ class OvertimeScreen extends StatelessWidget {
                                                                   .resources
                                                                   .color
                                                                   .colorD6D6D6)
+                                                              .onFontFamily(
+                                                                  fontFamily: isLocalEn
+                                                                      ? fontFamilyEN
+                                                                      : fontFamilyAR)
                                                               .copyWith(
                                                                   height: 1),
                                                         ),
@@ -395,9 +405,13 @@ class OvertimeScreen extends StatelessWidget {
                                     _selectFile(context);
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.only(
-                                      left: resources.dimen.dp10,
-                                    ),
+                                    padding: isLocalEn
+                                        ? EdgeInsets.only(
+                                            left: resources.dimen.dp10,
+                                          )
+                                        : EdgeInsets.only(
+                                            right: resources.dimen.dp10,
+                                          ),
                                     child: ImageWidget(
                                             path: DrawableAssets.icPlusCircle)
                                         .loadImage,

@@ -126,7 +126,8 @@ class LeavesForm extends StatelessWidget {
       ),
     );
     if (picked != null) {
-      controller.text = picked.format(context);
+      controller.text =
+          '${picked.hour}:${picked.minute} ${picked.period.name.toUpperCase()}';
     }
   }
 
@@ -540,6 +541,10 @@ class LeavesForm extends StatelessWidget {
                                                                 .resources
                                                                 .color
                                                                 .colorD6D6D6)
+                                                            .onFontFamily(
+                                                                fontFamily: isLocalEn
+                                                                    ? fontFamilyEN
+                                                                    : fontFamilyAR)
                                                             .copyWith(
                                                                 height: 1),
                                                       ),

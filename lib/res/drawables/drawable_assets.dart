@@ -14,7 +14,10 @@ class DrawableAssets {
   static const gifBirthdayEn = '${drawablePath}gif/birthday_en.gif';
   static const gifBirthdayAr = '${drawablePath}gif/birthday_ar.gif';
   //app icons
+  static const appIcon = '${drawablePath}app_icon.png';
   static const loginCoveImage = '${drawablePath}login_cover_image.png';
+  static const icMap = '${drawablePath}ic_map.png';
+  static const icAppIcon = '${drawablePath}ic_app_icon.svg';
   static const icLangAr = '${drawablePath}ic_lang_ar.svg';
   static const icLangEn = '${drawablePath}ic_lang_en.svg';
   static const icLogoTitle = '${drawablePath}ic_logo_title.svg';
@@ -75,5 +78,6 @@ class DrawableAssets {
   static const icCloseBlue = '${drawablePath}ic_close_blue.svg';
   static const icFontSmall = '${drawablePath}ic_font_small.svg';
   static const icFontBig = '${drawablePath}ic_font_big.svg';
-  static const icMap = '${drawablePath}ic_map.png';
+  static const icGovUAQ = '${drawablePath}ic_gov_uaq.svg';
+  static const icSmartUAQ = '${drawablePath}ic_smart_uaq.svg';
 }

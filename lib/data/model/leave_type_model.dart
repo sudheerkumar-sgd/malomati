@@ -7,6 +7,7 @@ import '../../domain/entities/leave_type_entity.dart';
 
 class LeaveTypeModel extends BaseModel {
   String? name;
+  String? nameAr;
   int? id;
   String? hoursOrDays;
 
@@ -15,6 +16,7 @@ class LeaveTypeModel extends BaseModel {
   factory LeaveTypeModel.fromJson(Map<String, dynamic> json) {
     var leaveTypeModel = LeaveTypeModel();
     leaveTypeModel.name = json['NAME'];
+    leaveTypeModel.nameAr = json['NAME_AR'];
     leaveTypeModel.id = json['ABSENCE_ATTENDANCE_TYPE_ID'];
     leaveTypeModel.hoursOrDays = json['HOURS_OR_DAYS'];
     return leaveTypeModel;
@@ -39,6 +41,7 @@ extension SourceModelExtension on LeaveTypeModel {
     var leaveTypeEntity = LeaveTypeEntity();
     leaveTypeEntity.id = id;
     leaveTypeEntity.name = name;
+    leaveTypeEntity.nameAr = nameAr;
     leaveTypeEntity.hoursOrDays = hoursOrDays;
     return leaveTypeEntity;
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 
 class DepartmentEntity extends BaseEntity {
@@ -13,6 +14,6 @@ class DepartmentEntity extends BaseEntity {
   List<Object?> get props => [pAYROLLID, deptNameEN, deptNameAR];
   @override
   String toString() {
-    return deptNameEN ?? '';
+    return isLocalEn ? deptNameEN ?? '' : deptNameAR ?? '';
   }
 }
