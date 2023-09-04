@@ -84,6 +84,8 @@ class LoginScreen extends StatelessWidget {
                           state.loginEntity.entity?.employeeNumber ?? '');
                       context.userDB.put(userNationalityEnKey,
                           state.loginEntity.entity?.nationality ?? '');
+                      context.userDB.put(userPersonIdKey,
+                          state.loginEntity.entity?.persionID ?? '');
                       if (_isRememberd.value) {
                         context.userDB
                             .put(passwordKey, _pwdTextController.text);

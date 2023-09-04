@@ -12,6 +12,7 @@ import '../../core/error/failures.dart';
 import '../entities/attendance_list_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
+import '../entities/thankyou_entity.dart';
 
 abstract class ApisRepository {
   Future<Either<Failure, ApiEntity<LoginEntity>>> login(
@@ -47,5 +48,7 @@ abstract class ApisRepository {
   Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity>> submitHrApproval(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<ThankyouEntity>>> getThankyouList(
       {required Map<String, dynamic> requestParams});
 }

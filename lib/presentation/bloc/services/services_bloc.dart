@@ -1,10 +1,10 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
 import '../../../core/error/failures.dart';
@@ -99,6 +99,15 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.submitHrApproval(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnsubmitHrApprovalSuccess(apiEntity: r)));
+  }
+
+  Future<void> getThankyouList(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result =
+        await servicesUseCase.getThankyouList(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnThankyouListSuccess(thankYouList: r)));
   }
 
   String _getErrorMessage(Failure failure) {

@@ -20,6 +20,7 @@ import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
+import 'package:malomati/domain/entities/thankyou_entity.dart';
 
 import '../../config/constant_config.dart';
 import '../../core/network/network_info.dart';
@@ -309,6 +310,23 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse =
             await dataSource.submitHrApproval(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ThankyouEntity>>> getThankyouList(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getThankyouList(requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

@@ -20,6 +20,7 @@ const String userJoiningDateEnKey = "user_joining_date_en";
 const String userJoiningDateArKey = "user_joining_date_ar";
 const String userNationalityEnKey = "user_nationality_en";
 const String userNationalityArKey = "user_nationality_ar";
+const String userPersonIdKey = "user_person_id";
 const String isRememberdKey = "is_rememberd";
 const String isMaangerKey = "is_manager";
 const String favoriteKey = "favorites";

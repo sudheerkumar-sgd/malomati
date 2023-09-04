@@ -10,6 +10,7 @@ import 'package:malomati/data/model/api_request_model.dart';
 import 'package:malomati/data/model/department_model.dart';
 import 'package:malomati/domain/entities/department_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/entities/thankyou_reason_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
@@ -27,7 +28,7 @@ import '../../../core/constants/data_constants.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-enum SelectedListType {
+enum ThankyouListType {
   create,
   received,
   granted,
@@ -38,21 +39,23 @@ class ThankyouScreen extends StatelessWidget {
   ThankyouScreen({super.key});
   late Resources resources;
   final ValueNotifier _selectedListType =
-      ValueNotifier<SelectedListType>(SelectedListType.create);
+      ValueNotifier<ThankyouListType>(ThankyouListType.create);
   final _servicesBloc = sl<ServicesBloc>();
   List<DepartmentEntity> _departments = [];
   List<ThankyouReasonEntity> _reasons = [];
   final ValueNotifier _employees = ValueNotifier<List<EmployeeEntity>>([]);
+  final ValueNotifier _thankYouList = ValueNotifier<List<ThankyouEntity>>([]);
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _noteController = TextEditingController();
   DepartmentEntity? department;
   EmployeeEntity? employee;
   ThankyouReasonEntity? reason;
-  ValueNotifier<String> selectedMonth = ValueNotifier('');
+  ValueNotifier<int> selectedMonth = ValueNotifier(0);
   List<Map> monthYearList = [];
   final ScrollController _monthScrollController = ScrollController();
   final ScrollController _listScrollController = ScrollController();
   String userName = '';
+  String personId = '';
 
   onDepartmentSelected(DepartmentEntity? value) {
     employee = null;
@@ -92,11 +95,16 @@ class ThankyouScreen extends StatelessWidget {
     int currentYear = DateTime.now().year;
     for (int i = 1; i <= currentMonth; i++) {
       var date = DateTime(currentYear, i);
-      monthYearList
-          .add({'year': '$currentYear', 'month': getDateByformat('MMM', date)});
+      monthYearList.add({
+        'index': i - 1,
+        'year': '$currentYear',
+        'month': getDateByformat('MMM', date),
+        'start_date': getDateByformat('yyy-MM-dd', DateTime(currentYear, i, 1)),
+        'end_date':
+            getDateByformat('yyy-MM-dd', DateTime(currentYear, i + 1, 0))
+      });
     }
-    var date = DateTime(currentYear, currentMonth);
-    selectedMonth.value = getDateByformat('MMM', date);
+    selectedMonth.value = currentMonth - 1;
   }
 
   _setScrollByDirection(double offset) {
@@ -107,10 +115,22 @@ class ThankyouScreen extends StatelessWidget {
     );
   }
 
+  _getThankyouList(ThankyouListType type) {
+    final requestedParams = {
+      'thankyou_type': _selectedListType.value,
+      'USER_NAME': userName,
+      'PERSON_ID': personId,
+      'START_DATE': monthYearList[selectedMonth.value]['start_date'],
+      'END_DATE': monthYearList[selectedMonth.value]['end_date'],
+    };
+    _servicesBloc.getThankyouList(requestParams: requestedParams);
+  }
+
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
+    personId = context.userDB.get(userPersonIdKey, defaultValue: '');
     _departments = departments
         .map((departmentJson) =>
             DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
@@ -121,6 +141,13 @@ class ThankyouScreen extends StatelessWidget {
                 .toThankyouReasonEntity())
         .toList();
     _getYearMonth();
+    selectedMonth.addListener(
+      () {
+        _getThankyouList(
+          _selectedListType.value,
+        );
+      },
+    );
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -149,6 +176,10 @@ class ThankyouScreen extends StatelessWidget {
                       state.servicesRequestSuccessResponse.entity?.sTATUS ??
                           '');
                 }
+              } else if (state is OnThankyouListSuccess) {
+                Navigator.of(context, rootNavigator: true).pop();
+                //_thankYouList.value = [];
+                _thankYouList.value = state.thankYouList;
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
@@ -180,7 +211,7 @@ class ThankyouScreen extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () {
                                     _selectedListType.value =
-                                        SelectedListType.create;
+                                        ThankyouListType.create;
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -189,7 +220,7 @@ class ThankyouScreen extends StatelessWidget {
                                             context.resources.dimen.dp10),
                                     decoration: BackgroundBoxDecoration(
                                       boxColor: listType ==
-                                              SelectedListType.create
+                                              ThankyouListType.create
                                           ? context
                                               .resources.color.viewBgColorLight
                                           : context.resources.color.colorF5C3C3,
@@ -220,7 +251,7 @@ class ThankyouScreen extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () {
                                     _selectedListType.value =
-                                        SelectedListType.received;
+                                        ThankyouListType.received;
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -229,7 +260,7 @@ class ThankyouScreen extends StatelessWidget {
                                             context.resources.dimen.dp10),
                                     decoration: BackgroundBoxDecoration(
                                       boxColor: listType ==
-                                              SelectedListType.received
+                                              ThankyouListType.received
                                           ? context
                                               .resources.color.viewBgColorLight
                                           : context.resources.color.colorF5C3C3,
@@ -260,7 +291,7 @@ class ThankyouScreen extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () {
                                     _selectedListType.value =
-                                        SelectedListType.granted;
+                                        ThankyouListType.granted;
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -269,7 +300,7 @@ class ThankyouScreen extends StatelessWidget {
                                             context.resources.dimen.dp10),
                                     decoration: BackgroundBoxDecoration(
                                       boxColor: listType ==
-                                              SelectedListType.granted
+                                              ThankyouListType.granted
                                           ? context
                                               .resources.color.viewBgColorLight
                                           : context.resources.color.colorF5C3C3,
@@ -299,7 +330,7 @@ class ThankyouScreen extends StatelessWidget {
                     child: ValueListenableBuilder(
                         valueListenable: _selectedListType,
                         builder: (context, type, widget) {
-                          if (type == SelectedListType.create) {
+                          if (type == ThankyouListType.create) {
                             return SingleChildScrollView(
                               child: Form(
                                 key: _formKey,
@@ -359,12 +390,13 @@ class ThankyouScreen extends StatelessWidget {
                                 ),
                               ),
                             );
-                          } else if (type == SelectedListType.received ||
-                              type == SelectedListType.granted) {
-                            Timer(const Duration(milliseconds: 500), () {
+                          } else if (type == ThankyouListType.received ||
+                              type == ThankyouListType.granted) {
+                            Timer(const Duration(milliseconds: 100), () {
                               _setScrollByDirection(_monthScrollController
                                       .position.maxScrollExtent +
                                   100);
+                              _getThankyouList(type);
                             });
                             return Column(
                               children: [
@@ -404,10 +436,7 @@ class ThankyouScreen extends StatelessWidget {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return ItemThankyouMonth(
-                                                year: monthYearList[index]
-                                                    ['year'],
-                                                month: monthYearList[index]
-                                                    ['month'],
+                                                data: monthYearList[index],
                                                 selectedMonth: selectedMonth);
                                           },
                                         ),
@@ -440,28 +469,35 @@ class ThankyouScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: SingleChildScrollView(
-                                    child: ListView.separated(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      controller: _listScrollController,
-                                      separatorBuilder:
-                                          (BuildContext context, int index) {
-                                        return Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: resources.dimen.dp20),
-                                          child: Divider(
-                                            height: 1,
-                                            color: resources.color
-                                                .bottomSheetIconUnSelected,
-                                          ),
-                                        );
-                                      },
-                                      itemCount: 20,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return const ItemThankyouReceived();
-                                      },
-                                    ),
+                                    child: ValueListenableBuilder(
+                                        valueListenable: _thankYouList,
+                                        builder: (context, list, child) {
+                                          return ListView.separated(
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            controller: _listScrollController,
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical:
+                                                        resources.dimen.dp20),
+                                                child: Divider(
+                                                  height: 1,
+                                                  color: resources.color
+                                                      .bottomSheetIconUnSelected,
+                                                ),
+                                              );
+                                            },
+                                            itemCount: list.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return ItemThankyouReceived(
+                                                  data: list[index]);
+                                            },
+                                          );
+                                        }),
                                   ),
                                 ),
                               ],
@@ -476,7 +512,7 @@ class ThankyouScreen extends StatelessWidget {
                       builder: (context, value, widget) {
                         return Visibility(
                           visible: (_selectedListType.value ==
-                              SelectedListType.create),
+                              ThankyouListType.create),
                           child: Column(
                             children: [
                               SizedBox(

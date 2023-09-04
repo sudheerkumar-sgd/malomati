@@ -36,3 +36,7 @@ const String hrApprovalDetailsApiUrl =
     'UAQSGD_MOB_ERP_FinAndHRApprovals/Approvals/NotificationDtls';
 const String submitHrApprovalApiUrl =
     'UAQSGD_MOB_ERP_FinAndHRApprovals/Approvals/NotificationAction';
+const String thankYouReceivedApiUrl =
+    'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouReceived';
+const String thankYouGrantedApiUrl =
+    'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouGranted';

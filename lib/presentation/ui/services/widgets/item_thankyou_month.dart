@@ -5,15 +5,11 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 
 class ItemThankyouMonth extends StatelessWidget {
-  final String year;
-  final String month;
-  ValueNotifier<String> selectedMonth;
+  final Map data;
+  ValueNotifier<int> selectedMonth;
 
   ItemThankyouMonth(
-      {required this.year,
-      required this.month,
-      required this.selectedMonth,
-      super.key});
+      {required this.data, required this.selectedMonth, super.key});
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -21,14 +17,14 @@ class ItemThankyouMonth extends StatelessWidget {
         builder: (context, value, widget) {
           return InkWell(
             onTap: () {
-              selectedMonth.value = month;
+              selectedMonth.value = data['index'];
             },
             child: Container(
               padding: EdgeInsets.symmetric(
                   horizontal: context.resources.dimen.dp10,
                   vertical: context.resources.dimen.dp15),
               decoration: BackgroundBoxDecoration(
-                      boxColor: value == month
+                      boxColor: value == data['index']
                           ? context.resources.color.viewBgColor
                           : context.resources.color.colorWhite,
                       radious: context.resources.dimen.dp15)
@@ -36,12 +32,12 @@ class ItemThankyouMonth extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    '$month\n$year',
+                    '${data['month']}\n${data['year']}',
                     textAlign: TextAlign.center,
                     style: context.textFontWeight400
                         .onFontSize(context.resources.dimen.dp15)
                         .onFontFamily(fontFamily: fontFamilyEN)
-                        .onColor(value == month
+                        .onColor(value == data['index']
                             ? context.resources.color.colorWhite
                             : context
                                 .resources.color.bottomSheetIconUnSelected),

@@ -13,9 +13,12 @@ import 'package:malomati/data/model/hr_approval_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
+import 'package:malomati/data/model/thankyou_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/thankyou_entity.dart';
+import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
 import '../../domain/entities/employee_entity.dart';
@@ -53,6 +56,8 @@ abstract class RemoteDataSource {
   Future<List<HrApprovalEntity>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
   Future<ApiEntity> submitHrApproval(
+      {required Map<String, dynamic> requestParams});
+  Future<List<ThankyouEntity>> getThankyouList(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -300,7 +305,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      if (response.data['DeptEmployeesList'] != null) {
+      if (response.data?['DeptEmployeesList'] != null) {
         var deptEmployeesListJson = response.data['DeptEmployeesList'] as List;
         var deptEmployeesList = deptEmployeesListJson
             .map((employeeEntity) =>
@@ -328,12 +333,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         queryParameters: requestParams,
       );
       if (response.data['MY_TEAM'] != null) {
-        var deptEmployeesListJson = response.data['MY_TEAM'] as List;
-        var deptEmployeesList = deptEmployeesListJson
-            .map((employeeEntity) =>
-                EmployeeModel.fromJsonMyTeam(employeeEntity).toEmployeeEntity())
-            .toList();
-        return deptEmployeesList;
+        if (response.data?['MY_TEAM'] != null) {
+          var deptEmployeesListJson = response.data['MY_TEAM'] as List;
+          var deptEmployeesList = deptEmployeesListJson
+              .map((employeeEntity) =>
+                  EmployeeModel.fromJsonMyTeam(employeeEntity)
+                      .toEmployeeEntity())
+              .toList();
+          return deptEmployeesList;
+        } else {
+          return [];
+        }
       } else {
         return [];
       }
@@ -354,7 +364,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      if (response.data['LeaveDetails'] != null) {
+      if (response.data?['LeaveDetails'] != null) {
         var leavesListJson = response.data['LeaveDetails'] as List;
         var deptEmployeesList = leavesListJson
             .map(
@@ -381,7 +391,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      if (response.data['NotificationList'] != null) {
+      if (response.data?['NotificationList'] != null) {
         var hrApprovalsJson = response.data['NotificationList'] as List;
         var hrApprovalList = hrApprovalsJson
             .map((hrApprovalJson) =>
@@ -408,7 +418,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      if (response.data['NotificationDetails'] != null) {
+      if (response.data?['NotificationDetails'] != null) {
         var hrApprovalsJson = response.data['NotificationDetails'] as List;
         var hrApprovalList = hrApprovalsJson
             .map((hrApprovalJson) =>
@@ -438,6 +448,41 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       );
       var apiResponse = ApiResponse<BaseModel>.fromJson(response.data, null);
       return apiResponse.toApiEntity();
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ThankyouEntity>> getThankyouList(
+      {required Map<String, dynamic> requestParams}) async {
+    final thankyouListType = requestParams['thankyou_type'];
+    final apiurl = thankyouListType == ThankyouListType.received
+        ? thankYouReceivedApiUrl
+        : thankYouGrantedApiUrl;
+    requestParams.remove('thankyou_type');
+    try {
+      var response = await dio.get(
+        apiurl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      final jsonListName = thankyouListType == ThankyouListType.received
+          ? 'ReceivedList'
+          : 'GrantedList';
+      if (response.data?[jsonListName] != null) {
+        var thankyouListJson = response.data[jsonListName] as List;
+        var thankyouList = thankyouListJson
+            .map((thankyouJson) =>
+                ThankyouModel.fromJson(thankyouJson).toThankyouEntity())
+            .toList();
+        return thankyouList;
+      } else {
+        return [];
+      }
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

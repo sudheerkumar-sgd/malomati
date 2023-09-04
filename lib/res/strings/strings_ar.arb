@@ -69,7 +69,6 @@
     "designation": "مسمى الوظيفي",
     "emailID": "البريد الإلكتروني",
     "departmentName": "إسم الدائرة",
-    "departmentName": "إسم الدائرة",
     "maritalStatus": "الحالة الإجتماعية",
     "dob": "تاريخ الميلاد",
     "mobile": "الهاتف المتحرك",
@@ -174,5 +173,8 @@
     "fontsSize": "حجم الخط",
     "call": "اتصل",
     "usernameOrPasswordIsWrong": "اسم المستخدم أو كلمة المرور خاطئة",
-    "duration":"المدة"
+    "duration":"المدة",
+    "receivedBy":"تم الاستلام بواسطة",
+    "deptName":"إسم الدائرة",
+    "date":"تاريخ"
 }

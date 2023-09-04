@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:malomati/core/common/log.dart';
 
 class DashedProgressIndicator extends CustomPainter {
   final double percent;

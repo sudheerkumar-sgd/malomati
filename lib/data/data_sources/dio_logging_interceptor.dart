@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:get/utils.dart';
 import 'package:malomati/config/base_url_config.dart';
 import 'package:malomati/core/common/common.dart';
 import '../../config/flavor_config.dart';

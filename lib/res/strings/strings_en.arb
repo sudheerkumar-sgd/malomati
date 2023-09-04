@@ -456,6 +456,9 @@
     "call": "Call",
     "usernameOrPasswordIsWrong": "username or password is wrong",
     "duration":"Duration",
+    "receivedBy":"Received by",
+    "deptName":"Dept. Name",
+    "date":"Date",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

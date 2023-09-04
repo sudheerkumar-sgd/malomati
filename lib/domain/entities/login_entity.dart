@@ -13,6 +13,7 @@ class LoginEntity extends BaseEntity {
   String? employeeNumber;
   String? hireDate;
   String? nationality;
+  String? persionID;
 
   LoginEntity();
   @override
@@ -27,5 +28,6 @@ class LoginEntity extends BaseEntity {
         employeeNumber,
         hireDate,
         nationality,
+        persionID
       ];
 }

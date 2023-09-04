@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
   // final ValueNotifier _timeString =
   //     ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
   final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
-  final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(0);
+  final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(-1);
   // void _getTime() {
   //   _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
   // }
