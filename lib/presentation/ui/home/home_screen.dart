@@ -167,6 +167,7 @@ class HomeScreen extends StatelessWidget {
                             ],
                           ),
                           image: const DecorationImage(
+                            alignment: Alignment.topRight,
                             image: AssetImage(DrawableAssets.icHomeCoverRing),
                           )),
                       child: Column(

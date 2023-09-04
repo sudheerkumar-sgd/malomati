@@ -116,13 +116,14 @@ class MoreScreen extends StatelessWidget {
                           SizedBox(
                             width: resources.dimen.dp10,
                           ),
-                          Text(
-                            context.string.hRGovernmentLaw,
-                            style: context.textFontWeight400
-                                .onColor(context.resources.color.textColor)
-                                .onFontSize(context.resources.fontSize.dp15),
+                          Expanded(
+                            child: Text(
+                              context.string.hRGovernmentLaw,
+                              style: context.textFontWeight400
+                                  .onColor(context.resources.color.textColor)
+                                  .onFontSize(context.resources.fontSize.dp15),
+                            ),
                           ),
-                          const Spacer(),
                         ]),
                       ),
                       SizedBox(
