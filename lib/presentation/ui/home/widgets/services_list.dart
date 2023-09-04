@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/core/enum.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
@@ -22,7 +23,13 @@ class ServicesList extends StatelessWidget {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 1.1,
+            childAspectRatio: context.resources.getUserSelcetedFontSize() ==
+                    FontSizeEnum.bigSize
+                ? 1.0
+                : context.resources.getUserSelcetedFontSize() ==
+                        FontSizeEnum.smallSize
+                    ? 1.2
+                    : 1.1,
             mainAxisSpacing: context.resources.dimen.dp20,
           ),
           itemBuilder: (ctx, i) {

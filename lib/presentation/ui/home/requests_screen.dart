@@ -9,6 +9,7 @@ import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_attendance_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_requests_list.dart';
+import '../../../core/enum.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/services_app_bar.dart';
@@ -57,46 +58,30 @@ class RequestsScreen extends StatelessWidget {
                         horizontal: context.resources.dimen.dp25),
                     child:
                         ServicesAppBarWidget(title: context.string.requests)),
-                GridView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: context.resources.dimen.dp25,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: context.resources.dimen.dp10,
-                  ),
-                  itemBuilder: (ctx, i) {
-                    switch (i) {
-                      case 0:
-                        {
-                          return ItemDashboardLeaves(
-                            balanceCount: '25',
-                            balancetype: context.string.approved,
-                            padding: context.resources.dimen.dp20,
-                          );
-                        }
-                      case 1:
-                        {
-                          return ItemDashboardLeaves(
-                            balanceCount: '10',
-                            balancetype: context.string.pending,
-                            padding: context.resources.dimen.dp20,
-                          );
-                        }
-                      default:
-                        {
-                          return ItemDashboardLeaves(
-                            balanceCount: '0',
-                            balancetype: context.string.rejected,
-                            padding: context.resources.dimen.dp20,
-                          );
-                        }
-                    }
-                  },
+                Row(
+                  children: [
+                    Expanded(
+                      child: ItemDashboardLeaves(
+                        balanceCount: '25',
+                        balancetype: context.string.approved,
+                        padding: context.resources.dimen.dp20,
+                      ),
+                    ),
+                    Expanded(
+                      child: ItemDashboardLeaves(
+                        balanceCount: '10',
+                        balancetype: context.string.pending,
+                        padding: context.resources.dimen.dp20,
+                      ),
+                    ),
+                    Expanded(
+                      child: ItemDashboardLeaves(
+                        balanceCount: '0',
+                        balancetype: context.string.rejected,
+                        padding: context.resources.dimen.dp20,
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
                   margin: EdgeInsets.only(
@@ -110,7 +95,7 @@ class RequestsScreen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: context.textFontWeight600
                         .onColor(context.resources.color.textColor)
-                        .onFontSize(context.resources.dimen.dp17),
+                        .onFontSize(context.resources.fontSize.dp17),
                   ),
                 ),
                 ValueListenableBuilder(
@@ -155,8 +140,8 @@ class RequestsScreen extends StatelessWidget {
                                           style: context.textFontWeight600
                                               .onColor(context
                                                   .resources.color.colorWhite)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp17),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp17),
                                         ),
                                       ),
                                     ),
@@ -197,8 +182,8 @@ class RequestsScreen extends StatelessWidget {
                                           style: context.textFontWeight600
                                               .onColor(context
                                                   .resources.color.colorWhite)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp17),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp17),
                                         ),
                                       ),
                                     ),

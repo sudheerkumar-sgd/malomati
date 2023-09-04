@@ -295,7 +295,7 @@ class AttendanceScreen extends StatelessWidget {
                                                   ? fontFamilyEN
                                                   : fontFamilyAR)
                                           .onFontSize(
-                                              context.resources.dimen.dp17),
+                                              context.resources.fontSize.dp17),
                                       children: [
                                     TextSpan(
                                       text: '$value',
@@ -305,7 +305,7 @@ class AttendanceScreen extends StatelessWidget {
                                           .onFontFamily(
                                               fontFamily: fontFamilyEN)
                                           .onFontSize(
-                                              context.resources.dimen.dp17),
+                                              context.resources.fontSize.dp17),
                                     )
                                   ]));
                             }),
@@ -315,7 +315,7 @@ class AttendanceScreen extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp13),
+                              .onFontSize(context.resources.fontSize.dp13),
                         ),
                         SizedBox(
                           height: resources.dimen.dp10,
@@ -350,8 +350,8 @@ class AttendanceScreen extends StatelessWidget {
                                           style: context.textFontWeight400
                                               .onColor(context
                                                   .resources.color.textColor)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp12),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp12),
                                         ),
                                         Text(
                                           (attendanceEntity?.punch1Time ?? '')
@@ -366,8 +366,8 @@ class AttendanceScreen extends StatelessWidget {
                                                   .resources.color.textColor)
                                               .onFontFamily(
                                                   fontFamily: fontFamilyEN)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp12),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp12),
                                         ),
                                       ],
                                     ),
@@ -399,8 +399,8 @@ class AttendanceScreen extends StatelessWidget {
                                           style: context.textFontWeight400
                                               .onColor(context
                                                   .resources.color.textColor)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp10),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp10),
                                         ),
                                         Text(
                                           _getReamainingHours(),
@@ -409,8 +409,8 @@ class AttendanceScreen extends StatelessWidget {
                                           style: context.textFontWeight600
                                               .onColor(context
                                                   .resources.color.textColor)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp10),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp10),
                                         ),
                                       ],
                                     ),
@@ -453,8 +453,8 @@ class AttendanceScreen extends StatelessWidget {
                                         style: context.textFontWeight400
                                             .onColor(context
                                                 .resources.color.colorWhite)
-                                            .onFontSize(
-                                                context.resources.dimen.dp14),
+                                            .onFontSize(context
+                                                .resources.fontSize.dp14),
                                       ),
                                     ),
                                   ),

@@ -166,7 +166,7 @@ class LoginScreen extends StatelessWidget {
                                     context.string
                                         .manager_amp_employee_self_service_of_uaq_government,
                                     style: context.textFontWeight700.onFontSize(
-                                        context.resources.dimen.dp17),
+                                        context.resources.fontSize.dp17),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -196,7 +196,7 @@ class LoginScreen extends StatelessWidget {
                                               textStyle: context
                                                   .textFontWeight400
                                                   .onFontSize(context
-                                                      .resources.dimen.dp13))
+                                                      .resources.fontSize.dp13))
                                           .textInputFiled,
                                       SizedBox(
                                           height: context.resources.dimen.dp10),
@@ -221,7 +221,7 @@ class LoginScreen extends StatelessWidget {
                                               textStyle: context
                                                   .textFontWeight400
                                                   .onFontSize(context
-                                                      .resources.dimen.dp13))
+                                                      .resources.fontSize.dp13))
                                           .textInputFiled,
                                     ],
                                   ),
@@ -254,7 +254,7 @@ class LoginScreen extends StatelessWidget {
                                                   .onColor(context.resources
                                                       .color.textColorLight)
                                                   .onFontSize(context
-                                                      .resources.dimen.dp12),
+                                                      .resources.fontSize.dp12),
                                             ),
                                           ),
                                         ],
@@ -286,8 +286,8 @@ class LoginScreen extends StatelessWidget {
                                           style: context.textFontWeight600
                                               .onColor(context
                                                   .resources.color.colorWhite)
-                                              .onFontSize(
-                                                  context.resources.dimen.dp17),
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp17),
                                         ),
                                       ),
                                       boxDecoration: BackgroundBoxDecoration(
@@ -311,7 +311,8 @@ class LoginScreen extends StatelessWidget {
                                   style: context.textFontWeight400
                                       .onColor(context
                                           .resources.color.textColorLight)
-                                      .onFontSize(context.resources.dimen.dp12),
+                                      .onFontSize(
+                                          context.resources.fontSize.dp12),
                                 ),
                                 SizedBox(
                                   height: context.resources.dimen.dp10,
@@ -329,7 +330,7 @@ class LoginScreen extends StatelessWidget {
                                                 .onColor(context
                                                     .resources.color.textColor)
                                                 .onFontSize(context
-                                                    .resources.dimen.dp17),
+                                                    .resources.fontSize.dp17),
                                           ),
                                           SizedBox(
                                             width: context.resources.dimen.dp10,

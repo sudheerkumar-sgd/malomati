@@ -59,19 +59,15 @@ class SplashScreen extends StatelessWidget {
                               ),
                               Text(
                                 context.string.please_select_language_ar,
-                                style: context.textFontWeight900
-                                    .copyWith(
-                                        fontFamily: fontFamilyAR,
-                                        fontWeight: FontWeight.w900)
-                                    .onFontSize(14),
+                                style: context.textFontWeight900.copyWith(
+                                    fontFamily: fontFamilyAR,
+                                    fontWeight: FontWeight.w900),
                               ),
                               Text(
                                 context.string.please_select_language,
-                                style: context.textFontWeight600
-                                    .copyWith(
-                                        fontFamily: fontFamilyEN,
-                                        fontWeight: FontWeight.w600)
-                                    .onFontSize(14),
+                                style: context.textFontWeight600.copyWith(
+                                    fontFamily: fontFamilyEN,
+                                    fontWeight: FontWeight.w600),
                               ),
                               SizedBox(
                                 height: context.resources.dimen.dp30,
@@ -94,8 +90,8 @@ class SplashScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w600)
                                             .onColor(context
                                                 .resources.color.textColor)
-                                            .onFontSize(
-                                                context.resources.dimen.dp17),
+                                            .onFontSize(context
+                                                .resources.fontSize.dp17),
                                       ),
                                     ),
                                     boxDecoration: BackgroundBoxDecoration(
@@ -131,8 +127,8 @@ class SplashScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w600)
                                             .onColor(context
                                                 .resources.color.colorWhite)
-                                            .onFontSize(
-                                                context.resources.dimen.dp17),
+                                            .onFontSize(context
+                                                .resources.fontSize.dp17),
                                       ),
                                     ),
                                     boxDecoration: BackgroundBoxDecoration(

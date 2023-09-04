@@ -26,6 +26,7 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../core/constants/data_constants.dart';
+import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -175,50 +176,53 @@ class HomeScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        text:
-                                            '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
-                                        style: context.textFontWeight600
-                                            .onFontFamily(
-                                                fontFamily: isLocalEn
-                                                    ? fontFamilyEN
-                                                    : fontFamilyAR)
-                                            .onColor(context
-                                                .resources.color.colorWhite)
-                                            .onFontSize(
-                                                context.resources.dimen.dp17),
-                                        children: [
-                                          TextSpan(
-                                            text: '$currentDay ',
-                                            style: context.textFontWeight600
-                                                .onFontFamily(
-                                                    fontFamily: fontFamilyEN)
-                                                .onColor(context
-                                                    .resources.color.colorWhite)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp17),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
-                                            style: context.textFontWeight600
-                                                .onColor(context
-                                                    .resources.color.colorWhite)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp17),
-                                          ),
-                                          TextSpan(
-                                            text: '$currentYear',
-                                            style: context.textFontWeight600
-                                                .onColor(context
-                                                    .resources.color.colorWhite)
-                                                .onFontFamily(
-                                                    fontFamily: fontFamilyEN)
-                                                .onFontSize(context
-                                                    .resources.dimen.dp17),
-                                          ),
-                                        ]),
+                                  Expanded(
+                                    child: RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                          text:
+                                              '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
+                                          style: context.textFontWeight600
+                                              .onFontFamily(
+                                                  fontFamily: isLocalEn
+                                                      ? fontFamilyEN
+                                                      : fontFamilyAR)
+                                              .onColor(context
+                                                  .resources.color.colorWhite)
+                                              .onFontSize(context
+                                                  .resources.fontSize.dp17),
+                                          children: [
+                                            TextSpan(
+                                              text: '$currentDay ',
+                                              style: context.textFontWeight600
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN)
+                                                  .onColor(context.resources
+                                                      .color.colorWhite)
+                                                  .onFontSize(context
+                                                      .resources.fontSize.dp17),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
+                                              style: context.textFontWeight600
+                                                  .onColor(context.resources
+                                                      .color.colorWhite)
+                                                  .onFontSize(context
+                                                      .resources.fontSize.dp17),
+                                            ),
+                                            TextSpan(
+                                              text: '$currentYear',
+                                              style: context.textFontWeight600
+                                                  .onColor(context.resources
+                                                      .color.colorWhite)
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN)
+                                                  .onFontSize(context
+                                                      .resources.fontSize.dp17),
+                                            ),
+                                          ]),
+                                    ),
                                   ),
                                   // const Spacer(),
                                   // ImageWidget(
@@ -241,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.colorWhite)
                                           .onFontSize(
-                                              context.resources.dimen.dp14),
+                                              context.resources.fontSize.dp14),
                                     );
                                   }),
                               SizedBox(
@@ -339,7 +343,7 @@ class HomeScreen extends StatelessWidget {
                                                           .textFontWeight400
                                                           .onFontSize(context
                                                               .resources
-                                                              .dimen
+                                                              .fontSize
                                                               .dp14),
                                                     ),
                                                   ),
@@ -385,7 +389,7 @@ class HomeScreen extends StatelessWidget {
                                                             .colorWhite)
                                                         .onFontSize(context
                                                             .resources
-                                                            .dimen
+                                                            .fontSize
                                                             .dp12),
                                                   ),
                                                 ],
@@ -466,7 +470,7 @@ class HomeScreen extends StatelessWidget {
                                                           .textFontWeight400
                                                           .onFontSize(context
                                                               .resources
-                                                              .dimen
+                                                              .fontSize
                                                               .dp14),
                                                     ),
                                                   ),
@@ -512,7 +516,7 @@ class HomeScreen extends StatelessWidget {
                                                             .colorWhite)
                                                         .onFontSize(context
                                                             .resources
-                                                            .dimen
+                                                            .fontSize
                                                             .dp12),
                                                   ),
                                                 ],
@@ -671,7 +675,7 @@ class HomeScreen extends StatelessWidget {
                                   Text(
                                     context.string.myFavoriteService,
                                     style: context.textFontWeight700.onFontSize(
-                                        context.resources.dimen.dp17),
+                                        context.resources.fontSize.dp17),
                                   ),
                                   ValueListenableBuilder(
                                       valueListenable: _isFavoriteEdited,
@@ -696,7 +700,7 @@ class HomeScreen extends StatelessWidget {
                                                   .onColor(context.resources
                                                       .color.textColorLight)
                                                   .onFontSize(context
-                                                      .resources.dimen.dp12),
+                                                      .resources.fontSize.dp12),
                                             ),
                                           ),
                                         );
@@ -721,7 +725,15 @@ class HomeScreen extends StatelessWidget {
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
-                                      childAspectRatio: 1.1,
+                                      childAspectRatio: context.resources
+                                                  .getUserSelcetedFontSize() ==
+                                              FontSizeEnum.bigSize
+                                          ? 1.0
+                                          : context.resources
+                                                      .getUserSelcetedFontSize() ==
+                                                  FontSizeEnum.smallSize
+                                              ? 1.2
+                                              : 1.1,
                                       mainAxisSpacing:
                                           context.resources.dimen.dp20,
                                     ),

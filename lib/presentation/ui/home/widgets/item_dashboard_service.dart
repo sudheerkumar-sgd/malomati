@@ -72,7 +72,7 @@ class ItemDashboardService extends StatelessWidget {
             textAlign: TextAlign.center,
             style: context.textFontWeight400
                 .onColor(context.resources.color.textColor)
-                .onFontSize(context.resources.dimen.dp12),
+                .onFontSize(context.resources.fontSize.dp12),
           ),
         ),
       ],

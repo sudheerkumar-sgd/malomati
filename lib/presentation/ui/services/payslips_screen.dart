@@ -119,7 +119,7 @@ class PayslipsScreen extends StatelessWidget {
                     child: Text(
                       context.string.submit,
                       style: context.textFontWeight600
-                          .onFontSize(context.resources.dimen.dp17)
+                          .onFontSize(context.resources.fontSize.dp17)
                           .onColor(context.resources.color.colorWhite)
                           .copyWith(height: 1),
                       textAlign: TextAlign.center,

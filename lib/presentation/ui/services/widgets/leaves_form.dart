@@ -278,7 +278,7 @@ class LeavesForm extends StatelessWidget {
                     Text(
                       context.string.type,
                       style: context.textFontWeight400
-                          .onFontSize(context.resources.dimen.dp12)
+                          .onFontSize(context.resources.fontSize.dp12)
                           .copyWith(height: 1),
                     ),
                     SizedBox(
@@ -304,7 +304,7 @@ class LeavesForm extends StatelessWidget {
                             resources.color.bottomSheetIconUnSelected,
                         boxRadious: resources.dimen.dp5,
                         textColor: const Color(0xFFFFFFFF),
-                        textFontSize: resources.dimen.dp13,
+                        textFontSize: resources.fontSize.dp13,
                       ),
                     ),
                   ],
@@ -479,7 +479,7 @@ class LeavesForm extends StatelessWidget {
                           Text(
                             context.string.upload,
                             style: context.textFontWeight400
-                                .onFontSize(context.resources.dimen.dp12),
+                                .onFontSize(context.resources.fontSize.dp12),
                           ),
                           SizedBox(
                             height: context.resources.dimen.dp10,
@@ -535,7 +535,7 @@ class LeavesForm extends StatelessWidget {
                                                             .textFontWeight400
                                                             .onFontSize(context
                                                                 .resources
-                                                                .dimen
+                                                                .fontSize
                                                                 .dp12)
                                                             .onColor(context
                                                                 .resources
@@ -637,7 +637,7 @@ class LeavesForm extends StatelessWidget {
                           child: Text(
                             context.string.cancel,
                             style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp17)
+                                .onFontSize(context.resources.fontSize.dp17)
                                 .onColor(resources.color.colorWhite)
                                 .copyWith(height: 1),
                             textAlign: TextAlign.center,
@@ -666,7 +666,7 @@ class LeavesForm extends StatelessWidget {
                           child: Text(
                             context.string.submit,
                             style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp17)
+                                .onFontSize(context.resources.fontSize.dp17)
                                 .onColor(resources.color.colorWhite)
                                 .copyWith(height: 1),
                             textAlign: TextAlign.center,

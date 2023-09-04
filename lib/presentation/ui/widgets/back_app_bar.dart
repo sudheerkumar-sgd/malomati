@@ -42,7 +42,7 @@ class BackAppBarWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: context.textFontWeight600
               .onColor(context.resources.color.viewBgColor)
-              .onFontSize(context.resources.dimen.dp17),
+              .onFontSize(context.resources.fontSize.dp17),
         )),
         Align(
           alignment: Alignment.center,

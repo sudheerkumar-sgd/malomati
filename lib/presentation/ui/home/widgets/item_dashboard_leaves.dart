@@ -31,14 +31,14 @@ class ItemDashboardLeaves extends StatelessWidget {
                   style: context.textFontWeight900
                       .onFontFamily(fontFamily: fontFamilyEN)
                       .onColor(context.resources.color.viewBgColor)
-                      .onFontSize(context.resources.dimen.dp20),
+                      .onFontSize(context.resources.fontSize.dp20),
                 ),
                 Text(
                   balancetype,
                   textAlign: TextAlign.center,
                   style: context.textFontWeight400
                       .onColor(context.resources.color.textColor)
-                      .onFontSize(context.resources.dimen.dp10),
+                      .onFontSize(context.resources.fontSize.dp10),
                 ),
               ],
             ),
@@ -53,7 +53,7 @@ class ItemDashboardLeaves extends StatelessWidget {
           textAlign: TextAlign.center,
           style: context.textFontWeight400
               .onColor(context.resources.color.textColor)
-              .onFontSize(context.resources.dimen.dp12),
+              .onFontSize(context.resources.fontSize.dp12),
         ),
       ],
     );

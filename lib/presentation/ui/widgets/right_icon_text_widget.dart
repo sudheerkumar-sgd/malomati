@@ -44,7 +44,7 @@ class RightIconTextWidget extends StatelessWidget {
                     fontFamily: context.resources.isLocalEn
                         ? fontFamilyEN
                         : fontFamilyAR)
-                .onFontSize(context.resources.dimen.dp12),
+                .onFontSize(context.resources.fontSize.dp12),
           ),
         ),
         SizedBox(
@@ -72,7 +72,7 @@ class RightIconTextWidget extends StatelessWidget {
                   horizontal: context.resources.dimen.dp10),
               hintText: hintText,
               hintStyle: context.textFontWeight400
-                  .onFontSize(context.resources.dimen.dp12)
+                  .onFontSize(context.resources.fontSize.dp12)
                   .onFontFamily(
                       fontFamily: context.resources.isLocalEn
                           ? fontFamilyEN
@@ -106,9 +106,9 @@ class RightIconTextWidget extends StatelessWidget {
             style: fontFamily.isNotEmpty
                 ? context.textFontWeight400
                     .onFontFamily(fontFamily: fontFamily)
-                    .onFontSize(context.resources.dimen.dp12)
+                    .onFontSize(context.resources.fontSize.dp12)
                 : context.textFontWeight400
-                    .onFontSize(context.resources.dimen.dp12),
+                    .onFontSize(context.resources.fontSize.dp12),
           ),
         ),
       ],

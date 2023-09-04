@@ -65,7 +65,7 @@ class MoreScreen extends StatelessWidget {
                           context.string.notificationSetting,
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
+                              .onFontSize(context.resources.fontSize.dp15),
                         ),
                         const Spacer(),
                         Transform.scale(
@@ -120,7 +120,7 @@ class MoreScreen extends StatelessWidget {
                             context.string.hRGovernmentLaw,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                           const Spacer(),
                         ]),
@@ -150,7 +150,8 @@ class MoreScreen extends StatelessWidget {
                                 context.string.language,
                                 style: context.textFontWeight400
                                     .onColor(context.resources.color.textColor)
-                                    .onFontSize(context.resources.dimen.dp15),
+                                    .onFontSize(
+                                        context.resources.fontSize.dp15),
                               ),
                               const Spacer(),
                               InkWell(
@@ -188,7 +189,7 @@ class MoreScreen extends StatelessWidget {
                                           .onColor(
                                               context.resources.color.textColor)
                                           .onFontSize(
-                                              context.resources.dimen.dp13)
+                                              context.resources.fontSize.dp13)
                                           .onFontFamily(
                                               fontFamily: fontFamilyEN),
                                     ),
@@ -233,7 +234,7 @@ class MoreScreen extends StatelessWidget {
                                           .onColor(
                                               context.resources.color.textColor)
                                           .onFontSize(
-                                              context.resources.dimen.dp13)
+                                              context.resources.fontSize.dp13)
                                           .onFontFamily(
                                               fontFamily: fontFamilyAR),
                                     ),
@@ -264,7 +265,7 @@ class MoreScreen extends StatelessWidget {
                           context.string.color,
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
+                              .onFontSize(context.resources.fontSize.dp15),
                         ),
                         const Spacer(),
                         SizedBox(
@@ -306,7 +307,7 @@ class MoreScreen extends StatelessWidget {
                           context.string.fontsSize,
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.dimen.dp15),
+                              .onFontSize(context.resources.fontSize.dp15),
                         ),
                         const Spacer(),
                         Row(
@@ -323,15 +324,16 @@ class MoreScreen extends StatelessWidget {
                                   'A',
                                   style: context.textFontWeight400
                                       .onFontFamily(fontFamily: fontFamilyEN)
-                                      .onFontSize(resources.dimen.dp20)
+                                      .onFontSize(resources.fontSize.dp20)
                                       .onColor(
-                                        resources.getFontSize() ==
+                                        resources.getUserSelcetedFontSize() ==
                                                 FontSizeEnum.bigSize
                                             ? resources.iconBgColor
                                             : resources.color.textColor,
                                       )
                                       .copyWith(
-                                          fontWeight: resources.getFontSize() ==
+                                          fontWeight: resources
+                                                      .getUserSelcetedFontSize() ==
                                                   FontSizeEnum.bigSize
                                               ? FontWeight.w700
                                               : FontWeight.w400,
@@ -350,15 +352,16 @@ class MoreScreen extends StatelessWidget {
                                   'A',
                                   style: context.textFontWeight400
                                       .onFontFamily(fontFamily: fontFamilyEN)
-                                      .onFontSize(resources.dimen.dp15)
+                                      .onFontSize(resources.fontSize.dp15)
                                       .onColor(
-                                        resources.getFontSize() ==
+                                        resources.getUserSelcetedFontSize() ==
                                                 FontSizeEnum.defaultSize
                                             ? resources.iconBgColor
                                             : resources.color.textColor,
                                       )
                                       .copyWith(
-                                          fontWeight: resources.getFontSize() ==
+                                          fontWeight: resources
+                                                      .getUserSelcetedFontSize() ==
                                                   FontSizeEnum.defaultSize
                                               ? FontWeight.w700
                                               : FontWeight.w400,
@@ -377,15 +380,16 @@ class MoreScreen extends StatelessWidget {
                                   'A',
                                   style: context.textFontWeight400
                                       .onFontFamily(fontFamily: fontFamilyEN)
-                                      .onFontSize(resources.dimen.dp10)
+                                      .onFontSize(resources.fontSize.dp10)
                                       .onColor(
-                                        resources.getFontSize() ==
+                                        resources.getUserSelcetedFontSize() ==
                                                 FontSizeEnum.smallSize
                                             ? resources.iconBgColor
                                             : resources.color.textColor,
                                       )
                                       .copyWith(
-                                          fontWeight: resources.getFontSize() ==
+                                          fontWeight: resources
+                                                      .getUserSelcetedFontSize() ==
                                                   FontSizeEnum.smallSize
                                               ? FontWeight.w700
                                               : FontWeight.w400,
@@ -428,7 +432,7 @@ class MoreScreen extends StatelessWidget {
                             context.string.privacyAndPolicy,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                           const Spacer(),
                         ]),
@@ -468,7 +472,7 @@ class MoreScreen extends StatelessWidget {
                             context.string.aboutMalomati,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                           const Spacer(),
                         ]),
@@ -484,7 +488,7 @@ class MoreScreen extends StatelessWidget {
                           context.string.contactAssistance,
                           style: context.textFontWeight600
                               .onColor(context.resources.color.viewBgColor)
-                              .onFontSize(context.resources.dimen.dp17),
+                              .onFontSize(context.resources.fontSize.dp17),
                         ),
                       ),
                       SizedBox(
@@ -506,7 +510,7 @@ class MoreScreen extends StatelessWidget {
                             supportEmailId,
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                           const Spacer(),
                           ImageWidget(
@@ -546,7 +550,7 @@ class MoreScreen extends StatelessWidget {
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
                                 .onFontFamily(fontFamily: fontFamilyEN)
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                         ]),
                       ),
@@ -577,7 +581,7 @@ class MoreScreen extends StatelessWidget {
                   context.string.logout,
                   style: context.textFontWeight400
                       .onColor(resources.color.colorWhite)
-                      .onFontSize(context.resources.dimen.dp17)
+                      .onFontSize(context.resources.fontSize.dp17)
                       .copyWith(height: 1),
                 ),
               ),

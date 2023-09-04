@@ -107,7 +107,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -119,7 +119,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -132,7 +132,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -144,7 +144,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -157,7 +157,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -169,7 +169,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -182,7 +182,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -194,7 +194,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -207,7 +207,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -219,7 +219,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -232,7 +232,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -244,7 +244,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -257,7 +257,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -269,7 +269,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -282,7 +282,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -294,7 +294,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -307,7 +307,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -319,7 +319,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -332,7 +332,7 @@ class ItemAttendanceList extends StatelessWidget {
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             ),
             SizedBox(
@@ -344,7 +344,7 @@ class ItemAttendanceList extends StatelessWidget {
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
                     .onFontFamily(fontFamily: fontFamilyEN)
-                    .onFontSize(context.resources.dimen.dp11),
+                    .onFontSize(context.resources.fontSize.dp11),
               ),
             )
           ])
@@ -389,7 +389,7 @@ class ItemAttendanceList extends StatelessWidget {
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
                               .onFontFamily(fontFamily: fontFamilyEN)
-                              .onFontSize(context.resources.dimen.dp12),
+                              .onFontSize(context.resources.fontSize.dp12),
                         ),
                       ),
                       ImageWidget(
@@ -424,7 +424,7 @@ class ItemAttendanceList extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.textColor212B4B)
                                           .onFontSize(
-                                              context.resources.dimen.dp11),
+                                              context.resources.fontSize.dp11),
                                     ),
                                   ),
                                   SizedBox(
@@ -436,7 +436,7 @@ class ItemAttendanceList extends StatelessWidget {
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
-                                            context.resources.dimen.dp11),
+                                            context.resources.fontSize.dp11),
                                   ),
                                 ],
                               ),

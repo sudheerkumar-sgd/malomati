@@ -184,8 +184,8 @@ class _MainScreenState extends State<MainScreen> {
                         unselectedItemColor:
                             context.resources.color.bottomSheetIconUnSelected,
                         backgroundColor: Colors.white,
-                        selectedFontSize: 12,
-                        unselectedFontSize: 12,
+                        selectedFontSize: context.resources.fontSize.dp12,
+                        unselectedFontSize: context.resources.fontSize.dp12,
                         onTap: _onItemTapped,
                       ),
                     ),

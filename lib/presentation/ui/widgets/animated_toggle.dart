@@ -13,7 +13,7 @@ class AnimatedToggle extends StatelessWidget {
   final double width;
   final double height;
   final double boxRadious;
-  final double textFontSize;
+  double textFontSize;
   final int selectedPossition;
   ValueNotifier<bool> initialPosition = ValueNotifier<bool>(true);
   AnimatedToggle({
@@ -33,6 +33,7 @@ class AnimatedToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initialPosition.value = selectedPossition == 0;
+    if (textFontSize == 11) textFontSize = context.resources.fontSize.dp11;
     return Stack(
       children: <Widget>[
         InkWell(

@@ -233,7 +233,7 @@ class InitiativesScreen extends StatelessWidget {
                             child: Text(
                               context.string.cancel,
                               style: context.textFontWeight600
-                                  .onFontSize(context.resources.dimen.dp17)
+                                  .onFontSize(context.resources.fontSize.dp17)
                                   .onColor(resources.color.colorWhite)
                                   .copyWith(height: 1),
                               textAlign: TextAlign.center,
@@ -263,7 +263,7 @@ class InitiativesScreen extends StatelessWidget {
                             child: Text(
                               context.string.submit,
                               style: context.textFontWeight600
-                                  .onFontSize(context.resources.dimen.dp17)
+                                  .onFontSize(context.resources.fontSize.dp17)
                                   .onColor(resources.color.colorWhite)
                                   .copyWith(height: 1),
                               textAlign: TextAlign.center,

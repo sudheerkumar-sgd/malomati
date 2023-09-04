@@ -4,12 +4,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/colors/base_clors.dart';
 import 'package:malomati/res/colors/theme_blue_colors.dart';
+import 'package:malomati/res/dimentions/font_dimension.dart';
+import 'package:malomati/res/dimentions/font_dimension_big.dart';
+import 'package:malomati/res/dimentions/font_dimension_small.dart';
 import 'package:malomati/res/theme/app_theme.dart';
 import 'package:malomati/res/theme/theme_blue.dart';
 import 'package:malomati/res/theme/theme_red.dart';
 import '../core/enum.dart';
 import 'colors/theme_red_colors.dart';
 import 'dimentions/app_dimension.dart';
+import 'dimentions/font_dimension_default.dart';
 
 class Resources {
   final BuildContext context;
@@ -73,14 +77,30 @@ class Resources {
 
   Color get iconBgColor => color.bgGradientStart;
 
-  FontSizeEnum getFontSize() {
-    final fontSize = context.settingDB.get(appFontSizeKey, defaultValue: 2);
-    return FontSizeEnum.fromSize(fontSize);
+  FontSizeEnum? currentFontSize;
+
+  FontSizeEnum getUserSelcetedFontSize() {
+    if (currentFontSize == null) {
+      final fontSize = context.settingDB.get(appFontSizeKey, defaultValue: 2);
+      currentFontSize = FontSizeEnum.fromSize(fontSize);
+    }
+    return currentFontSize ?? FontSizeEnum.defaultSize;
   }
 
   void setFontSize(FontSizeEnum size) {
     context.settingDB.put(appFontSizeKey, size.size);
     Phoenix.rebirth(context);
+  }
+
+  FontDimensions get fontSize {
+    switch (getUserSelcetedFontSize()) {
+      case FontSizeEnum.bigSize:
+        return FontDimensionsBig();
+      case FontSizeEnum.smallSize:
+        return FontDimensionsSmall();
+      default:
+        return FontDimensionsDefault();
+    }
   }
 
   static Resources of(BuildContext context) {

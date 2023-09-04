@@ -136,7 +136,8 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
             ),
             Text(
               context.string.teamStatusText,
-              style: context.textFontWeight400.onFontSize(resources.dimen.dp15),
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp15),
             ),
             SizedBox(
               height: resources.dimen.dp5,
@@ -144,7 +145,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
             Text(
               getCurrentDateByformat('dd/MM/yyyy'),
               style: context.textFontWeight400
-                  .onFontSize(resources.dimen.dp15)
+                  .onFontSize(resources.fontSize.dp15)
                   .onFontFamily(fontFamily: fontFamilyEN)
                   .onColor(resources.color.bgGradientStart),
             ),
@@ -157,7 +158,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                 Text(
                   context.string.numberOfEmployee,
                   style: context.textFontWeight400
-                      .onFontSize(resources.dimen.dp15),
+                      .onFontSize(resources.fontSize.dp15),
                 ),
                 ValueListenableBuilder(
                     valueListenable: _employeesList,
@@ -166,7 +167,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                         '${employeesList.length}',
                         style: context.textFontWeight600
                             .onFontFamily(fontFamily: fontFamilyEN)
-                            .onFontSize(resources.dimen.dp15),
+                            .onFontSize(resources.fontSize.dp15),
                       );
                     }),
               ],
@@ -187,7 +188,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                 Text(
                   context.string.employeesOnLeaves,
                   style: context.textFontWeight400
-                      .onFontSize(resources.dimen.dp15),
+                      .onFontSize(resources.fontSize.dp15),
                 ),
                 ValueListenableBuilder(
                     valueListenable: _fraction,
@@ -196,7 +197,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                         '${_employeesList.value.length - loggedInEmployees}',
                         style: context.textFontWeight600
                             .onFontFamily(fontFamily: fontFamilyEN)
-                            .onFontSize(resources.dimen.dp15),
+                            .onFontSize(resources.fontSize.dp15),
                       );
                     }),
               ],

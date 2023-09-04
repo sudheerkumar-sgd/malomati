@@ -87,19 +87,19 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                         text: TextSpan(
                             text: '${widget.data.sUBJECTUS}\n',
                             style: context.textFontWeight400
-                                .onFontSize(resources.dimen.dp12)
+                                .onFontSize(resources.fontSize.dp12)
                                 .copyWith(height: 1.5),
                             children: [
                               TextSpan(
                                 text: '${context.string.submittedOn} : ',
                                 style: context.textFontWeight400
-                                    .onFontSize(resources.dimen.dp12),
+                                    .onFontSize(resources.fontSize.dp12),
                               ),
                               TextSpan(
                                 text: widget.data.bEGINDATECHAR,
                                 style: context.textFontWeight400
                                     .onFontFamily(fontFamily: fontFamilyEN)
-                                    .onFontSize(resources.dimen.dp12),
+                                    .onFontSize(resources.fontSize.dp12),
                               ),
                             ]),
                       ),
@@ -167,7 +167,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                             .textFontWeight400
                                                             .onFontSize(
                                                                 resources
-                                                                    .dimen.dp13)
+                                                                    .fontSize
+                                                                    .dp13)
                                                             .copyWith(
                                                                 height: 2),
                                                       ),
@@ -181,7 +182,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                         style: context
                                                             .textFontWeight600
                                                             .onFontSize(
-                                                                resources.dimen
+                                                                resources
+                                                                    .fontSize
                                                                     .dp13),
                                                       ),
                                                     ),
@@ -225,7 +227,9 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                 context.string.approve,
                                                 style: context.textFontWeight400
                                                     .onFontSize(context
-                                                        .resources.dimen.dp15)
+                                                        .resources
+                                                        .fontSize
+                                                        .dp15)
                                                     .onColor(context.resources
                                                         .color.colorWhite)
                                                     .copyWith(height: 1),
@@ -276,7 +280,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                           .textFontWeight400
                                                           .onFontSize(context
                                                               .resources
-                                                              .dimen
+                                                              .fontSize
                                                               .dp15)
                                                           .onColor(context
                                                               .resources
@@ -338,7 +342,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                           .textFontWeight400
                                                           .onFontSize(context
                                                               .resources
-                                                              .dimen
+                                                              .fontSize
                                                               .dp15)
                                                           .onColor(context
                                                               .resources

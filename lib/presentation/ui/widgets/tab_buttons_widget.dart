@@ -56,7 +56,7 @@ class TabsButtonsWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: context.textFontWeight400
                             .onColor(context.resources.color.colorWhite)
-                            .onFontSize(context.resources.dimen.dp15),
+                            .onFontSize(context.resources.fontSize.dp15),
                       ),
                     ),
                   ),

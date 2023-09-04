@@ -54,12 +54,12 @@ class AboutMalomati extends StatelessWidget {
                         text: TextSpan(
                             text: '${context.string.version}: ',
                             style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp11),
+                                .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
                               text: '1.0',
                               style: context.textFontWeight600
-                                  .onFontSize(context.resources.dimen.dp11)
+                                  .onFontSize(context.resources.fontSize.dp11)
                                   .onFontFamily(fontFamily: fontFamilyEN))
                         ])),
                     SizedBox(
@@ -69,12 +69,12 @@ class AboutMalomati extends StatelessWidget {
                         text: TextSpan(
                             text: '${context.string.lastUpdateText}: ',
                             style: context.textFontWeight400
-                                .onFontSize(context.resources.dimen.dp11),
+                                .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
                             text: '28 ',
                             style: context.textFontWeight400
-                                .onFontSize(context.resources.dimen.dp11)
+                                .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),
                           ),
                           TextSpan(
@@ -83,12 +83,12 @@ class AboutMalomati extends StatelessWidget {
                                 : getArabicMonthName(
                                     getCurrentDateByformat('MMMM')),
                             style: context.textFontWeight400
-                                .onFontSize(context.resources.dimen.dp11),
+                                .onFontSize(context.resources.fontSize.dp11),
                           ),
                           TextSpan(
                             text: ' 2023',
                             style: context.textFontWeight400
-                                .onFontSize(context.resources.dimen.dp11)
+                                .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),
                           )
                         ])),
@@ -98,7 +98,7 @@ class AboutMalomati extends StatelessWidget {
                     Text(
                       context.string.developedBy,
                       style: context.textFontWeight400
-                          .onFontSize(context.resources.dimen.dp11),
+                          .onFontSize(context.resources.fontSize.dp11),
                     ),
                     SizedBox(
                       height: context.resources.dimen.dp40,

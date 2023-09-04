@@ -46,7 +46,8 @@ class ItemRequestsList extends StatelessWidget {
                                 'Annual leave \nRequested on : 23/2/2023, 08:52AM',
                                 style: context.textFontWeight400
                                     .onColor(context.resources.color.textColor)
-                                    .onFontSize(context.resources.dimen.dp12),
+                                    .onFontSize(
+                                        context.resources.fontSize.dp12),
                               ),
                             ),
                             ImageWidget(
@@ -69,7 +70,8 @@ class ItemRequestsList extends StatelessWidget {
                                 style: context.textFontWeight600
                                     .onColor(
                                         context.resources.color.textColor212B4B)
-                                    .onFontSize(context.resources.dimen.dp12),
+                                    .onFontSize(
+                                        context.resources.fontSize.dp12),
                               ),
                               SizedBox(
                                 height: context.resources.dimen.dp5,
@@ -79,7 +81,8 @@ class ItemRequestsList extends StatelessWidget {
                                 style: context.textFontWeight600
                                     .onColor(
                                         context.resources.color.textColor212B4B)
-                                    .onFontSize(context.resources.dimen.dp12),
+                                    .onFontSize(
+                                        context.resources.fontSize.dp12),
                               ),
                               SizedBox(
                                 height: context.resources.dimen.dp8,
@@ -103,16 +106,21 @@ class ItemRequestsList extends StatelessWidget {
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
-                                            context.resources.dimen.dp11),
+                                            context.resources.fontSize.dp11),
                                   ),
-                                  const Spacer(),
-                                  Text(
-                                    '24/02/2023, 08:32 AM',
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.dimen.dp11),
+                                  SizedBox(
+                                    width: context.resources.dimen.dp10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '24/02/2023, 08:32 AM',
+                                      textAlign: TextAlign.right,
+                                      style: context.textFontWeight400
+                                          .onColor(context
+                                              .resources.color.textColor212B4B)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp11),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -138,16 +146,21 @@ class ItemRequestsList extends StatelessWidget {
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
-                                            context.resources.dimen.dp11),
+                                            context.resources.fontSize.dp11),
                                   ),
-                                  const Spacer(),
-                                  Text(
-                                    '24/02/2023, 08:32 AM',
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.dimen.dp11),
+                                  SizedBox(
+                                    width: context.resources.dimen.dp10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '24/02/2023, 08:32 AM',
+                                      textAlign: TextAlign.right,
+                                      style: context.textFontWeight400
+                                          .onColor(context
+                                              .resources.color.textColor212B4B)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp11),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -173,16 +186,21 @@ class ItemRequestsList extends StatelessWidget {
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
-                                            context.resources.dimen.dp11),
+                                            context.resources.fontSize.dp11),
                                   ),
-                                  const Spacer(),
-                                  Text(
-                                    'pending',
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.dimen.dp11),
+                                  SizedBox(
+                                    width: context.resources.dimen.dp10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'pending',
+                                      textAlign: TextAlign.right,
+                                      style: context.textFontWeight400
+                                          .onColor(context
+                                              .resources.color.textColor212B4B)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp11),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -198,7 +216,7 @@ class ItemRequestsList extends StatelessWidget {
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
-                                            context.resources.dimen.dp11),
+                                            context.resources.fontSize.dp11),
                                   ),
                                   SizedBox(
                                     height: context.resources.dimen.dp6,
@@ -220,7 +238,7 @@ class ItemRequestsList extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.colorWhite)
                                           .onFontSize(
-                                              context.resources.dimen.dp10),
+                                              context.resources.fontSize.dp10),
                                     ),
                                   ),
                                 ],

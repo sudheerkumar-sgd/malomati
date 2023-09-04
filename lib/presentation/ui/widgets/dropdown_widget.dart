@@ -50,7 +50,7 @@ class DropDownWidget<T> extends StatelessWidget {
                     fontFamily: context.resources.isLocalEn
                         ? fontFamilyEN
                         : fontFamilyAR)
-                .onFontSize(context.resources.dimen.dp12),
+                .onFontSize(context.resources.fontSize.dp12),
           ),
         ),
         SizedBox(
@@ -84,7 +84,7 @@ class DropDownWidget<T> extends StatelessWidget {
                 hint: Text(
                   hintText,
                   style: context.textFontWeight400
-                      .onFontSize(context.resources.dimen.dp12)
+                      .onFontSize(context.resources.fontSize.dp12)
                       .onFontFamily(
                           fontFamily: context.resources.isLocalEn
                               ? fontFamilyEN
@@ -114,7 +114,7 @@ class DropDownWidget<T> extends StatelessWidget {
                             : context.resources.isLocalEn
                                 ? fontFamilyEN
                                 : fontFamilyAR)
-                    .onFontSize(context.resources.dimen.dp12),
+                    .onFontSize(context.resources.fontSize.dp12),
                 onChanged: (T? value) {
                   _onItemChanged.value = !_onItemChanged.value;
                   selectedValue = value;
@@ -123,16 +123,13 @@ class DropDownWidget<T> extends StatelessWidget {
                 items: list.map<DropdownMenuItem<T>>((T value) {
                   return DropdownMenuItem<T>(
                     value: value,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        overflow: TextOverflow.visible,
-                        value.toString(),
-                        style: context.textFontWeight400.onFontFamily(
-                            fontFamily: context.resources.isLocalEn
-                                ? fontFamilyEN
-                                : fontFamilyAR),
-                      ),
+                    child: Text(
+                      overflow: TextOverflow.clip,
+                      value.toString(),
+                      style: context.textFontWeight400.onFontFamily(
+                          fontFamily: context.resources.isLocalEn
+                              ? fontFamilyEN
+                              : fontFamilyAR),
                     ),
                   );
                 }).toList(),

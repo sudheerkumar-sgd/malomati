@@ -43,14 +43,14 @@ class CallConfirmationWidget extends StatelessWidget {
                       text: '${context.string.call} ',
                       style: context.textFontWeight400
                           .onColor(context.resources.color.colorBlue356DCE)
-                          .onFontSize(context.resources.dimen.dp20),
+                          .onFontSize(context.resources.fontSize.dp20),
                       children: [
                         TextSpan(
                           text: mobileNumber,
                           style: context.textFontWeight400
                               .onColor(context.resources.color.colorBlue356DCE)
                               .onFontFamily(fontFamily: fontFamilyEN)
-                              .onFontSize(context.resources.dimen.dp20),
+                              .onFontSize(context.resources.fontSize.dp20),
                         ),
                       ]),
                 ),
@@ -82,7 +82,7 @@ class CallConfirmationWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: context.textFontWeight600
                   .onColor(context.resources.color.colorBlue356DCE)
-                  .onFontSize(context.resources.dimen.dp20),
+                  .onFontSize(context.resources.fontSize.dp20),
             ),
           ),
         ),

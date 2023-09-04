@@ -23,7 +23,8 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
           children: [
             Text(
               context.string.returntext,
-              style: context.textFontWeight600.onFontSize(resources.dimen.dp17),
+              style:
+                  context.textFontWeight600.onFontSize(resources.fontSize.dp17),
             ),
             SizedBox(
               height: resources.dimen.dp10,
@@ -33,8 +34,8 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                   resources.isLocalEn ? Alignment.topLeft : Alignment.topRight,
               child: Text(
                 context.string.question,
-                style:
-                    context.textFontWeight400.onFontSize(resources.dimen.dp12),
+                style: context.textFontWeight400
+                    .onFontSize(resources.fontSize.dp12),
               ),
             ),
             SizedBox(
@@ -44,7 +45,7 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
               maxLines: 3,
               textController: controller,
               textStyle:
-                  context.textFontWeight400.onFontSize(resources.dimen.dp12),
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp12),
               fillColor: resources.color.colorLightBg,
               boarderRadius: resources.dimen.dp8,
             ).textInputFiled,
@@ -66,7 +67,7 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                 child: Text(
                   context.string.ok,
                   style: context.textFontWeight400
-                      .onFontSize(context.resources.dimen.dp15)
+                      .onFontSize(context.resources.fontSize.dp15)
                       .onColor(context.resources.color.colorWhite)
                       .copyWith(height: 1),
                   textAlign: TextAlign.center,

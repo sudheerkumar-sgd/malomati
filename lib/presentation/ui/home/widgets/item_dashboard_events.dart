@@ -76,7 +76,7 @@ class ItemDashboardEvent extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: context.textFontWeight400
                           .onColor(context.resources.color.colorWhite)
-                          .onFontSize(context.resources.dimen.dp11),
+                          .onFontSize(context.resources.fontSize.dp11),
                     ),
                   ),
                   Visibility(
@@ -90,7 +90,7 @@ class ItemDashboardEvent extends StatelessWidget {
                       _getWishText(context).toUpperCase(),
                       style: context.textFontWeight700
                           .onColor(context.resources.color.colorWhite)
-                          .onFontSize(context.resources.dimen.dp12)),
+                          .onFontSize(context.resources.fontSize.dp12)),
                   SizedBox(
                     height: context.resources.dimen.dp5,
                   ),
@@ -107,7 +107,7 @@ class ItemDashboardEvent extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: context.textFontWeight900
                             .onColor(context.resources.color.colorWhite)
-                            .onFontSize(context.resources.dimen.dp12),
+                            .onFontSize(context.resources.fontSize.dp12),
                       ),
                     ),
                   ),

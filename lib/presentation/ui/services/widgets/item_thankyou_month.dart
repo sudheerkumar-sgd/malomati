@@ -35,7 +35,7 @@ class ItemThankyouMonth extends StatelessWidget {
                     '${data['month']}\n${data['year']}',
                     textAlign: TextAlign.center,
                     style: context.textFontWeight400
-                        .onFontSize(context.resources.dimen.dp15)
+                        .onFontSize(context.resources.fontSize.dp15)
                         .onFontFamily(fontFamily: fontFamilyEN)
                         .onColor(value == data['index']
                             ? context.resources.color.colorWhite

@@ -303,7 +303,7 @@ class OvertimeScreen extends StatelessWidget {
                             Text(
                               context.string.upload,
                               style: context.textFontWeight400
-                                  .onFontSize(context.resources.dimen.dp12),
+                                  .onFontSize(context.resources.fontSize.dp12),
                             ),
                             SizedBox(
                               height: context.resources.dimen.dp10,
@@ -362,7 +362,7 @@ class OvertimeScreen extends StatelessWidget {
                                                               .onFontSize(
                                                                   context
                                                                       .resources
-                                                                      .dimen
+                                                                      .fontSize
                                                                       .dp12)
                                                               .onColor(context
                                                                   .resources

@@ -21,25 +21,25 @@ extension TextStyleHelper on BuildContext {
   //Custom styles
   TextStyle get textFontWeight400 => TextStyle(
         color: resources.color.textColor,
-        fontSize: 14,
+        fontSize: resources.fontSize.dp14,
         fontWeight: FontWeight.w400,
         fontStyle: FontStyle.normal,
       );
   TextStyle get textFontWeight600 => TextStyle(
         color: resources.color.textColor,
-        fontSize: 14,
+        fontSize: resources.fontSize.dp14,
         fontWeight: FontWeight.w600,
         fontStyle: FontStyle.normal,
       );
   TextStyle get textFontWeight700 => TextStyle(
         color: resources.color.textColor,
-        fontSize: 14,
+        fontSize: resources.fontSize.dp14,
         fontWeight: FontWeight.w700,
         fontStyle: FontStyle.normal,
       );
   TextStyle get textFontWeight900 => TextStyle(
         color: resources.color.textColor,
-        fontSize: 14,
+        fontSize: resources.fontSize.dp14,
         fontWeight: FontWeight.w900,
         fontStyle: FontStyle.normal,
       );

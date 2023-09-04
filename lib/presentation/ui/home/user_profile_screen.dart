@@ -65,7 +65,7 @@ class UserProfileScreen extends StatelessWidget {
                                             resources.isLocalEn) ??
                                         '',
                                     style: context.textFontWeight600
-                                        .onFontSize(resources.dimen.dp17)
+                                        .onFontSize(resources.fontSize.dp17)
                                         .onColor(resources.color.colorWhite),
                                   ),
                                   SizedBox(
@@ -74,7 +74,7 @@ class UserProfileScreen extends StatelessWidget {
                                   Text(
                                     '${context.string.employeeID}: ${profileEntity?.EMPLOYEE_NUMBER ?? ''}',
                                     style: context.textFontWeight400
-                                        .onFontSize(resources.dimen.dp14)
+                                        .onFontSize(resources.fontSize.dp14)
                                         .onColor(resources.color.colorWhite),
                                   ),
                                   SizedBox(
@@ -83,7 +83,7 @@ class UserProfileScreen extends StatelessWidget {
                                   Text(
                                     '${context.string.designation}: ${profileEntity?.getJobName(resources.isLocalEn)}',
                                     style: context.textFontWeight400
-                                        .onFontSize(resources.dimen.dp14)
+                                        .onFontSize(resources.fontSize.dp14)
                                         .onColor(resources.color.colorWhite),
                                   ),
                                   SizedBox(
@@ -92,7 +92,7 @@ class UserProfileScreen extends StatelessWidget {
                                   Text(
                                     '${context.string.emailID}: ${profileEntity?.EMAIL_ADDRESS}',
                                     style: context.textFontWeight400
-                                        .onFontSize(resources.dimen.dp14)
+                                        .onFontSize(resources.fontSize.dp14)
                                         .onColor(resources.color.colorWhite),
                                   ),
                                 ],
@@ -113,7 +113,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.departmentName,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -126,7 +126,7 @@ class UserProfileScreen extends StatelessWidget {
                                                 '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -152,7 +152,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.maritalStatus,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -165,7 +165,7 @@ class UserProfileScreen extends StatelessWidget {
                                                 '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -191,7 +191,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.dob,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -202,7 +202,7 @@ class UserProfileScreen extends StatelessWidget {
                                             profileEntity?.DATE_OF_BIRTH ?? '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -228,7 +228,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.mobile,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -239,7 +239,7 @@ class UserProfileScreen extends StatelessWidget {
                                             profileEntity?.PHONE_NUMBER ?? '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -266,7 +266,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.joiningDate,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -277,7 +277,7 @@ class UserProfileScreen extends StatelessWidget {
                                             profileEntity?.HIRE_DATE ?? '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -303,7 +303,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.managerName,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -316,7 +316,7 @@ class UserProfileScreen extends StatelessWidget {
                                                 '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -342,7 +342,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.yearOfService,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -354,7 +354,7 @@ class UserProfileScreen extends StatelessWidget {
                                                 '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -380,7 +380,7 @@ class UserProfileScreen extends StatelessWidget {
                                             context.string.basicSalary,
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -391,7 +391,7 @@ class UserProfileScreen extends StatelessWidget {
                                             profileEntity?.BASIC_SALARY ?? '',
                                             style: context.textFontWeight400
                                                 .onFontSize(
-                                                    resources.dimen.dp13)
+                                                    resources.fontSize.dp13)
                                                 .onColor(resources
                                                     .color.textColor212B4B),
                                           ),
@@ -433,7 +433,8 @@ class UserProfileScreen extends StatelessWidget {
                                   context.string.logout,
                                   style: context.textFontWeight400
                                       .onColor(resources.color.colorWhite)
-                                      .onFontSize(context.resources.dimen.dp17),
+                                      .onFontSize(
+                                          context.resources.fontSize.dp17),
                                 ),
                               ),
                             ),
@@ -450,7 +451,7 @@ class UserProfileScreen extends StatelessWidget {
                             state.message,
                             textAlign: TextAlign.center,
                             style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                         ),
                       );
@@ -461,7 +462,7 @@ class UserProfileScreen extends StatelessWidget {
                             '',
                             textAlign: TextAlign.center,
                             style: context.textFontWeight600
-                                .onFontSize(context.resources.dimen.dp15),
+                                .onFontSize(context.resources.fontSize.dp15),
                           ),
                         ),
                       );

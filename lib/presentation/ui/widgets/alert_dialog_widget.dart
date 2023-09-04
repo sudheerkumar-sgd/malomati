@@ -44,7 +44,7 @@ class AlertDialogWidget extends StatelessWidget {
                       : context.string.sorry)
                   : title,
               style: context.textFontWeight600
-                  .onFontSize(context.resources.dimen.dp17),
+                  .onFontSize(context.resources.fontSize.dp17),
             ),
             SizedBox(
               height: context.resources.dimen.dp20,
@@ -53,7 +53,7 @@ class AlertDialogWidget extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: context.textFontWeight400
-                  .onFontSize(context.resources.dimen.dp12),
+                  .onFontSize(context.resources.fontSize.dp12),
             ),
             SizedBox(
               height: context.resources.dimen.dp25,
@@ -73,7 +73,7 @@ class AlertDialogWidget extends StatelessWidget {
                 child: Text(
                   context.string.close,
                   style: context.textFontWeight400
-                      .onFontSize(context.resources.dimen.dp15)
+                      .onFontSize(context.resources.fontSize.dp15)
                       .onColor(context.resources.color.colorWhite)
                       .copyWith(height: 1),
                   textAlign: TextAlign.center,

@@ -234,7 +234,7 @@ class ThankyouScreen extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.colorWhite)
                                           .onFontSize(
-                                              context.resources.dimen.dp15),
+                                              context.resources.fontSize.dp15),
                                     ),
                                   ),
                                 ),
@@ -274,7 +274,7 @@ class ThankyouScreen extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.colorWhite)
                                           .onFontSize(
-                                              context.resources.dimen.dp15),
+                                              context.resources.fontSize.dp15),
                                     ),
                                   ),
                                 ),
@@ -314,7 +314,7 @@ class ThankyouScreen extends StatelessWidget {
                                           .onColor(context
                                               .resources.color.colorWhite)
                                           .onFontSize(
-                                              context.resources.dimen.dp15),
+                                              context.resources.fontSize.dp15),
                                     ),
                                   ),
                                 ),

@@ -13,6 +13,7 @@ class UserAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resources = context.resources;
     return Row(
       children: [
         Expanded(
@@ -29,7 +30,7 @@ class UserAppBarWidget extends StatelessWidget {
                 overflow: TextOverflow.clip,
                 style: context.textFontWeight600
                     .onColor(context.resources.color.viewBgColor)
-                    .onFontSize(context.resources.dimen.dp17),
+                    .onFontSize(context.resources.fontSize.dp17),
               )
             ],
           ),
