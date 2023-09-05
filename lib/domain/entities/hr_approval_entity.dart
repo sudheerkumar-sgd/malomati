@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:malomati/domain/entities/attachment_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 
 class HrApprovalEntity extends BaseEntity {
@@ -13,6 +14,7 @@ class HrApprovalEntity extends BaseEntity {
   String? nOTIFICATIONTYPE;
   String? fNAME;
   String? fVALUE;
+  List<AttachmentEntity>? attachments;
 
   HrApprovalEntity();
 

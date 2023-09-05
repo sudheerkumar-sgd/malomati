@@ -10,6 +10,7 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mime/mime.dart';
 
 Future<void> openMapsSheet(
     BuildContext context, String title, double lat, double lang) async {
@@ -185,4 +186,16 @@ logout(BuildContext context) {
   context.userDB.delete(isMaangerKey);
   context.userDB.delete(favoriteKey);
   Phoenix.rebirth(context);
+}
+
+bool isImage(String path) {
+  final mimeType = lookupMimeType(path);
+
+  return mimeType?.startsWith('image/') ?? false;
+}
+
+bool isPdf(String path) {
+  final mimeType = lookupMimeType(path);
+
+  return mimeType?.startsWith('application/pdf') ?? false;
 }

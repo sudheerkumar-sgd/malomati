@@ -8,6 +8,7 @@ import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
 import '../../../core/error/failures.dart';
+import '../../../domain/entities/hrapproval_details_entity.dart';
 import '../../../domain/entities/leave_submit_response_entity.dart';
 
 part 'services_state.dart';
@@ -90,7 +91,7 @@ class ServicesBloc extends Cubit<ServicesState> {
     final result = await servicesUseCase.getHrApprovalDetails(
         requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
-        (r) => OnHrApprovalsListSuccess(hrApprovalsList: r)));
+        (r) => OnHrApprovalsDetailsSuccess(hrApprovalDetails: r)));
   }
 
   Future<void> submitHrApproval(

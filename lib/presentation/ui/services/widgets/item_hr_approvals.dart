@@ -4,6 +4,7 @@ import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
 import 'package:malomati/presentation/ui/services/widgets/dialog_request_answer_more_info.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
@@ -11,6 +12,7 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
+import 'item_list_attachment.dart';
 
 const APPROVE = 'APPROVE';
 const REJECT = 'REJECT';
@@ -29,8 +31,8 @@ class ItemHRApprovals extends StatefulWidget {
 class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<HrApprovalEntity>> _notificationDetails =
-      ValueNotifier([]);
+  final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
+      ValueNotifier(HrapprovalDetailsEntity());
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
@@ -67,8 +69,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
             .roundedCornerBox,
         child: BlocListener<ServicesBloc, ServicesState>(
           listener: (context, state) {
-            if (state is OnHrApprovalsListSuccess) {
-              _notificationDetails.value = state.hrApprovalsList;
+            if (state is OnHrApprovalsDetailsSuccess) {
+              _notificationDetails.value = state.hrApprovalDetails;
             }
           },
           child: Column(
@@ -125,7 +127,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                       child: ValueListenableBuilder(
                           valueListenable: _notificationDetails,
                           builder: (context, notificationDetails, child) {
-                            return notificationDetails.isEmpty
+                            return notificationDetails
+                                    .notificationDetails.isEmpty
                                 ? Container(
                                     margin: EdgeInsets.only(
                                         top: resources.dimen.dp20),
@@ -145,52 +148,67 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                           height: resources.dimen.dp20,
                                         ),
                                         Text(
-                                          '${notificationDetails[0].fVALUE ?? ''} - ${notificationDetails[1].fVALUE ?? ''}',
+                                          '${notificationDetails.notificationDetails[0].fVALUE ?? ''} - ${notificationDetails.notificationDetails[1].fVALUE ?? ''}',
                                           style: context.textFontWeight700,
                                         ),
                                         SizedBox(
                                           height: resources.dimen.dp10,
                                         ),
                                         Column(
-                                            children: List.generate(
-                                          notificationDetails.length,
-                                          (index) => index > 1
-                                              ? Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        notificationDetails[
-                                                                    index]
-                                                                .fNAME ??
-                                                            '',
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp13)
-                                                            .copyWith(
-                                                                height: 2),
+                                          children: List.generate(
+                                            notificationDetails
+                                                .notificationDetails.length,
+                                            (index) => index > 1
+                                                ? Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          notificationDetails
+                                                                  .notificationDetails[
+                                                                      index]
+                                                                  .fNAME ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp13)
+                                                              .copyWith(
+                                                                  height: 2),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Text(
-                                                        notificationDetails[
-                                                                    index]
-                                                                .fVALUE ??
-                                                            '',
-                                                        style: context
-                                                            .textFontWeight600
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp13),
+                                                      Expanded(
+                                                        child: Text(
+                                                          notificationDetails
+                                                                  .notificationDetails[
+                                                                      index]
+                                                                  .fVALUE ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight600
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp13),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : const SizedBox(),
-                                        )),
+                                                    ],
+                                                  )
+                                                : const SizedBox(),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: resources.dimen.dp20,
+                                        ),
+                                        Column(
+                                          children: List.generate(
+                                              notificationDetails
+                                                  .attachements.length,
+                                              (index) => ItemListAttachment(
+                                                  data: notificationDetails
+                                                      .attachements[index])),
+                                        ),
                                         if (widget.data.nOTIFICATIONTYPE
                                                 ?.toLowerCase() !=
                                             'fyi') ...{

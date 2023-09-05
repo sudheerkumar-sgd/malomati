@@ -159,7 +159,7 @@ class LeavesScreen extends StatelessWidget {
 
   Future<void> _selectFile(BuildContext context) async {
     FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.media);
+        await FilePicker.platform.pickFiles(type: FileType.any);
 
     if (result != null) {
       final fileName = result.files.single.name;

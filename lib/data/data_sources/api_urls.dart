@@ -30,12 +30,11 @@ const String overtimeApiUrl = 'UAQSGD_MOB_ERP_OvertimeRequest/OvertimeRequest';
 const String leavesApiUrl =
     'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary/LeaveDetails';
 const String employeesByManagerApiUrl = 'UAQSGD_MOB_ERP_GetMyTeam/GetMyTeam';
-const String hrApprovalListApiUrl =
-    'UAQSGD_MOB_ERP_FinAndHRApprovals/Approvals';
+const String hrApprovalListApiUrl = 'UAQSGD_MOB_ERP_HRApprovals/Approvals';
 const String hrApprovalDetailsApiUrl =
-    'UAQSGD_MOB_ERP_FinAndHRApprovals/Approvals/NotificationDtls';
+    'UAQSGD_MOB_ERP_HRApprovals/Approvals/NotificationDtls';
 const String submitHrApprovalApiUrl =
-    'UAQSGD_MOB_ERP_FinAndHRApprovals/Approvals/NotificationAction';
+    'UAQSGD_MOB_ERP_HRApprovals/Approvals/NotificationAction';
 const String thankYouReceivedApiUrl =
     'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouReceived';
 const String thankYouGrantedApiUrl =

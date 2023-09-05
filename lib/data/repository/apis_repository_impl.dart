@@ -25,6 +25,7 @@ import 'package:malomati/domain/entities/thankyou_entity.dart';
 import '../../config/constant_config.dart';
 import '../../core/network/network_info.dart';
 import '../../domain/entities/attendance_list_entity.dart';
+import '../../domain/entities/hrapproval_details_entity.dart';
 import '../../domain/repository/apis_repository.dart';
 import '../../injection_container.dart';
 
@@ -286,7 +287,7 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalDetails(
+  Future<Either<Failure, HrapprovalDetailsEntity>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {

@@ -80,4 +80,5 @@ class DrawableAssets {
   static const icFontBig = '${drawablePath}ic_font_big.svg';
   static const icGovUAQ = '${drawablePath}ic_gov_uaq.svg';
   static const icSmartUAQ = '${drawablePath}ic_smart_uaq.svg';
+  static const icAttachment = '${drawablePath}ic_attachment.svg';
 }

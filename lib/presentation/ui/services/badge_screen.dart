@@ -46,9 +46,8 @@ class BadgeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    empNumberController.text = context.userDB.get(
-        resources.isLocalEn ? userJobIdEnKey : userJobIdArKey,
-        defaultValue: '');
+    empNumberController.text =
+        context.userDB.get(userJobIdEnKey, defaultValue: '');
     nationalityController.text = context.userDB.get(
         isLocalEn ? userNationalityEnKey : userNationalityArKey,
         defaultValue: '');
@@ -114,6 +113,7 @@ class BadgeScreen extends StatelessWidget {
                               height: resources.dimen.dp27,
                               labelText: context.string.employeeNumber,
                               textController: empNumberController,
+                              fontFamily: fontFamilyEN,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

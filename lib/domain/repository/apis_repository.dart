@@ -10,6 +10,7 @@ import 'package:malomati/domain/entities/profile_entity.dart';
 
 import '../../core/error/failures.dart';
 import '../entities/attendance_list_entity.dart';
+import '../entities/hrapproval_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
 import '../entities/thankyou_entity.dart';
@@ -45,7 +46,7 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalsList(
       {required Map<String, dynamic> requestParams});
-  Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalDetails(
+  Future<Either<Failure, HrapprovalDetailsEntity>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity>> submitHrApproval(
       {required Map<String, dynamic> requestParams});

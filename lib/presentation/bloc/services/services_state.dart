@@ -49,6 +49,12 @@ class OnHrApprovalsListSuccess extends ServicesState {
   OnHrApprovalsListSuccess({required this.hrApprovalsList});
 }
 
+class OnHrApprovalsDetailsSuccess extends ServicesState {
+  final HrapprovalDetailsEntity hrApprovalDetails;
+
+  OnHrApprovalsDetailsSuccess({required this.hrApprovalDetails});
+}
+
 class OnsubmitHrApprovalSuccess extends ServicesState {
   final ApiEntity apiEntity;
 

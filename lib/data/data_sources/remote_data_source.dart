@@ -10,12 +10,14 @@ import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
 import 'package:malomati/data/model/hr_approval_model.dart';
+import 'package:malomati/data/model/hrapproval_details_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
@@ -53,7 +55,7 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<List<HrApprovalEntity>> getHrApprovalsList(
       {required Map<String, dynamic> requestParams});
-  Future<List<HrApprovalEntity>> getHrApprovalDetails(
+  Future<HrapprovalDetailsEntity> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
   Future<ApiEntity> submitHrApproval(
       {required Map<String, dynamic> requestParams});
@@ -408,7 +410,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<HrApprovalEntity>> getHrApprovalDetails(
+  Future<HrapprovalDetailsEntity> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.get(
@@ -418,17 +420,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         queryParameters: requestParams,
       );
-      if (response.data?['NotificationDetails'] != null) {
-        var hrApprovalsJson = response.data['NotificationDetails'] as List;
-        var hrApprovalList = hrApprovalsJson
-            .map((hrApprovalJson) =>
-                HrApprovalModel.fromJsonDetails(hrApprovalJson)
-                    .toHrApprovalDetailsEntity())
-            .toList();
-        return hrApprovalList;
-      } else {
-        return [];
-      }
+      var apiResponse = HrApprovalDetailsModel.fromJson(response.data)
+          .toHrapprovalDetailsEntity();
+      return apiResponse;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

@@ -8,6 +8,7 @@ import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
+import '../entities/hrapproval_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
 
 class ServicesUseCase extends BaseUseCase {
@@ -56,7 +57,7 @@ class ServicesUseCase extends BaseUseCase {
         requestParams: requestParams);
   }
 
-  Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalDetails(
+  Future<Either<Failure, HrapprovalDetailsEntity>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getHrApprovalDetails(
         requestParams: requestParams);

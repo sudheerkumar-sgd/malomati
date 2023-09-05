@@ -69,7 +69,7 @@ class ConstantConfig {
         iconPath: DrawableAssets.icHrApprovals),
     FavoriteEntity(
         name: 'Finance Approvals',
-        nameAR: 'الموافقات المالية',
+        nameAR: 'موافقات المالية',
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),

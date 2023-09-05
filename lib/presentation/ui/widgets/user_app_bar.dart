@@ -13,7 +13,6 @@ class UserAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resources = context.resources;
     return Row(
       children: [
         Expanded(

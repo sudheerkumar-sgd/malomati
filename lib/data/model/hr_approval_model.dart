@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:malomati/data/model/attachment_model.dart';
 import 'package:malomati/data/model/base_model.dart';
+import 'package:malomati/domain/entities/attachment_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
-
-import '../../domain/entities/department_entity.dart';
 import '../../domain/entities/hr_approval_entity.dart';
 
 class HrApprovalModel extends BaseModel {
@@ -17,27 +17,36 @@ class HrApprovalModel extends BaseModel {
   String? nOTIFICATIONTYPE;
   String? fNAME;
   String? fVALUE;
+  List<AttachmentEntity>? attachments;
 
   HrApprovalModel();
 
   factory HrApprovalModel.fromJson(Map<String, dynamic> json) {
-    var departmentModel = HrApprovalModel();
-    departmentModel.nOTIFICATIONID = '${json['NOTIFICATION_ID']}';
-    departmentModel.fROMUSER = '${json['FROM_USER']}';
-    departmentModel.sUBJECTAR = '${json['SUBJECT_AR']}';
-    departmentModel.sUBJECTUS = '${json['SUBJECT_US']}';
-    departmentModel.bEGINDATE = '${json['BEGIN_DATE']}';
-    departmentModel.bEGINDATECHAR = '${json['BEGIN_DATE_CHAR']}';
-    departmentModel.dUEDATECHAR = '${json['DUE_DATE_CHAR']}';
-    departmentModel.nOTIFICATIONTYPE = '${json['NOTIFICATION_TYPE']}';
-    return departmentModel;
+    var hrApprovalModel = HrApprovalModel();
+    hrApprovalModel.nOTIFICATIONID = '${json['NOTIFICATION_ID']}';
+    hrApprovalModel.fROMUSER = '${json['FROM_USER']}';
+    hrApprovalModel.sUBJECTAR = '${json['SUBJECT_AR']}';
+    hrApprovalModel.sUBJECTUS = '${json['SUBJECT_US']}';
+    hrApprovalModel.bEGINDATE = '${json['BEGIN_DATE']}';
+    hrApprovalModel.bEGINDATECHAR = '${json['BEGIN_DATE_CHAR']}';
+    hrApprovalModel.dUEDATECHAR = '${json['DUE_DATE_CHAR']}';
+    hrApprovalModel.nOTIFICATIONTYPE = '${json['NOTIFICATION_TYPE']}';
+    return hrApprovalModel;
   }
 
   factory HrApprovalModel.fromJsonDetails(Map<String, dynamic> json) {
-    var departmentModel = HrApprovalModel();
-    departmentModel.fNAME = '${json['F_NAME']}';
-    departmentModel.fVALUE = '${json['F_VALUE']}';
-    return departmentModel;
+    var hrApprovalModel = HrApprovalModel();
+    hrApprovalModel.fNAME = '${json['F_NAME']}';
+    hrApprovalModel.fVALUE = '${json['F_VALUE']}';
+    if (json['AttachmentList'] != null) {
+      final attachmentsListJson = json['AttachmentList'] as List;
+      final attachmentsList = attachmentsListJson
+          .map((attachmentJson) =>
+              AttachmentModel.fromJson(attachmentJson).toAttachmentEntity())
+          .toList();
+      hrApprovalModel.attachments = attachmentsList;
+    }
+    return hrApprovalModel;
   }
 
   @override
@@ -50,7 +59,7 @@ class HrApprovalModel extends BaseModel {
 
   @override
   BaseEntity toEntity<T>() {
-    return DepartmentEntity();
+    return HrApprovalEntity();
   }
 }
 
@@ -72,6 +81,7 @@ extension SourceModelExtension on HrApprovalModel {
     final hrApprovalEntity = HrApprovalEntity();
     hrApprovalEntity.fNAME = fNAME;
     hrApprovalEntity.fVALUE = fVALUE;
+    hrApprovalEntity.attachments = attachments;
     return hrApprovalEntity;
   }
 }
