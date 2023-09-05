@@ -216,21 +216,21 @@ class ArPrivacyPolicy extends StatelessWidget {
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Cookies\n\n',
+              text: '• ملفات تعريف الارتباط (الكوكيز)\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  'We use cookies to distinguish you from other users of Malomati, the App Site or the Service Site. This helps us to provide you with a good experience when you use Smart Employee or browse any of the Sites and also allows us to improve Malomati and Our sites.\n\n',
+                  'نستخدم ملفات تعريف الارتباط لكي نميزك عن باقي مستخدمي برنامج الخدمة الذاتية للموظف عن طريق الهاتف المحمول (معلوماتي)وزوار موقع التطبيقات أو موقع الخدمات. وهذا يساعدنا على منحك تجربة جيدة عندما تقوم باستخدام برنامج الخدمة الذاتية للموظف عن طريق الهاتف المحمول (معلوماتي) أو عندما تقوم بتصفح أي من المواقع، كما يسمح لنا بتطوير برنامج الخدمة الذاتية للموظف عن طريق الهاتف المحمول (معلوماتي) ومواقعنا.\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Choice/Opt-Out\n\n',
+              text: 'اختيار/ إيقاف استلام الرسائل\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  'You may opt-out of receiving our marketing emails or SMS messages from us by contacting us at ',
+                  'يمكنك توقيف استلام رسائلنا القصيرة أو الالكترونية وذلك من خلال اتصالك بنا على البريد الالكتروني التالي:',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
@@ -248,88 +248,62 @@ class ArPrivacyPolicy extends StatelessWidget {
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Sharing Your Information\n\n',
+              text: 'مشاركة معلوماتك\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp15)),
           TextSpan(
               text:
-                  'We will share your information with third parties only in the ways that are described in this privacy policy.\n\n',
+                  'لن نقوم بمشاركة بياناتك الشخصية مع الغير إلا بالطرق المبينة في سياسة السرية هذه.\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  'We may provide your personal information to affiliates of UAQ Government and/or companies that provide services to help us with our business activities such as offering customer service. These third parties are authorized to use your personal information only as necessary to provide these Services to us.\n\n',
+                  'من الممكن أن نقوم بتقديم بياناتك الشخصية لبعض الجهات التابعة لام القيوين الذكية و/أو لبعض الشركات التي تقدم خدمات لمساعدتنا في أعمالنا مثل تقديم خدمة العملاء، حيث إن هؤلاء مخولون لاستخدام بياناتك الشخصية فقط في الحدود اللازمة لتزويدنا بتلك الخدمات.\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'We may disclose your personal information',
+              text: 'من الممكن أن نفصح عن بياناتك الشخصية',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  '\u2022  as required by law, such as to comply with a court order or any other legal process;\n',
+                  '• عندما يكون ذلك مطلوبا منا بموجب القانون، كالامتثال لقرار محكمة أو أي إجراء قانوني آخر.\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  '\u2022  when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request; and/or\n',
+                  '• عندما نعتقد، بحسن نية، أن الافصاح عن بياناتك الشخصية ضروري لحماية حقوقك و/أو للحفاظ على سلامتك أو سلامة أشخاص آخرين و/أو للتحقيق في قضية احتيال و/أو للاستجابة لطلب من الحكومة و/أو\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text:
-                  '\u2022 to any other third party with your prior consent to do so.\n\n',
+              text: '• لأي طرف من الغير عند موافقتك المسبقة على ذلك.\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Security\n\n',
-              style: context.textFontWeight700
-                  .onFontSize(context.resources.fontSize.dp15)),
-          TextSpan(
-              text:
-                  'The security of your personal information is important to us. We follow generally accepted industry standards to protect the personal information submitted to us, both during transmission and once we receive it.\n\n',
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)),
-          TextSpan(
-              text:
-                  'Unfortunately, the transmission of information via the internet is not completely secure. Although we will do our best to protect your personal data, we cannot guarantee the security of your data transmitted to Our Sites; any transmission is at your own risk. Once we have received your information, we will use strict procedures and security features to try to prevent unauthorised access.\n\n',
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)),
-          TextSpan(
-              text:
-                  'We will retain your information for as long as your account is active or as needed to provide you with Services. If you wish to cancel your account or request that we no longer use your information to provide you with Services please contact us at ',
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)),
-          TextSpan(
-              text: 'info@uaqgov.ae',
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  sendEmail(context, 'info@uaqgov.ae');
-                },
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)
-                  .onColor(Colors.blue)
-                  .copyWith(decoration: TextDecoration.underline)),
-          TextSpan(
-              text:
-                  '. We will retain and use your information as necessary to comply with our legal obligations, resolve disputes, and enforce our agreements.',
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)),
-          TextSpan(
-              text:
-                  'Where we have given you (or where you have chosen) a password that enables you to access certain parts of Our Sites, you are responsible for keeping this password confidential. We ask you not to share a password with anyone.\n\n',
-              style: context.textFontWeight400
-                  .onFontSize(context.resources.fontSize.dp12)),
-          TextSpan(
-              text: 'Other Information\n\n',
+              text: 'الحماية\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp15)),
           TextSpan(
-              text: 'Correcting and Updating Your Personal Information\n\n',
+              text:
+                  'إن حماية بياناتك الشخصية أمر مهم بالنسبة لنا، ونحن نتبع معايير معترف بها عالميا في حماية البيانات التي تقوم بتقديمها لنا سواء أثناء ارسالها أو عندما نتوصل بها.\n\n',
+              style: context.textFontWeight400
+                  .onFontSize(context.resources.fontSize.dp12)),
+          TextSpan(
+              text:
+                  'عندما نقدم لك (أو عندما تختار) رمزا سريا يسمح لك بالدخول إلى أجزاء من مواقعنا، فإنك تتحمل مسؤولية الحفاظ على سرية ذلك الرمز السري، كما نطلب منك عدم مشاركته مع أي شخص آخر.\n\n',
+              style: context.textFontWeight400
+                  .onFontSize(context.resources.fontSize.dp12)),
+          TextSpan(
+              text: 'معلومات أخرى\n\n',
+              style: context.textFontWeight700
+                  .onFontSize(context.resources.fontSize.dp15)),
+          TextSpan(
+              text: 'تصحيح وتحديث بياناتك الشخصية\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  'To review and update your personal information to ensure it is accurate, contact us at ',
+                  'للتحقق من صحة بياناتك الشخصية وتحديثها لضمان دقتها، رجاء مراسلتنا على البريد الالكتروني التالي:',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
@@ -347,29 +321,29 @@ class ArPrivacyPolicy extends StatelessWidget {
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Notification of Privacy Policy Changes\n\n',
+              text: 'الإشعار بالتعديلات على سياسة السرية\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
               text:
-                  'We may update this privacy policy to reflect changes to our information practices or any relevant statute, regulations and/or policy. We encourage you to periodically review this page for the latest information on our privacy practices.\n\n',
+                  'من الممكن أن نقوم بتحديث سياسة السرية هذه لإجراء تعديلات على إجراءاتنا الخاصة بالبيانات أو أي تشريع و/أو أنظمة و/أو سياسة، لذلك نحثك على مراجعة هذه الصفحة بانتظام للاطلاع على أحدث المعلومات عن الإجراءات التي نتبعها فيما يتعلق بالسرية.\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Contact\n\n',
+              text: 'اتصل بنا\n\n',
               style: context.textFontWeight700
                   .onFontSize(context.resources.fontSize.dp15)),
           TextSpan(
               text:
-                  'You can contact us about this privacy policy by writing or email us at the address below:\n\n',
+                  'يمكنك أن تتصل بنا بخصوص سياسة السرية هذه عن طريق رسالة خطية أو بريد الكتروني على العناوين المبينة أدناه:\n\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'UAQ  Government\n',
+              text: 'حكومة ام القيوين\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Telephone number: ',
+              text: 'الهاتف: ',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
@@ -386,7 +360,7 @@ class ArPrivacyPolicy extends StatelessWidget {
                   .onColor(const Color.fromARGB(255, 245, 103, 103))
                   .copyWith(decoration: TextDecoration.underline)),
           TextSpan(
-              text: 'Fax number: ',
+              text: 'الفاكس: ',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
@@ -403,11 +377,11 @@ class ArPrivacyPolicy extends StatelessWidget {
                   .onColor(const Color.fromARGB(255, 245, 103, 103))
                   .copyWith(decoration: TextDecoration.underline)),
           TextSpan(
-              text: 'PO Box 225, Umm Al Quwain, United Arab Emirates\n',
+              text: 'ص.ب:  225،  أم القيوين، الإمارات العربية المتحدة\n',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
-              text: 'Email: ',
+              text: 'البريد الالكتروني: ',
               style: context.textFontWeight400
                   .onFontSize(context.resources.fontSize.dp12)),
           TextSpan(
