@@ -4,17 +4,21 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/widgets/dialog_request_answer_more_info.dart';
+import 'package:malomati/presentation/ui/services/widgets/view_attachments_widget.dart';
+import 'package:malomati/presentation/ui/services/widgets/view_items_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
+import '../../../../data/data_sources/api_urls.dart';
 import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
-import 'item_list_attachment.dart';
+import '../../utils/dialogs.dart';
+import '../../widgets/alert_dialog_widget.dart';
 
 const APPROVE = 'APPROVE';
 const REJECT = 'REJECT';
@@ -23,7 +27,7 @@ const ANSWERMOREINFO = 'ANSWER_MORE_INFO';
 
 class ItemFinancePOApprovals extends StatefulWidget {
   final FinanceApprovalEntity data;
-  final Function(String) callBack;
+  final Function(String, BuildContext) callBack;
   const ItemFinancePOApprovals(
       {required this.data, required this.callBack, super.key});
 
@@ -34,8 +38,8 @@ class ItemFinancePOApprovals extends StatefulWidget {
 class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
   final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
-      ValueNotifier(HrapprovalDetailsEntity());
+  HrapprovalDetailsEntity? financeDetailsItems;
+  bool showItems = false;
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
@@ -47,8 +51,26 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
       "COMMENTS": comments ?? action
     };
     _servicesBloc.submitHrApproval(requestParams: requestParams);
-    widget.callBack(widget.data.nOTIFICATIONID?.toString() ?? '');
-    // Navigator.pop(context);
+  }
+
+  _showItemsOrAttachements(BuildContext context) {
+    if (financeDetailsItems == null) {
+      _servicesBloc.getFinanceItemDetailsList(
+          apiUrl: financePOItemsApiUrl,
+          requestParams: {'NOTIFICATION_ID': widget.data.nOTIFICATIONID});
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return showItems
+                ? ViewItemsWidget(
+                    type: FinanceApprovalType.po,
+                    data: financeDetailsItems?.financeNotificationDetails ?? [],
+                  )
+                : ViewAttachmentsWidget(
+                    data: financeDetailsItems?.attachements ?? []);
+          });
+    }
   }
 
   @override
@@ -56,12 +78,12 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
     super.dispose();
     _servicesBloc.close();
     _isExpanded.dispose();
-    _notificationDetails.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var resources = context.resources;
+    final approvalDetails = widget.data;
     return BlocProvider(
       create: (context) => _servicesBloc,
       child: Container(
@@ -72,8 +94,25 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
             .roundedCornerBox,
         child: BlocListener<ServicesBloc, ServicesState>(
           listener: (context, state) {
-            if (state is OnHrApprovalsDetailsSuccess) {
-              _notificationDetails.value = state.hrApprovalDetails;
+            if (state is OnServicesLoading) {
+              Dialogs.loader(context);
+            } else if (state is OnHrApprovalsDetailsSuccess) {
+              Navigator.of(context, rootNavigator: true).pop();
+              financeDetailsItems = state.hrApprovalDetails;
+              _showItemsOrAttachements(context);
+            } else if (state is OnsubmitHrApprovalSuccess) {
+              Navigator.of(context, rootNavigator: true).pop();
+              if (state.apiEntity.isSuccess ?? false) {
+                widget.callBack('${widget.data.nOTIFICATIONID ?? ''}', context);
+              } else {
+                Dialogs.showInfoDialog(context, PopupType.fail,
+                    state.apiEntity.getDisplayMessage(resources));
+              }
+            } else if (state is OnServicesError) {
+              Navigator.of(context, rootNavigator: true).pop();
+              Dialogs.showInfoDialog(context, PopupType.fail, state.message);
+            } else {
+              Navigator.of(context, rootNavigator: true).pop();
             }
           },
           child: Column(
@@ -81,11 +120,6 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
               InkWell(
                 onTap: () {
                   _isExpanded.value = !_isExpanded.value;
-                  _servicesBloc.getFinanceItemDetailsList(
-                      apiUrl: financePOItemsApiUrl,
-                      requestParams: {
-                        'NOTIFICATION_ID': widget.data.nOTIFICATIONID
-                      });
                 },
                 child: Row(
                   children: [
@@ -93,7 +127,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                       child: RichText(
                         text: TextSpan(
                             text:
-                                '${widget.data.sUPPLIERNAME}\n${widget.data.sUBJECT}\n',
+                                '${approvalDetails.sUPPLIERNAME}\n${approvalDetails.sUBJECT}\n',
                             style: context.textFontWeight400
                                 .onFontSize(resources.fontSize.dp12)
                                 .copyWith(height: 1.5),
@@ -107,7 +141,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                 text: getDateByformat(
                                     'dd/MM/yyyy, hh:mm a',
                                     getDateTimeByString('yyyy-MM-ddThh:mm:ss',
-                                        widget.data.sENT ?? '')),
+                                        approvalDetails.sENT ?? '')),
                                 style: context.textFontWeight400
                                     .onFontFamily(fontFamily: fontFamilyEN)
                                     .onFontSize(resources.fontSize.dp12),
@@ -143,21 +177,165 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                             ),
                             Text(
                               'Standard Purchase Order',
-                              style: context.textFontWeight700,
+                              style: context.textFontWeight600
+                                  .onFontSize(resources.fontSize.dp13),
                             ),
                             SizedBox(
                               height: resources.dimen.dp10,
                             ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
+                            Table(
+                              children: [
+                                TableRow(children: [
+                                  Text(
+                                    context.string.supplier,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13),
+                                  ),
+                                  Text(
+                                    approvalDetails.sUPPLIERNAME ?? '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Text(
+                                    context.string.buyer,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                  Text(
+                                    approvalDetails.fROMROLE ?? '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Text(
+                                    context.string.description,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                  Text(
+                                    approvalDetails.pODESCRIPTION ?? '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Text(
+                                    context.string.amount,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                  Text(
+                                    approvalDetails.tOTALAMOUNT ?? '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Text(
+                                    context.string.tax,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                  Text(
+                                    approvalDetails.tAXAMOUNT ?? '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  Text(
+                                    context.string.paymentTerms,
+                                    style: context.textFontWeight400
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                  Text(
+                                    '',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  InkWell(
+                                    onTap: () {
+                                      showItems = true;
+                                      _showItemsOrAttachements(context);
+                                    },
+                                    child: Container(
+                                      decoration: BackgroundBoxDecoration(
+                                              boxColor:
+                                                  resources.color.colorD6D6D6,
+                                              radious: resources.dimen.dp20)
+                                          .roundedCornerBox,
+                                      margin: EdgeInsets.only(
+                                        right: resources.dimen.dp5,
+                                        top: resources.dimen.dp25,
+                                      ),
+                                      padding:
+                                          EdgeInsets.all(resources.dimen.dp5),
+                                      child: Text(
+                                        context.string.viewItems,
+                                        textAlign: TextAlign.center,
+                                        style: context.textFontWeight400
+                                            .onFontSize(resources.fontSize.dp13)
+                                            .copyWith(
+                                              height: 1.1,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      showItems = false;
+                                      _showItemsOrAttachements(context);
+                                    },
+                                    child: Container(
+                                      decoration: BackgroundBoxDecoration(
+                                              boxColor:
+                                                  resources.color.colorD6D6D6,
+                                              radious: resources.dimen.dp20)
+                                          .roundedCornerBox,
+                                      padding:
+                                          EdgeInsets.all(resources.dimen.dp5),
+                                      margin: EdgeInsets.only(
+                                        right: resources.dimen.dp5,
+                                        top: resources.dimen.dp25,
+                                      ),
+                                      child: Text(
+                                        context.string.viewAttachments,
+                                        textAlign: TextAlign.center,
+                                        style: context.textFontWeight400
+                                            .onFontSize(resources.fontSize.dp13)
+                                            .copyWith(
+                                              height: 1.1,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ],
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
                             InkWell(
                               onTap: () {
-                                _submitHrApproval(context,
-                                    widget.data.nOTIFICATIONID ?? '', APPROVE);
+                                _submitHrApproval(
+                                    context,
+                                    '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                    APPROVE);
                               },
                               child: Container(
                                 width: double.infinity,
@@ -191,7 +369,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     onTap: () {
                                       _submitHrApproval(
                                           context,
-                                          widget.data.nOTIFICATIONID ?? '',
+                                          '${approvalDetails.nOTIFICATIONID ?? ''}',
                                           REJECT);
                                     },
                                     child: Container(
@@ -231,7 +409,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                                   DialogRequestAnswerMoreInfo())
                                           .then((value) => _submitHrApproval(
                                               context,
-                                              widget.data.nOTIFICATIONID ?? '',
+                                              '${approvalDetails.nOTIFICATIONID ?? ''}',
                                               REQUESTMOREINFO,
                                               comments: value));
                                     },

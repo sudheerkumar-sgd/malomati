@@ -6,6 +6,7 @@ import 'package:malomati/domain/entities/events_list_entity.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';
+import '../../../domain/entities/requests_count_entity.dart';
 import '../../../domain/use_case/home_usecase.dart';
 
 part 'home_state.dart';
@@ -56,6 +57,14 @@ class HomeBloc extends Cubit<HomeState> {
         userDB: userDB, favoriteEntity: favoriteEntity);
     emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
         (r) => OnFavoriteSuccess(favoriteEntity: r)));
+  }
+
+  Future<void> getRequestsCount(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await homeUseCase.getRequestsCount(requestParams: requestParams);
+    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {

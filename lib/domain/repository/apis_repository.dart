@@ -16,6 +16,7 @@ import '../entities/finance_approval_entity.dart';
 import '../entities/hrapproval_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
+import '../entities/requests_count_entity.dart';
 import '../entities/thankyou_entity.dart';
 
 abstract class ApisRepository {
@@ -63,4 +64,6 @@ abstract class ApisRepository {
       {required apiUrl, required Map<String, dynamic> requestParams});
   Future<Either<Failure, HrapprovalDetailsEntity>> getFinanceItemDetailsList(
       {required apiUrl, required Map<String, dynamic> requestParams});
+  Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
+      {required Map<String, dynamic> requestParams});
 }

@@ -12,11 +12,14 @@ class MyTeamScreen extends StatelessWidget {
   MyTeamScreen({super.key});
   late Resources resources;
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
-  List<String> buttons = [];
+  List<Map> buttons = [];
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
-    buttons = [context.string.attendanceRate, context.string.createAbsence];
+    buttons = [
+      {'name': context.string.attendanceRate},
+      {'name': context.string.createAbsence},
+    ];
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,

@@ -85,6 +85,12 @@ class OnThankyouListSuccess extends ServicesState {
   OnThankyouListSuccess({required this.thankYouList});
 }
 
+class OnRequestsCountSuccess extends ServicesState {
+  final RequestsCountEntity requestsCountEntity;
+
+  OnRequestsCountSuccess({required this.requestsCountEntity});
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

@@ -16,6 +16,7 @@ import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/payslip_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
+import 'package:malomati/data/model/requsts_count_model.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
@@ -29,6 +30,7 @@ import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
 import '../../domain/entities/employee_entity.dart';
+import '../../domain/entities/requests_count_entity.dart';
 import '../model/attendance_List_model.dart';
 import 'api_urls.dart';
 import 'dio_logging_interceptor.dart';
@@ -74,6 +76,8 @@ abstract class RemoteDataSource {
       {required apiUrl, required Map<String, dynamic> requestParams});
   Future<HrapprovalDetailsEntity> getFinanceItemDetailsList(
       {required apiUrl, required Map<String, dynamic> requestParams});
+  Future<RequestsCountEntity> getRequestsCount(
+      {required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -577,7 +581,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       {required apiUrl, required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.get(
-        hrApprovalDetailsApiUrl,
+        apiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
@@ -585,6 +589,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       );
       var apiResponse = HrApprovalDetailsModel.fromJson(response.data)
           .toHrapprovalDetailsEntity();
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RequestsCountEntity> getRequestsCount(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        requestsCountApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var apiResponse =
+          RequstsCountModel.fromJson(response.data).toRequstsCountEntity();
       return apiResponse;
     } on DioException catch (e) {
       printLog(message: e.toString());

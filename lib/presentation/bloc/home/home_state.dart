@@ -44,6 +44,15 @@ class OnFavoriteSuccess extends HomeState {
   List<Object?> get props => [favoriteEntity];
 }
 
+class OnRequestsCountSuccess extends HomeState {
+  final RequestsCountEntity requestsCountEntity;
+
+  OnRequestsCountSuccess({required this.requestsCountEntity});
+
+  @override
+  List<Object?> get props => [requestsCountEntity];
+}
+
 class OnApiError extends HomeState {
   final String message;
 

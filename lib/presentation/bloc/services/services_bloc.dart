@@ -5,6 +5,7 @@ import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
+import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
@@ -107,6 +108,7 @@ class ServicesBloc extends Cubit<ServicesState> {
 
   Future<void> getFinanceItemDetailsList(
       {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
     final result = await servicesUseCase.getFinanceItemDetailsList(
         apiUrl: apiUrl, requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
@@ -146,6 +148,14 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.getThankyouList(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnThankyouListSuccess(thankYouList: r)));
+  }
+
+  Future<void> getRequestsCount(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await servicesUseCase.getRequestsCount(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {

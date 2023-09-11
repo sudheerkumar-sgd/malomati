@@ -15,6 +15,12 @@ import '../utils/dialogs.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
+enum FinanceApprovalType {
+  po,
+  pr,
+  invoice;
+}
+
 class FinanceApprovalsScreen extends StatelessWidget {
   static const String route = '/FinanceApprovalsScreen';
   FinanceApprovalsScreen({super.key});
@@ -23,26 +29,33 @@ class FinanceApprovalsScreen extends StatelessWidget {
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
   final ValueNotifier<List<FinanceApprovalEntity>> _financeNotificationList =
       ValueNotifier([]);
-  List<String> buttons = [];
+  ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
   String userName = '';
-  _onActionClicked(String id) {
-    final list = _financeNotificationList.value;
-    final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
-    list.removeAt(index);
-    _financeNotificationList.value = [];
-    _financeNotificationList.value = list;
+  _onActionClicked(String id, BuildContext context) {
+    // final list = _notificationList.value;
+    // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
+    // list.removeAt(index);
+    // _notificationList.value = [];
+    // _notificationList.value = list;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => FinanceApprovalsScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
-    buttons = ['PO', 'PR', 'Invoice'];
+    _buttons.value = [
+      {'name': 'PO'},
+      {'name': 'PR'},
+      {'name': 'Invoice'}
+    ];
     var noNotificationText = '';
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    // Future.delayed(const Duration(milliseconds: 50), () {
-    //   _servicesBloc.getFinanceApprovalList(
-    //       apiUrl: financePOApiUrl, requestParams: {'USER_NAME': userName});
-    // });
+    Future.delayed(const Duration(milliseconds: 50), () {
+      _servicesBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
+    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -52,6 +65,15 @@ class FinanceApprovalsScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
+              } else if (state is OnRequestsCountSuccess) {
+                _buttons.value = [
+                  {'name': 'PO', 'count': state.requestsCountEntity.pOCOUNT},
+                  {'name': 'PR', 'count': state.requestsCountEntity.pRCOUNT},
+                  {
+                    'name': 'Invoice',
+                    'count': state.requestsCountEntity.iNVCOUNT
+                  }
+                ];
               } else if (state is OnFinanceApprovalsListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 noNotificationText = context.string.noHrRequests;
@@ -74,26 +96,29 @@ class FinanceApprovalsScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
-                  TabsButtonsWidget(
-                    buttons: buttons,
-                    selectedIndex: selectedButtonIndex,
-                  ),
+                  ValueListenableBuilder(
+                      valueListenable: _buttons,
+                      builder: (context, buttons, child) {
+                        return TabsButtonsWidget(
+                          buttons: buttons,
+                          selectedIndex: selectedButtonIndex,
+                        );
+                      }),
                   SizedBox(
                     height: context.resources.dimen.dp30,
                   ),
                   ValueListenableBuilder(
                       valueListenable: selectedButtonIndex,
                       builder: (context, value, widget) {
+                        noNotificationText = '';
+                        _financeNotificationList.value = [];
                         _servicesBloc.getFinanceApprovalList(
                             apiUrl: value == 0
                                 ? financePOApiUrl
                                 : value == 1
                                     ? financePRApiUrl
                                     : financeInvoiceApiUrl,
-                            requestParams: {
-                              'USER_NAME':
-                                  value == 1 ? 'AHMED.ALALI' : 'KHALIFA.SAEED'
-                            });
+                            requestParams: {'USER_NAME': userName});
                         return Expanded(
                           child: ValueListenableBuilder(
                               valueListenable: _financeNotificationList,

@@ -47,7 +47,9 @@ const String financeInvoiceItemsApiUrl =
     'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/INVItems';
 const String financePRApiUrl = 'UAQSGD_MOB_ERP_FinPRApprovals/Approvals/PR';
 const String financePRItemsApiUrl =
-    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/PRItems';
+    'UAQSGD_MOB_ERP_FinPRApprovals/Approvals/PRItems';
 const String financePOApiUrl = 'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/PO';
 const String financePOItemsApiUrl =
-    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/POItems';
+    'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/POItems';
+const String requestsCountApiUrl =
+    'UAQSGD_MOB_ERP_GetNotificationCount/GetCount';

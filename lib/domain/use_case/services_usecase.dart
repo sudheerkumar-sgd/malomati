@@ -7,6 +7,7 @@ import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
+import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
@@ -96,5 +97,10 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, List<ThankyouEntity>>> getThankyouList(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getThankyouList(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getRequestsCount(requestParams: requestParams);
   }
 }

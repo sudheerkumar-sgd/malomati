@@ -12,11 +12,10 @@ class AttachmentModel {
 
   AttachmentModel.fromJson(Map<String, dynamic> json) {
     //final json = jsonDecode(json2);
-    fileName = json['FILE_NAME'];
+    fileName = json['FILE_NAME'] ?? json['fileName'];
     try {
-      printLog(message: '${json['FILE_DATA']}');
-      fileData =
-          base64.decode('${json['FILE_DATA']}'.replaceAll(RegExp(r'\s+'), ''));
+      fileData = base64.decode('${json['FILE_DATA'] ?? json['fileData']}'
+          .replaceAll(RegExp(r'\s+'), ''));
     } catch (exception) {
       printLog(message: exception.toString());
     }

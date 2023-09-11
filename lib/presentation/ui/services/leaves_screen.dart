@@ -157,8 +157,10 @@ class LeavesScreen extends StatelessWidget {
   Future<void> _showSelectFileOptions(BuildContext context) async {
     Dialogs.showBottomSheetDialogTransperrent(
         context, const DialogUploadAttachmentWidget(), callback: (value) {
-      _uploadFiles.add(value);
-      _isUploadChanged.value = !_isUploadChanged.value;
+      if (value != null) {
+        _uploadFiles.add(value);
+        _isUploadChanged.value = !_isUploadChanged.value;
+      }
     });
   }
 
