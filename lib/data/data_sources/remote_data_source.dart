@@ -9,16 +9,21 @@ import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/finance_approval_model.dart';
 import 'package:malomati/data/model/hr_approval_model.dart';
 import 'package:malomati/data/model/hrapproval_details_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/login_model.dart';
+import 'package:malomati/data/model/payslip_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import '../../config/base_url_config.dart';
@@ -57,10 +62,18 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<HrapprovalDetailsEntity> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
+  Future<PayslipEntity> getPayslipDetails(
+      {required Map<String, dynamic> requestParams});
+  Future<WorkingDaysEntity> getWorkingDays(
+      {required Map<String, dynamic> requestParams});
   Future<ApiEntity> submitHrApproval(
       {required Map<String, dynamic> requestParams});
   Future<List<ThankyouEntity>> getThankyouList(
       {required Map<String, dynamic> requestParams});
+  Future<List<FinanceApprovalEntity>> getFinanceApprovalList(
+      {required apiUrl, required Map<String, dynamic> requestParams});
+  Future<HrapprovalDetailsEntity> getFinanceItemDetailsList(
+      {required apiUrl, required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -477,6 +490,102 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       } else {
         return [];
       }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PayslipEntity> getPayslipDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        payslipsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var apiResponse = PayslipModel.fromJson(response.data).toPayslipEntity();
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<WorkingDaysEntity> getWorkingDays(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        workingDaysApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var apiResponse =
+          LeavesModel.fromWorkingDaysJson(response.data).toWorkingDaysEntity();
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<FinanceApprovalEntity>> getFinanceApprovalList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        apiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      final jsonListname = apiUrl == financePOApiUrl
+          ? 'PODtls'
+          : apiUrl == financePRApiUrl
+              ? 'PRDtls'
+              : 'INVDtls';
+      if (response.data?[jsonListname] != null) {
+        var financeApprovalListJson = response.data[jsonListname] as List;
+        var financeApprovalList = financeApprovalListJson
+            .map((financeApprovalJson) =>
+                FinanceApprovalModel.fromJson(financeApprovalJson)
+                    .toFinanceApprovalEntity())
+            .toList();
+        return financeApprovalList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<HrapprovalDetailsEntity> getFinanceItemDetailsList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        hrApprovalDetailsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var apiResponse = HrApprovalDetailsModel.fromJson(response.data)
+          .toHrapprovalDetailsEntity();
+      return apiResponse;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

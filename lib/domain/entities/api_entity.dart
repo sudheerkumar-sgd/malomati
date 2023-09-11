@@ -8,7 +8,7 @@ class ApiEntity<T extends BaseEntity> extends BaseEntity {
 
   ApiEntity({this.entity});
   String getDisplayMessage(Resources resources) {
-    return resources.isLocalEn ? message ?? '' : messageAR ?? '';
+    return resources.isLocalEn ? message ?? '' : messageAR ?? (message ?? '');
   }
 
   @override

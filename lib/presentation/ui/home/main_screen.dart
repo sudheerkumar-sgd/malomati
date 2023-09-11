@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
@@ -22,15 +23,18 @@ class _MainScreenState extends State<MainScreen> {
   final NavbarNotifier _navbarNotifier = NavbarNotifier();
   int backpressCount = 0;
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
-  final _screens = <Widget>[
-    const HomeNavigatorScreen(),
-    const ServicesNavigatorScreen(),
-    RequestsScreen(),
-    const MoreNavigatorScreen(),
-  ];
+  // final _screens = <Widget>[
+  //   const HomeNavigatorScreen(),
+  //   const ServicesNavigatorScreen(),
+  //   RequestsScreen(),
+  //   const MoreNavigatorScreen(),
+  // ];
   final AudioPlayer _player = AudioPlayer();
 
   void _onItemTapped(int index) {
+    if (_selectedIndex.value == index) {
+      _navbarNotifier.onBackButtonPressed(_selectedIndex.value);
+    }
     _selectedIndex.value = index;
   }
 
@@ -52,6 +56,19 @@ class _MainScreenState extends State<MainScreen> {
                 .loadImage)).then((value) => _player.dispose());
   }
 
+  Widget getScreen(int index) {
+    switch (index) {
+      case 1:
+        return const ServicesNavigatorScreen();
+      case 2:
+        return RequestsScreen();
+      case 3:
+        return const MoreNavigatorScreen();
+      default:
+        return const HomeNavigatorScreen();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Timer(const Duration(seconds: 3), () {
@@ -68,6 +85,9 @@ class _MainScreenState extends State<MainScreen> {
     // const double fillPercent = 80; // fills 56.23% for container from bottom
     // const double fillStop = (100 - fillPercent) / 100;
     // final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: context.resources.color.appScaffoldBg,
+        statusBarIconBrightness: Brightness.dark));
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =
@@ -103,8 +123,7 @@ class _MainScreenState extends State<MainScreen> {
               valueListenable: _selectedIndex,
               builder: (context, value, widget) {
                 return Scaffold(
-                  body: IndexedStack(
-                      index: _selectedIndex.value, children: _screens),
+                  body: getScreen(value),
                   //_widgetOptions(context),
                   backgroundColor: context.resources.color.appScaffoldBg,
                   bottomNavigationBar: Container(

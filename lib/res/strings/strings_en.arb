@@ -112,6 +112,7 @@
     "@days": {
         "type": "text"
     },
+    "day": "day",
     "hours": "hours",
     "@hours": {
         "type": "text"
@@ -185,6 +186,7 @@
     "@edit": {
         "type": "text"
     },
+    "financeApprovals": "Finance Approvals",
     "done": "Done",
     "@done": {
         "type": "text"
@@ -432,8 +434,10 @@
     "attendanceRate": "Attendance Rate",
     "createAbsence": "Create Absence",
     "teamStatusText": "The team attendance status today",
-    "numberOfEmployee": "Number of Employee",
+    "numberOfEmployee": "Number of Employees",
     "employeesOnLeaves": "Employees on Leaves",
+    "employeesPunchedIn": "Employees Punched In",
+    "employeesNotPunchedIn": "Employees not Punched In",
     "teamAttendanceReport": "Team Attendance Report",
     "view": "View",
     "close": "Close",

@@ -9,66 +9,74 @@ class ItemThankyouReceived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              '${context.string.receivedBy}: ',
-              style: context.textFontWeight400,
-            ),
-            Text(
-              isLocalEn ? data.empNameEN ?? '' : data.empNameAR ?? '',
-              style: context.textFontWeight600,
-            ),
-          ],
+        RichText(
+          text: TextSpan(
+            text: '${context.string.receivedBy}: ',
+            style: context.textFontWeight400.onFontFamily(
+                fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+            children: [
+              TextSpan(
+                text: isLocalEn ? data.empNameEN ?? '' : data.empNameAR ?? '',
+                style: context.textFontWeight600.onFontFamily(
+                    fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.start,
         ),
         SizedBox(
           height: context.resources.dimen.dp5,
         ),
-        Row(
-          children: [
-            Text(
-              '${context.string.deptName}: ',
-              style: context.textFontWeight400,
-            ),
-            Text(
-              isLocalEn
-                  ? data.departmentNameEn ?? ''
-                  : data.departmentNameAr ?? '',
-              style: context.textFontWeight600,
-            ),
-          ],
+        RichText(
+          text: TextSpan(
+            text: '${context.string.deptName}: ',
+            style: context.textFontWeight400.onFontFamily(
+                fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+            children: [
+              TextSpan(
+                text: isLocalEn
+                    ? data.departmentNameEn ?? ''
+                    : data.departmentNameAr ?? '',
+                style: context.textFontWeight600.onFontFamily(
+                    fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+              ),
+            ],
+          ),
         ),
         SizedBox(
           height: context.resources.dimen.dp5,
         ),
-        Row(
-          children: [
-            Text(
-              '${context.string.reason}: ',
-              style: context.textFontWeight400,
-            ),
-            Text(
-              isLocalEn ? data.reasonEn ?? '' : data.reasonAr ?? '',
-              style: context.textFontWeight600,
-            ),
-          ],
+        RichText(
+          text: TextSpan(
+              text: '${context.string.reason}: ',
+              style: context.textFontWeight400.onFontFamily(
+                  fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+              children: [
+                TextSpan(
+                  text: isLocalEn ? data.reasonEn ?? '' : data.reasonAr ?? '',
+                  style: context.textFontWeight600.onFontFamily(
+                      fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+                ),
+              ]),
         ),
         SizedBox(
           height: context.resources.dimen.dp5,
         ),
-        Row(
-          children: [
-            Text(
-              '${context.string.date}: ',
-              style: context.textFontWeight400,
-            ),
-            Text(
-              data.creationDate ?? '',
-              style: context.textFontWeight600
-                  .onFontFamily(fontFamily: fontFamilyEN),
-            ),
-          ],
+        RichText(
+          text: TextSpan(
+            text: '${context.string.date}: ',
+            style: context.textFontWeight400.onFontFamily(
+                fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+            children: [
+              TextSpan(
+                text: data.creationDate ?? '',
+                style: context.textFontWeight600
+                    .onFontFamily(fontFamily: fontFamilyEN),
+              ),
+            ],
+          ),
         ),
       ],
     );

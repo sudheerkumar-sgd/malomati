@@ -592,9 +592,9 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         Flexible(
                                           child: ItemDashboardLeaves(
-                                            balanceCount:
-                                                dashboardEntity.tHANKYOUCOUNT ??
-                                                    '0',
+                                            balanceCount: dashboardEntity
+                                                    .tHANKYOUINYEAR ??
+                                                '0',
                                             balancetype: context.string.star,
                                             title: context.string.totalThankYou,
                                           ),

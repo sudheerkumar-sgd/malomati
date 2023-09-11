@@ -5,6 +5,7 @@ import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
@@ -48,14 +49,16 @@ class ServicesScreen extends StatelessWidget {
       screenWidget = BadgeScreen();
     } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
       screenWidget = MyTeamScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains(context.string.payslip.toLowerCase())) {
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('payslip')) {
       screenWidget = PayslipsScreen();
     } else if ((favoriteEntity.name ?? '')
         .toLowerCase()
         .contains('hr approvals')) {
       screenWidget = HrApprovalsScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('finance approvals')) {
+      screenWidget = FinanceApprovalsScreen();
     }
 
     Navigator.push(

@@ -1,7 +1,4 @@
 // ignore_for_file: must_be_immutable
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -12,6 +9,7 @@ import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/home/home_screen.dart';
+import 'package:malomati/presentation/ui/services/widgets/dialog_upload_attachment.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -23,7 +21,6 @@ import 'package:malomati/res/resources.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/animated_toggle.dart';
 import '../widgets/back_app_bar.dart';
-import 'package:file_picker/file_picker.dart';
 
 enum LeaveType {
   anualLeave('Annual Leaves', '61'),
@@ -153,35 +150,16 @@ class LeavesScreen extends StatelessWidget {
     );
     if (picked != null) {
       controller.text =
-          '${picked.hour}:${picked.minute} ${picked.period.name.toUpperCase()}';
+          '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
     }
   }
 
-  Future<void> _selectFile(BuildContext context) async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
-
-    if (result != null) {
-      final fileName = result.files.single.name;
-      if (fileName.isNotEmpty) {
-        File file = File(result.files.single.path ?? '');
-        printLog(message: '${file.lengthSync()}');
-        if (file.lengthSync() <= maxUploadFilesize) {
-          final bytes = file.readAsBytesSync();
-          final data = {
-            'fileName': fileName,
-            'fileNamebase64data': base64Encode(bytes),
-          };
-          _uploadFiles.add(data);
-          _isUploadChanged.value = !_isUploadChanged.value;
-        } else if (context.mounted) {
-          Dialogs.showInfoDialog(context, PopupType.fail,
-              "Upload file should not be more then 1mb");
-        }
-      }
-    } else {
-      printLog(message: 'message');
-    }
+  Future<void> _showSelectFileOptions(BuildContext context) async {
+    Dialogs.showBottomSheetDialogTransperrent(
+        context, const DialogUploadAttachmentWidget(), callback: (value) {
+      _uploadFiles.add(value);
+      _isUploadChanged.value = !_isUploadChanged.value;
+    });
   }
 
   _onDeleteUpload(int id) {
@@ -248,28 +226,41 @@ class LeavesScreen extends StatelessWidget {
     );
     _endDateController.addListener(
       () {
-        if (leaveType != LeaveType.permission) {
-          _durationText.value =
-              '${getDays(getDateTimeByString(dateFormat, _startDateController.text), getDateTimeByString(dateFormat, _endDateController.text)) + 1} ${context.string.days}';
+        if (leaveType != LeaveType.permission &&
+            leaveType != LeaveType.otherLeave) {
+          _servicesBloc.getWorkingDays(requestParams: {
+            'P_FROM_DATE': getDateByformat("yyyy-MM-dd",
+                getDateTimeByString(dateFormat, _startDateController.text)),
+            'P_TO_DATE': getDateByformat("yyyy-MM-dd",
+                getDateTimeByString(dateFormat, _endDateController.text))
+          });
         }
       },
     );
     if (leaveType == LeaveType.permission) {
       _endTimeController.addListener(
         () {
-          final minutes = getMinutes(
-              getDateTimeByString('$dateFormat $timeFormat',
-                  '${_startDateController.text} ${_startTimeController.text}'),
-              getDateTimeByString('$dateFormat $timeFormat',
-                  '${_endDateController.text} ${_endTimeController.text}'));
-          var text = '';
-          if (minutes >= 60) {
-            text =
-                '${(minutes / 60).round()}:${minutes % 60} ${context.string.hours}';
-          } else {
-            text = '$minutes min';
+          if (_endTimeController.text.isNotEmpty) {
+            final minutes = getMinutes(
+                getDateTimeByString('$dateFormat $timeFormat',
+                    '${_startDateController.text} ${_startTimeController.text}'),
+                getDateTimeByString('$dateFormat $timeFormat',
+                    '${_endDateController.text} ${_endTimeController.text}'));
+            var text = '';
+            if (minutes >= 30) {
+              if (minutes >= 60) {
+                text =
+                    '${(minutes / 60).round()}:${minutes % 60} ${context.string.hours}';
+              } else {
+                text = '$minutes min';
+              }
+              _durationText.value = text;
+            } else {
+              _endTimeController.text = '';
+              Dialogs.showInfoDialog(context, PopupType.fail,
+                  'Minimum duration should be 30 mins');
+            }
           }
-          _durationText.value = text;
         },
       );
     }
@@ -297,6 +288,10 @@ class LeavesScreen extends StatelessWidget {
                   Dialogs.showInfoDialog(context, PopupType.fail,
                       state.leaveSubmitResponse.getDisplayMessage(resources));
                 }
+              } else if (state is OnWorkingDaysSuccess) {
+                final value = state.workingDaysEntity.noOfDays ?? '';
+                _durationText.value =
+                    '$value ${value == '1' ? context.string.day : context.string.days}';
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
@@ -353,8 +348,8 @@ class LeavesScreen extends StatelessWidget {
                                       textAlign: TextAlign.left,
                                       overflow: TextOverflow.ellipsis,
                                       style: context.textFontWeight600
-                                          .onColor(
-                                              context.resources.color.textColor)
+                                          .onColor(context
+                                              .resources.color.viewBgColor)
                                           .onFontSize(
                                               context.resources.fontSize.dp12),
                                     ),
@@ -397,8 +392,8 @@ class LeavesScreen extends StatelessWidget {
                                             textAlign: TextAlign.left,
                                             overflow: TextOverflow.ellipsis,
                                             style: context.textFontWeight600
-                                                .onColor(context
-                                                    .resources.color.textColor)
+                                                .onColor(context.resources.color
+                                                    .viewBgColor)
                                                 .onFontSize(context
                                                     .resources.fontSize.dp12),
                                           );
@@ -656,7 +651,8 @@ class LeavesScreen extends StatelessWidget {
                                                 )
                                               : InkWell(
                                                   onTap: () {
-                                                    _selectFile(context);
+                                                    _showSelectFileOptions(
+                                                        context);
                                                   },
                                                   child: Row(
                                                     children: [
@@ -716,7 +712,7 @@ class LeavesScreen extends StatelessWidget {
                                     }),
                                 InkWell(
                                   onTap: () {
-                                    _selectFile(context);
+                                    _showSelectFileOptions(context);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.only(

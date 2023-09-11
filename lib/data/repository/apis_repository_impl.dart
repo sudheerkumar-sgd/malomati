@@ -14,11 +14,14 @@ import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
+import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
+import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 
@@ -297,6 +300,78 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getFinanceApprovalList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.getFinanceApprovalList(
+            apiUrl: apiUrl, requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, HrapprovalDetailsEntity>> getFinanceItemDetailsList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.getFinanceItemDetailsList(
+            apiUrl: apiUrl, requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PayslipEntity>> getPayslipDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getPayslipDetails(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, WorkingDaysEntity>> getWorkingDays(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getWorkingDays(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());

@@ -27,9 +27,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark));
+        statusBarIconBrightness: Brightness.dark));
     _isRememberd.value =
         context.userDB.get(isRememberdKey, defaultValue: false);
     if (_isRememberd.value) {
@@ -94,9 +94,6 @@ class LoginScreen extends StatelessWidget {
                         context.userDB.delete(passwordKey);
                         context.userDB.delete(isRememberdKey);
                       }
-                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle
-                          .dark
-                          .copyWith(statusBarIconBrightness: Brightness.dark));
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => const MainScreen()),

@@ -4,10 +4,12 @@ import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/use_case/services_usecase.dart';
 
 import '../../../core/error/failures.dart';
+import '../../../domain/entities/finance_approval_entity.dart';
 import '../../../domain/entities/hrapproval_details_entity.dart';
 import '../../../domain/entities/leave_submit_response_entity.dart';
 
@@ -94,8 +96,43 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnHrApprovalsDetailsSuccess(hrApprovalDetails: r)));
   }
 
+  Future<void> getFinanceApprovalList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result = await servicesUseCase.getFinanceApprovalList(
+        apiUrl: apiUrl, requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnFinanceApprovalsListSuccess(financeApprovalsList: r)));
+  }
+
+  Future<void> getFinanceItemDetailsList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    final result = await servicesUseCase.getFinanceItemDetailsList(
+        apiUrl: apiUrl, requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnHrApprovalsDetailsSuccess(hrApprovalDetails: r)));
+  }
+
+  Future<void> getPayslipDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result =
+        await servicesUseCase.getPayslipDetails(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnPayslipDetailsSuccess(payslipEntity: r)));
+  }
+
+  Future<void> getWorkingDays(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await servicesUseCase.getWorkingDays(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnWorkingDaysSuccess(workingDaysEntity: r)));
+  }
+
   Future<void> submitHrApproval(
       {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
     final result =
         await servicesUseCase.submitHrApproval(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),

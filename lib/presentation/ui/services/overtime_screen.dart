@@ -11,6 +11,7 @@ import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/model/api_request_model.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
+import 'package:malomati/presentation/ui/services/widgets/dialog_upload_attachment.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -80,6 +81,14 @@ class OvertimeScreen extends StatelessWidget {
         }
       }
     }
+  }
+
+  Future<void> _showSelectFileOptions(BuildContext context) async {
+    Dialogs.showBottomSheetDialogTransperrent(
+        context, const DialogUploadAttachmentWidget(), callback: (value) {
+      _uploadFiles.add(value);
+      _isUploadChanged.value = !_isUploadChanged.value;
+    });
   }
 
   Future<void> _selectFile(BuildContext context) async {
@@ -346,7 +355,8 @@ class OvertimeScreen extends StatelessWidget {
                                                 )
                                               : InkWell(
                                                   onTap: () {
-                                                    _selectFile(context);
+                                                    _showSelectFileOptions(
+                                                        context);
                                                   },
                                                   child: Row(
                                                     children: [
@@ -402,7 +412,7 @@ class OvertimeScreen extends StatelessWidget {
                                     }),
                                 InkWell(
                                   onTap: () {
-                                    _selectFile(context);
+                                    _showSelectFileOptions(context);
                                   },
                                   child: Container(
                                     padding: isLocalEn

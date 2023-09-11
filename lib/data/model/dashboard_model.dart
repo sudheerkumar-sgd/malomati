@@ -194,6 +194,7 @@ extension SourceModelExtension on DashboardModel {
     dashboardEntity.sICKACCRUAL = sICKACCRUAL;
     dashboardEntity.pERMISSIONACCRUAL = pERMISSIONACCRUAL;
     dashboardEntity.tHANKYOUCOUNT = tHANKYOUCOUNT;
+    dashboardEntity.tHANKYOUINYEAR = tHANKYOUINYEAR;
     dashboardEntity.eventsEntity =
         eventListModel?.map((e) => e.toEventsEntity()).toList();
     return dashboardEntity;

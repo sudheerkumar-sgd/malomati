@@ -24,6 +24,7 @@ import 'package:file_picker/file_picker.dart';
 
 import '../../widgets/alert_dialog_widget.dart';
 import '../../widgets/animated_toggle.dart';
+import 'dialog_upload_attachment.dart';
 
 enum LeaveType {
   anualLeave('Annual Leaves', '61'),
@@ -127,8 +128,16 @@ class LeavesForm extends StatelessWidget {
     );
     if (picked != null) {
       controller.text =
-          '${picked.hour}:${picked.minute} ${picked.period.name.toUpperCase()}';
+          '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
     }
+  }
+
+  Future<void> _showSelectFileOptions(BuildContext context) async {
+    Dialogs.showBottomSheetDialogTransperrent(
+        context, const DialogUploadAttachmentWidget(), callback: (value) {
+      _uploadFiles.add(value);
+      _isUploadChanged.value = !_isUploadChanged.value;
+    });
   }
 
   Future<void> _selectFile(BuildContext context) async {
@@ -520,7 +529,8 @@ class LeavesForm extends StatelessWidget {
                                               )
                                             : InkWell(
                                                 onTap: () {
-                                                  _selectFile(context);
+                                                  _showSelectFileOptions(
+                                                      context);
                                                 },
                                                 child: Row(
                                                   children: [
@@ -580,7 +590,7 @@ class LeavesForm extends StatelessWidget {
                                   }),
                               InkWell(
                                 onTap: () {
-                                  _selectFile(context);
+                                  _showSelectFileOptions(context);
                                 },
                                 child: Container(
                                   padding: isLocalEn

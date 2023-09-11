@@ -271,7 +271,7 @@ class AttendanceScreen extends StatelessWidget {
                           scaleFactor: 3,
                           child: ImageWidget(
                                   width: double.infinity,
-                                  height: 100,
+                                  height: 200,
                                   path:
                                       department['map'] ?? DrawableAssets.icMap,
                                   boxType: BoxFit.cover)

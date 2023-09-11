@@ -97,8 +97,8 @@ class Dialogs {
             )));
   }
 
-  static showBottomSheetDialogTransperrent(
-      BuildContext context, Widget widget) {
+  static showBottomSheetDialogTransperrent(BuildContext context, Widget widget,
+      {Function(dynamic)? callback}) {
     showModalBottomSheet(
         useRootNavigator: true,
         backgroundColor: Colors.transparent,
@@ -112,6 +112,8 @@ class Dialogs {
               children: [
                 Align(alignment: Alignment.bottomCenter, child: widget),
               ],
-            ));
+            )).then((value) {
+      if (callback != null) callback(value);
+    });
   }
 }

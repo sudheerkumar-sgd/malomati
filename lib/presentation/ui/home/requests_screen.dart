@@ -216,23 +216,36 @@ class RequestsScreen extends StatelessWidget {
                                 ? StreamBuilder(
                                     stream: _attendanceBloc.getAttendanceReport,
                                     builder: (context, snapshot) {
-                                      return ListView.separated(
-                                          itemCount: snapshot.data?.length ?? 0,
-                                          itemBuilder: (context, index) {
-                                            return ItemAttendanceList(
-                                              attendanceEntity:
-                                                  snapshot.data![index],
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) =>
-                                              Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: context
-                                                        .resources.dimen.dp25),
-                                                color: context.resources.color
-                                                    .colorD6D6D6,
-                                                height: 0.5,
-                                              ));
+                                      return snapshot.data?.isEmpty ?? true
+                                          ? const Center(
+                                              child: SizedBox(
+                                                  width: 40,
+                                                  height: 40,
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            )
+                                          : ListView.separated(
+                                              itemCount:
+                                                  snapshot.data?.length ?? 0,
+                                              itemBuilder: (context, index) {
+                                                return ItemAttendanceList(
+                                                  attendanceEntity:
+                                                      snapshot.data![index],
+                                                );
+                                              },
+                                              separatorBuilder: (context,
+                                                      index) =>
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp25),
+                                                    color: context.resources
+                                                        .color.colorD6D6D6,
+                                                    height: 0.5,
+                                                  ));
                                     })
                                 : ListView.separated(
                                     itemCount: 100,

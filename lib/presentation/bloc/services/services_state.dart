@@ -55,6 +55,24 @@ class OnHrApprovalsDetailsSuccess extends ServicesState {
   OnHrApprovalsDetailsSuccess({required this.hrApprovalDetails});
 }
 
+class OnFinanceApprovalsListSuccess extends ServicesState {
+  final List<FinanceApprovalEntity> financeApprovalsList;
+
+  OnFinanceApprovalsListSuccess({required this.financeApprovalsList});
+}
+
+class OnPayslipDetailsSuccess extends ServicesState {
+  final PayslipEntity payslipEntity;
+
+  OnPayslipDetailsSuccess({required this.payslipEntity});
+}
+
+class OnWorkingDaysSuccess extends ServicesState {
+  final WorkingDaysEntity workingDaysEntity;
+
+  OnWorkingDaysSuccess({required this.workingDaysEntity});
+}
+
 class OnsubmitHrApprovalSuccess extends ServicesState {
   final ApiEntity apiEntity;
 

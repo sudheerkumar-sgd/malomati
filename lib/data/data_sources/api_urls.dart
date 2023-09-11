@@ -39,3 +39,15 @@ const String thankYouReceivedApiUrl =
     'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouReceived';
 const String thankYouGrantedApiUrl =
     'UAQSGD_MOB_ERP_Department/DepartmentRS/ThankYouGranted';
+const String payslipsApiUrl = 'UAQSGD_MOB_ERP_GetPayslips/Payslips';
+const String workingDaysApiUrl = 'UAQSGD_MOB_ERP_GetWorkingDays/WorkingDays';
+const String financeInvoiceApiUrl =
+    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/INV';
+const String financeInvoiceItemsApiUrl =
+    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/INVItems';
+const String financePRApiUrl = 'UAQSGD_MOB_ERP_FinPRApprovals/Approvals/PR';
+const String financePRItemsApiUrl =
+    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/PRItems';
+const String financePOApiUrl = 'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/PO';
+const String financePOItemsApiUrl =
+    'UAQSGD_MOB_ERP_FinINVApprovals/Approvals/POItems';

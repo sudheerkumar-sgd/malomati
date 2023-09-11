@@ -12,6 +12,8 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
+import '../../utils/dialogs.dart';
+import '../../widgets/alert_dialog_widget.dart';
 import 'item_list_attachment.dart';
 
 const APPROVE = 'APPROVE';
@@ -21,7 +23,7 @@ const ANSWERMOREINFO = 'ANSWER_MORE_INFO';
 
 class ItemHRApprovals extends StatefulWidget {
   final HrApprovalEntity data;
-  final Function(String) callBack;
+  final Function(String, BuildContext) callBack;
   ItemHRApprovals({required this.data, required this.callBack, super.key});
 
   @override
@@ -44,8 +46,13 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
       "COMMENTS": comments ?? action
     };
     _servicesBloc.submitHrApproval(requestParams: requestParams);
-    widget.callBack(widget.data.nOTIFICATIONID ?? '');
     // Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    _isExpanded.value = false;
+    super.initState();
   }
 
   @override
@@ -69,8 +76,21 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
             .roundedCornerBox,
         child: BlocListener<ServicesBloc, ServicesState>(
           listener: (context, state) {
-            if (state is OnHrApprovalsDetailsSuccess) {
+            if (state is OnServicesLoading) {
+              Dialogs.loader(context);
+            } else if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
+            } else if (state is OnsubmitHrApprovalSuccess) {
+              Navigator.of(context, rootNavigator: true).pop();
+              if (state.apiEntity.isSuccess ?? false) {
+                widget.callBack(widget.data.nOTIFICATIONID ?? '', context);
+              } else {
+                Dialogs.showInfoDialog(context, PopupType.fail,
+                    state.apiEntity.getDisplayMessage(resources));
+              }
+            } else if (state is OnServicesError) {
+              Navigator.of(context, rootNavigator: true).pop();
+              Dialogs.showInfoDialog(context, PopupType.fail, state.message);
             }
           },
           child: Column(

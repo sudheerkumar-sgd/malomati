@@ -186,7 +186,37 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  context.string.employeesOnLeaves,
+                  context.string.employeesPunchedIn,
+                  style: context.textFontWeight400
+                      .onFontSize(resources.fontSize.dp15),
+                ),
+                ValueListenableBuilder(
+                    valueListenable: _fraction,
+                    builder: (context, value, child) {
+                      return Text(
+                        '$loggedInEmployees',
+                        style: context.textFontWeight600
+                            .onFontFamily(fontFamily: fontFamilyEN)
+                            .onFontSize(resources.fontSize.dp15),
+                      );
+                    }),
+              ],
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+            Divider(
+              height: resources.dimen.dp1,
+              color: resources.color.bottomSheetIconUnSelected,
+            ),
+            SizedBox(
+              height: resources.dimen.dp15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  context.string.employeesNotPunchedIn,
                   style: context.textFontWeight400
                       .onFontSize(resources.fontSize.dp15),
                 ),

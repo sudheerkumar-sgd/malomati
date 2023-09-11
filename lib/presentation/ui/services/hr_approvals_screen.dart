@@ -22,12 +22,16 @@ class HrApprovalsScreen extends StatelessWidget {
   String userName = '';
 
   HrApprovalsScreen({super.key});
-  _onActionClicked(String id) {
-    final list = _notificationList.value;
-    final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
-    list.removeAt(index);
-    _notificationList.value = [];
-    _notificationList.value = list;
+  _onActionClicked(String id, BuildContext context) {
+    // final list = _notificationList.value;
+    // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
+    // list.removeAt(index);
+    // _notificationList.value = [];
+    // _notificationList.value = list;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HrApprovalsScreen()),
+    );
   }
 
   @override

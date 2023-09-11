@@ -1,9 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
@@ -61,6 +64,28 @@ class ServicesUseCase extends BaseUseCase {
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getHrApprovalDetails(
         requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getFinanceApprovalList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getFinanceApprovalList(
+        apiUrl: apiUrl, requestParams: requestParams);
+  }
+
+  Future<Either<Failure, HrapprovalDetailsEntity>> getFinanceItemDetailsList(
+      {required apiUrl, required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getFinanceItemDetailsList(
+        apiUrl: apiUrl, requestParams: requestParams);
+  }
+
+  Future<Either<Failure, PayslipEntity>> getPayslipDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getPayslipDetails(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, WorkingDaysEntity>> getWorkingDays(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getWorkingDays(requestParams: requestParams);
   }
 
   Future<Either<Failure, ApiEntity>> submitHrApproval(

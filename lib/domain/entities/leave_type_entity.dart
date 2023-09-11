@@ -17,3 +17,12 @@ class LeaveTypeEntity extends BaseEntity {
     return isLocalEn ? name ?? '' : nameAr ?? (name ?? '');
   }
 }
+
+class WorkingDaysEntity extends BaseEntity {
+  String? noOfDays;
+
+  WorkingDaysEntity();
+
+  @override
+  List<Object?> get props => [noOfDays];
+}

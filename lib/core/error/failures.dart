@@ -55,3 +55,20 @@ class UnknownFailure extends Failure {
   @override
   String get errorMessage => message;
 }
+
+class Exception extends Failure {
+  final String exception;
+  Exception(this.exception);
+
+  @override
+  List<Object> get props => [errorMessage];
+
+  @override
+  String toString() {
+    return 'Exception{exception: $exception}';
+  }
+
+  @override
+  String get errorMessage =>
+      exception.isNotEmpty ? exception : unknownErroeMessage;
+}

@@ -127,9 +127,11 @@ class DropDownWidget<T> extends StatelessWidget {
                       overflow: TextOverflow.clip,
                       value.toString(),
                       style: context.textFontWeight400.onFontFamily(
-                          fontFamily: context.resources.isLocalEn
-                              ? fontFamilyEN
-                              : fontFamilyAR),
+                          fontFamily: fontFamily.isNotEmpty
+                              ? fontFamily
+                              : context.resources.isLocalEn
+                                  ? fontFamilyEN
+                                  : fontFamilyAR),
                     ),
                   );
                 }).toList(),

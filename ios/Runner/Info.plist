@@ -62,9 +62,13 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>uploading documents for approve requests</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>To check login location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>uploading documents for approve requests</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>uploading documents for approve requests</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To play birthday wishes </string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To check login location</string>
 </dict>
 </plist>
