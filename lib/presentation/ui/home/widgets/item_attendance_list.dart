@@ -86,8 +86,10 @@ class ItemAttendanceList extends StatelessWidget {
         return context.string.lunchOut;
       case '9':
         return context.string.overtimeIn;
-      default:
+      case '10':
         return context.string.overtimeOut;
+      default:
+        return context.string.regularIn;
     }
   }
 
@@ -103,7 +105,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid1 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid1 ?? '5')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -128,7 +130,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid2 ?? '')}:',
+                '${_getPunchType(context, (attendanceEntity.spfid2 ?? '').isNotEmpty ? attendanceEntity.spfid2 ?? '' : '6')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)

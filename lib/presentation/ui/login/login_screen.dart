@@ -301,57 +301,57 @@ class LoginScreen extends StatelessWidget {
                                       height: context.resources.dimen.dp40),
                                 ),
                                 SizedBox(
-                                  height: context.resources.dimen.dp10,
+                                  height: context.resources.dimen.dp40,
                                 ),
-                                Text(
-                                  context.string.or,
-                                  style: context.textFontWeight400
-                                      .onColor(context
-                                          .resources.color.textColorLight)
-                                      .onFontSize(
-                                          context.resources.fontSize.dp12),
-                                ),
-                                SizedBox(
-                                  height: context.resources.dimen.dp10,
-                                ),
-                                GestureDetector(
-                                  onTap: () => {},
-                                  child: CustomBgWidgets().roundedCornerWidget(
-                                      widget: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            context.string.loginWith,
-                                            style: context.textFontWeight600
-                                                .onColor(context
-                                                    .resources.color.textColor)
-                                                .onFontSize(context
-                                                    .resources.fontSize.dp17),
-                                          ),
-                                          SizedBox(
-                                            width: context.resources.dimen.dp10,
-                                          ),
-                                          ImageWidget(
-                                                  path:
-                                                      DrawableAssets.icUaePass)
-                                              .loadImage,
-                                        ],
-                                      ),
-                                      boxDecoration: BackgroundBoxDecoration(
-                                              boxColor: context
-                                                  .resources.color.colorWhite,
-                                              boarderWidth: 0,
-                                              radious:
-                                                  context.resources.dimen.dp10,
-                                              shadowColor: context.resources
-                                                  .color.textColorLight,
-                                              shadowBlurRadius:
-                                                  context.resources.dimen.dp1,
-                                              shadowOffset: const Offset(1, 2))
-                                          .roundedCornerBoxWithShadow,
-                                      height: context.resources.dimen.dp40),
-                                )
+                                // Text(
+                                //   context.string.or,
+                                //   style: context.textFontWeight400
+                                //       .onColor(context
+                                //           .resources.color.textColorLight)
+                                //       .onFontSize(
+                                //           context.resources.fontSize.dp12),
+                                // ),
+                                // SizedBox(
+                                //   height: context.resources.dimen.dp10,
+                                // ),
+                                // GestureDetector(
+                                //   onTap: () => {},
+                                //   child: CustomBgWidgets().roundedCornerWidget(
+                                //       widget: Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.center,
+                                //         children: [
+                                //           Text(
+                                //             context.string.loginWith,
+                                //             style: context.textFontWeight600
+                                //                 .onColor(context
+                                //                     .resources.color.textColor)
+                                //                 .onFontSize(context
+                                //                     .resources.fontSize.dp17),
+                                //           ),
+                                //           SizedBox(
+                                //             width: context.resources.dimen.dp10,
+                                //           ),
+                                //           ImageWidget(
+                                //                   path:
+                                //                       DrawableAssets.icUaePass)
+                                //               .loadImage,
+                                //         ],
+                                //       ),
+                                //       boxDecoration: BackgroundBoxDecoration(
+                                //               boxColor: context
+                                //                   .resources.color.colorWhite,
+                                //               boarderWidth: 0,
+                                //               radious:
+                                //                   context.resources.dimen.dp10,
+                                //               shadowColor: context.resources
+                                //                   .color.textColorLight,
+                                //               shadowBlurRadius:
+                                //                   context.resources.dimen.dp1,
+                                //               shadowOffset: const Offset(1, 2))
+                                //           .roundedCornerBoxWithShadow,
+                                //       height: context.resources.dimen.dp40),
+                                // )
                               ],
                             ),
                           ),

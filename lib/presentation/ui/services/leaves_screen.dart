@@ -150,7 +150,7 @@ class LeavesScreen extends StatelessWidget {
     );
     if (picked != null) {
       controller.text =
-          '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
+          '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
     }
   }
 
@@ -538,6 +538,8 @@ class LeavesScreen extends StatelessWidget {
                                           height: resources.dimen.dp20,
                                         ),
                                         Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               child: InkWell(

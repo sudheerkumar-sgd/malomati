@@ -8,6 +8,9 @@ class RequstsCountModel {
   int? iNVCOUNT;
   int? pOCOUNT;
   int? hRCOUNT;
+  int? requestsApprovalCount = 0;
+  int? requestsRejectCount = 0;
+  int? requestsPendingCount = 0;
 
   RequstsCountModel();
 
@@ -19,6 +22,24 @@ class RequstsCountModel {
     iNVCOUNT = json['INV_COUNT'];
     pOCOUNT = json['PO_COUNT'];
     hRCOUNT = json['HR_COUNT'];
+    if (json['ReqStatusCounts'] != null) {
+      json['ReqStatusCounts'].forEach((v) {
+        switch (v['ACTION']) {
+          case 'APPROVED':
+            {
+              requestsApprovalCount = v['COUNT_NTF'];
+            }
+          case 'REJECTED':
+            {
+              requestsRejectCount = v['COUNT_NTF'];
+            }
+          case 'PENDING':
+            {
+              requestsPendingCount = v['COUNT_NTF'];
+            }
+        }
+      });
+    }
   }
 }
 
@@ -32,6 +53,9 @@ extension SourceModelExtension on RequstsCountModel {
     requstsCountEntity.iNVCOUNT = iNVCOUNT;
     requstsCountEntity.pOCOUNT = pOCOUNT;
     requstsCountEntity.hRCOUNT = hRCOUNT;
+    requstsCountEntity.requestsApprovalCount = requestsApprovalCount;
+    requstsCountEntity.requestsRejectCount = requestsRejectCount;
+    requstsCountEntity.requestsPendingCount = requestsPendingCount;
     return requstsCountEntity;
   }
 }

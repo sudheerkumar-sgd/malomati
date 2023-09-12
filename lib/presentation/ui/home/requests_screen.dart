@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
@@ -61,21 +62,21 @@ class RequestsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ItemDashboardLeaves(
-                        balanceCount: '25',
+                        balanceCount: '${ConstantConfig.requestsApprovalCount}',
                         balancetype: context.string.approved,
                         padding: context.resources.dimen.dp20,
                       ),
                     ),
                     Expanded(
                       child: ItemDashboardLeaves(
-                        balanceCount: '10',
+                        balanceCount: '${ConstantConfig.requestsPendingCount}',
                         balancetype: context.string.pending,
                         padding: context.resources.dimen.dp20,
                       ),
                     ),
                     Expanded(
                       child: ItemDashboardLeaves(
-                        balanceCount: '0',
+                        balanceCount: '${ConstantConfig.requestsRejectCount}',
                         balancetype: context.string.rejected,
                         padding: context.resources.dimen.dp20,
                       ),

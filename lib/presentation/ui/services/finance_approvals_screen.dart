@@ -9,6 +9,7 @@ import 'package:malomati/presentation/ui/services/widgets/item_finance_po_approv
 import 'package:malomati/presentation/ui/services/widgets/item_finance_pr_approvals.dart';
 import 'package:malomati/presentation/ui/widgets/tab_buttons_widget.dart';
 import 'package:malomati/res/resources.dart';
+import '../../../config/constant_config.dart';
 import '../../../injection_container.dart';
 import '../../bloc/services/services_bloc.dart';
 import '../utils/dialogs.dart';
@@ -47,9 +48,9 @@ class FinanceApprovalsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     _buttons.value = [
-      {'name': 'PO'},
-      {'name': 'PR'},
-      {'name': 'Invoice'}
+      {'name': 'PO', 'count': ConstantConfig.financePOApprovalCount},
+      {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
+      {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount}
     ];
     var noNotificationText = '';
     userName = context.userDB.get(userNameKey, defaultValue: '');
@@ -66,12 +67,28 @@ class FinanceApprovalsScreen extends StatelessWidget {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
               } else if (state is OnRequestsCountSuccess) {
+                ConstantConfig.hrApprovalCount =
+                    state.requestsCountEntity.hRCOUNT ?? 0;
+                ConstantConfig.financePOApprovalCount =
+                    state.requestsCountEntity.pOCOUNT ?? 0;
+                ConstantConfig.financePRApprovalCount =
+                    state.requestsCountEntity.pRCOUNT ?? 0;
+                ConstantConfig.financeINVApprovalCount =
+                    state.requestsCountEntity.iNVCOUNT ?? 0;
+                ConstantConfig.isApprovalCountChange.value =
+                    !(ConstantConfig.isApprovalCountChange.value);
                 _buttons.value = [
-                  {'name': 'PO', 'count': state.requestsCountEntity.pOCOUNT},
-                  {'name': 'PR', 'count': state.requestsCountEntity.pRCOUNT},
+                  {
+                    'name': 'PO',
+                    'count': ConstantConfig.financePOApprovalCount
+                  },
+                  {
+                    'name': 'PR',
+                    'count': ConstantConfig.financePRApprovalCount
+                  },
                   {
                     'name': 'Invoice',
-                    'count': state.requestsCountEntity.iNVCOUNT
+                    'count': ConstantConfig.financeINVApprovalCount
                   }
                 ];
               } else if (state is OnFinanceApprovalsListSuccess) {

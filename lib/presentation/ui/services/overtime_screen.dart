@@ -62,8 +62,8 @@ class OvertimeScreen extends StatelessWidget {
     final TimeOfDay? picked = await showTimePicker(
         context: context, initialTime: startTime ?? TimeOfDay.now());
     if (picked != null && context.mounted) {
-      controller.text =
-          '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
+      controller.text = controller.text =
+          '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
       if (controller == _toTimeController) {
         double hours = getMinutes(
                 getDateTimeByString('$dateFormat $timeFormat',
@@ -73,7 +73,7 @@ class OvertimeScreen extends StatelessWidget {
             60;
         if (hours > 0) {
           controller.text =
-              '${picked.hourOfPeriod}:${picked.minute} ${picked.period.name.toUpperCase()}';
+              '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
           _noOfHoursController.text = hours.toStringAsFixed(1);
         } else {
           _noOfHoursController.text = '';

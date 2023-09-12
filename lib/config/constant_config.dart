@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 
 import '../core/constants/constants.dart';
@@ -257,4 +258,12 @@ class ConstantConfig {
       }
     ]
   };
+  static ValueNotifier<bool> isApprovalCountChange = ValueNotifier(false);
+  static int hrApprovalCount = 0;
+  static int financePOApprovalCount = 0;
+  static int financePRApprovalCount = 0;
+  static int financeINVApprovalCount = 0;
+  static int requestsApprovalCount = 0;
+  static int requestsRejectCount = 0;
+  static int requestsPendingCount = 0;
 }

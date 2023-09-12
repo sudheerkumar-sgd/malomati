@@ -124,11 +124,19 @@ String getCurrentDateByformat(String format) {
 }
 
 String getDateByformat(String format, DateTime dateTime) {
-  return DateFormat(format).format(dateTime);
+  try {
+    return dateTime.year == 0 ? '' : DateFormat(format).format(dateTime);
+  } catch (error) {
+    return '';
+  }
 }
 
 DateTime getDateTimeByString(String format, String date) {
-  return DateFormat(format).parse(date);
+  try {
+    return DateFormat(format).parse(date);
+  } catch (error) {
+    return DateTime(0);
+  }
 }
 
 startTimer({required double duration, required Function callback}) {

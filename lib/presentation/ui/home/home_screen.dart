@@ -101,6 +101,9 @@ class HomeScreen extends StatelessWidget {
         });
       },
     );
+    _homeBloc.getRequestsCount(requestParams: {
+      'USER_NAME': context.userDB.get(userNameKey, defaultValue: '')
+    });
     final currentDate = DateTime.now();
     final currentDayName = DateFormat('EEEE').format(currentDate);
     final currentDay = DateFormat('dd').format(currentDate);
@@ -124,6 +127,23 @@ class HomeScreen extends StatelessWidget {
                   } else if (state is OnFavoriteSuccess) {
                     _favoriteEntity.value = [];
                     _favoriteEntity.value = state.favoriteEntity;
+                  } else if (state is OnRequestsCountSuccess) {
+                    ConstantConfig.hrApprovalCount =
+                        state.requestsCountEntity.hRCOUNT ?? 0;
+                    ConstantConfig.financePOApprovalCount =
+                        state.requestsCountEntity.pOCOUNT ?? 0;
+                    ConstantConfig.financePRApprovalCount =
+                        state.requestsCountEntity.pRCOUNT ?? 0;
+                    ConstantConfig.financeINVApprovalCount =
+                        state.requestsCountEntity.iNVCOUNT ?? 0;
+                    ConstantConfig.requestsApprovalCount =
+                        state.requestsCountEntity.requestsApprovalCount ?? 0;
+                    ConstantConfig.requestsRejectCount =
+                        state.requestsCountEntity.requestsRejectCount ?? 0;
+                    ConstantConfig.requestsPendingCount =
+                        state.requestsCountEntity.requestsPendingCount ?? 0;
+                    ConstantConfig.isApprovalCountChange.value =
+                        !(ConstantConfig.isApprovalCountChange.value);
                   } else if (state is OnApiError) {}
                 },
                 child: Column(
