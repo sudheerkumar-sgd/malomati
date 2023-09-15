@@ -78,6 +78,8 @@ abstract class RemoteDataSource {
       {required apiUrl, required Map<String, dynamic> requestParams});
   Future<RequestsCountEntity> getRequestsCount(
       {required Map<String, dynamic> requestParams});
+  Future<List<FinanceApprovalEntity>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -610,6 +612,34 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       var apiResponse =
           RequstsCountModel.fromJson(response.data).toRequstsCountEntity();
       return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<FinanceApprovalEntity>> getNotificationsList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        notificationsListApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data?['Notifications'] != null) {
+        var financeApprovalListJson = response.data['Notifications'] as List;
+        var financeApprovalList = financeApprovalListJson
+            .map((financeApprovalJson) =>
+                FinanceApprovalModel.fromJson(financeApprovalJson)
+                    .toFinanceApprovalEntity())
+            .toList();
+        return financeApprovalList;
+      } else {
+        return [];
+      }
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

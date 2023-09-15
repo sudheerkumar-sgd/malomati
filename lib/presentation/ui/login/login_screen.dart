@@ -1,9 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 import 'package:malomati/presentation/ui/home/main_screen.dart';
+import 'package:malomati/presentation/ui/home/tour_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
@@ -20,9 +23,15 @@ class LoginScreen extends StatelessWidget {
   final _pwdTextController = TextEditingController();
   final ValueNotifier<bool> _isRememberd = ValueNotifier(false);
   final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<bool> _isShowPassword = ValueNotifier(false);
 
   void dispose() {
     loginBloc.close();
+  }
+
+  onShowHidePassword() {
+    printLog(message: '${_isShowPassword.value}');
+    _isShowPassword.value = !_isShowPassword.value;
   }
 
   @override
@@ -94,9 +103,10 @@ class LoginScreen extends StatelessWidget {
                         context.userDB.delete(passwordKey);
                         context.userDB.delete(isRememberdKey);
                       }
+                      FirebaseMessaging.instance.subscribeToTopic(
+                          _nameTextController.text.toUpperCase());
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
+                          MaterialPageRoute(builder: (context) => TourScreen()),
                           (_) => false);
                     } else {
                       Navigator.pop(context);
@@ -197,29 +207,49 @@ class LoginScreen extends StatelessWidget {
                                           .textInputFiled,
                                       SizedBox(
                                           height: context.resources.dimen.dp10),
-                                      TextInputWidget(
-                                              height:
-                                                  context.resources.dimen.dp40,
-                                              textController:
-                                                  _pwdTextController,
-                                              textInputType:
-                                                  TextInputType.visiblePassword,
-                                              hintText: context.string.password,
-                                              errorMessage:
-                                                  context.string.password,
-                                              focusedBorderColor: context
-                                                  .resources.color.viewBgColor,
-                                              enabledBorderColor: context
-                                                  .resources.color.viewBgColor,
-                                              boarderWidth:
-                                                  context.resources.dimen.dp1,
-                                              boarderRadius:
-                                                  context.resources.dimen.dp10,
-                                              textStyle: context
-                                                  .textFontWeight400
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp13))
-                                          .textInputFiled,
+                                      ValueListenableBuilder(
+                                          valueListenable: _isShowPassword,
+                                          builder: (context, value, child) {
+                                            return TextInputWidget(
+                                                    height: context
+                                                        .resources.dimen.dp40,
+                                                    textController:
+                                                        _pwdTextController,
+                                                    textInputType: value
+                                                        ? TextInputType.text
+                                                        : TextInputType
+                                                            .visiblePassword,
+                                                    hintText:
+                                                        context.string.password,
+                                                    errorMessage:
+                                                        context.string.password,
+                                                    focusedBorderColor: context
+                                                        .resources
+                                                        .color
+                                                        .viewBgColor,
+                                                    enabledBorderColor: context
+                                                        .resources
+                                                        .color
+                                                        .viewBgColor,
+                                                    boarderWidth: context
+                                                        .resources.dimen.dp1,
+                                                    boarderRadius: context
+                                                        .resources.dimen.dp10,
+                                                    textStyle: context
+                                                        .textFontWeight400
+                                                        .onFontSize(context
+                                                            .resources
+                                                            .fontSize
+                                                            .dp13),
+                                                    suffixIconPath: value
+                                                        ? DrawableAssets
+                                                            .icHidePwd
+                                                        : DrawableAssets
+                                                            .icShowPwd,
+                                                    suffixIconClick:
+                                                        onShowHidePassword)
+                                                .textInputFiled;
+                                          }),
                                     ],
                                   ),
                                 ),

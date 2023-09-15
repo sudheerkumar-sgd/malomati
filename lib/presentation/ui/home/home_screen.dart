@@ -25,6 +25,7 @@ import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
@@ -88,12 +89,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    final userName = context.userDB.get(userNameKey, defaultValue: '');
     _refreshAttendance();
     _homeBloc.getDashboardData(
         userName: context.userDB.get(userNameKey, defaultValue: ''));
     _homeBloc.getEventsData(
         departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
+    // _homeBloc.getNotificationsList(requestParams: {
+    //   'USER_NAME': userName,
+    //   'START_DATE': getDateByformat(
+    //       'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 7))),
+    //   'END_DATE': getDateByformat('yyy-MM-dd', DateTime.now())
+    // });
     _onAttendanceRespose.addListener(
       () {
         Timer(const Duration(milliseconds: 200), () {
@@ -101,9 +109,7 @@ class HomeScreen extends StatelessWidget {
         });
       },
     );
-    _homeBloc.getRequestsCount(requestParams: {
-      'USER_NAME': context.userDB.get(userNameKey, defaultValue: '')
-    });
+    _homeBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
     final currentDate = DateTime.now();
     final currentDayName = DateFormat('EEEE').format(currentDate);
     final currentDay = DateFormat('dd').format(currentDate);

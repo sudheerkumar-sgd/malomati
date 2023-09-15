@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
@@ -115,5 +116,48 @@ class Dialogs {
             )).then((value) {
       if (callback != null) callback(value);
     });
+  }
+
+  void showiOSDatePickerDialog(BuildContext context, Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        padding: const EdgeInsets.only(top: 6.0),
+        // The Bottom margin is provided to align the popup above the system
+        // navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: Material(
+                        child: Text(
+                          context.string.done,
+                          style: context.textFontWeight600,
+                        ),
+                      ),
+                    ),
+                  )),
+              SizedBox(width: double.infinity, height: 250, child: child),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

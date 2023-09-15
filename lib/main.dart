@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/injection_container.dart' as di;
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,6 +11,7 @@ import 'config/flavor_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirbaseConfig().initFirbaseMessaging();
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
   FlavorConfig(

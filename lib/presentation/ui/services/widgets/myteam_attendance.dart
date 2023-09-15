@@ -23,6 +23,10 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
   final _servicesBloc = sl<ServicesBloc>();
   final _attendanceBloc = sl<AttendanceBloc>();
   final ValueNotifier<List<EmployeeEntity>> _employeesList = ValueNotifier([]);
+  final ValueNotifier<List<EmployeeEntity>> _notPunchedemployeesList =
+      ValueNotifier([]);
+  final ValueNotifier<bool> _isnotPunchedemployeesExpanded =
+      ValueNotifier(false);
   String userName = '';
   ValueNotifier<double> _fraction = ValueNotifier(0.0);
   int loggedInEmployees = 0;
@@ -92,6 +96,18 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                     percentage =
                         loggedInEmployees / _employeesList.value.length;
                     _fraction.value = percentage;
+                  } else {
+                    final employee = _employeesList.value
+                        .where((element) =>
+                            element.pERSONID ==
+                            (state.attendanceEntity.entity?.attendanceList[0]
+                                    .userid ??
+                                ''))
+                        .first;
+                    final list = _notPunchedemployeesList.value;
+                    list.add(employee);
+                    _notPunchedemployeesList.value = [];
+                    _notPunchedemployeesList.value = list;
                   }
                 }
               }
@@ -209,32 +225,59 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
               height: resources.dimen.dp1,
               color: resources.color.bottomSheetIconUnSelected,
             ),
-            SizedBox(
-              height: resources.dimen.dp15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context.string.employeesNotPunchedIn,
-                  style: context.textFontWeight400
-                      .onFontSize(resources.fontSize.dp15),
+            InkWell(
+              onTap: () {
+                _isnotPunchedemployeesExpanded.value =
+                    !_isnotPunchedemployeesExpanded.value;
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: resources.dimen.dp15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      context.string.employeesNotPunchedIn,
+                      style: context.textFontWeight400
+                          .onFontSize(resources.fontSize.dp15),
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: _fraction,
+                        builder: (context, value, child) {
+                          return Text(
+                            '${_employeesList.value.length - loggedInEmployees}',
+                            style: context.textFontWeight600
+                                .onFontFamily(fontFamily: fontFamilyEN)
+                                .onFontSize(resources.fontSize.dp15),
+                          );
+                        }),
+                  ],
                 ),
-                ValueListenableBuilder(
-                    valueListenable: _fraction,
-                    builder: (context, value, child) {
-                      return Text(
-                        '${_employeesList.value.length - loggedInEmployees}',
-                        style: context.textFontWeight600
-                            .onFontFamily(fontFamily: fontFamilyEN)
-                            .onFontSize(resources.fontSize.dp15),
-                      );
-                    }),
-              ],
+              ),
             ),
-            SizedBox(
-              height: resources.dimen.dp15,
-            ),
+            ValueListenableBuilder(
+                valueListenable: _notPunchedemployeesList,
+                builder: (context, list, child) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        list.length,
+                        (index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            isLocalEn
+                                ? list[index].empNameEN ?? ''
+                                : list[index].empNameAR ?? '',
+                            textAlign: TextAlign.left,
+                            style: context.textFontWeight400
+                                .onFontSize(resources.fontSize.dp15),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
             Divider(
               height: resources.dimen.dp1,
               color: resources.color.bottomSheetIconUnSelected,

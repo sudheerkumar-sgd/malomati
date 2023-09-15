@@ -24,6 +24,7 @@ class FinanceApprovalModel {
   var tOTAL;
   String? iNVOICEDATE;
   var iNVDESCRIPTION;
+  String? bEGINDATE;
 
   FinanceApprovalModel();
 
@@ -53,6 +54,7 @@ class FinanceApprovalModel {
     iNVOICEDATE = json['INVOICE_DATE'];
     iNVDESCRIPTION = json['INV_DESCRIPTION'];
     nOTIFICATIONDESCRIPTION = json['NOTIFICATION_DESCRIPTION'];
+    bEGINDATE = json['BEGIN_DATE'];
   }
 }
 
@@ -84,6 +86,7 @@ extension SourceModelExtension on FinanceApprovalModel {
     financeApprovalEntity.tOTAL = tOTAL;
     financeApprovalEntity.iNVOICEDATE = iNVOICEDATE;
     financeApprovalEntity.iNVDESCRIPTION = iNVDESCRIPTION;
+    financeApprovalEntity.bEGINDATE = bEGINDATE;
     return financeApprovalEntity;
   }
 }

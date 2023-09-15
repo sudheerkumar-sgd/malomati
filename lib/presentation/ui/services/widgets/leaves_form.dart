@@ -198,8 +198,14 @@ class LeavesForm extends StatelessWidget {
     leaveRequestModel.sTARTDATE = _startDateController.text;
     leaveRequestModel.eNDDATE = _endDateController.text;
     if (leaveType == LeaveType.permission) {
-      leaveRequestModel.sTARTTIME = _startTimeController.text;
-      leaveRequestModel.eNDTIME = _endTimeController.text;
+      leaveRequestModel.sTARTTIME = getDateByformat(
+          'HH:MM',
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_startTimeController.text}'));
+      leaveRequestModel.eNDTIME = getDateByformat(
+          'HH:MM',
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_endTimeController.text}'));
     }
     for (int i = 0; i < _uploadFiles.length; i++) {
       switch (i) {

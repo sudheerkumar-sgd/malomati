@@ -13,6 +13,7 @@ import '../../core/error/failures.dart';
 import '../../injection_container.dart';
 import '../entities/attendance_list_entity.dart';
 import '../entities/favorite_entity.dart';
+import '../entities/finance_approval_entity.dart';
 import '../entities/requests_count_entity.dart';
 
 class HomeUseCase extends BaseUseCase {
@@ -37,6 +38,12 @@ class HomeUseCase extends BaseUseCase {
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getRequestsCount(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getNotificationsList(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getNotificationsList(
+        requestParams: requestParams);
   }
 
   Future<Either<Failure, List<FavoriteEntity>>> getFavoritesData(

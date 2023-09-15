@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -188,6 +190,8 @@ List<NameIdEntity> getSalaryTypes(BuildContext context) {
 }
 
 logout(BuildContext context) {
+  FirebaseMessaging.instance
+      .subscribeToTopic(context.userDB.get(userNameKey, defaultValue: ''));
   context.userDB.delete(oracleLoginIdKey);
   context.userDB.delete(userFullNameUsKey);
   context.userDB.delete(userFullNameArKey);
@@ -206,4 +210,14 @@ bool isPdf(String path) {
   final mimeType = lookupMimeType(path);
 
   return mimeType?.startsWith('application/pdf') ?? false;
+}
+
+double getTopSafeAreaHeight(BuildContext context) {
+  printLog(message: '${MediaQuery.of(context).padding.top}');
+  return MediaQuery.of(context).padding.top;
+}
+
+Size getScrrenSize(BuildContext context) {
+  printLog(message: '${MediaQuery.of(context).size}');
+  return MediaQuery.of(context).size;
 }

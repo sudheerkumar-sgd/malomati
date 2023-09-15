@@ -4,11 +4,13 @@ import 'package:malomati/app.dart';
 import 'package:malomati/core/common/common.dart';
 
 import 'config/base_url_config.dart';
+import 'config/firbase_config.dart';
 import 'config/flavor_config.dart';
 import 'package:malomati/injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirbaseConfig().initFirbaseMessaging();
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
   FlavorConfig(

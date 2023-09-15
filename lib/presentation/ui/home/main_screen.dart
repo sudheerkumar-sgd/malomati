@@ -1,17 +1,25 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
+import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:http/http.dart' as http;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -69,6 +77,71 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  initNotificationListeners() async {
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        print("onMessageOpenedApp: $message");
+
+        Dialogs.showInfoDialog(
+          context,
+          PopupType.success,
+          "",
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      print("onMessageOpenedApp: $message");
+
+      Dialogs.showInfoDialog(
+        context,
+        PopupType.success,
+        "",
+      );
+    });
+  }
+
+  Future<void> sendPushMessage() async {
+    if (FirbaseConfig.firbaseToken.isEmpty) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+
+    try {
+      await http.post(
+        Uri.parse('https://malomati-bf7ab.firebaseio.com'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: constructFCMPayload(FirbaseConfig.firbaseToken),
+      );
+      print('FCM request for device sent!');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String constructFCMPayload(String? token) {
+    return jsonEncode({
+      'token': token,
+      'data': {
+        'via': 'FlutterFire Cloud Messaging!!!',
+        'count': '2',
+        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+      },
+      'notification': {
+        'title': 'Hello FlutterFire!',
+        'body': 'This notification was created via FCM!',
+      },
+    });
+  }
+
+  @override
+  void initState() {
+    initNotificationListeners();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Timer(const Duration(seconds: 3), () {
@@ -85,6 +158,9 @@ class _MainScreenState extends State<MainScreen> {
     // const double fillPercent = 80; // fills 56.23% for container from bottom
     // const double fillStop = (100 - fillPercent) / 100;
     // final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+    Future.delayed(Duration(milliseconds: 200), () {
+      sendPushMessage();
+    });
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: context.resources.color.appScaffoldBg,
         statusBarIconBrightness: Brightness.dark));

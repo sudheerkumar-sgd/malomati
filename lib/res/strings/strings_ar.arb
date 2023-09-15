@@ -208,5 +208,19 @@
     "lineAmount":"Line Amount",
     "poNumber":"PO Number:",
     "thereAreNoItems":"There are no items",
-    "thereAreNoAttachment":"There are no attachments"
+    "welcomeTourDescription":"هذه جولة تعريفية لأهم مكونات تطبيق معلوماتي.",
+    "attendanceTourTitle":"الحضور والإنصراف",
+    "attendanceTourDescription":"هنا يمكنك تسجيل الحضور والإنصراف",
+    "dashboardTourTitle":"لوحة التحكم",
+    "dashboardTourDescription":"يتم عرض جميع أرصدة الإجازات المتبقية وعدد بطاقات شكراً لك  ويمكنك رؤية آخر الإحتفالات.",
+    "appBarTourTitle":"البقاء على علم",
+    "appBarTourDescription":"من هنا يمكنك عرض ملفك الشخصي وتغيير اللغة والإشعارات وتسجيل الخروج.",
+    "favouriteTourTitle":"خدماتي المفضلة",
+    "favouriteTourDescription":"يمكنك إنشاء قائمة خدماتك للمفضلة هنا البدء في التقديم على الخدمة.",
+    "requestsTourTitle":"تاريخ السجلات",
+    "requestsTourDescription":"هنا يمكنك رؤية كافة سجلات الطلب والحضور الخاصة بك.",
+    "endTour":"نهاية الجولة",
+    "next":"القادم",
+    "prev":"السابق",
+    "notifications":"إشعارات"
 }

@@ -25,6 +25,8 @@ const String isRememberdKey = "is_rememberd";
 const String isMaangerKey = "is_manager";
 const String favoriteKey = "favorites";
 const String departmentIdKey = "department_id";
+const String appTourKey = "app_tour";
+const String deletedNotificationKey = "deleted_notification_key";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";

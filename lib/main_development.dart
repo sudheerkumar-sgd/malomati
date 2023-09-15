@@ -6,10 +6,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/app.dart';
 
 import 'config/base_url_config.dart';
+import 'config/firbase_config.dart';
 import 'config/flavor_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirbaseConfig().initFirbaseMessaging();
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
   FlavorConfig(

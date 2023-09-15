@@ -53,3 +53,5 @@ const String financePOItemsApiUrl =
     'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/POItems';
 const String requestsCountApiUrl =
     'UAQSGD_MOB_ERP_GetNotificationCount/GetCount';
+const String notificationsListApiUrl =
+    'UAQSGD_MOB_ERP_GenericNotificationRequest/GetNotifications';

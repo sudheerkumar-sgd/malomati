@@ -66,4 +66,6 @@ abstract class ApisRepository {
       {required apiUrl, required Map<String, dynamic> requestParams});
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
 }

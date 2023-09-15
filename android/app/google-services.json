@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "393239977540",
+    "firebase_url": "https://malomati-bf7ab.firebaseio.com",
+    "project_id": "malomati-bf7ab",
+    "storage_bucket": "malomati-bf7ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393239977540:android:687c4f47887c8836a82611",
+        "android_client_info": {
+          "package_name": "com.gov.uaq.hrms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393239977540-inlgnnc2fir916b31pv3fp6squkkq44k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gov.uaq.hrms",
+            "certificate_hash": "1ea7de74990193e0833c77387f3ec0089e9497d8"
+          }
+        },
+        {
+          "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaqgvg0ifu3xvyu6qq5PCIuGtVVt_Yj90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393239977540-duqg6o43l62n8rhk6g89d8k4smo1hqoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gov.uaq.hrms.ae"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393239977540:android:c469fc23dbd2a7b4a82611",
+        "android_client_info": {
+          "package_name": "com.gov.uaq.hrms.ae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393239977540-u1r6ge3ig6fcspsggni8tcl274cg6prg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gov.uaq.hrms.ae",
+            "certificate_hash": "33391f6f18e9868490a5da8051e54ea4f14c8bfc"
+          }
+        },
+        {
+          "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaqgvg0ifu3xvyu6qq5PCIuGtVVt_Yj90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393239977540-duqg6o43l62n8rhk6g89d8k4smo1hqoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gov.uaq.hrms.ae"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393239977540:android:a784ca0e2f3b56aba82611",
+        "android_client_info": {
+          "package_name": "com.gov.uaq.hrms.ae.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393239977540-e3b8rk9c5phg95u1iljqag71an2555f0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gov.uaq.hrms.ae.test",
+            "certificate_hash": "33391f6f18e9868490a5da8051e54ea4f14c8bfc"
+          }
+        },
+        {
+          "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaqgvg0ifu3xvyu6qq5PCIuGtVVt_Yj90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393239977540-oulcia1a10s7ud0jmjjrrhm4rmt15b99.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393239977540-duqg6o43l62n8rhk6g89d8k4smo1hqoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gov.uaq.hrms.ae"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

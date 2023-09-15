@@ -60,7 +60,28 @@ class OvertimeScreen extends StatelessWidget {
       BuildContext context, TextEditingController controller,
       {TimeOfDay? startTime}) async {
     final TimeOfDay? picked = await showTimePicker(
-        context: context, initialTime: startTime ?? TimeOfDay.now());
+      context: context,
+      initialTime: startTime ?? TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: context.resources.color.viewBgColor,
+              onSurface: context.resources.color.viewBgColor, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    context.resources.color.viewBgColor, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        ),
+      ),
+    );
     if (picked != null && context.mounted) {
       controller.text = controller.text =
           '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
@@ -439,6 +460,7 @@ class OvertimeScreen extends StatelessWidget {
                               isEnabled: true,
                               maxLines: 8,
                               labelText: context.string.reason,
+                              errorMessage: context.string.reason,
                               textController: _reasonController,
                             ),
                           ],

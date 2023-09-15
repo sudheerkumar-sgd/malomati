@@ -52,6 +52,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.error?.toString() ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -71,6 +73,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.toString()));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -90,6 +94,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -109,6 +115,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -126,6 +134,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -145,6 +155,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -164,6 +176,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -179,6 +193,8 @@ class ApisRepositoryImpl extends ApisRepository {
       return Right(list);
     } on DioException catch (error) {
       return Left(ServerFailure(error.message ?? ''));
+    } catch (error) {
+      return Left(Exception(error.toString()));
     }
   }
 
@@ -195,6 +211,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -216,6 +234,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiEntity);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -233,6 +253,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -250,6 +272,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -267,6 +291,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -284,6 +310,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -301,6 +329,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -318,6 +348,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -335,6 +367,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -390,6 +424,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -407,6 +443,8 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());
@@ -424,6 +462,27 @@ class ApisRepositoryImpl extends ApisRepository {
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getNotificationsList(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getNotificationsList(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
       }
     } else {
       return Left(ConnectionFailure());

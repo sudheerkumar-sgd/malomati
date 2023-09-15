@@ -9,7 +9,9 @@ import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
+import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../core/common/common_utils.dart';
 import '../../../data/model/api_request_model.dart';
@@ -169,32 +171,48 @@ class PayslipsScreen extends StatelessWidget {
                                       textDirection: TextDirection.ltr,
                                       child: Column(
                                         children: [
-                                          RichText(
-                                              textAlign: TextAlign.center,
-                                              text: TextSpan(
-                                                  text:
-                                                      'Payslip ${selectedMonth.substring(0, 3)} $selectedYear\n',
-                                                  style: context
-                                                      .textFontWeight600
-                                                      .onFontSize(
-                                                          resources.dimen.dp12)
-                                                      .onFontFamily(
-                                                          fontFamily:
-                                                              fontFamily)
-                                                      .copyWith(height: 1.5),
-                                                  children: [
-                                                    TextSpan(
-                                                      text:
-                                                          'Personal Information',
-                                                      style: context
-                                                          .textFontWeight600
-                                                          .onFontFamily(
-                                                              fontFamily:
-                                                                  fontFamily)
-                                                          .onFontSize(
-                                                              playslipFontSize),
-                                                    ),
-                                                  ])),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text(
+                                                    'Payslip\n${selectedMonth.substring(0, 3)} $selectedYear\n',
+                                                    style: context
+                                                        .textFontWeight600
+                                                        .onFontSize(resources
+                                                            .dimen.dp12)
+                                                        .onFontFamily(
+                                                            fontFamily:
+                                                                fontFamily)
+                                                        .copyWith(height: 1.5),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: ImageWidget(
+                                                        path: DrawableAssets
+                                                            .icGovUAQ)
+                                                    .loadImage,
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: resources.dimen.dp10,
+                                          ),
+                                          Text(
+                                            'Personal Information',
+                                            style: context.textFontWeight600
+                                                .onFontFamily(
+                                                    fontFamily: fontFamily)
+                                                .onFontSize(playslipFontSize),
+                                          ),
                                           SizedBox(
                                             height: resources.dimen.dp20,
                                           ),

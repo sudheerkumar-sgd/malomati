@@ -7,6 +7,8 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../home/notification_screen.dart';
+
 class UserAppBarWidget extends StatelessWidget {
   final String title;
   const UserAppBarWidget({required this.title, super.key});
@@ -53,12 +55,23 @@ class UserAppBarWidget extends StatelessWidget {
               SizedBox(
                 width: context.resources.dimen.dp5,
               ),
-              Container(
-                  padding: EdgeInsets.all(context.resources.dimen.dp5),
-                  child: ImageWidget(
-                          path: DrawableAssets.icBell,
-                          backgroundTint: context.resources.color.textColor)
-                      .loadImage),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: NotificationsScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                    padding: EdgeInsets.all(context.resources.dimen.dp5),
+                    child: ImageWidget(
+                            path: DrawableAssets.icBell,
+                            backgroundTint: context.resources.color.textColor)
+                        .loadImage),
+              ),
               SizedBox(
                 width: context.resources.dimen.dp5,
               ),

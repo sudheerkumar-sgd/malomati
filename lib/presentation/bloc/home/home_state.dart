@@ -53,6 +53,14 @@ class OnRequestsCountSuccess extends HomeState {
   List<Object?> get props => [requestsCountEntity];
 }
 
+class OnNotificationsListSuccess extends HomeState {
+  final List<FinanceApprovalEntity> notificationsList;
+
+  OnNotificationsListSuccess({required this.notificationsList});
+  @override
+  List<Object?> get props => [notificationsList];
+}
+
 class OnApiError extends HomeState {
   final String message;
 

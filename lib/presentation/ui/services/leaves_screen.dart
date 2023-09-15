@@ -1,4 +1,7 @@
 // ignore_for_file: must_be_immutable
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -97,44 +100,17 @@ class LeavesScreen extends StatelessWidget {
       BuildContext context, TextEditingController controller,
       {DateTime? firstDate, DateTime? lastDate}) async {
     final currentDate = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: firstDate ?? currentDate,
-      firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-      lastDate: lastDate ?? DateTime(2024),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: context.resources.color.viewBgColor, // header text color
-            onSurface: context.resources.color.viewBgColor, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor:
-                  context.resources.color.viewBgColor, // button text color
-            ),
-          ),
-        ),
-        child: child!,
-      ),
-    );
-    if (picked != null) {
-      controller.text = getDateByformat(dateFormat, picked);
-    }
-  }
-
-  Future<void> _selectTime(
-      BuildContext context, TextEditingController controller,
-      {TimeOfDay? startTime}) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: startTime ?? TimeOfDay.now(),
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-        child: Theme(
+    if (Platform.isAndroid) {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: firstDate ?? currentDate,
+        firstDate:
+            firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
+        lastDate: lastDate ?? DateTime(2024),
+        builder: (context, child) => Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: context.resources.color.viewBgColor,
+              primary: context.resources.color.viewBgColor, // header text color
               onSurface: context.resources.color.viewBgColor, // body text color
             ),
             textButtonTheme: TextButtonThemeData(
@@ -146,11 +122,69 @@ class LeavesScreen extends StatelessWidget {
           ),
           child: child!,
         ),
-      ),
-    );
-    if (picked != null) {
-      controller.text =
-          '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
+      );
+      if (picked != null) {
+        controller.text = getDateByformat(dateFormat, picked);
+      }
+    } else {
+      Dialogs().showiOSDatePickerDialog(
+          context,
+          CupertinoDatePicker(
+            initialDateTime: firstDate ?? currentDate,
+            mode: CupertinoDatePickerMode.date,
+            use24hFormat: true,
+            // This is called when the user changes the time.
+            onDateTimeChanged: (DateTime newTime) {
+              controller.text = getDateByformat(dateFormat, newTime);
+            },
+          ));
+    }
+  }
+
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller,
+      {DateTime? startTime}) async {
+    if (Platform.isAndroid) {
+      final TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(startTime ?? DateTime.now()),
+        initialEntryMode: TimePickerEntryMode.dial,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: context.resources.color.viewBgColor,
+                onSurface:
+                    context.resources.color.viewBgColor, // body text color
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor:
+                      context.resources.color.viewBgColor, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          ),
+        ),
+      );
+      if (picked != null) {
+        controller.text =
+            '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
+      }
+    } else {
+      Dialogs().showiOSDatePickerDialog(
+          context,
+          CupertinoDatePicker(
+            initialDateTime: startTime ?? DateTime.now(),
+            mode: CupertinoDatePickerMode.time,
+            use24hFormat: true,
+            // This is called when the user changes the time.
+            onDateTimeChanged: (DateTime newTime) {
+              controller.text = getDateByformat(timeFormat, newTime);
+            },
+          ));
     }
   }
 
@@ -187,8 +221,14 @@ class LeavesScreen extends StatelessWidget {
     leaveRequestModel.sTARTDATE = _startDateController.text;
     leaveRequestModel.eNDDATE = _endDateController.text;
     if (leaveType == LeaveType.permission) {
-      leaveRequestModel.sTARTTIME = _startTimeController.text;
-      leaveRequestModel.eNDTIME = _endTimeController.text;
+      leaveRequestModel.sTARTTIME = getDateByformat(
+          'HH:MM',
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_startTimeController.text}'));
+      leaveRequestModel.eNDTIME = getDateByformat(
+          'HH:MM',
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_endTimeController.text}'));
     }
     for (int i = 0; i < _uploadFiles.length; i++) {
       switch (i) {
@@ -240,6 +280,7 @@ class LeavesScreen extends StatelessWidget {
       },
     );
     if (leaveType == LeaveType.permission) {
+      leaveSubType = LeaveSubType.confirmed;
       _endTimeController.addListener(
         () {
           if (_endTimeController.text.isNotEmpty) {
@@ -430,7 +471,8 @@ class LeavesScreen extends StatelessWidget {
                             context.string.planned,
                             context.string.confirmed
                           ],
-                          selectedPossition: 0,
+                          selectedPossition:
+                              leaveType == LeaveType.permission ? 1 : 0,
                           onToggleCallback: (value) {
                             if (value == 0) {
                               leaveSubType = LeaveSubType.planned;
@@ -569,12 +611,11 @@ class LeavesScreen extends StatelessWidget {
                                             Expanded(
                                               child: InkWell(
                                                 onTap: () {
-                                                  TimeOfDay? startTime;
+                                                  DateTime? startTime;
                                                   try {
-                                                    startTime = TimeOfDay.fromDateTime(
-                                                        getDateTimeByString(
-                                                            '$dateFormat $timeFormat',
-                                                            '${_startDateController.text} ${_startTimeController.text}'));
+                                                    startTime = getDateTimeByString(
+                                                        '$dateFormat $timeFormat',
+                                                        '${_startDateController.text} ${_startTimeController.text}');
                                                   } catch (err) {
                                                     printLog(
                                                         message:

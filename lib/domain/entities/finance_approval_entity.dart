@@ -22,6 +22,7 @@ class FinanceApprovalEntity {
   var tOTAL;
   String? iNVOICEDATE;
   var iNVDESCRIPTION;
+  String? bEGINDATE;
 
   FinanceApprovalEntity();
 }

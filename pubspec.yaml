@@ -60,6 +60,9 @@ dependencies:
   connectivity_plus: ^2.1.0
   flutter_native_splash: ^2.3.2
   image_picker: ^1.0.4
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  flutter_local_notifications: ^15.1.1
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -124,6 +127,43 @@ flutter:
      - assets/images/map/map_EC_office.png
      - assets/images/map/map_DIWAN_office.png
      - assets/images/map/map_DC_office.png
+  # tour images:   
+     - assets/images/home1.svg
+     - assets/images/tour/home_page.png
+     - assets/images/tour/1.5x/home_page.png
+     - assets/images/tour/2.0x/home_page.png
+     - assets/images/tour/3.0x/home_page.png
+     - assets/images/tour/4.0x/home_page.png
+     - assets/images/tour/home_page_overly.png
+     - assets/images/tour/1.5x/home_page_overly.png
+     - assets/images/tour/2.0x/home_page_overly.png
+     - assets/images/tour/3.0x/home_page_overly.png
+     - assets/images/tour/4.0x/home_page_overly.png
+     - assets/images/tour/home_page_overly1.png
+     - assets/images/tour/1.5x/home_page_overly1.png
+     - assets/images/tour/2.0x/home_page_overly1.png
+     - assets/images/tour/3.0x/home_page_overly1.png
+     - assets/images/tour/4.0x/home_page_overly1.png
+     - assets/images/tour/home_page_overly2.png
+     - assets/images/tour/1.5x/home_page_overly2.png
+     - assets/images/tour/2.0x/home_page_overly2.png
+     - assets/images/tour/3.0x/home_page_overly2.png
+     - assets/images/tour/4.0x/home_page_overly2.png
+     - assets/images/tour/home_page_overly3.png
+     - assets/images/tour/1.5x/home_page_overly3.png
+     - assets/images/tour/2.0x/home_page_overly3.png
+     - assets/images/tour/3.0x/home_page_overly3.png
+     - assets/images/tour/4.0x/home_page_overly3.png
+     - assets/images/tour/home_page_overly4.png
+     - assets/images/tour/1.5x/home_page_overly4.png
+     - assets/images/tour/2.0x/home_page_overly4.png
+     - assets/images/tour/3.0x/home_page_overly4.png
+     - assets/images/tour/4.0x/home_page_overly4.png
+     - assets/images/tour/home_page_overly5.png
+     - assets/images/tour/1.5x/home_page_overly5.png
+     - assets/images/tour/2.0x/home_page_overly5.png
+     - assets/images/tour/3.0x/home_page_overly5.png
+     - assets/images/tour/4.0x/home_page_overly5.png
   # app images:
      - assets/images/app_icon.png
      - assets/images/login_cover_image.png
@@ -198,6 +238,10 @@ flutter:
      - assets/images/ic_smart_uaq.svg
      - assets/images/ic_app_icon.svg
      - assets/images/ic_attachment.svg
+     - assets/images/ic_hide_pwd.svg
+     - assets/images/ic_show_pwd.svg
+     - assets/images/ic_tooltip.svg
+     - assets/images/ic_trash.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
