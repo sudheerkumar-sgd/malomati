@@ -118,8 +118,8 @@ class Dialogs {
     });
   }
 
-  void showiOSDatePickerDialog(BuildContext context, Widget child) {
-    showCupertinoModalPopup<void>(
+  Future showiOSDatePickerDialog(BuildContext context, Widget child) {
+    return showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => Container(
         padding: const EdgeInsets.only(top: 6.0),

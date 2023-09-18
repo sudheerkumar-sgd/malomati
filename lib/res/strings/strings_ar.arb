@@ -219,8 +219,9 @@
     "favouriteTourDescription":"يمكنك إنشاء قائمة خدماتك للمفضلة هنا البدء في التقديم على الخدمة.",
     "requestsTourTitle":"تاريخ السجلات",
     "requestsTourDescription":"هنا يمكنك رؤية كافة سجلات الطلب والحضور الخاصة بك.",
-    "endTour":"نهاية الجولة",
-    "next":"القادم",
+    "endTour":"إنهاء",
+    "next":"التالي",
     "prev":"السابق",
+    "doneEnd":"نهاية",
     "notifications":"إشعارات"
 }

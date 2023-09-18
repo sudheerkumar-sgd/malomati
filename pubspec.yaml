@@ -134,6 +134,11 @@ flutter:
      - assets/images/tour/2.0x/home_page.png
      - assets/images/tour/3.0x/home_page.png
      - assets/images/tour/4.0x/home_page.png
+     - assets/images/tour/home page_ar.png
+     - assets/images/tour/1.5x/home page_ar.png
+     - assets/images/tour/2.0x/home page_ar.png
+     - assets/images/tour/3.0x/home page_ar.png
+     - assets/images/tour/4.0x/home page_ar.png
      - assets/images/tour/home_page_overly.png
      - assets/images/tour/1.5x/home_page_overly.png
      - assets/images/tour/2.0x/home_page_overly.png
@@ -154,6 +159,11 @@ flutter:
      - assets/images/tour/2.0x/home_page_overly3.png
      - assets/images/tour/3.0x/home_page_overly3.png
      - assets/images/tour/4.0x/home_page_overly3.png
+     - assets/images/tour/home_page_overly3_ar.png
+     - assets/images/tour/1.5x/home_page_overly3_ar.png
+     - assets/images/tour/2.0x/home_page_overly3_ar.png
+     - assets/images/tour/3.0x/home_page_overly3_ar.png
+     - assets/images/tour/4.0x/home_page_overly3_ar.png
      - assets/images/tour/home_page_overly4.png
      - assets/images/tour/1.5x/home_page_overly4.png
      - assets/images/tour/2.0x/home_page_overly4.png
@@ -164,6 +174,11 @@ flutter:
      - assets/images/tour/2.0x/home_page_overly5.png
      - assets/images/tour/3.0x/home_page_overly5.png
      - assets/images/tour/4.0x/home_page_overly5.png
+     - assets/images/tour/home_page_overly5_ar.png
+     - assets/images/tour/1.5x/home_page_overly5_ar.png
+     - assets/images/tour/2.0x/home_page_overly5_ar.png
+     - assets/images/tour/3.0x/home_page_overly5_ar.png
+     - assets/images/tour/4.0x/home_page_overly5_ar.png
   # app images:
      - assets/images/app_icon.png
      - assets/images/login_cover_image.png

@@ -15,12 +15,17 @@ class DrawableAssets {
   static const gifBirthdayAr = '${drawablePath}gif/birthday_ar.gif';
   //tour images
   static const homePage = '${drawablePath}tour/home_page.png';
+  static const homePageAr = '${drawablePath}tour/home page_ar.png';
   static const homePageOverly = '${drawablePath}tour/home_page_overly.png';
   static const homePageOverly1 = '${drawablePath}tour/home_page_overly1.png';
   static const homePageOverly2 = '${drawablePath}tour/home_page_overly2.png';
   static const homePageOverly3 = '${drawablePath}tour/home_page_overly3.png';
+  static const homePageOverly3Ar =
+      '${drawablePath}tour/home_page_overly3_ar.png';
   static const homePageOverly4 = '${drawablePath}tour/home_page_overly4.png';
   static const homePageOverly5 = '${drawablePath}tour/home_page_overly5.png';
+  static const homePageOverly5Ar =
+      '${drawablePath}tour/home_page_overly5_ar.png';
   static const home1 = '${drawablePath}home1.svg';
   static const homePage2 = '${drawablePath}tour/home_page2.png';
   //app icons

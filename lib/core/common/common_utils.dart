@@ -191,7 +191,7 @@ List<NameIdEntity> getSalaryTypes(BuildContext context) {
 
 logout(BuildContext context) {
   FirebaseMessaging.instance
-      .subscribeToTopic(context.userDB.get(userNameKey, defaultValue: ''));
+      .unsubscribeFromTopic(context.userDB.get(userNameKey, defaultValue: ''));
   context.userDB.delete(oracleLoginIdKey);
   context.userDB.delete(userFullNameUsKey);
   context.userDB.delete(userFullNameArKey);

@@ -22,6 +22,7 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 import 'package:file_picker/file_picker.dart';
 
+import '../../utils/date_time_util.dart';
 import '../../widgets/alert_dialog_widget.dart';
 import '../../widgets/animated_toggle.dart';
 import 'dialog_upload_attachment.dart';
@@ -77,59 +78,18 @@ class LeavesForm extends StatelessWidget {
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
       {DateTime? firstDate, DateTime? lastDate}) async {
-    final currentDate = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: firstDate ?? currentDate,
-      firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-      lastDate: lastDate ?? DateTime(2024),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: context.resources.color.viewBgColor,
-            onSurface: context.resources.color.viewBgColor, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor:
-                  context.resources.color.viewBgColor, // button text color
-            ),
-          ),
-        ),
-        child: child!,
-      ),
-    );
-    if (picked != null) {
-      controller.text = getDateByformat(dateFormat, picked);
-    }
+    selectDate(context, firstDate: firstDate, lastDate: lastDate,
+        callBack: (dateTime) {
+      controller.text = getDateByformat(dateFormat, dateTime);
+    });
   }
 
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller,
-      {TimeOfDay? startTime}) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: startTime ?? TimeOfDay.now(),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.light(
-            primary: context.resources.color.viewBgColor,
-            onSurface: context.resources.color.viewBgColor, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              foregroundColor:
-                  context.resources.color.viewBgColor, // button text color
-            ),
-          ),
-        ),
-        child: child!,
-      ),
-    );
-    if (picked != null) {
-      controller.text =
-          '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
-    }
+      {DateTime? startTime}) async {
+    selectTime(context, startTime: startTime, callBack: (dateTime) {
+      controller.text = getDateByformat(timeFormat, dateTime);
+    });
   }
 
   Future<void> _showSelectFileOptions(BuildContext context) async {
@@ -460,13 +420,14 @@ class LeavesForm extends StatelessWidget {
                                           Expanded(
                                             child: InkWell(
                                               onTap: () {
-                                                final startTime = TimeOfDay
-                                                    .fromDateTime(getDateTimeByString(
-                                                        '$dateFormat $timeFormat',
-                                                        '${_startDateController.text} ${_startTimeController.text}'));
                                                 _selectTime(
                                                     context, _endTimeController,
-                                                    startTime: startTime);
+                                                    startTime: getDateTimeByString(
+                                                        '$dateFormat $timeFormat',
+                                                        _endTimeController
+                                                                .text.isEmpty
+                                                            ? '${_startDateController.text} ${_startTimeController.text}'
+                                                            : '${_endDateController.text} ${_endTimeController.text}'));
                                               },
                                               child: RightIconTextWidget(
                                                 height: resources.dimen.dp27,

@@ -505,6 +505,7 @@
     "endTour":"End Tour",
     "next":"Next",
     "prev":"Prev",
+    "doneEnd":"Done",
     "notifications":"Notifications",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {

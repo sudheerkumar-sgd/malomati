@@ -106,7 +106,11 @@ class LoginScreen extends StatelessWidget {
                       FirebaseMessaging.instance.subscribeToTopic(
                           _nameTextController.text.toUpperCase());
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => TourScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => context.userDB
+                                      .get(appTourKey, defaultValue: false)
+                                  ? const MainScreen()
+                                  : TourScreen()),
                           (_) => false);
                     } else {
                       Navigator.pop(context);

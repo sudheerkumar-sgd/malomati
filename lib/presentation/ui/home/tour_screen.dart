@@ -40,7 +40,9 @@ class TourScreen extends StatelessWidget {
       {
         'title': context.string.appBarTourTitle,
         'description': context.string.appBarTourDescription,
-        'image': DrawableAssets.homePageOverly3
+        'image': isLocalEn
+            ? DrawableAssets.homePageOverly3
+            : DrawableAssets.homePageOverly3Ar
       },
       {
         'title': context.string.favouriteTourTitle,
@@ -50,7 +52,9 @@ class TourScreen extends StatelessWidget {
       {
         'title': context.string.requestsTourTitle,
         'description': context.string.requestsTourDescription,
-        'image': DrawableAssets.homePageOverly5
+        'image': isLocalEn
+            ? DrawableAssets.homePageOverly5
+            : DrawableAssets.homePageOverly5Ar
       },
     ];
     context.userDB.put(appTourKey, true);
@@ -72,7 +76,9 @@ class TourScreen extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       ImageWidget(
-                              path: DrawableAssets.homePage,
+                              path: isLocalEn
+                                  ? DrawableAssets.homePage
+                                  : DrawableAssets.homePageAr,
                               boxType: BoxFit.fill)
                           .loadImage,
                       ImageWidget(
@@ -113,8 +119,10 @@ class TourScreen extends StatelessWidget {
                     case 3:
                       {
                         margin = screenSize.height * .14;
-                        alignment = Alignment.topRight;
-                        tooltipAlignment = Alignment.topRight;
+                        alignment =
+                            isLocalEn ? Alignment.topRight : Alignment.topLeft;
+                        tooltipAlignment =
+                            isLocalEn ? Alignment.topRight : Alignment.topLeft;
                       }
                     case 4:
                       {
@@ -125,7 +133,8 @@ class TourScreen extends StatelessWidget {
                     case 5:
                       {
                         margin = screenSize.height * .74;
-                        alignment = Alignment.topRight;
+                        alignment =
+                            isLocalEn ? Alignment.topRight : Alignment.topLeft;
                         bottomTooltipShow = true;
                       }
                   }

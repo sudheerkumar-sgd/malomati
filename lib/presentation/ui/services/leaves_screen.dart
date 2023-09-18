@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -13,6 +11,7 @@ import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/services/widgets/dialog_upload_attachment.dart';
+import 'package:malomati/presentation/ui/utils/date_time_util.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -99,93 +98,18 @@ class LeavesScreen extends StatelessWidget {
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
       {DateTime? firstDate, DateTime? lastDate}) async {
-    final currentDate = DateTime.now();
-    if (Platform.isAndroid) {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: firstDate ?? currentDate,
-        firstDate:
-            firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-        lastDate: lastDate ?? DateTime(2024),
-        builder: (context, child) => Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: context.resources.color.viewBgColor, // header text color
-              onSurface: context.resources.color.viewBgColor, // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor:
-                    context.resources.color.viewBgColor, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        ),
-      );
-      if (picked != null) {
-        controller.text = getDateByformat(dateFormat, picked);
-      }
-    } else {
-      Dialogs().showiOSDatePickerDialog(
-          context,
-          CupertinoDatePicker(
-            initialDateTime: firstDate ?? currentDate,
-            mode: CupertinoDatePickerMode.date,
-            use24hFormat: true,
-            // This is called when the user changes the time.
-            onDateTimeChanged: (DateTime newTime) {
-              controller.text = getDateByformat(dateFormat, newTime);
-            },
-          ));
-    }
+    selectDate(context, firstDate: firstDate, lastDate: lastDate,
+        callBack: (dateTime) {
+      controller.text = getDateByformat(dateFormat, dateTime);
+    });
   }
 
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller,
       {DateTime? startTime}) async {
-    if (Platform.isAndroid) {
-      final TimeOfDay? picked = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.fromDateTime(startTime ?? DateTime.now()),
-        initialEntryMode: TimePickerEntryMode.dial,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: ColorScheme.light(
-                primary: context.resources.color.viewBgColor,
-                onSurface:
-                    context.resources.color.viewBgColor, // body text color
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  foregroundColor:
-                      context.resources.color.viewBgColor, // button text color
-                ),
-              ),
-            ),
-            child: child!,
-          ),
-        ),
-      );
-      if (picked != null) {
-        controller.text =
-            '${picked.hourOfPeriod > 9 ? picked.hourOfPeriod : '0${picked.hourOfPeriod}'}:${picked.minute > 9 ? picked.minute : '0${picked.minute}'} ${picked.period.name.toUpperCase()}';
-      }
-    } else {
-      Dialogs().showiOSDatePickerDialog(
-          context,
-          CupertinoDatePicker(
-            initialDateTime: startTime ?? DateTime.now(),
-            mode: CupertinoDatePickerMode.time,
-            use24hFormat: true,
-            // This is called when the user changes the time.
-            onDateTimeChanged: (DateTime newTime) {
-              controller.text = getDateByformat(timeFormat, newTime);
-            },
-          ));
-    }
+    selectTime(context, startTime: startTime, callBack: (dateTime) {
+      controller.text = getDateByformat(timeFormat, dateTime);
+    });
   }
 
   Future<void> _showSelectFileOptions(BuildContext context) async {
@@ -546,8 +470,11 @@ class LeavesScreen extends StatelessWidget {
                               onTap: () {
                                 if (leaveType != LeaveType.permission) {
                                   _selectDate(context, _endDateController,
-                                      firstDate: getDateTimeByString(dateFormat,
-                                          _startDateController.text));
+                                      firstDate: getDateTimeByString(
+                                          dateFormat,
+                                          _endDateController.text.isEmpty
+                                              ? _startDateController.text
+                                              : _endDateController.text));
                                 } else {
                                   _selectDate(context, _endDateController,
                                       firstDate: getDateTimeByString(dateFormat,
@@ -615,7 +542,10 @@ class LeavesScreen extends StatelessWidget {
                                                   try {
                                                     startTime = getDateTimeByString(
                                                         '$dateFormat $timeFormat',
-                                                        '${_startDateController.text} ${_startTimeController.text}');
+                                                        _endTimeController
+                                                                .text.isEmpty
+                                                            ? '${_startDateController.text} ${_startTimeController.text}'
+                                                            : '${_endDateController.text} ${_endTimeController.text}');
                                                   } catch (err) {
                                                     printLog(
                                                         message:
