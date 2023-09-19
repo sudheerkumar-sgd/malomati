@@ -25,6 +25,8 @@ class FinanceApprovalModel {
   String? iNVOICEDATE;
   var iNVDESCRIPTION;
   String? bEGINDATE;
+  String? dOCUMENTNUMBER;
+  String? pURREQNUM;
 
   FinanceApprovalModel();
 
@@ -55,6 +57,8 @@ class FinanceApprovalModel {
     iNVDESCRIPTION = json['INV_DESCRIPTION'];
     nOTIFICATIONDESCRIPTION = json['NOTIFICATION_DESCRIPTION'];
     bEGINDATE = json['BEGIN_DATE'];
+    dOCUMENTNUMBER = '${json['DOCUMENT_NUMBER']}';
+    pURREQNUM = '${json['PUR_REQ_NUM']}';
   }
 }
 
@@ -86,6 +90,8 @@ extension SourceModelExtension on FinanceApprovalModel {
     financeApprovalEntity.tOTAL = tOTAL;
     financeApprovalEntity.iNVOICEDATE = iNVOICEDATE;
     financeApprovalEntity.iNVDESCRIPTION = iNVDESCRIPTION;
+    financeApprovalEntity.dOCUMENTNUMBER = dOCUMENTNUMBER;
+    financeApprovalEntity.pURREQNUM = pURREQNUM;
     financeApprovalEntity.bEGINDATE = bEGINDATE;
     return financeApprovalEntity;
   }

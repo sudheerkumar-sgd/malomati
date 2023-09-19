@@ -7,7 +7,6 @@ import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
-import 'package:malomati/presentation/ui/services/widgets/dialog_request_answer_more_info.dart';
 import 'package:malomati/presentation/ui/services/widgets/view_attachments_widget.dart';
 import 'package:malomati/presentation/ui/services/widgets/view_items_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -72,7 +71,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
           builder: (context) {
             return showItems
                 ? ViewItemsWidget(
-                    type: FinanceApprovalType.pr,
+                    type: FinanceApprovalType.invoice,
                     data: financeDetailsItems?.financeNotificationDetails ?? [],
                   )
                 : ViewAttachmentsWidget(
@@ -178,7 +177,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                               height: resources.dimen.dp20,
                             ),
                             Text(
-                              '${context.string.invoiceID} ',
+                              '${context.string.invoiceID} ${approvalDetails.nOTIFICATIONID}',
                               style: context.textFontWeight600
                                   .onFontSize(resources.fontSize.dp13),
                             ),
@@ -350,43 +349,93 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            InkWell(
-                              onTap: () {
-                                _submitHrApproval(
-                                    context,
-                                    '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                    APPROVE);
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: context.resources.dimen.dp15,
-                                    vertical: context.resources.dimen.dp5),
-                                decoration: BackgroundBoxDecoration(
-                                        boxColor: context
-                                            .resources.color.colorGreen26B757,
-                                        radious: context.resources.dimen.dp15)
-                                    .roundedCornerBox,
-                                child: Text(
-                                  context.string.approve,
-                                  style: context.textFontWeight400
-                                      .onFontSize(
-                                          context.resources.fontSize.dp15)
-                                      .onColor(
-                                          context.resources.color.colorWhite)
-                                      .copyWith(height: 1),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp10,
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     _submitHrApproval(
+                            //         context,
+                            //         '${approvalDetails.nOTIFICATIONID ?? ''}',
+                            //         APPROVE);
+                            //   },
+                            //   child: Container(
+                            //     width: double.infinity,
+                            //     padding: EdgeInsets.symmetric(
+                            //         horizontal: context.resources.dimen.dp15,
+                            //         vertical: context.resources.dimen.dp5),
+                            //     decoration: BackgroundBoxDecoration(
+                            //             boxColor: context
+                            //                 .resources.color.colorGreen26B757,
+                            //             radious: context.resources.dimen.dp15)
+                            //         .roundedCornerBox,
+                            //     child: Text(
+                            //       context.string.approve,
+                            //       style: context.textFontWeight400
+                            //           .onFontSize(
+                            //               context.resources.fontSize.dp15)
+                            //           .onColor(
+                            //               context.resources.color.colorWhite)
+                            //           .copyWith(height: 1),
+                            //       textAlign: TextAlign.center,
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   height: resources.dimen.dp10,
+                            // ),
                             Row(
                               children: [
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
+                                      _submitHrApproval(
+                                          context,
+                                          '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                          APPROVE);
+                                      // _submitHrApproval(
+                                      //     context,
+                                      //     '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                      //     REJECT);
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              context.resources.dimen.dp15,
+                                          vertical:
+                                              context.resources.dimen.dp5),
+                                      decoration: BackgroundBoxDecoration(
+                                              boxColor: context.resources.color
+                                                  .colorGreen26B757,
+                                              radious:
+                                                  context.resources.dimen.dp15)
+                                          .roundedCornerBox,
+                                      child: Text(
+                                        context.string.approve,
+                                        style: context.textFontWeight400
+                                            .onFontSize(
+                                                context.resources.fontSize.dp15)
+                                            .onColor(context
+                                                .resources.color.colorWhite)
+                                            .copyWith(height: 1),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: resources.dimen.dp10,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      // showDialog(
+                                      //         context: context,
+                                      //         builder: (context) =>
+                                      //             DialogRequestAnswerMoreInfo())
+                                      //     .then((value) => _submitHrApproval(
+                                      //         context,
+                                      //         '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                      //         REQUESTMOREINFO,
+                                      //         comments: value));
                                       _submitHrApproval(
                                           context,
                                           '${approvalDetails.nOTIFICATIONID ?? ''}',
@@ -406,48 +455,6 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                           .roundedCornerBox,
                                       child: Text(
                                         context.string.reject,
-                                        style: context.textFontWeight400
-                                            .onFontSize(
-                                                context.resources.fontSize.dp15)
-                                            .onColor(context
-                                                .resources.color.colorWhite)
-                                            .copyWith(height: 1),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp10,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  DialogRequestAnswerMoreInfo())
-                                          .then((value) => _submitHrApproval(
-                                              context,
-                                              '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                              REQUESTMOREINFO,
-                                              comments: value));
-                                    },
-                                    child: Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              context.resources.dimen.dp15,
-                                          vertical:
-                                              context.resources.dimen.dp5),
-                                      decoration: BackgroundBoxDecoration(
-                                              boxColor: context.resources.color
-                                                  .colorOrangeEB920C,
-                                              radious:
-                                                  context.resources.dimen.dp15)
-                                          .roundedCornerBox,
-                                      child: Text(
-                                        context.string.returntext,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)

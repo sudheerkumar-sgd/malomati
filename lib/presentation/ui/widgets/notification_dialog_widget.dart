@@ -24,15 +24,15 @@ class NotificationDialogWidget extends StatelessWidget {
           children: [
             if (imageUrl.isNotEmpty) ...{
               ImageWidget(
-                      path: imageUrl,
-                      backgroundTint: context.resources.color.viewBgColor)
-                  .loadImage,
+                path: imageUrl,
+              ).loadImage,
             },
             SizedBox(
               height: context.resources.dimen.dp10,
             ),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: context.textFontWeight600
                   .onFontSize(context.resources.fontSize.dp17),
             ),

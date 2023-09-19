@@ -7,16 +7,17 @@ import 'package:malomati/core/common/common.dart';
 import 'dialogs.dart';
 
 Future<void> selectDate(BuildContext context,
-    {DateTime? firstDate,
+    {DateTime? initialDate,
+    DateTime? firstDate,
     DateTime? lastDate,
     String dateFormat = '',
     required Function(DateTime) callBack}) async {
   final currentDate = DateTime.now();
-  DateTime selectedDate = firstDate ?? currentDate;
+  DateTime selectedDate = initialDate ?? firstDate ?? currentDate;
   if (Platform.isAndroid) {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: firstDate ?? currentDate,
+      initialDate: initialDate ?? firstDate ?? currentDate,
       firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
       lastDate: lastDate ?? DateTime(2024),
       builder: (context, child) => Theme(
@@ -43,7 +44,7 @@ Future<void> selectDate(BuildContext context,
         .showiOSDatePickerDialog(
             context,
             CupertinoDatePicker(
-              initialDateTime: firstDate ?? currentDate,
+              initialDateTime: initialDate ?? currentDate,
               minimumDate: firstDate ??
                   DateTime(currentDate.year - 1, currentDate.month),
               maximumDate: lastDate ?? DateTime(2024),

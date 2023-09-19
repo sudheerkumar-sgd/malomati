@@ -66,6 +66,7 @@ class LeavesScreen extends StatelessWidget {
   String currentBalanceText = '';
   final _formKey = GlobalKey<FormState>();
   final ValueNotifier<String> _durationText = ValueNotifier('0');
+  bool isLoaderShowing = false;
 
   String _getTitleByLeaveType(BuildContext context) {
     switch (leaveType) {
@@ -97,9 +98,11 @@ class LeavesScreen extends StatelessWidget {
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
-      {DateTime? firstDate, DateTime? lastDate}) async {
-    selectDate(context, firstDate: firstDate, lastDate: lastDate,
-        callBack: (dateTime) {
+      {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+    selectDate(context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate, callBack: (dateTime) {
       controller.text = getDateByformat(dateFormat, dateTime);
     });
   }
@@ -193,7 +196,8 @@ class LeavesScreen extends StatelessWidget {
     _endDateController.addListener(
       () {
         if (leaveType != LeaveType.permission &&
-            leaveType != LeaveType.otherLeave) {
+            leaveType != LeaveType.otherLeave &&
+            _endDateController.text.isNotEmpty) {
           _servicesBloc.getWorkingDays(requestParams: {
             'P_FROM_DATE': getDateByformat("yyyy-MM-dd",
                 getDateTimeByString(dateFormat, _startDateController.text)),
@@ -239,11 +243,15 @@ class LeavesScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                isLoaderShowing = true;
+                Dialogs.loader(context)
+                    .then((value) => isLoaderShowing = false);
               } else if (state is OnLeaveTypesSuccess) {
                 _leaveTypeList.value = state.leaveTypeEntity;
               } else if (state is OnLeaveSubmittedSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoaderShowing) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
                 if (state.leaveSubmitResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -260,7 +268,9 @@ class LeavesScreen extends StatelessWidget {
                 _durationText.value =
                     '$value ${value == '1' ? context.string.day : context.string.days}';
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (isLoaderShowing) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -451,7 +461,12 @@ class LeavesScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _selectDate(context, _startDateController);
+                                _selectDate(context, _startDateController,
+                                    initialDate:
+                                        _startDateController.text.isNotEmpty
+                                            ? getDateTimeByString(dateFormat,
+                                                _startDateController.text)
+                                            : DateTime.now());
                               },
                               child: RightIconTextWidget(
                                 height: resources.dimen.dp27,
@@ -514,7 +529,13 @@ class LeavesScreen extends StatelessWidget {
                                               child: InkWell(
                                                 onTap: () {
                                                   _selectTime(context,
-                                                      _startTimeController);
+                                                      _startTimeController,
+                                                      startTime: _startTimeController
+                                                              .text.isNotEmpty
+                                                          ? getDateTimeByString(
+                                                              '$dateFormat $timeFormat',
+                                                              '${_startDateController.text} ${_startTimeController.text}')
+                                                          : DateTime.now());
                                                 },
                                                 child: RightIconTextWidget(
                                                   height: resources.dimen.dp27,

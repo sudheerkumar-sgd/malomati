@@ -23,6 +23,8 @@ class FinanceApprovalEntity {
   String? iNVOICEDATE;
   var iNVDESCRIPTION;
   String? bEGINDATE;
+  String? dOCUMENTNUMBER;
+  String? pURREQNUM;
 
   FinanceApprovalEntity();
 }

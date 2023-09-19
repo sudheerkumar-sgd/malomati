@@ -5,7 +5,6 @@ import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
-import 'package:malomati/presentation/ui/services/widgets/dialog_request_answer_more_info.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -47,6 +46,70 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
     };
     _servicesBloc.submitHrApproval(requestParams: requestParams);
     // Navigator.pop(context);
+  }
+
+  String _getArabicName(String name) {
+    if (isLocalEn) return name;
+    String arabicName = name;
+    switch (name.toLowerCase()) {
+      case 'confirmed':
+        {
+          arabicName = 'مؤكد';
+        }
+      case 'planned':
+        {
+          arabicName = 'مخطط';
+        }
+      case 'annual leave':
+        {
+          arabicName = 'الاجازة الدوريه';
+        }
+      case 'paid leave':
+        {
+          arabicName = 'اجازه مدفوعه';
+        }
+      case 'submitted date':
+        {
+          arabicName = 'تاريخ التقديم';
+        }
+      case 'absence status':
+        {
+          arabicName = 'حالة الغياب';
+        }
+      case 'absence type':
+        {
+          arabicName = 'نوع الغياب';
+        }
+      case 'absence category':
+        {
+          arabicName = 'فئة الغياب';
+        }
+      case 'date start':
+        {
+          arabicName = 'تاريخ البدء';
+        }
+      case 'date end':
+        {
+          arabicName = 'تاريخ الانتهاء';
+        }
+      case 'days':
+        {
+          arabicName = 'الايام';
+        }
+      case 'start time':
+        {
+          arabicName = 'وقت البدء';
+        }
+      case 'end time':
+        {
+          arabicName = 'وقت الإنتهاء';
+        }
+      case 'attachement':
+        {
+          arabicName = 'المرفقات';
+        }
+    }
+    return arabicName;
   }
 
   @override
@@ -183,11 +246,12 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                     children: [
                                                       Expanded(
                                                         child: Text(
-                                                          notificationDetails
-                                                                  .notificationDetails[
-                                                                      index]
-                                                                  .fNAME ??
-                                                              '',
+                                                          _getArabicName(
+                                                              notificationDetails
+                                                                      .notificationDetails[
+                                                                          index]
+                                                                      .fNAME ??
+                                                                  ''),
                                                           style: context
                                                               .textFontWeight400
                                                               .onFontSize(
@@ -200,11 +264,12 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                       ),
                                                       Expanded(
                                                         child: Text(
-                                                          notificationDetails
-                                                                  .notificationDetails[
-                                                                      index]
-                                                                  .fVALUE ??
-                                                              '',
+                                                          _getArabicName(
+                                                              notificationDetails
+                                                                      .notificationDetails[
+                                                                          index]
+                                                                      .fVALUE ??
+                                                                  ''),
                                                           style: context
                                                               .textFontWeight600
                                                               .onFontSize(
@@ -233,56 +298,130 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                 ?.toLowerCase() !=
                                             'fyi') ...{
                                           SizedBox(
-                                            height: resources.dimen.dp20,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              _submitHrApproval(
-                                                  context,
-                                                  widget.data.nOTIFICATIONID ??
-                                                      '',
-                                                  APPROVE);
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: context
-                                                      .resources.dimen.dp15,
-                                                  vertical: context
-                                                      .resources.dimen.dp5),
-                                              decoration:
-                                                  BackgroundBoxDecoration(
-                                                          boxColor: context
-                                                              .resources
-                                                              .color
-                                                              .colorGreen26B757,
-                                                          radious: context
-                                                              .resources
-                                                              .dimen
-                                                              .dp15)
-                                                      .roundedCornerBox,
-                                              child: Text(
-                                                context.string.approve,
-                                                style: context.textFontWeight400
-                                                    .onFontSize(context
-                                                        .resources
-                                                        .fontSize
-                                                        .dp15)
-                                                    .onColor(context.resources
-                                                        .color.colorWhite)
-                                                    .copyWith(height: 1),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
                                             height: resources.dimen.dp10,
                                           ),
+                                          // InkWell(
+                                          //   onTap: () {
+                                          //     _submitHrApproval(
+                                          //         context,
+                                          //         widget.data.nOTIFICATIONID ??
+                                          //             '',
+                                          //         APPROVE);
+                                          //   },
+                                          //   child: Container(
+                                          //     width: double.infinity,
+                                          //     padding: EdgeInsets.symmetric(
+                                          //         horizontal: context
+                                          //             .resources.dimen.dp15,
+                                          //         vertical: context
+                                          //             .resources.dimen.dp5),
+                                          //     decoration:
+                                          //         BackgroundBoxDecoration(
+                                          //                 boxColor: context
+                                          //                     .resources
+                                          //                     .color
+                                          //                     .colorGreen26B757,
+                                          //                 radious: context
+                                          //                     .resources
+                                          //                     .dimen
+                                          //                     .dp15)
+                                          //             .roundedCornerBox,
+                                          //     child: Text(
+                                          //       context.string.approve,
+                                          //       style: context.textFontWeight400
+                                          //           .onFontSize(context
+                                          //               .resources
+                                          //               .fontSize
+                                          //               .dp15)
+                                          //           .onColor(context.resources
+                                          //               .color.colorWhite)
+                                          //           .copyWith(height: 1),
+                                          //       textAlign: TextAlign.center,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          // SizedBox(
+                                          //   height: resources.dimen.dp10,
+                                          // ),
                                           Row(
                                             children: [
                                               Expanded(
                                                 child: InkWell(
                                                   onTap: () {
+                                                    // _submitHrApproval(
+                                                    //     context,
+                                                    //     widget.data
+                                                    //             .nOTIFICATIONID ??
+                                                    //         '',
+                                                    //     REJECT);
+                                                    _submitHrApproval(
+                                                        context,
+                                                        widget.data
+                                                                .nOTIFICATIONID ??
+                                                            '',
+                                                        APPROVE);
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp15,
+                                                            vertical: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp5),
+                                                    decoration:
+                                                        BackgroundBoxDecoration(
+                                                                boxColor: context
+                                                                    .resources
+                                                                    .color
+                                                                    .colorGreen26B757,
+                                                                radious: context
+                                                                    .resources
+                                                                    .dimen
+                                                                    .dp15)
+                                                            .roundedCornerBox,
+                                                    child: Text(
+                                                      context.string.approve,
+                                                      style: context
+                                                          .textFontWeight400
+                                                          .onFontSize(context
+                                                              .resources
+                                                              .fontSize
+                                                              .dp15)
+                                                          .onColor(context
+                                                              .resources
+                                                              .color
+                                                              .colorWhite)
+                                                          .copyWith(height: 1),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: resources.dimen.dp10,
+                                              ),
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // showDialog(
+                                                    //         context: context,
+                                                    //         builder: (context) =>
+                                                    //             DialogRequestAnswerMoreInfo())
+                                                    //     .then((value) =>
+                                                    //         _submitHrApproval(
+                                                    //             context,
+                                                    //             widget.data
+                                                    //                     .nOTIFICATIONID ??
+                                                    //                 '',
+                                                    //             REQUESTMOREINFO,
+                                                    //             comments:
+                                                    //                 value));
                                                     _submitHrApproval(
                                                         context,
                                                         widget.data
@@ -314,68 +453,6 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                             .roundedCornerBox,
                                                     child: Text(
                                                       context.string.reject,
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(context
-                                                              .resources
-                                                              .fontSize
-                                                              .dp15)
-                                                          .onColor(context
-                                                              .resources
-                                                              .color
-                                                              .colorWhite)
-                                                          .copyWith(height: 1),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: resources.dimen.dp10,
-                                              ),
-                                              Expanded(
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    showDialog(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                DialogRequestAnswerMoreInfo())
-                                                        .then((value) =>
-                                                            _submitHrApproval(
-                                                                context,
-                                                                widget.data
-                                                                        .nOTIFICATIONID ??
-                                                                    '',
-                                                                REQUESTMOREINFO,
-                                                                comments:
-                                                                    value));
-                                                  },
-                                                  child: Container(
-                                                    width: double.infinity,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: context
-                                                                .resources
-                                                                .dimen
-                                                                .dp15,
-                                                            vertical: context
-                                                                .resources
-                                                                .dimen
-                                                                .dp5),
-                                                    decoration:
-                                                        BackgroundBoxDecoration(
-                                                                boxColor: context
-                                                                    .resources
-                                                                    .color
-                                                                    .colorOrangeEB920C,
-                                                                radious: context
-                                                                    .resources
-                                                                    .dimen
-                                                                    .dp15)
-                                                            .roundedCornerBox,
-                                                    child: Text(
-                                                      context.string.returntext,
                                                       style: context
                                                           .textFontWeight400
                                                           .onFontSize(context

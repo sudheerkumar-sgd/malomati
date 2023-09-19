@@ -27,6 +27,9 @@ const String favoriteKey = "favorites";
 const String departmentIdKey = "department_id";
 const String appTourKey = "app_tour";
 const String deletedNotificationKey = "deleted_notification_key";
+const String userDateOfBirthKey = "user_date_of_birth";
+const String isDateOfBirthShowedKey = "is_date_of_birth_showed";
+const String isAnniversaryShowedKey = "is_anniversary_showed";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";

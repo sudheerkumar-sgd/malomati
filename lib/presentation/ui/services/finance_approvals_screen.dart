@@ -24,7 +24,8 @@ enum FinanceApprovalType {
 
 class FinanceApprovalsScreen extends StatelessWidget {
   static const String route = '/FinanceApprovalsScreen';
-  FinanceApprovalsScreen({super.key});
+  final int index;
+  FinanceApprovalsScreen({this.index = 0, super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
@@ -40,7 +41,10 @@ class FinanceApprovalsScreen extends StatelessWidget {
     // _notificationList.value = list;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => FinanceApprovalsScreen()),
+      MaterialPageRoute(
+          builder: (context) => FinanceApprovalsScreen(
+                index: selectedButtonIndex.value,
+              )),
     );
   }
 
@@ -52,6 +56,7 @@ class FinanceApprovalsScreen extends StatelessWidget {
       {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
       {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount}
     ];
+    selectedButtonIndex.value = index;
     var noNotificationText = '';
     userName = context.userDB.get(userNameKey, defaultValue: '');
     Future.delayed(const Duration(milliseconds: 50), () {

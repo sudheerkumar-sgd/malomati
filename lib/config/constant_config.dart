@@ -10,10 +10,10 @@ class ConstantConfig {
         name: 'HR Approvals',
         nameAR: 'موافقات الموارد البشرية',
         iconPath: DrawableAssets.icHrApprovals),
-    // FavoriteEntity(
-    //     name: 'Finance Approvals',
-    //     nameAR: 'موافقات المالية',
-    //     iconPath: DrawableAssets.icFinanceApprovals),
+    FavoriteEntity(
+        name: 'Finance Approvals',
+        nameAR: 'موافقات المالية',
+        iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
         name: 'Annual Leaves',
         nameAR: 'الإجازة الدورية',

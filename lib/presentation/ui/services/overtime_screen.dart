@@ -44,9 +44,11 @@ class OvertimeScreen extends StatelessWidget {
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
-      {DateTime? firstDate, DateTime? lastDate}) async {
-    selectDate(context, firstDate: firstDate, lastDate: lastDate,
-        callBack: (dateTime) {
+      {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+    selectDate(context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate, callBack: (dateTime) {
       controller.text = getDateByformat(dateFormat, dateTime);
     });
   }
@@ -217,7 +219,12 @@ class OvertimeScreen extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                _selectDate(context, _startDateController);
+                                _selectDate(context, _startDateController,
+                                    initialDate:
+                                        _startDateController.text.isNotEmpty
+                                            ? getDateTimeByString(dateFormat,
+                                                _startDateController.text)
+                                            : DateTime.now());
                               },
                               child: RightIconTextWidget(
                                 height: resources.dimen.dp27,

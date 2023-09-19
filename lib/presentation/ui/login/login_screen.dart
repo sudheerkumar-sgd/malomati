@@ -89,6 +89,8 @@ class LoginScreen extends StatelessWidget {
                           state.loginEntity.entity?.jobNameAr ?? '');
                       context.userDB.put(userJoiningDateEnKey,
                           state.loginEntity.entity?.hireDate ?? '');
+                      context.userDB.put(userDateOfBirthKey,
+                          state.loginEntity.entity?.dateOfBirth ?? '');
                       context.userDB.put(userJobIdEnKey,
                           state.loginEntity.entity?.employeeNumber ?? '');
                       context.userDB.put(userNationalityEnKey,
@@ -207,7 +209,9 @@ class LoginScreen extends StatelessWidget {
                                               textStyle: context
                                                   .textFontWeight400
                                                   .onFontSize(context
-                                                      .resources.fontSize.dp13))
+                                                      .resources.fontSize.dp13)
+                                                  .onFontFamily(
+                                                      fontFamily: fontFamilyEN))
                                           .textInputFiled,
                                       SizedBox(
                                           height: context.resources.dimen.dp10),
@@ -239,19 +243,18 @@ class LoginScreen extends StatelessWidget {
                                                         .resources.dimen.dp1,
                                                     boarderRadius: context
                                                         .resources.dimen.dp10,
-                                                    textStyle: context
-                                                        .textFontWeight400
+                                                    textStyle: context.textFontWeight400
                                                         .onFontSize(context
                                                             .resources
                                                             .fontSize
-                                                            .dp13),
+                                                            .dp13)
+                                                        .onFontFamily(
+                                                            fontFamily:
+                                                                fontFamilyEN),
                                                     suffixIconPath: value
-                                                        ? DrawableAssets
-                                                            .icHidePwd
-                                                        : DrawableAssets
-                                                            .icShowPwd,
-                                                    suffixIconClick:
-                                                        onShowHidePassword)
+                                                        ? DrawableAssets.icHidePwd
+                                                        : DrawableAssets.icShowPwd,
+                                                    suffixIconClick: onShowHidePassword)
                                                 .textInputFiled;
                                           }),
                                     ],

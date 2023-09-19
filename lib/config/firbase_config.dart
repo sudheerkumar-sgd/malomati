@@ -72,6 +72,10 @@ class FirbaseConfig {
         print('Message data: ${message.data}');
         print('Message notification: ${message.notification?.title}');
         print('Message notification: ${message.notification?.body}');
+        print(
+            'Message notification: ${message.notification?.android?.imageUrl ?? ''}');
+        print(
+            'Message notification: ${message.notification?.apple?.imageUrl ?? ''}');
       }
       showNotification(message);
     });
@@ -104,7 +108,6 @@ class FirbaseConfig {
     const iOSDetails = DarwinNotificationDetails();
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
-
     await flutterLocalNotificationsPlugin?.show(0, payload.notification!.title,
         payload.notification!.body, platformChannelSpecifics,
         payload: payload.notification!.body);

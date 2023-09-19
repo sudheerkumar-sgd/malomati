@@ -1,24 +1,22 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
-import 'package:malomati/presentation/ui/utils/dialogs.dart';
-import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:http/http.dart' as http;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -45,22 +43,44 @@ class _MainScreenState extends State<MainScreen> {
     _selectedIndex.value = index;
   }
 
-  void initAudio() {
+  void initAudio(String path) {
     _player.setLoopMode(LoopMode.off);
-    _player.setAsset(DrawableAssets.audioBirthday);
+    _player.setAsset(path);
     _player.play();
   }
 
   _showBirthday(BuildContext context) async {
-    initAudio();
-    showDialog(
-        context: context,
-        builder: (context) => Dialog(
-            child: ImageWidget(
-                    path: context.resources.isLocalEn
-                        ? DrawableAssets.gifBirthdayEn
-                        : DrawableAssets.gifBirthdayAr)
-                .loadImage)).then((value) => _player.dispose());
+    if ((context.userDB
+            .get(userDateOfBirthKey, defaultValue: '')
+            .contains(getDateByformat('dd-MMM', DateTime.now()))) &&
+        !(context.userDB.get('$isDateOfBirthShowedKey${DateTime.now().year}',
+            defaultValue: false))) {
+      context.userDB.put('$isDateOfBirthShowedKey${DateTime.now().year}', true);
+      initAudio(DrawableAssets.audioBirthday);
+      showDialog(
+          context: context,
+          builder: (context) => Dialog(
+              child: ImageWidget(
+                      path: context.resources.isLocalEn
+                          ? DrawableAssets.gifBirthdayEn
+                          : DrawableAssets.gifBirthdayAr)
+                  .loadImage)).then((value) => _player.dispose());
+    } else if ((context.userDB
+            .get(userJoiningDateEnKey, defaultValue: '')
+            .contains(getDateByformat('dd-MMM', DateTime.now()))) &&
+        !(context.userDB.get('$isAnniversaryShowedKey${DateTime.now().year}',
+            defaultValue: false))) {
+      context.userDB.put('$isAnniversaryShowedKey${DateTime.now().year}', true);
+      initAudio(DrawableAssets.audioAnniversay);
+      showDialog(
+          context: context,
+          builder: (context) => Dialog(
+              child: ImageWidget(
+                      path: context.resources.isLocalEn
+                          ? DrawableAssets.gifAnniversayEn
+                          : DrawableAssets.gifAnniversayAr)
+                  .loadImage)).then((value) => _player.dispose());
+    }
   }
 
   Widget getScreen(int index) {
@@ -85,7 +105,9 @@ class _MainScreenState extends State<MainScreen> {
               return NotificationDialogWidget(
                 title: message.notification?.title ?? '',
                 message: message.notification?.body ?? '',
-                imageUrl: message.notification?.android?.imageUrl ?? '',
+                imageUrl: Platform.isAndroid
+                    ? message.notification?.android?.imageUrl ?? ''
+                    : message.notification?.apple?.imageUrl ?? '',
               );
             });
       }
@@ -98,7 +120,9 @@ class _MainScreenState extends State<MainScreen> {
             return NotificationDialogWidget(
               title: message.notification?.title ?? '',
               message: message.notification?.body ?? '',
-              imageUrl: message.notification?.android?.imageUrl ?? '',
+              imageUrl: Platform.isAndroid
+                  ? message.notification?.android?.imageUrl ?? ''
+                  : message.notification?.apple?.imageUrl ?? '',
             );
           });
     });
@@ -129,6 +153,9 @@ class _MainScreenState extends State<MainScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: context.resources.color.appScaffoldBg,
         statusBarIconBrightness: Brightness.dark));
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _showBirthday(context);
+    });
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =

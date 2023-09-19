@@ -12,6 +12,7 @@ class LoginEntity extends BaseEntity {
   String? jobNameAr;
   String? employeeNumber;
   String? hireDate;
+  String? dateOfBirth;
   String? nationality;
   String? persionID;
 

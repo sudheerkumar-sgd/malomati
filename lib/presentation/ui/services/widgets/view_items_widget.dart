@@ -290,7 +290,18 @@ class ViewItemsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: resources.dimen.dp30,
+          height: resources.dimen.dp20,
+        ),
+        Text(
+          '${context.string.invoiceID}:',
+          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+        ),
+        Text(
+          '${item.iNVOICEID ?? ''}',
+          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+        ),
+        SizedBox(
+          height: resources.dimen.dp20,
         ),
         Text(
           '${context.string.itemDescription}:',
@@ -304,7 +315,7 @@ class ViewItemsWidget extends StatelessWidget {
           height: resources.dimen.dp20,
         ),
         Text(
-          '{context.string.poNumber}:',
+          '${context.string.poNumber}:',
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
         ),
         Text(
@@ -341,7 +352,7 @@ class ViewItemsWidget extends StatelessWidget {
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
         ),
         Text(
-          '${(item.uNITPRICE ?? 0) * (item.qUANTITY ?? 0)}',
+          '${item.aMOUNT ?? 0}',
           style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
         ),
         SizedBox(

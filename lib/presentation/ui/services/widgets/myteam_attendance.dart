@@ -50,14 +50,14 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
     _controller.forward();
   }
 
-  _getAttendanceByEmployee() {
+  _getAttendanceByEmployee() async {
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
     for (int i = 0; i < _employeesList.value.length; i++) {
       Map<String, dynamic> requestParams = {
         'date-range': '$date-$date',
         'oracle_id': _employeesList.value[i].pERSONID
       };
-      _attendanceBloc.getAttendance(
+      await _attendanceBloc.getAttendance(
           requestParams: requestParams, returnValue: true);
     }
   }
