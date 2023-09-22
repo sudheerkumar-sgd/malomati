@@ -11,8 +11,8 @@ class AttendanceModel extends BaseModel {
   String? edate = "";
   String? firsthalf = "";
   String? secondhalf = "";
-  String? gpsLatitude = "";
-  String? gpsLongitude = "";
+  String? gpsLatitude = "0.0";
+  String? gpsLongitude = "0.0";
   String? punch1Time = "";
   String? punch2Time = "";
   String? punch3Time = "";
@@ -44,11 +44,12 @@ class AttendanceModel extends BaseModel {
     attendanceModel.edate = attendanceJson['edate'];
     attendanceModel.firsthalf = attendanceJson['firsthalf'];
     attendanceModel.secondhalf = attendanceJson['secondhalf'];
-    attendanceModel.gpsLatitude = '${attendanceJson['gps_latitude']}'.isNotEmpty
-        ? '${attendanceJson['gps_latitude']}'
-        : '0.0';
+    attendanceModel.gpsLatitude =
+        '${attendanceJson['gps_latitude'] ?? ''}'.isNotEmpty
+            ? '${attendanceJson['gps_latitude']}'
+            : '0.0';
     attendanceModel.gpsLongitude =
-        '${attendanceJson['gps_longitude']}'.isNotEmpty
+        '${attendanceJson['gps_longitude'] ?? ''}'.isNotEmpty
             ? '${attendanceJson['gps_longitude']}'
             : '0.0';
     attendanceModel.punch1Time = attendanceJson['punch1_time'];

@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
       _homeBloc.getNotificationsList(requestParams: {
         'USER_NAME': userName,
         'START_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 7))),
+            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
         'END_DATE': getDateByformat(
             'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
       });
