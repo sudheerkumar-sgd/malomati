@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../firebase_options.dart';
 
 //Define the background message handler
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
@@ -77,7 +78,7 @@ class FirbaseConfig {
         print(
             'Message notification: ${message.notification?.apple?.imageUrl ?? ''}');
       }
-      showNotification(message);
+      //showNotification(message);
     });
 
     var android = const AndroidInitializationSettings('@mipmap/ic_launcher');

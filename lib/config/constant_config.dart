@@ -266,4 +266,5 @@ class ConstantConfig {
   static int requestsApprovalCount = 0;
   static int requestsRejectCount = 0;
   static int requestsPendingCount = 0;
+  static int notificationsCount = 0;
 }

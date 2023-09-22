@@ -126,7 +126,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                       child: RichText(
                         text: TextSpan(
                             text:
-                                '${approvalDetails.sUPPLIERNAME}\n${approvalDetails.sUBJECT}\n',
+                                '${approvalDetails.sUPPLIERNAME}\n${approvalDetails.sUBJECT?.trim()}\n',
                             style: context.textFontWeight400
                                 .onFontSize(resources.fontSize.dp12)
                                 .copyWith(height: 1.5),
@@ -134,7 +134,11 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                               TextSpan(
                                 text: '${context.string.submittedOn} : ',
                                 style: context.textFontWeight400
-                                    .onFontSize(resources.fontSize.dp12),
+                                    .onFontSize(resources.fontSize.dp12)
+                                    .onFontFamily(
+                                        fontFamily: isLocalEn
+                                            ? fontFamilyEN
+                                            : fontFamilyAR),
                               ),
                               TextSpan(
                                 text: getDateByformat(
@@ -147,6 +151,9 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                               ),
                             ]),
                       ),
+                    ),
+                    SizedBox(
+                      width: resources.dimen.dp10,
                     ),
                     ValueListenableBuilder(
                         valueListenable: _isExpanded,
@@ -174,26 +181,36 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            Text(
-                              'Standard Purchase Order ${approvalDetails.dOCUMENTNUMBER}',
-                              style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp10,
-                            ),
+                            // Text(
+                            //   'Standard Purchase Order ${approvalDetails.dOCUMENTNUMBER}',
+                            //   style: context.textFontWeight600
+                            //       .onFontSize(resources.fontSize.dp13),
+                            // ),
+                            // SizedBox(
+                            //   height: resources.dimen.dp10,
+                            // ),
                             Table(
                               children: [
                                 TableRow(children: [
                                   Text(
                                     context.string.supplier,
                                     style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13),
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
                                   ),
                                   Text(
                                     approvalDetails.sUPPLIERNAME ?? '',
                                     style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13),
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
                                   ),
                                 ]),
                                 TableRow(children: [
@@ -211,6 +228,14 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                   ),
                                 ]),
                                 TableRow(children: [
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                ]),
+                                TableRow(children: [
                                   Text(
                                     context.string.description,
                                     style: context.textFontWeight400
@@ -225,6 +250,14 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                   ),
                                 ]),
                                 TableRow(children: [
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                ]),
+                                TableRow(children: [
                                   Text(
                                     context.string.amount,
                                     style: context.textFontWeight400
@@ -235,7 +268,16 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     approvalDetails.tOTALAMOUNT ?? '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
+                                  ),
+                                  SizedBox(
+                                    height: resources.dimen.dp5,
                                   ),
                                 ]),
                                 TableRow(children: [
@@ -249,6 +291,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     approvalDetails.tAXAMOUNT ?? '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -279,7 +322,10 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                               radious: resources.dimen.dp20)
                                           .roundedCornerBox,
                                       margin: EdgeInsets.only(
-                                        right: resources.dimen.dp5,
+                                        right:
+                                            isLocalEn ? resources.dimen.dp5 : 0,
+                                        left:
+                                            isLocalEn ? 0 : resources.dimen.dp5,
                                         top: resources.dimen.dp25,
                                       ),
                                       padding:
@@ -309,7 +355,10 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                       padding:
                                           EdgeInsets.all(resources.dimen.dp5),
                                       margin: EdgeInsets.only(
-                                        right: resources.dimen.dp5,
+                                        right:
+                                            isLocalEn ? 0 : resources.dimen.dp5,
+                                        left:
+                                            isLocalEn ? resources.dimen.dp5 : 0,
                                         top: resources.dimen.dp25,
                                       ),
                                       child: Text(

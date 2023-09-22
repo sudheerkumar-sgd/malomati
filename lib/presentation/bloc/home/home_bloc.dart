@@ -70,7 +70,6 @@ class HomeBloc extends Cubit<HomeState> {
 
   Future<void> getNotificationsList(
       {required Map<String, dynamic> requestParams}) async {
-    emit(OnLoading());
     final result =
         await homeUseCase.getNotificationsList(requestParams: requestParams);
     emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),

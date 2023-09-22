@@ -7,8 +7,8 @@ class AttendanceEntity extends BaseEntity {
   String? username;
   String? processdate;
   String? edate;
-  String? gpsLatitude;
-  String? gpsLongitude;
+  String? gpsLatitude = '0.0';
+  String? gpsLongitude = '0.0';
   String? departmentLocation;
   String? firsthalf;
   String? secondhalf;

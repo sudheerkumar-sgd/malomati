@@ -3,12 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_attendance_list.dart';
-import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../widgets/services_app_bar.dart';
@@ -57,31 +55,31 @@ class RequestsScreen extends StatelessWidget {
                         horizontal: context.resources.dimen.dp25),
                     child:
                         ServicesAppBarWidget(title: context.string.requests)),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ItemDashboardLeaves(
-                        balanceCount: '${ConstantConfig.requestsApprovalCount}',
-                        balancetype: context.string.approved,
-                        padding: context.resources.dimen.dp20,
-                      ),
-                    ),
-                    Expanded(
-                      child: ItemDashboardLeaves(
-                        balanceCount: '${ConstantConfig.requestsPendingCount}',
-                        balancetype: context.string.pending,
-                        padding: context.resources.dimen.dp20,
-                      ),
-                    ),
-                    Expanded(
-                      child: ItemDashboardLeaves(
-                        balanceCount: '${ConstantConfig.requestsRejectCount}',
-                        balancetype: context.string.rejected,
-                        padding: context.resources.dimen.dp20,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ItemDashboardLeaves(
+                //         balanceCount: '${ConstantConfig.requestsApprovalCount}',
+                //         balancetype: context.string.approved,
+                //         padding: context.resources.dimen.dp20,
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: ItemDashboardLeaves(
+                //         balanceCount: '${ConstantConfig.requestsPendingCount}',
+                //         balancetype: context.string.pending,
+                //         padding: context.resources.dimen.dp20,
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: ItemDashboardLeaves(
+                //         balanceCount: '${ConstantConfig.requestsRejectCount}',
+                //         balancetype: context.string.rejected,
+                //         padding: context.resources.dimen.dp20,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Container(
                   margin: EdgeInsets.only(
                     left: context.resources.dimen.dp25,

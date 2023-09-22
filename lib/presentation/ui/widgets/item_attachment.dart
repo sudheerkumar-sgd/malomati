@@ -30,6 +30,7 @@ class ItemAttachment extends StatelessWidget {
                 name,
                 style: context.textFontWeight400
                     .onFontSize(context.resources.fontSize.dp12)
+                    .onFontFamily(fontFamily: fontFamilyEN)
                     .copyWith(height: 1),
               ),
             ),

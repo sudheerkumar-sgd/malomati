@@ -54,7 +54,7 @@ class TabsButtonsWidget extends StatelessWidget {
                                         : count > 0
                                             ? resources.dimen.dp5
                                             : 0,
-                                  ),
+                                    top: resources.dimen.dp10),
                             padding: EdgeInsets.symmetric(
                                 vertical: resources.dimen.dp5,
                                 horizontal: context.resources.dimen.dp10),
@@ -74,7 +74,9 @@ class TabsButtonsWidget extends StatelessWidget {
                             ),
                           ),
                           Align(
-                              alignment: Alignment.topRight,
+                              alignment: isLocalEn
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft,
                               child: Visibility(
                                 visible: count > 0,
                                 child: Container(
@@ -88,6 +90,8 @@ class TabsButtonsWidget extends StatelessWidget {
                                       style: context.textFontWeight600
                                           .onColor(context
                                               .resources.color.colorWhite)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
                                           .onFontSize(
                                               context.resources.fontSize.dp13)),
                                 ),

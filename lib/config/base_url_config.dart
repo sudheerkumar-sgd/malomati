@@ -3,7 +3,7 @@ const String baseUrlAttendanceDevelopment =
 
 class BaseUrlConfig {
   final String baseUrlDevelopment =
-      'http://u01vubpmm01.uaqgov.ae:9001/soa-infra/resources/UAQDEV/';
+      'https://stgmdmobile.uaq.ae/soa-infra/resources/UAQDEV/';
   final String baseUrlProduction =
       'http://mdservices.uaqgov.ae:9001/soa-infra/resources/Malomati/';
 }

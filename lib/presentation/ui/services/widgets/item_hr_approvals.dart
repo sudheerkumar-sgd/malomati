@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -34,6 +36,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
       ValueNotifier(HrapprovalDetailsEntity());
+  List<LeaveTypeEntity> leaveTypes = [];
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
@@ -104,12 +107,35 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
         {
           arabicName = 'وقت الإنتهاء';
         }
+      case 'time start':
+        {
+          arabicName = 'وقت البدء';
+        }
+      case 'time end':
+        {
+          arabicName = 'وقت الانتهاء';
+        }
+      case 'hours':
+        {
+          arabicName = 'ساعات';
+        }
       case 'attachement':
         {
           arabicName = 'المرفقات';
         }
+      default:
+        {
+          final leaveType =
+              leaveTypes.where((element) => element.name == name).toList();
+          if (leaveType.isNotEmpty) arabicName = leaveType[0].nameAr ?? name;
+        }
     }
     return arabicName;
+  }
+
+  String _getFontFamily(String name) {
+    if (name != _getArabicName(name)) return fontFamilyAR;
+    return fontFamilyEN;
   }
 
   @override
@@ -129,6 +155,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   @override
   Widget build(BuildContext context) {
     var resources = context.resources;
+    _servicesBloc.getLeaveTypes(requestParams: {});
     return BlocProvider(
       create: (context) => _servicesBloc,
       child: Container(
@@ -141,6 +168,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
           listener: (context, state) {
             if (state is OnServicesLoading) {
               Dialogs.loader(context);
+            } else if (state is OnLeaveTypesSuccess) {
+              leaveTypes = state.leaveTypeEntity;
             } else if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
             } else if (state is OnsubmitHrApprovalSuccess) {
@@ -230,10 +259,27 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                         SizedBox(
                                           height: resources.dimen.dp20,
                                         ),
-                                        Text(
-                                          '${notificationDetails.notificationDetails[0].fVALUE ?? ''} - ${notificationDetails.notificationDetails[1].fVALUE ?? ''}',
-                                          style: context.textFontWeight700,
-                                        ),
+                                        RichText(
+                                            text: TextSpan(
+                                                text:
+                                                    '${notificationDetails.notificationDetails[0].fVALUE ?? ''} - ',
+                                                style: context.textFontWeight600
+                                                    .onFontSize(resources
+                                                        .fontSize.dp13),
+                                                children: [
+                                              TextSpan(
+                                                text: notificationDetails
+                                                        .notificationDetails[1]
+                                                        .fVALUE ??
+                                                    '',
+                                                style: context.textFontWeight600
+                                                    .onFontSize(
+                                                        resources.fontSize.dp13)
+                                                    .onFontFamily(
+                                                        fontFamily:
+                                                            fontFamilyEN),
+                                              )
+                                            ])),
                                         SizedBox(
                                           height: resources.dimen.dp10,
                                         ),
@@ -275,7 +321,15 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                               .onFontSize(
                                                                   resources
                                                                       .fontSize
-                                                                      .dp13),
+                                                                      .dp13)
+                                                              .onFontFamily(
+                                                                  fontFamily: _getFontFamily(notificationDetails
+                                                                          .notificationDetails[
+                                                                              index]
+                                                                          .fVALUE ??
+                                                                      ''))
+                                                              .copyWith(
+                                                                  height: 2),
                                                         ),
                                                       ),
                                                     ],

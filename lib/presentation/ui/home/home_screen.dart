@@ -25,6 +25,7 @@ import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
@@ -95,6 +96,15 @@ class HomeScreen extends StatelessWidget {
     _homeBloc.getEventsData(
         departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _homeBloc.getNotificationsList(requestParams: {
+        'USER_NAME': userName,
+        'START_DATE': getDateByformat(
+            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 7))),
+        'END_DATE': getDateByformat(
+            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
+      });
+    });
     // _homeBloc.getNotificationsList(requestParams: {
     //   'USER_NAME': userName,
     //   'START_DATE': getDateByformat(
@@ -147,6 +157,16 @@ class HomeScreen extends StatelessWidget {
                         state.requestsCountEntity.requestsRejectCount ?? 0;
                     ConstantConfig.requestsPendingCount =
                         state.requestsCountEntity.requestsPendingCount ?? 0;
+                    ConstantConfig.isApprovalCountChange.value =
+                        !(ConstantConfig.isApprovalCountChange.value);
+                  } else if (state is OnNotificationsListSuccess) {
+                    String openedNotifications = context.userDB
+                        .get(openedNotificationsKey, defaultValue: '');
+                    final list = state.notificationsList
+                        .where((element) => !openedNotifications
+                            .contains('${element.nOTIFICATIONID}'))
+                        .toList();
+                    ConstantConfig.notificationsCount = list.length;
                     ConstantConfig.isApprovalCountChange.value =
                         !(ConstantConfig.isApprovalCountChange.value);
                   } else if (state is OnApiError) {}

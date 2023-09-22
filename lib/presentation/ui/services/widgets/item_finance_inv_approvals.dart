@@ -176,11 +176,19 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            Text(
-                              '${context.string.invoiceID} ${approvalDetails.nOTIFICATIONID}',
-                              style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13),
-                            ),
+                            RichText(
+                                text: TextSpan(
+                                    text: '${context.string.invoiceID} ',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13),
+                                    children: [
+                                  TextSpan(
+                                    text: '${approvalDetails.nOTIFICATIONID}',
+                                    style: context.textFontWeight600
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN),
+                                  )
+                                ])),
                             SizedBox(
                               height: resources.dimen.dp10,
                             ),
@@ -209,6 +217,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                     approvalDetails.iNVOICENUMBER ?? '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -227,6 +236,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                             approvalDetails.iNVOICEDATE ?? '')),
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -255,6 +265,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                     '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -269,6 +280,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                     '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -283,6 +295,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                     '${approvalDetails.tOTAL ?? ''}',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(fontFamily: fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -299,7 +312,10 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                               radious: resources.dimen.dp20)
                                           .roundedCornerBox,
                                       margin: EdgeInsets.only(
-                                        right: resources.dimen.dp5,
+                                        right:
+                                            isLocalEn ? resources.dimen.dp5 : 0,
+                                        left:
+                                            isLocalEn ? 0 : resources.dimen.dp5,
                                         top: resources.dimen.dp25,
                                       ),
                                       padding:
@@ -329,7 +345,10 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                       padding:
                                           EdgeInsets.all(resources.dimen.dp5),
                                       margin: EdgeInsets.only(
-                                        right: resources.dimen.dp5,
+                                        right:
+                                            isLocalEn ? 0 : resources.dimen.dp5,
+                                        left:
+                                            isLocalEn ? resources.dimen.dp5 : 0,
                                         top: resources.dimen.dp25,
                                       ),
                                       child: Text(

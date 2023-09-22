@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/domain/entities/attachment_entity.dart';
@@ -45,7 +46,8 @@ class ItemListAttachment extends StatelessWidget {
                 data.fileName ?? '',
                 textAlign: TextAlign.left,
                 style: context.textFontWeight400
-                    .onFontSize(context.resources.fontSize.dp13),
+                    .onFontSize(context.resources.fontSize.dp13)
+                    .onFontFamily(fontFamily: fontFamilyEN),
               ),
             )
           ],

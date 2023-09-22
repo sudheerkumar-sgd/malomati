@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/finance_details_item_entity.dart';
 import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -21,7 +22,8 @@ class ViewItemsWidget extends StatelessWidget {
     );
     return Dialog(
       insetPadding: EdgeInsets.symmetric(
-          vertical: resources.dimen.dp100, horizontal: resources.dimen.dp20),
+          vertical: (getScrrenSize(context).height * .18),
+          horizontal: resources.dimen.dp20),
       shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.all(Radius.circular(context.resources.dimen.dp15))),
@@ -42,13 +44,16 @@ class ViewItemsWidget extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          _currentPage.value = (_currentPage.value - 1);
+                          _currentPage.value = isLocalEn
+                              ? (_currentPage.value - 1)
+                              : (_currentPage.value + 1);
                           pageController.animateToPage(_currentPage.value,
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.linear);
                         },
                         child: Visibility(
-                          visible: value > 0,
+                          visible:
+                              isLocalEn ? value > 0 : value < data.length - 1,
                           child: Container(
                             width: resources.dimen.dp20,
                             height: resources.dimen.dp20,
@@ -58,7 +63,8 @@ class ViewItemsWidget extends StatelessWidget {
                             child: ImageWidget(
                                     path: DrawableAssets.icChevronLeft,
                                     backgroundTint: resources.color.colorWhite,
-                                    boxType: BoxFit.none)
+                                    boxType: BoxFit.none,
+                                    isLocalEn: isLocalEn)
                                 .loadImage,
                           ),
                         ),
@@ -69,19 +75,23 @@ class ViewItemsWidget extends StatelessWidget {
                         child: Text(
                           '${value + 1}/${data.length}',
                           style: context.textFontWeight400
-                              .onColor(resources.color.viewBgColor),
+                              .onColor(resources.color.viewBgColor)
+                              .onFontFamily(fontFamily: fontFamilyEN),
                         ),
                       ),
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          _currentPage.value = (_currentPage.value + 1);
+                          _currentPage.value = isLocalEn
+                              ? (_currentPage.value + 1)
+                              : (_currentPage.value - 1);
                           pageController.animateToPage(_currentPage.value,
                               duration: const Duration(milliseconds: 200),
                               curve: Curves.linear);
                         },
                         child: Visibility(
-                          visible: value < data.length - 1,
+                          visible:
+                              isLocalEn ? value < data.length - 1 : value > 0,
                           child: Container(
                             width: resources.dimen.dp20,
                             height: resources.dimen.dp20,
@@ -91,7 +101,8 @@ class ViewItemsWidget extends StatelessWidget {
                             child: ImageWidget(
                                     path: DrawableAssets.icChevronRight,
                                     backgroundTint: resources.color.colorWhite,
-                                    boxType: BoxFit.none)
+                                    boxType: BoxFit.none,
+                                    isLocalEn: isLocalEn)
                                 .loadImage,
                           ),
                         ),
@@ -111,6 +122,7 @@ class ViewItemsWidget extends StatelessWidget {
                     )
                   : PageView(
                       controller: pageController,
+                      reverse: isLocalEn ? false : true,
                       children: [
                         for (int i = 0; i < data.length; i++) ...[
                           type == FinanceApprovalType.po
@@ -139,7 +151,7 @@ class ViewItemsWidget extends StatelessWidget {
                           radious: context.resources.dimen.dp15)
                       .roundedCornerBox,
                   child: Text(
-                    context.string.ok,
+                    context.string.close,
                     style: context.textFontWeight400
                         .onFontSize(context.resources.fontSize.dp15)
                         .onColor(context.resources.color.colorWhite)
@@ -161,204 +173,252 @@ class ViewItemsWidget extends StatelessWidget {
   Widget getPOViewItemWiget(
       BuildContext context, FinanceDetailsItemEntity item) {
     final resources = context.resources;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.itemNumber}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.pOHEADERID ?? ''}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.itemDescription}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          item.iTEMDESCRIPTION ?? '',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.quantity}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.qUANTITY ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.unitPrice}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.uNITPRICE ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.lineAmount}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.lINEAMOUNT ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.itemNumber}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.pOHEADERID ?? ''}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.itemDescription}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            item.iTEMDESCRIPTION ?? '',
+            style:
+                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.quantity}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.qUANTITY ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.unitPrice}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.uNITPRICE ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.lineAmount}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.lINEAMOUNT ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+        ],
+      ),
     );
   }
 
   Widget getPRViewItemWiget(
       BuildContext context, FinanceDetailsItemEntity item) {
     final resources = context.resources;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.itemDescription}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          item.iTEMDESCRIPTION ?? '',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.quantity}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.qUANTITY ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.unitPrice}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.uNITPRICE ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.amount}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${(item.uNITPRICE ?? 0) * (item.qUANTITY ?? 0)}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.itemDescription}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            item.iTEMDESCRIPTION ?? '',
+            style:
+                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.quantity}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.qUANTITY ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.unitPrice}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.uNITPRICE ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.amount}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${(item.uNITPRICE ?? 0) * (item.qUANTITY ?? 0)}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+        ],
+      ),
     );
   }
 
   Widget getINVViewItemWiget(
       BuildContext context, FinanceDetailsItemEntity item) {
     final resources = context.resources;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.invoiceID}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.iNVOICEID ?? ''}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.itemDescription}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          item.dESCRIPTION ?? '',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.poNumber}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.pONUMBER ?? ''}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-        Text(
-          '${context.string.quantity}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.qUANTITY ?? '0'}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          '${context.string.unitPrice}:',
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.uNITPRICE ?? '0'}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp30,
-        ),
-        Text(
-          "${context.string.amount}:",
-          style: context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-        ),
-        Text(
-          '${item.aMOUNT ?? 0}',
-          style: context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-        ),
-        SizedBox(
-          height: resources.dimen.dp20,
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.invoiceID}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.iNVOICEID ?? ''}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.itemDescription}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            item.dESCRIPTION ?? '',
+            style:
+                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.poNumber}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.pONUMBER ?? ''}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+          Text(
+            '${context.string.quantity}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.qUANTITY ?? '0'}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            '${context.string.unitPrice}:',
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.uNITPRICE ?? '0'}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp30,
+          ),
+          Text(
+            "${context.string.amount}:",
+            style:
+                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+          ),
+          Text(
+            '${item.aMOUNT ?? 0}',
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(fontFamily: fontFamilyEN),
+          ),
+          SizedBox(
+            height: resources.dimen.dp20,
+          ),
+        ],
+      ),
     );
   }
 }

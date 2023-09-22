@@ -258,7 +258,10 @@ class AttendanceScreen extends StatelessWidget {
                         SizedBox(
                           height: resources.dimen.dp10,
                         ),
-                        BackAppBarWidget(title: context.string.timeAttendance),
+                        BackAppBarWidget(
+                            title: attendanceType == AttendanceType.punchIn
+                                ? context.string.punchIn
+                                : context.string.punchOut),
                         SizedBox(
                           height: resources.dimen.dp25,
                         ),

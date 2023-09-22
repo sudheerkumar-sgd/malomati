@@ -47,7 +47,7 @@ class PayslipsScreen extends StatelessWidget {
     final month = DateTime.now().month;
     //_months.value = [];
     final monthsList =
-        '$year' == selectedYear ? months.sublist(0, month) : months;
+        '$year' == selectedYear ? months.sublist(0, month - 1) : months;
     selectedMonth =
         '$year' == selectedYear ? monthsList[month - 2] : monthsList[0];
     _months.value = monthsList;

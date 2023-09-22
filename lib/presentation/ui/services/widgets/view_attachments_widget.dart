@@ -19,10 +19,10 @@ class ViewAttachmentsWidget extends StatelessWidget {
           borderRadius:
               BorderRadius.all(Radius.circular(context.resources.dimen.dp15))),
       child: Container(
-        clipBehavior: Clip.none,
         padding: EdgeInsets.symmetric(
             horizontal: resources.dimen.dp20, vertical: resources.dimen.dp10),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(context.string.viewAttachments,
                 style: context.textFontWeight600),
@@ -42,7 +42,9 @@ class ViewAttachmentsWidget extends StatelessWidget {
                     children: List.generate(data.length,
                         (index) => ItemListAttachment(data: data[index])),
                   ),
-            const Spacer(),
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
             InkWell(
               onTap: () {
                 Navigator.pop(context);
@@ -57,7 +59,7 @@ class ViewAttachmentsWidget extends StatelessWidget {
                           radious: context.resources.dimen.dp15)
                       .roundedCornerBox,
                   child: Text(
-                    context.string.ok,
+                    context.string.close,
                     style: context.textFontWeight400
                         .onFontSize(context.resources.fontSize.dp15)
                         .onColor(context.resources.color.colorWhite)

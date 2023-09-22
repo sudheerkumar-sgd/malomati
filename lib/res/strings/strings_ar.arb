@@ -208,6 +208,7 @@
     "lineAmount":"مبلغ السطر",
     "poNumber":"رقم طلب الشراء",
     "thereAreNoItems":"لا توجد عناصر",
+    "thereAreNoAttachment":"لا توجد مرفقات",
     "welcomeTourDescription":"هذه جولة تعريفية لأهم مكونات تطبيق معلوماتي.",
     "attendanceTourTitle":"الحضور والإنصراف",
     "attendanceTourDescription":"هنا يمكنك تسجيل الحضور والإنصراف",

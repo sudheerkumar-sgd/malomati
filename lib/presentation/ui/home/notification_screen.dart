@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
@@ -30,8 +31,8 @@ class NotificationsScreen extends StatelessWidget {
     // list.removeAt(index);
     // _notificationList.value = [];
     // _notificationList.value = list;
-    context.userDB.put(deletedNotificationKey,
-        '${context.userDB.get(deletedNotificationKey, defaultValue: '')}#$id');
+    context.userDB.put(deletedNotificationsKey,
+        '${context.userDB.get(deletedNotificationsKey, defaultValue: '')}#$id');
     final list = _notificationList.value
         .where((element) => !id.contains('${element.nOTIFICATIONID}'))
         .toList();
@@ -52,7 +53,8 @@ class NotificationsScreen extends StatelessWidget {
         'USER_NAME': userName,
         'START_DATE': getDateByformat(
             'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 7))),
-        'END_DATE': getDateByformat('yyy-MM-dd', DateTime.now())
+        'END_DATE': getDateByformat(
+            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
       });
     });
     return SafeArea(
@@ -65,17 +67,23 @@ class NotificationsScreen extends StatelessWidget {
               if (state is OnLoading) {
                 Dialogs.loader(context);
               } else if (state is OnNotificationsListSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
                 noNotificationText = context.string.noHrRequests;
                 String deletedNotification = context.userDB
-                    .get(deletedNotificationKey, defaultValue: '');
+                    .get(deletedNotificationsKey, defaultValue: '');
                 final list = state.notificationsList
                     .where((element) => !deletedNotification
                         .contains('${element.nOTIFICATIONID}'))
                     .toList();
                 _notificationList.value = list;
+                final notificationIds = (state.notificationsList
+                        .map((e) => '${e.nOTIFICATIONID}')
+                        .toList())
+                    .join('#');
+                context.userDB.put(openedNotificationsKey, notificationIds);
+                ConstantConfig.notificationsCount = 0;
+                ConstantConfig.isApprovalCountChange.value =
+                    !(ConstantConfig.isApprovalCountChange.value);
               } else if (state is OnApiError) {
-                Navigator.of(context, rootNavigator: true).pop();
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -96,14 +104,19 @@ class NotificationsScreen extends StatelessWidget {
                     child: ValueListenableBuilder(
                         valueListenable: _notificationList,
                         builder: (context, notificationList, child) {
-                          return (notificationList.isEmpty &&
-                                  noNotificationText.isNotEmpty)
-                              ? Center(
-                                  child: Text(
-                                    noNotificationText,
-                                    style: context.textFontWeight600,
-                                  ),
-                                )
+                          return (notificationList.isEmpty)
+                              ? noNotificationText.isNotEmpty
+                                  ? Center(
+                                      child: Text(
+                                        noNotificationText,
+                                        style: context.textFontWeight600,
+                                      ),
+                                    )
+                                  : const Center(
+                                      child: SizedBox(
+                                          width: 40,
+                                          height: 40,
+                                          child: CircularProgressIndicator()))
                               : ListView.separated(
                                   controller: ScrollController(),
                                   scrollDirection: Axis.vertical,

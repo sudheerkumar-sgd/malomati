@@ -96,7 +96,34 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  initNotificationListeners() async {
+  Future<void> setupFirebaseNotificationMessage() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage? message) {
+    if (message != null) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NotificationDialogWidget(
+              title: message.notification?.title ?? '',
+              message: message.notification?.body ?? '',
+              imageUrl: Platform.isAndroid
+                  ? message.notification?.android?.imageUrl ?? ''
+                  : message.notification?.apple?.imageUrl ?? '',
+            );
+          });
+    }
+  }
+
+  initNotificationListeners() {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         showDialog(
@@ -113,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       showDialog(
           context: context,
           builder: (context) {
@@ -130,7 +157,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    initNotificationListeners();
+    setupFirebaseNotificationMessage();
     super.initState();
   }
 

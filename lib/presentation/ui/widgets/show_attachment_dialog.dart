@@ -13,6 +13,9 @@ class ShowAttachmentDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(
+          vertical: context.resources.dimen.dp100,
+          horizontal: context.resources.dimen.dp20),
       shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.all(Radius.circular(context.resources.dimen.dp15))),
@@ -53,7 +56,10 @@ class ShowAttachmentDialog extends StatelessWidget {
                 data.fileData!,
               ),
             )
-          }
+          },
+          const SizedBox(
+            height: 15,
+          )
         ],
       ),
     );
