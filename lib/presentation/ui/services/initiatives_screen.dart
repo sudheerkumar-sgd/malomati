@@ -86,6 +86,25 @@ class InitiativesScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  for (int i = 0;
+                      i <
+                          (state.servicesRequestSuccessResponse.entity
+                                  ?.aPPROVERSLIST.length ??
+                              0);
+                      i++) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.servicesRequestSuccessResponse.entity
+                                    ?.aPPROVERSLIST[i] ??
+                                '',
+                            title: 'Initiatives',
+                            body:
+                                '${context.userDB.get(userFullNameUsKey)} has applied for Initatives',
+                            type: '',
+                            notificationId: state.servicesRequestSuccessResponse
+                                    .entity?.nTFID ??
+                                ''));
+                  }
                 } else {
                   Dialogs.showInfoDialog(
                       context,

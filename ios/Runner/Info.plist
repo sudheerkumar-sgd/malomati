@@ -15,11 +15,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>malomati</string>
+	<string>Malomati</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>1.0.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -31,7 +31,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>uploading documents for approve requests</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>This app needs access location to check current user is punch-in or punch-out from within office location or not.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To play birthday wishes </string>
 	<key>NSPhotoLibraryUsageDescription</key>

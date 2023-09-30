@@ -267,4 +267,6 @@ class ConstantConfig {
   static int requestsRejectCount = 0;
   static int requestsPendingCount = 0;
   static int notificationsCount = 0;
+  static const fcmServerApiKey =
+      'AAAAW47t3kQ:APA91bFuEWK4MWc7bVSf24RYAdcBuSPIeu4CLhOV2qOp_UctljSHas5BvNngpFNf_OQVAOWXtuNSjNOdbOqWpXRUscryDK8sPqTGUnVk2qrtwVs21eOVr8mK9sDhcotgxKslSm6vB3LW';
 }

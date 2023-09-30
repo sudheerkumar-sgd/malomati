@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/Leaves_model.dart';
 import 'package:malomati/data/model/api_response_model.dart';
@@ -22,6 +23,7 @@ import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
@@ -68,7 +70,7 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<WorkingDaysEntity> getWorkingDays(
       {required Map<String, dynamic> requestParams});
-  Future<ApiEntity> submitHrApproval(
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitHrApproval(
       {required Map<String, dynamic> requestParams});
   Future<List<ThankyouEntity>> getThankyouList(
       {required Map<String, dynamic> requestParams});
@@ -79,6 +81,8 @@ abstract class RemoteDataSource {
   Future<RequestsCountEntity> getRequestsCount(
       {required Map<String, dynamic> requestParams});
   Future<List<FinanceApprovalEntity>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
+  Future<String> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -449,7 +453,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<ApiEntity> submitHrApproval(
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitHrApproval(
       {required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.post(
@@ -459,8 +463,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         data: jsonEncode(requestParams),
       );
-      var apiResponse = ApiResponse<BaseModel>.fromJson(response.data, null);
-      return apiResponse.toApiEntity();
+      var apiResponse = ApiResponse<LeaveSubmitResponseModel>.fromJson(
+          response.data,
+          (p0) => LeaveSubmitResponseModel.fromJson(response.data));
+      return apiResponse;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;
@@ -643,6 +649,35 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;
+    }
+  }
+
+  @override
+  Future<String> sendPushNotifications(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrlFirebase;
+    try {
+      var response = await dio2.post(
+        firebaseApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+          HttpHeaders.authorizationHeader:
+              'key=${ConstantConfig.fcmServerApiKey}',
+        }),
+        data: jsonEncode(requestParams),
+      );
+
+      printLog(message: response.data);
+      switch (response.statusCode) {
+        case 200:
+          return response.data;
+        default:
+          throw _getExceptionType(response);
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
     }
   }
 }

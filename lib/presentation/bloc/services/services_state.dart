@@ -74,7 +74,7 @@ class OnWorkingDaysSuccess extends ServicesState {
 }
 
 class OnsubmitHrApprovalSuccess extends ServicesState {
-  final ApiEntity apiEntity;
+  final ApiEntity<LeaveSubmitResponseEntity> apiEntity;
 
   OnsubmitHrApprovalSuccess({required this.apiEntity});
 }

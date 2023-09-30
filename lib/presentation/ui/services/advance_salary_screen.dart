@@ -11,6 +11,7 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/resources.dart';
+import '../../../core/common/common_utils.dart';
 import '../../../data/model/api_request_model.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
@@ -77,6 +78,25 @@ class AdvanceSalaryScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  for (int i = 0;
+                      i <
+                          (state.servicesRequestSuccessResponse.entity
+                                  ?.aPPROVERSLIST.length ??
+                              0);
+                      i++) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.servicesRequestSuccessResponse.entity
+                                    ?.aPPROVERSLIST[i] ??
+                                '',
+                            title: 'Advance Salary',
+                            body:
+                                '${context.userDB.get(userFullNameUsKey)} has applied for Advance Salary',
+                            type: '',
+                            notificationId: state.servicesRequestSuccessResponse
+                                    .entity?.nTFID ??
+                                ''));
+                  }
                 } else {
                   Dialogs.showInfoDialog(
                       context,

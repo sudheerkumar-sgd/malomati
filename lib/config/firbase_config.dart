@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +23,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirbaseConfig {
   static String firbaseToken = '';
+  static ValueNotifier<Map<String, dynamic>?> onFirbaseMessageOpened =
+      ValueNotifier(null);
   Future<void> initFirbaseMessaging() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -30,13 +35,11 @@ class FirbaseConfig {
     // Web/iOS app users need to grant permission to receive messages
     final settings = await messaging.requestPermission(
       alert: true,
-      announcement: false,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
       sound: true,
     );
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
 
     if (kDebugMode) {
       print('Permission granted: ${settings.authorizationStatus}');
@@ -69,16 +72,20 @@ class FirbaseConfig {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (kDebugMode) {
+        //print('Handling a foreground message: ${json.encode(message)}');
         print('Handling a foreground message: ${message.messageId}');
         print('Message data: ${message.data}');
         print('Message notification: ${message.notification?.title}');
         print('Message notification: ${message.notification?.body}');
+        print('Message notification: ${message.data.toString()}');
         print(
-            'Message notification: ${message.notification?.android?.imageUrl ?? ''}');
+            'Message notification: ${message.notification?.android?.clickAction ?? ''}');
         print(
-            'Message notification: ${message.notification?.apple?.imageUrl ?? ''}');
+            'Message notification: ${message.notification?.apple?.subtitleLocArgs ?? ''}');
       }
-      //showNotification(message);
+      if (Platform.isAndroid) {
+        showNotification(message);
+      }
     });
 
     var android = const AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -89,6 +96,9 @@ class FirbaseConfig {
     flutterLocalNotificationsPlugin?.initialize(initialSetting);
     flutterLocalNotificationsPlugin?.initialize(
       initialSetting,
+      onDidReceiveNotificationResponse: (details) {
+        onFirbaseMessageOpened.value = jsonDecode(details.payload ?? '');
+      },
     );
   }
 
@@ -111,6 +121,6 @@ class FirbaseConfig {
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
     await flutterLocalNotificationsPlugin?.show(0, payload.notification!.title,
         payload.notification!.body, platformChannelSpecifics,
-        payload: payload.notification!.body);
+        payload: jsonEncode(payload.data));
   }
 }

@@ -224,5 +224,7 @@
     "next":"التالي",
     "prev":"السابق",
     "doneEnd":"نهاية",
-    "notifications":"إشعارات"
+    "notifications":"إشعارات",
+    "red":"احمر",
+    "blue":"ازرق"
 }

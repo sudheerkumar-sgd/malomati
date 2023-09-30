@@ -259,6 +259,31 @@ class LeavesScreen extends StatelessWidget {
                           state.leaveSubmitResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  for (int i = 0;
+                      i <
+                          (state.leaveSubmitResponse.entity?.aPPROVERSLIST
+                                  .length ??
+                              0);
+                      i++) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.leaveSubmitResponse.entity
+                                    ?.aPPROVERSLIST[i] ??
+                                '',
+                            title: (leaveType == LeaveType.otherLeave)
+                                ? '${selectedLeaveType?.name}'
+                                : leaveType.name,
+                            body: getLeavesApproverFCMBodyText(
+                                context.userDB.get(userFullNameUsKey),
+                                (leaveType == LeaveType.otherLeave)
+                                    ? '${selectedLeaveType?.name}'
+                                    : leaveType.name,
+                                '${_startDateController.text} ${_startTimeController.text}',
+                                '${_endDateController.text} ${_endTimeController.text}'),
+                            type: fcmTypeHRApprovals,
+                            notificationId:
+                                state.leaveSubmitResponse.entity?.nTFID ?? ''));
+                  }
                 } else {
                   Dialogs.showInfoDialog(context, PopupType.fail,
                       state.leaveSubmitResponse.getDisplayMessage(resources));

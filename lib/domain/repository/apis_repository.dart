@@ -56,8 +56,8 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, WorkingDaysEntity>> getWorkingDays(
       {required Map<String, dynamic> requestParams});
-  Future<Either<Failure, ApiEntity>> submitHrApproval(
-      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitHrApproval({required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<ThankyouEntity>>> getThankyouList(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<FinanceApprovalEntity>>> getFinanceApprovalList(
@@ -67,5 +67,7 @@ abstract class ApisRepository {
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<FinanceApprovalEntity>>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, String>> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
 }

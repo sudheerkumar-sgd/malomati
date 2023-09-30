@@ -507,6 +507,8 @@
     "prev":"Prev",
     "doneEnd":"Done",
     "notifications":"Notifications",
+    "red":"red",
+    "blue":"blue",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

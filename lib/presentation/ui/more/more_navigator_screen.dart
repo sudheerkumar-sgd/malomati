@@ -33,7 +33,7 @@ class MoreNavigatorScreen extends StatelessWidget {
               break;
             case AboutMalomati.route:
               builder = (BuildContext _) {
-                return const AboutMalomati();
+                return AboutMalomati();
               };
               break;
             default:

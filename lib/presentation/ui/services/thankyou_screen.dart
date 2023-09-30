@@ -169,6 +169,18 @@ class ThankyouScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  if ((employee?.uSERNAME ?? '').isNotEmpty) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: employee?.uSERNAME ?? '',
+                            title: 'Thank you',
+                            body:
+                                '${context.userDB.get(userFullNameUsKey)}  has Thanked You!',
+                            type: '',
+                            notificationId: state.servicesRequestSuccessResponse
+                                    .entity?.nTFID ??
+                                ''));
+                  }
                 } else {
                   Dialogs.showInfoDialog(
                       context,

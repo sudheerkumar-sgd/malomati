@@ -89,8 +89,8 @@ class ServicesUseCase extends BaseUseCase {
     return await apisRepository.getWorkingDays(requestParams: requestParams);
   }
 
-  Future<Either<Failure, ApiEntity>> submitHrApproval(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitHrApproval({required Map<String, dynamic> requestParams}) async {
     return await apisRepository.submitHrApproval(requestParams: requestParams);
   }
 
@@ -102,5 +102,11 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getRequestsCount(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, String>> sendPushNotifications(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.sendPushNotifications(
+        requestParams: requestParams);
   }
 }

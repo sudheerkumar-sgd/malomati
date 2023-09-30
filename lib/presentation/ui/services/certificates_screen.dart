@@ -69,6 +69,25 @@ class CertificatesScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  for (int i = 0;
+                      i <
+                          (state.servicesRequestSuccessResponse.entity
+                                  ?.aPPROVERSLIST.length ??
+                              0);
+                      i++) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.servicesRequestSuccessResponse.entity
+                                    ?.aPPROVERSLIST[i] ??
+                                '',
+                            title: 'Certificate',
+                            body:
+                                '${context.userDB.get(userFullNameUsKey)} has applied for Certificate Request',
+                            type: '',
+                            notificationId: state.servicesRequestSuccessResponse
+                                    .entity?.nTFID ??
+                                ''));
+                  }
                 } else {
                   Dialogs.showInfoDialog(
                       context,

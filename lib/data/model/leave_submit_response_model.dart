@@ -10,16 +10,27 @@ class LeaveSubmitResponseModel extends BaseModel {
   String? nTFID;
   String? iTEMKEY;
   String? sTATUS;
+  String? oRIGINALRECIPIENT;
+  List<String> aPPROVERSLIST = [];
 
   LeaveSubmitResponseModel();
 
   factory LeaveSubmitResponseModel.fromJson(Map<String, dynamic> json) {
     var leaveSubmitResponseModel = LeaveSubmitResponseModel();
     leaveSubmitResponseModel.sTATUS = json['STATUS'];
-    leaveSubmitResponseModel.sTATUS = json['STATUS'];
-    leaveSubmitResponseModel.sTATUS = json['STATUS'];
     leaveSubmitResponseModel.nTFID = '${json['NTF_ID']}';
     leaveSubmitResponseModel.iTEMKEY = '${json['ITEM_KEY']}';
+    leaveSubmitResponseModel.oRIGINALRECIPIENT =
+        '${json['ORIGINAL_RECIPIENT']}';
+    if (json['APPROVER_LIST'] != null) {
+      leaveSubmitResponseModel.aPPROVERSLIST = (json['APPROVER_LIST'] as List)
+          .map((e) => e['CURRENT_APPROVER'].toString())
+          .toList();
+    } else if (json['APPROVERS_LIST'] != null) {
+      leaveSubmitResponseModel.aPPROVERSLIST = (json['APPROVERS_LIST'] as List)
+          .map((e) => e['CURRENT_APPROVER'].toString())
+          .toList();
+    }
     return leaveSubmitResponseModel;
   }
 
@@ -43,6 +54,8 @@ extension SourceModelExtension on LeaveSubmitResponseModel {
     leaveSubmitResponseEntity.sTATUS = sTATUS;
     leaveSubmitResponseEntity.iTEMKEY = iTEMKEY;
     leaveSubmitResponseEntity.nTFID = nTFID;
+    leaveSubmitResponseEntity.aPPROVERSLIST = aPPROVERSLIST;
+    leaveSubmitResponseEntity.oRIGINALRECIPIENT = oRIGINALRECIPIENT;
     return leaveSubmitResponseEntity;
   }
 }

@@ -414,14 +414,15 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, ApiEntity>> submitHrApproval(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitHrApproval({required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
             await dataSource.submitHrApproval(requestParams: requestParams);
-        return Right(apiResponse);
+        return Right(apiResponse.toEntity<LeaveSubmitResponseEntity>(
+            apiResponse.data!.toLeaveSubmitResponseEntity()));
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       } catch (error) {
@@ -478,6 +479,25 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse =
             await dataSource.getNotificationsList(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> sendPushNotifications(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.sendPushNotifications(
+            requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

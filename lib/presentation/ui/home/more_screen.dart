@@ -274,7 +274,7 @@ class MoreScreen extends StatelessWidget {
                           child: AnimatedToggle(
                             width: 114,
                             height: 17,
-                            values: const ['red', 'blue'],
+                            values: [context.string.red, context.string.blue],
                             selectedPossition: resources.isRedTheme ? 0 : 1,
                             onToggleCallback: (value) {
                               resources.setTheme();
@@ -457,7 +457,7 @@ class MoreScreen extends StatelessWidget {
                             context,
                             PageTransition(
                               type: PageTransitionType.rightToLeft,
-                              child: const AboutMalomati(),
+                              child: AboutMalomati(),
                             ),
                           );
                         },

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
@@ -29,6 +31,7 @@ import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatelessWidget {
   static String anualLeaveBalance = '';
@@ -86,9 +89,47 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
+  Future<bool> callOnFcmApiSendPushNotifications(List<String> userToken) async {
+    final postUrl = 'fcm.googleapis.com';
+    final data = {
+      "to": "/topics/MOOZA.BINYEEM",
+      "notification": {
+        "title": "Breaking News",
+        "body": "New news story available.",
+        "click_action": "HANDLE_BREAKING_NEWS"
+      },
+      "data": {"story_id": "story_12345"}
+    };
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization':
+          'key=AAAAW47t3kQ:APA91bFuEWK4MWc7bVSf24RYAdcBuSPIeu4CLhOV2qOp_UctljSHas5BvNngpFNf_OQVAOWXtuNSjNOdbOqWpXRUscryDK8sPqTGUnVk2qrtwVs21eOVr8mK9sDhcotgxKslSm6vB3LW' // 'key=YOUR_SERVER_KEY'
+    };
+
+    final response = await http.post(Uri.https(postUrl, '/fcm/send'),
+        body: json.encode(data),
+        encoding: Encoding.getByName('utf-8'),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      // on success do sth
+      print('test ok push CFM');
+      return true;
+    } else {
+      print(' CFM error');
+      // on failure do sth
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    // Future.delayed(const Duration(seconds: 5), () async {
+    //   await callOnFcmApiSendPushNotifications([
+    //     'fzDUuySoS3aQhV-Hl1Iuup:APA91bEM32dGhld9yHlsnldsVsdZ7_-8RslzjUr867QA8C8j3_KDJzSMQJcuJ9PV82mOApgeh4LzdZ9MOkgkoSzzD3649Lgs_303byTvSIqVYPuxRlnan8YytJeN8nV7mXaKasFmK8V0'
+    //   ]);
+    // });
     final userName = context.userDB.get(userNameKey, defaultValue: '');
     _refreshAttendance();
     _homeBloc.getDashboardData(
@@ -169,7 +210,9 @@ class HomeScreen extends StatelessWidget {
                     ConstantConfig.notificationsCount = list.length;
                     ConstantConfig.isApprovalCountChange.value =
                         !(ConstantConfig.isApprovalCountChange.value);
-                  } else if (state is OnApiError) {}
+                  } else if (state is OnApiError) {
+                    printLog(message: state.message);
+                  }
                 },
                 child: Column(
                   children: [
@@ -627,9 +670,8 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         Flexible(
                                           child: ItemDashboardLeaves(
-                                            balanceCount: dashboardEntity
-                                                    .pERMISSIONACCRUAL ??
-                                                '0',
+                                            balanceCount:
+                                                '${(dashboardEntity.pERMISSIONACCRUAL is double) ? (dashboardEntity.pERMISSIONACCRUAL ?? 0).toStringAsFixed(1) : dashboardEntity.pERMISSIONACCRUAL ?? 0}',
                                             balancetype: context.string.hours,
                                             title: context
                                                 .string.balancePermission,

@@ -20,12 +20,17 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
         }
       });
       authString = '$loginId:12345';
+      String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
+      print(basicAuth);
+      options.headers.addAll({
+        HttpHeaders.authorizationHeader: basicAuth,
+      });
     }
-    String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
-    print(basicAuth);
-    options.headers.addAll({
-      HttpHeaders.authorizationHeader: basicAuth,
-    });
+    // String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
+    // print(basicAuth);
+    // options.headers.addAll({
+    //   HttpHeaders.authorizationHeader: basicAuth,
+    // });
 
     if (FlavorConfig.instance.flavor == Flavor.DEVELOPMENT) {
       print(

@@ -39,9 +39,11 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
   final _servicesBloc = sl<ServicesBloc>();
   HrapprovalDetailsEntity? financeDetailsItems;
   bool showItems = false;
+  String selectedAction = '';
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
+    selectedAction = action;
     final requestParams = {
       "ACTION_TYPE": action,
       "NOTIFICATION_ID": id,
@@ -104,6 +106,39 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
             } else if (state is OnsubmitHrApprovalSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.apiEntity.isSuccess ?? false) {
+                for (int i = 0;
+                    i < (state.apiEntity.entity?.aPPROVERSLIST.length ?? 0);
+                    i++) {
+                  _servicesBloc.sendPushNotifications(
+                      requestParams: getFCMMessageData(
+                          to: state.apiEntity.entity?.aPPROVERSLIST[i] ?? '',
+                          title: 'Finance Approval',
+                          body: 'Finance Approval required your action!',
+                          type: fcmTypeFinanceApprovals,
+                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                }
+                if ((state.apiEntity.entity?.oRIGINALRECIPIENT ?? '')
+                    .isNotEmpty) {
+                  String noticationBody = '';
+                  switch (selectedAction) {
+                    case REJECT:
+                      noticationBody =
+                          'Your request Rejected by the ${context.userDB.get(userFullNameUsKey)}';
+                    case REQUESTMOREINFO:
+                      noticationBody =
+                          '${context.userDB.get(userFullNameUsKey)} has requested more info for your request';
+                    default:
+                      noticationBody =
+                          'Your request Approved by the ${context.userDB.get(userFullNameUsKey)}';
+                  }
+                  _servicesBloc.sendPushNotifications(
+                      requestParams: getFCMMessageData(
+                          to: state.apiEntity.entity?.oRIGINALRECIPIENT ?? '',
+                          title: 'HR Approval',
+                          body: noticationBody,
+                          type: '',
+                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                }
                 widget.callBack('${widget.data.nOTIFICATIONID ?? ''}', context);
               } else {
                 Dialogs.showInfoDialog(context, PopupType.fail,

@@ -17,6 +17,7 @@ class EmployeeModel extends BaseModel {
     departmentModel.empNameEN = json['ENGLISH'];
     departmentModel.empNameAR = json['ARABIC'];
     departmentModel.pERSONID = '${json['PERSON_ID']}';
+    departmentModel.uSERNAME = '${json['USER_NAME']}';
     return departmentModel;
   }
 

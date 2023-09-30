@@ -28,7 +28,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
   final ValueNotifier<bool> _isnotPunchedemployeesExpanded =
       ValueNotifier(false);
   String userName = '';
-  ValueNotifier<double> _fraction = ValueNotifier(0.0);
+  ValueNotifier<double> _fraction = ValueNotifier(-1.0);
   int loggedInEmployees = 0;
   late Animation<double> _animation;
   late AnimationController _controller;
@@ -79,7 +79,9 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
           BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnEmployeesSuccess) {
-                _employeesList.value = state.employeesList;
+                _employeesList.value = state.employeesList
+                    .where((element) => element.uSERNAME != userName)
+                    .toList();
                 _getAttendanceByEmployee();
               }
             },
@@ -93,9 +95,6 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                           .punch1Time?.isNotEmpty ??
                       false) {
                     loggedInEmployees++;
-                    percentage =
-                        loggedInEmployees / _employeesList.value.length;
-                    _fraction.value = percentage;
                   } else {
                     final employee = _employeesList.value
                         .where((element) =>
@@ -110,6 +109,11 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                     _notPunchedemployeesList.value = list;
                   }
                 }
+                percentage = loggedInEmployees / _employeesList.value.length;
+                _fraction.value = percentage;
+              } else if (state is OnAttendanceApiError) {
+                percentage = loggedInEmployees / _employeesList.value.length;
+                _fraction.value = percentage;
               }
             },
           )
@@ -122,7 +126,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                   return Stack(
                     alignment: Alignment.center,
                     children: [
-                      value > 0
+                      value > -1
                           ? CustomPaint(
                               painter: DashedProgressIndicator(
                                   percent: value,
@@ -139,7 +143,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                               ),
                             ),
                       Text(
-                        '${(value * 100).round()}%',
+                        '${(value < 0 ? 0 : value * 100).round()}%',
                         style: context.textFontWeight600
                             .onFontSize(35)
                             .onFontFamily(fontFamily: fontFamilyEN),

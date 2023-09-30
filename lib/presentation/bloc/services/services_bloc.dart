@@ -158,6 +158,13 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
   }
 
+  Future<void> sendPushNotifications(
+      {required Map<String, dynamic> requestParams}) async {
+    await servicesUseCase.sendPushNotifications(requestParams: requestParams);
+    // emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+    //     (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
+  }
+
   String _getErrorMessage(Failure failure) {
     return failure.errorMessage;
   }

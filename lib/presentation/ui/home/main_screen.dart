@@ -6,9 +6,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/requests_screen.dart';
+import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
@@ -17,6 +20,7 @@ import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -101,63 +105,51 @@ class _MainScreenState extends State<MainScreen> {
         await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
-      _handleMessage(initialMessage);
+      final message = initialMessage.data;
+      _handleMessage(
+          {'notification': initialMessage.notification, 'data': message});
     }
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
+      final message = remoteMessage.data;
+      _handleMessage(
+          {'notification': remoteMessage.notification, 'data': message});
+    });
+
+    FirbaseConfig.onFirbaseMessageOpened.addListener(() {
+      _handleMessage({'data': FirbaseConfig.onFirbaseMessageOpened.value});
+    });
   }
 
-  void _handleMessage(RemoteMessage? message) {
+  void _handleMessage(Map<String, dynamic>? message) {
     if (message != null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return NotificationDialogWidget(
-              title: message.notification?.title ?? '',
-              message: message.notification?.body ?? '',
-              imageUrl: Platform.isAndroid
-                  ? message.notification?.android?.imageUrl ?? ''
-                  : message.notification?.apple?.imageUrl ?? '',
-            );
-          });
-    }
-  }
-
-  initNotificationListeners() {
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
+      if (message['data']['type'] == fcmTypeHRApprovals) {
+        ServicesScreen.onServiceClick(
+            context, FavoriteEntity(name: 'HR APPROVALS'));
+      } else if (message['data']['type'] == fcmTypeFinanceApprovals) {
+        ServicesScreen.onServiceClick(
+            context, FavoriteEntity(name: 'Finance Approvals'));
+      } else if (message['data']['type'] == 'POPUP') {
         showDialog(
             context: context,
             builder: (context) {
               return NotificationDialogWidget(
-                title: message.notification?.title ?? '',
-                message: message.notification?.body ?? '',
+                title: message['notification']?.title ?? '',
+                message: message['notification']?.body ?? '',
                 imageUrl: Platform.isAndroid
-                    ? message.notification?.android?.imageUrl ?? ''
-                    : message.notification?.apple?.imageUrl ?? '',
+                    ? message['notification']?.android?.imageUrl ?? ''
+                    : message['notification']?.apple?.imageUrl ?? '',
               );
             });
       }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return NotificationDialogWidget(
-              title: message.notification?.title ?? '',
-              message: message.notification?.body ?? '',
-              imageUrl: Platform.isAndroid
-                  ? message.notification?.android?.imageUrl ?? ''
-                  : message.notification?.apple?.imageUrl ?? '',
-            );
-          });
-    });
+    }
   }
 
   @override
   void initState() {
     setupFirebaseNotificationMessage();
+    FlutterAppBadger.isAppBadgeSupported()
+        .then((value) => FlutterAppBadger.removeBadge());
     super.initState();
   }
 

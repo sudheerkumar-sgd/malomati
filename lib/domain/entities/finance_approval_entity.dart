@@ -25,6 +25,8 @@ class FinanceApprovalEntity {
   String? bEGINDATE;
   String? dOCUMENTNUMBER;
   String? pURREQNUM;
+  String? cREATIONDATE;
+  String? aCTION;
 
   FinanceApprovalEntity();
 }

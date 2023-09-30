@@ -83,7 +83,7 @@ class ItemNotifications extends StatelessWidget {
                             .roundedCornerBox,
                         child: RichText(
                           text: TextSpan(
-                              text: '${data.sUBJECT}\n',
+                              text: '${data.sUBJECT} - ${data.aCTION}\n',
                               style: context.textFontWeight400
                                   .onFontSize(resources.fontSize.dp12)
                                   .copyWith(height: 1.5),
@@ -96,8 +96,8 @@ class ItemNotifications extends StatelessWidget {
                                 TextSpan(
                                   text: getDateByformat(
                                       'dd/MM/yyyy, hh:mm a',
-                                      getDateTimeByString('yyyy-MM-ddThh:mm:ss',
-                                          data.bEGINDATE ?? '')),
+                                      getDateTimeByString('yyyy-MM-dd hh:mm:ss',
+                                          data.cREATIONDATE ?? '')),
                                   style: context.textFontWeight400
                                       .onFontFamily(fontFamily: fontFamilyEN)
                                       .onFontSize(resources.fontSize.dp12),

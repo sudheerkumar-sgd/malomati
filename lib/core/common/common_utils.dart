@@ -185,7 +185,7 @@ List<NameIdEntity> getSalaryTypes(BuildContext context) {
   return [
     NameIdEntity('D', context.string.detailedSalary),
     NameIdEntity('N', context.string.noSalary),
-    NameIdEntity('T', context.string.totalSalary)
+    NameIdEntity('Y', context.string.totalSalary)
   ];
 }
 
@@ -220,4 +220,32 @@ double getTopSafeAreaHeight(BuildContext context) {
 Size getScrrenSize(BuildContext context) {
   printLog(message: '${MediaQuery.of(context).size}');
   return MediaQuery.of(context).size;
+}
+
+Map<String, dynamic> getFCMMessageData(
+    {required String to,
+    required String title,
+    required String body,
+    String type = '',
+    String notificationId = ''}) {
+  return {
+    "to": '/topics/$to',
+    "notification": {
+      "title": title,
+      "body": body,
+      "click_action": "HR_APPROVALS"
+    },
+    "data": {
+      "title": title,
+      "body": body,
+      "type": type,
+      "notification_id": notificationId
+    },
+    "priority": "high"
+  };
+}
+
+String getLeavesApproverFCMBodyText(
+    String prefix, String leaveName, String fromDate, String toDate) {
+  return '$prefix has applied for $leaveName Request from $fromDate to $toDate';
 }

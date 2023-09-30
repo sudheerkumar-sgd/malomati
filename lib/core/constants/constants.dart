@@ -38,6 +38,9 @@ const String fontFamilyAR = "AR_GE_SS";
 const String supportMobileNumber = '06 764 1000';
 const String supportEmailId = 'info@uaqgov.ae';
 
+const String fcmTypeHRApprovals = 'HR_APPROVALS';
+const String fcmTypeFinanceApprovals = 'FINANCE_APPROVALS';
+
 String authorizationToken = "";
 String oracleLoginId = "";
 bool isLocalEn = true;

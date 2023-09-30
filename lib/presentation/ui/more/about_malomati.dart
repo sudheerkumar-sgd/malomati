@@ -6,13 +6,18 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../widgets/back_app_bar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutMalomati extends StatelessWidget {
   static const String route = '/AboutMalomati';
-  const AboutMalomati({super.key});
+  final ValueNotifier<String> version = ValueNotifier('');
+  AboutMalomati({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      version.value = packageInfo.version;
+    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -50,18 +55,23 @@ class AboutMalomati extends StatelessWidget {
                     SizedBox(
                       height: context.resources.dimen.dp25,
                     ),
-                    RichText(
-                        text: TextSpan(
-                            text: '${context.string.version}: ',
-                            style: context.textFontWeight600
-                                .onFontSize(context.resources.fontSize.dp11),
-                            children: [
-                          TextSpan(
-                              text: '1.0',
-                              style: context.textFontWeight600
-                                  .onFontSize(context.resources.fontSize.dp11)
-                                  .onFontFamily(fontFamily: fontFamilyEN))
-                        ])),
+                    ValueListenableBuilder(
+                        valueListenable: version,
+                        builder: (context, value, child) {
+                          return RichText(
+                              text: TextSpan(
+                                  text: '${context.string.version}: ',
+                                  style: context.textFontWeight600.onFontSize(
+                                      context.resources.fontSize.dp11),
+                                  children: [
+                                TextSpan(
+                                    text: value,
+                                    style: context.textFontWeight600
+                                        .onFontSize(
+                                            context.resources.fontSize.dp11)
+                                        .onFontFamily(fontFamily: fontFamilyEN))
+                              ]));
+                        }),
                     SizedBox(
                       height: context.resources.dimen.dp1,
                     ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
@@ -11,6 +10,7 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
+import '../../../../core/common/common_utils.dart';
 import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
 import '../../utils/dialogs.dart';
@@ -37,9 +37,11 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
       ValueNotifier(HrapprovalDetailsEntity());
   List<LeaveTypeEntity> leaveTypes = [];
+  String selectedAction = '';
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
+    selectedAction = action;
     final requestParams = {
       "ACTION_TYPE": action,
       "NOTIFICATION_ID": id,
@@ -175,6 +177,39 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
             } else if (state is OnsubmitHrApprovalSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.apiEntity.isSuccess ?? false) {
+                for (int i = 0;
+                    i < (state.apiEntity.entity?.aPPROVERSLIST.length ?? 0);
+                    i++) {
+                  _servicesBloc.sendPushNotifications(
+                      requestParams: getFCMMessageData(
+                          to: state.apiEntity.entity?.aPPROVERSLIST[i] ?? '',
+                          title: 'HR Approval',
+                          body: 'HR Approval required your action!',
+                          type: fcmTypeHRApprovals,
+                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                }
+                if ((state.apiEntity.entity?.oRIGINALRECIPIENT ?? '')
+                    .isNotEmpty) {
+                  String noticationBody = '';
+                  switch (selectedAction) {
+                    case REJECT:
+                      noticationBody =
+                          'Your request Rejected by the ${context.userDB.get(userFullNameUsKey)}';
+                    case REQUESTMOREINFO:
+                      noticationBody =
+                          '${context.userDB.get(userFullNameUsKey)} has requested more info for your request';
+                    default:
+                      noticationBody =
+                          'Your request Approved by the ${context.userDB.get(userFullNameUsKey)}';
+                  }
+                  _servicesBloc.sendPushNotifications(
+                      requestParams: getFCMMessageData(
+                          to: state.apiEntity.entity?.oRIGINALRECIPIENT ?? '',
+                          title: 'HR Approval',
+                          body: noticationBody,
+                          type: '',
+                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                }
                 widget.callBack(widget.data.nOTIFICATIONID ?? '', context);
               } else {
                 Dialogs.showInfoDialog(context, PopupType.fail,

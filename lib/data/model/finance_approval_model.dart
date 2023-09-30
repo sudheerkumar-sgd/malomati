@@ -27,6 +27,8 @@ class FinanceApprovalModel {
   String? bEGINDATE;
   String? dOCUMENTNUMBER;
   String? pURREQNUM;
+  String? cREATIONDATE;
+  String? aCTION;
 
   FinanceApprovalModel();
 
@@ -59,6 +61,8 @@ class FinanceApprovalModel {
     bEGINDATE = json['BEGIN_DATE'];
     dOCUMENTNUMBER = '${json['DOCUMENT_NUMBER']}';
     pURREQNUM = '${json['PUR_REQ_NUM']}';
+    cREATIONDATE = json['CREATION_DATE'];
+    aCTION = json['ACTION'];
   }
 }
 
@@ -93,6 +97,8 @@ extension SourceModelExtension on FinanceApprovalModel {
     financeApprovalEntity.dOCUMENTNUMBER = dOCUMENTNUMBER;
     financeApprovalEntity.pURREQNUM = pURREQNUM;
     financeApprovalEntity.bEGINDATE = bEGINDATE;
+    financeApprovalEntity.cREATIONDATE = cREATIONDATE;
+    financeApprovalEntity.aCTION = aCTION;
     return financeApprovalEntity;
   }
 }
