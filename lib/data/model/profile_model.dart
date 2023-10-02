@@ -35,6 +35,7 @@ class ProfileModel extends BaseModel {
     profileModel.PERSON_ID = json["PERSON_ID"];
     profileModel.MARITAL_STATUS = json["MARITAL_STATUS"];
     profileModel.EMPLOYEE_NUMBER = json["EMPLOYEE_NUMBER"];
+    profileModel.SUPERVISOR_NAME_ENGLISH = json["SUPERVISOR_NAME_ENGLISH"];
     profileModel.SUPERVISOR_NAME_ARABIC = json["SUPERVISOR_NAME_ARABIC"];
     profileModel.FULL_NAME_AR = json["FULL_NAME_AR"];
     profileModel.FULL_NAME_US = json["FULL_NAME_US"];
@@ -43,7 +44,7 @@ class ProfileModel extends BaseModel {
     profileModel.PHONE_NUMBER = json["PHONE_NUMBER"];
     profileModel.HIRE_DATE = json["HIRE_DATE"];
     profileModel.DEPARTMENT_NAME = json["DEPARTMENT_NAME"];
-    profileModel.DEPARTMENT_NAME_US = json["Attribute1"];
+    profileModel.DEPARTMENT_NAME_US = json["ATTRIBUTE1"];
     profileModel.NATIONALITY = json["NATIONALITY"];
     profileModel.AS_OF_DATE = json["AS_OF_DATE"];
     profileModel.AS_OF_DATE_CHAR = json["AS_OF_DATE_CHAR"];
@@ -74,6 +75,7 @@ extension SourceModelExtension on ProfileModel {
     profileEntity.PERSON_ID = PERSON_ID;
     profileEntity.MARITAL_STATUS = MARITAL_STATUS;
     profileEntity.EMPLOYEE_NUMBER = EMPLOYEE_NUMBER;
+    profileEntity.SUPERVISOR_NAME_ENGLISH = SUPERVISOR_NAME_ENGLISH;
     profileEntity.SUPERVISOR_NAME_ARABIC = SUPERVISOR_NAME_ARABIC;
     profileEntity.FULL_NAME_AR = FULL_NAME_AR;
     profileEntity.FULL_NAME_US = FULL_NAME_US;

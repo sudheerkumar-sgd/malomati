@@ -149,11 +149,11 @@ class LeavesScreen extends StatelessWidget {
     leaveRequestModel.eNDDATE = _endDateController.text;
     if (leaveType == LeaveType.permission) {
       leaveRequestModel.sTARTTIME = getDateByformat(
-          'HH:MM',
+          'hh:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_startTimeController.text}'));
       leaveRequestModel.eNDTIME = getDateByformat(
-          'HH:MM',
+          'hh:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_endTimeController.text}'));
     }
@@ -221,7 +221,7 @@ class LeavesScreen extends StatelessWidget {
             if (minutes >= 30) {
               if (minutes >= 60) {
                 text =
-                    '${(minutes / 60).round()}:${minutes % 60} ${context.string.hours}';
+                    '${minutes ~/ 60}:${minutes % 60} ${context.string.hours}';
               } else {
                 text = '$minutes min';
               }
@@ -517,6 +517,9 @@ class LeavesScreen extends StatelessWidget {
                                               : _endDateController.text));
                                 } else {
                                   _selectDate(context, _endDateController,
+                                      initialDate: getDateTimeByString(
+                                          dateFormat,
+                                          _startDateController.text),
                                       firstDate: getDateTimeByString(dateFormat,
                                           _startDateController.text),
                                       lastDate: getDateTimeByString(dateFormat,

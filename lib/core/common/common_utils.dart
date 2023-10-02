@@ -150,20 +150,20 @@ int daysBetween(DateTime from, DateTime to) {
 }
 
 int getDays(DateTime from, DateTime to) {
-  return (getHours(from, to) / 24).round();
+  return getHours(from, to) ~/ 24;
 }
 
 int getHours(DateTime from, DateTime to) {
-  return (daysBetween(from, to) / (60 * 60)).round();
+  return daysBetween(from, to) ~/ (60 * 60);
 }
 
 int getMinutes(DateTime from, DateTime to) {
-  return (daysBetween(from, to) / (60)).round();
+  return daysBetween(from, to) ~/ (60);
 }
 
 String getHoursMinutesFormat(DateTime from, DateTime to) {
   var minutes = getMinutes(from, to);
-  return '${(minutes / 60).round()}.${minutes % 60} hrs';
+  return '${minutes ~/ 60}.${minutes % 60} hrs';
 }
 
 String getRemainingHoursMinutesFormat(DateTime from, DateTime to) {
@@ -171,7 +171,7 @@ String getRemainingHoursMinutesFormat(DateTime from, DateTime to) {
   if (minutes < 1) {
     return '0';
   }
-  return '${(minutes / 60).round()}.${minutes % 60} hrs';
+  return '${(minutes ~/ 60)}.${minutes % 60} hrs';
 }
 
 List<NameIdEntity> getDropDownYesNo(BuildContext context) {

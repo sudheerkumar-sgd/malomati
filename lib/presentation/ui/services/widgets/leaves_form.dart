@@ -161,11 +161,11 @@ class LeavesForm extends StatelessWidget {
     leaveRequestModel.eNDDATE = _endDateController.text;
     if (leaveType == LeaveType.permission) {
       leaveRequestModel.sTARTTIME = getDateByformat(
-          'HH:MM',
+          'hh:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_startTimeController.text}'));
       leaveRequestModel.eNDTIME = getDateByformat(
-          'HH:MM',
+          'hh:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_endTimeController.text}'));
     }

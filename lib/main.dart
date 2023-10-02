@@ -15,8 +15,8 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
   FlavorConfig(
-    flavor: Flavor.DEVELOPMENT,
-    values: FlavorValues(baseUrl: BaseUrlConfig().baseUrlDevelopment),
+    flavor: Flavor.PRODUCTION,
+    values: FlavorValues(baseUrl: BaseUrlConfig().baseUrlProduction),
   );
   await di.init();
   runApp(Phoenix(child: const App()));
