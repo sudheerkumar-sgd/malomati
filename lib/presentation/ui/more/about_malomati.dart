@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
@@ -16,7 +15,7 @@ class AboutMalomati extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      version.value = packageInfo.version;
+      version.value = "${packageInfo.version} (${packageInfo.buildNumber})";
     });
     return SafeArea(
       child: Scaffold(
@@ -82,16 +81,15 @@ class AboutMalomati extends StatelessWidget {
                                 .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
-                            text: '28 ',
+                            text: '3rd ',
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),
                           ),
                           TextSpan(
                             text: isLocalEn
-                                ? getCurrentDateByformat('MMMM')
-                                : getArabicMonthName(
-                                    getCurrentDateByformat('MMMM')),
+                                ? 'October'
+                                : getArabicMonthName('October'),
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11),
                           ),

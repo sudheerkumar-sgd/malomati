@@ -27,7 +27,6 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
       });
     }
     // String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
-    // print(basicAuth);
     // options.headers.addAll({
     //   HttpHeaders.authorizationHeader: basicAuth,
     // });

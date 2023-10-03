@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/app.dart';
 import 'package:malomati/core/common/common.dart';
@@ -18,5 +19,5 @@ void main() async {
     values: FlavorValues(baseUrl: BaseUrlConfig().baseUrlProduction),
   );
   await di.init();
-  runApp(const App());
+  runApp(Phoenix(child: const App()));
 }
