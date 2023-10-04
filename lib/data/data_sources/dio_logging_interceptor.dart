@@ -11,8 +11,10 @@ import '../../config/flavor_config.dart';
 class DioLoggingInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    var authString = 'soauser:soauser123';
-    if (options.baseUrl == baseUrlAttendanceDevelopment) {
+    var authString = 'malomatisoauser:U@qso@mal0mati';
+    if (options.baseUrl == baseUrlDevelopment) {
+      authString = 'soauser:soauser123';
+    } else if (options.baseUrl == baseUrlAttendanceDevelopment) {
       var loginId = oracleLoginId;
       options.headers.forEach((k, v) {
         if (k == HttpHeaders.authorizationHeader && v != null) {
@@ -20,16 +22,16 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
         }
       });
       authString = '$loginId:12345';
-      String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
-      print(basicAuth);
-      options.headers.addAll({
-        HttpHeaders.authorizationHeader: basicAuth,
-      });
+      // String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
+// print(basicAuth);
+      // options.headers.addAll({
+      //   HttpHeaders.authorizationHeader: basicAuth,
+      // });
     }
-    // String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
-    // options.headers.addAll({
-    //   HttpHeaders.authorizationHeader: basicAuth,
-    // });
+    String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
+    options.headers.addAll({
+      HttpHeaders.authorizationHeader: basicAuth,
+    });
 
     if (FlavorConfig.instance.flavor == Flavor.DEVELOPMENT) {
       print(
