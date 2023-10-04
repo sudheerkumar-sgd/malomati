@@ -60,12 +60,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDMRFioYW3ahpc35Li8KcES7-STddLNiv0',
-    appId: '1:393239977540:ios:66ae081cfd1b264da82611',
+    appId: '1:393239977540:ios:8d559e1fad714c50a82611',
     messagingSenderId: '393239977540',
     projectId: 'malomati-bf7ab',
     databaseURL: 'https://malomati-bf7ab.firebaseio.com',
     storageBucket: 'malomati-bf7ab.appspot.com',
-    androidClientId: '393239977540-e3b8rk9c5phg95u1iljqag71an2555f0.apps.googleusercontent.com',
-    iosBundleId: 'com.gov.uaq.hrms',
+    androidClientId:
+        '393239977540-e3b8rk9c5phg95u1iljqag71an2555f0.apps.googleusercontent.com',
+    iosBundleId: 'com.gov.uaq.hrm',
   );
 }

@@ -8,7 +8,7 @@
 PRODUCT_NAME = malomati
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.gov.uaq.hrms
+PRODUCT_BUNDLE_IDENTIFIER = com.gov.uaq.hrm
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.gov.uaq.hrms. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.gov.uaq.hrm. All rights reserved.
