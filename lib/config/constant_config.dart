@@ -75,6 +75,17 @@ class ConstantConfig {
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
+  final guestServices = [
+    FavoriteEntity(
+        name: 'Jobs', nameAR: 'وظائف', iconPath: DrawableAssets.icJobs),
+    FavoriteEntity(
+        name: 'Events', nameAR: 'الأحداث', iconPath: DrawableAssets.icEvent),
+    FavoriteEntity(
+        name: 'UAQ Apps',
+        nameAR: 'UAQ تطبيقات',
+        iconPath: DrawableAssets.icApps),
+  ];
+
   final dashboardFavorites = [
     {
       'name': 'Annual Leaves',
@@ -108,7 +119,11 @@ class ConstantConfig {
     },
   ];
 
-  List<FavoriteEntity> getServicesByManager({required bool isManager}) {
+  List<FavoriteEntity> getServicesByManager(
+      {required bool isManager, bool isGuest = false}) {
+    if (isGuest) {
+      return guestServices;
+    }
     return isManager
         ? services
         : services

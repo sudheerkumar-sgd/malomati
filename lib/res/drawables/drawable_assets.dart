@@ -100,4 +100,10 @@ class DrawableAssets {
   static const icShowPwd = '${drawablePath}ic_show_pwd.svg';
   static const icToolTip = '${drawablePath}ic_tooltip.svg';
   static const icTrash = '${drawablePath}ic_trash.svg';
+  static const icJobs = '${drawablePath}ic_jobs.svg';
+  static const icEvent = '${drawablePath}ic_event.svg';
+  static const icApps = '${drawablePath}ic_apps.svg';
+  static const icSmartUaqApp = '${drawablePath}ic_smart_uaq_app.png';
+  static const icTarasolSuiteApp = '${drawablePath}ic_tarasol_suite_app.png';
+  static const icCross = '${drawablePath}ic_cross.svg';
 }

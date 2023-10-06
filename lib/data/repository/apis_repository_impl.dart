@@ -13,6 +13,7 @@ import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
@@ -479,6 +480,25 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse =
             await dataSource.getNotificationsList(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<EventsEntity>>> getHolidaysList(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getHolidaysList(requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

@@ -147,13 +147,13 @@ class LeavesScreen extends StatelessWidget {
     }
     leaveRequestModel.sTARTDATE = _startDateController.text;
     leaveRequestModel.eNDDATE = _endDateController.text;
-    if (leaveType == LeaveType.permission) {
+    if (leaveRequestModel.aBSENCETYPEID == LeaveType.permission.id) {
       leaveRequestModel.sTARTTIME = getDateByformat(
-          'hh:mm',
+          'HH:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_startTimeController.text}'));
       leaveRequestModel.eNDTIME = getDateByformat(
-          'hh:mm',
+          'HH:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_endTimeController.text}'));
     }

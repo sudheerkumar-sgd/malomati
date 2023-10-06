@@ -22,21 +22,31 @@ class NotificationsScreen extends StatelessWidget {
       ValueNotifier([]);
 
   String userName = '';
+  List<String> toBeDeleted = [];
 
   NotificationsScreen({super.key});
 
-  _onActionClicked(String id, BuildContext context) {
+  _onActionClicked(BuildContext context, String id, String action) {
     // final list = _notificationList.value;
     // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
     // list.removeAt(index);
     // _notificationList.value = [];
     // _notificationList.value = list;
-    context.userDB.put(deletedNotificationsKey,
-        '${context.userDB.get(deletedNotificationsKey, defaultValue: '')}#$id');
-    final list = _notificationList.value
-        .where((element) => !id.contains('${element.nOTIFICATIONID}'))
-        .toList();
-    _notificationList.value = list;
+    if (action == 'add') {
+      toBeDeleted.add(id);
+    } else if (action == 'remove') {
+      toBeDeleted.remove(id);
+    } else if (action == 'delete') {
+      String ids = toBeDeleted.join('#');
+      context.userDB.put(deletedNotificationsKey,
+          '${context.userDB.get(deletedNotificationsKey, defaultValue: '')}#$ids');
+      String deletedIds =
+          context.userDB.get(deletedNotificationsKey, defaultValue: '');
+      final list = _notificationList.value
+          .where((element) => !deletedIds.contains('${element.nOTIFICATIONID}'))
+          .toList();
+      _notificationList.value = list;
+    }
     // Navigator.pushReplacement(
     //   context,
     //   MaterialPageRoute(builder: (context) => NotificationsScreen()),

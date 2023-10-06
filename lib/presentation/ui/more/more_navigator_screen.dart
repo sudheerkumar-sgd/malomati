@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/guest/guest_more_screen.dart';
 import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/home/more_screen.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
@@ -19,7 +21,10 @@ class MoreNavigatorScreen extends StatelessWidget {
           WidgetBuilder builder;
           switch (settings.name) {
             case '/':
-              builder = (BuildContext _) => MoreScreen();
+              builder = (BuildContext _) =>
+                  context.userDB.get(isGuestKey, defaultValue: false)
+                      ? GuestMoreScreen()
+                      : MoreScreen();
               break;
             case HRGovernmentLaw.route:
               builder = (BuildContext _) {

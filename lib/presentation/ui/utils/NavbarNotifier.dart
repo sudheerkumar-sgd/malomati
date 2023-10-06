@@ -72,4 +72,31 @@ class NavbarNotifier extends ChangeNotifier {
         break;
     }
   }
+
+  FutureOr<bool> onGustBackButtonPressed(int index) async {
+    bool exitingApp = true;
+    switch (index) {
+      case 0:
+        if (ServicesNavigatorScreen.servicesKey.currentState != null &&
+            ServicesNavigatorScreen.servicesKey.currentState!.canPop()) {
+          ServicesNavigatorScreen.servicesKey.currentState!.pop();
+          exitingApp = false;
+        }
+        break;
+      case 3:
+        if (MoreNavigatorScreen.moreKey.currentState != null &&
+            MoreNavigatorScreen.moreKey.currentState!.canPop()) {
+          MoreNavigatorScreen.moreKey.currentState!.pop();
+          exitingApp = false;
+        }
+        break;
+      default:
+        return false;
+    }
+    if (exitingApp) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

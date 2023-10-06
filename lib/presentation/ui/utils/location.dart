@@ -30,7 +30,7 @@ class Location {
 
   static Future<Position> getLocation() async {
     var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.best);
     return position;
   }
 }

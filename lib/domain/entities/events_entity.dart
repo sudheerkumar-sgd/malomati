@@ -10,6 +10,8 @@ class EventsEntity {
   String? dATEOFBIRTH;
   String? dEPARTMENTNAME;
   String? uSERNAME;
+  String? sTARTDATE;
+  String? nAME;
 
   EventsEntity();
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/guest/guest_jobs_screen.dart';
+import 'package:malomati/presentation/ui/guest/uaq_apps_screen.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/events_screen.dart';
 import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
@@ -17,6 +20,7 @@ import '../../../domain/entities/favorite_entity.dart';
 import '../../../injection_container.dart';
 import '../services/initiatives_screen.dart';
 import '../services/myteam_screen.dart';
+import '../widgets/guest_services_app_bar.dart';
 import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
@@ -59,6 +63,12 @@ class ServicesScreen extends StatelessWidget {
         .toLowerCase()
         .contains('finance approvals')) {
       screenWidget = FinanceApprovalsScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('jobs')) {
+      screenWidget = GuestJobsScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('events')) {
+      screenWidget = EventsScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('uaq apps')) {
+      screenWidget = const UAQAppsScreen();
     }
 
     Navigator.push(
@@ -81,11 +91,14 @@ class ServicesScreen extends StatelessWidget {
                 margin: EdgeInsets.symmetric(
                     vertical: context.resources.dimen.dp20,
                     horizontal: context.resources.dimen.dp25),
-                child: ServicesAppBarWidget(title: context.string.selfService)),
+                child: context.userDB.get(isGuestKey, defaultValue: false)
+                    ? GuestServicesAppBarWidget(title: context.string.welcome)
+                    : ServicesAppBarWidget(title: context.string.selfService)),
             ServicesList(
               services: sl<ConstantConfig>().getServicesByManager(
                   isManager:
-                      context.userDB.get(isMaangerKey, defaultValue: false)),
+                      context.userDB.get(isMaangerKey, defaultValue: false),
+                  isGuest: context.userDB.get(isGuestKey, defaultValue: false)),
               callback: onServiceClick,
             ),
           ],

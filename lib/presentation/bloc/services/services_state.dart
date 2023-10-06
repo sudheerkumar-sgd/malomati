@@ -85,6 +85,12 @@ class OnThankyouListSuccess extends ServicesState {
   OnThankyouListSuccess({required this.thankYouList});
 }
 
+class OnHolidayEventsSuccess extends ServicesState {
+  final List<EventsEntity> holidayEvents;
+
+  OnHolidayEventsSuccess({required this.holidayEvents});
+}
+
 class OnRequestsCountSuccess extends ServicesState {
   final RequestsCountEntity requestsCountEntity;
 

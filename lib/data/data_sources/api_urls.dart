@@ -56,3 +56,5 @@ const String requestsCountApiUrl =
 const String notificationsListApiUrl =
     'UAQSGD_MOB_ERP_GenericNotificationRequest/GetNotifications';
 const String firebaseApiUrl = 'fcm/send';
+const String holidayEventsApiUrl =
+    'UAQSGD_MOB_ERP_GetEvents/GetEvents/getNextHolidays';

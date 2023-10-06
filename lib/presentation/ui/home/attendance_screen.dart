@@ -433,7 +433,9 @@ class AttendanceScreen extends StatelessWidget {
                                 for (var option in attendanceOptions) ...[
                                   InkWell(
                                     onTap: () {
-                                      _submitAttendance(context, option);
+                                      if (option['isEnabled']) {
+                                        _submitAttendance(context, option);
+                                      }
                                     },
                                     child: Container(
                                       width: 180,

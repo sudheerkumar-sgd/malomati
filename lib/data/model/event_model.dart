@@ -12,6 +12,8 @@ class EventModel {
   String? dATEOFBIRTH;
   String? dEPARTMENTNAME;
   String? uSERNAME;
+  String? sTARTDATE;
+  String? nAME;
 
   EventModel(
       {this.pERSONID,
@@ -39,6 +41,11 @@ class EventModel {
     uSERNAME = json['USER_NAME'];
   }
 
+  EventModel.fromHolidaysJson(Map<String, dynamic> json) {
+    sTARTDATE = json['START_DATE'];
+    nAME = json['NAME'];
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['EVENT_TYPE'] = eVENTTYPE;
@@ -62,6 +69,13 @@ extension SourceModelExtension on EventModel {
     eventsEntity.eVENTTYPE = eVENTTYPE;
     eventsEntity.fULLNAMEAR = fULLNAMEAR;
     eventsEntity.fULLNAMEUS = fULLNAMEUS;
+    return eventsEntity;
+  }
+
+  EventsEntity toHolidaysEventsEntity() {
+    var eventsEntity = EventsEntity();
+    eventsEntity.sTARTDATE = sTARTDATE;
+    eventsEntity.nAME = nAME;
     return eventsEntity;
   }
 }

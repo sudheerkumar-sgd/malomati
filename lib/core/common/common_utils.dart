@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -57,7 +58,7 @@ Future<void> openMapsSheet(
       );
     }
   } catch (e) {
-    print(e);
+    printLog(message: e.toString());
   }
 }
 
@@ -86,6 +87,20 @@ sendEmail(BuildContext context, String email) async {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Center(child: Text('could_not_launch_this_app')),
     ));
+  }
+}
+
+launchAppUrl(String appId) {
+  if (Platform.isAndroid || Platform.isIOS) {
+    final url = Uri.parse(
+      Platform.isAndroid
+          ? "market://details?id=$appId"
+          : "https://apps.apple.com/app/id$appId",
+    );
+    launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }
 
@@ -191,7 +206,8 @@ List<NameIdEntity> getSalaryTypes(BuildContext context) {
 
 logout(BuildContext context) {
   FirebaseMessaging.instance
-      .unsubscribeFromTopic(context.userDB.get(userNameKey, defaultValue: ''));
+      .unsubscribeFromTopic(context.userDB.get(userNameKey, defaultValue: 'a'));
+  context.userDB.delete(isGuestKey);
   context.userDB.delete(oracleLoginIdKey);
   context.userDB.delete(userFullNameUsKey);
   context.userDB.delete(userFullNameArKey);

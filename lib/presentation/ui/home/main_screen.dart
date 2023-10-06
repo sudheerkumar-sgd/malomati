@@ -15,12 +15,14 @@ import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
+import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:update_available/update_available.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -145,11 +147,24 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  _checkIsUpdateAvailabe() {
+    getUpdateAvailability().then((availability) {
+      if (availability == const UpdateAvailable()) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const UpdateDialogWidget();
+            });
+      }
+    });
+  }
+
   @override
   void initState() {
     setupFirebaseNotificationMessage();
     FlutterAppBadger.isAppBadgeSupported()
         .then((value) => FlutterAppBadger.removeBadge());
+    _checkIsUpdateAvailabe();
     super.initState();
   }
 

@@ -226,5 +226,13 @@
     "doneEnd":"نهاية",
     "notifications":"إشعارات",
     "red":"احمر",
-    "blue":"ازرق"
+    "blue":"ازرق",
+    "loginAsGuest":"تسجيل الدخول كضيف",
+    "jobs":"وظائف",
+    "events":"الأحداث",
+    "uaqApps":"UAQ تطبيقات",
+    "firstName":"الاسم الأول",
+    "lastName":"الاسم الاخير",
+    "mobileNo":"رقم المحمول.",
+    "uploadCV":"رفع السيرة الذاتية"
 }

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
@@ -67,6 +68,8 @@ abstract class ApisRepository {
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<FinanceApprovalEntity>>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<EventsEntity>>> getHolidaysList(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, String>> sendPushNotifications(
       {required Map<String, dynamic> requestParams});

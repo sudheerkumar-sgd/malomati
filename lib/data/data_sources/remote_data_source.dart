@@ -9,6 +9,7 @@ import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
+import 'package:malomati/data/model/event_model.dart';
 import 'package:malomati/data/model/finance_approval_model.dart';
 import 'package:malomati/data/model/hr_approval_model.dart';
 import 'package:malomati/data/model/hrapproval_details_model.dart';
@@ -18,6 +19,7 @@ import 'package:malomati/data/model/payslip_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/data/model/requsts_count_model.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
+import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
@@ -78,6 +80,8 @@ abstract class RemoteDataSource {
   Future<RequestsCountEntity> getRequestsCount(
       {required Map<String, dynamic> requestParams});
   Future<List<FinanceApprovalEntity>> getNotificationsList(
+      {required Map<String, dynamic> requestParams});
+  Future<List<EventsEntity>> getHolidaysList(
       {required Map<String, dynamic> requestParams});
   Future<String> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
@@ -640,6 +644,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
                     .toFinanceApprovalEntity())
             .toList();
         return financeApprovalList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<EventsEntity>> getHolidaysList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        holidayEventsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data?['Holidays'] != null) {
+        var holidaysListJson = response.data['Holidays'] as List;
+        var holidaysList = holidaysListJson
+            .map((holidaysJson) => EventModel.fromHolidaysJson(holidaysJson)
+                .toHolidaysEventsEntity())
+            .toList();
+        return holidaysList;
       } else {
         return [];
       }

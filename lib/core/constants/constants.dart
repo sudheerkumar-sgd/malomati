@@ -23,6 +23,7 @@ const String userNationalityArKey = "user_nationality_ar";
 const String userPersonIdKey = "user_person_id";
 const String isRememberdKey = "is_rememberd";
 const String isMaangerKey = "is_manager";
+const String isGuestKey = "is_guest";
 const String favoriteKey = "favorites";
 const String departmentIdKey = "department_id";
 const String appTourKey = "app_tour";

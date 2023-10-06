@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
@@ -102,6 +103,11 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getRequestsCount(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<EventsEntity>>> getHolidaysList(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getHolidaysList(requestParams: requestParams);
   }
 
   Future<Either<Failure, String>> sendPushNotifications(
