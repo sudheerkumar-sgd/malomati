@@ -14,6 +14,7 @@ class RightIconTextWidget extends StatelessWidget {
   final TextEditingController? textController;
   final String? suffixIconPath;
   final int? maxLines;
+  final int? maxLength;
   final String fontFamily;
   const RightIconTextWidget(
       {this.height = defaultHeight,
@@ -25,6 +26,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.suffixIconPath,
       this.textInputType,
       this.maxLines,
+      this.maxLength,
       this.fontFamily = '',
       super.key});
 
@@ -55,6 +57,7 @@ class RightIconTextWidget extends StatelessWidget {
           child: TextFormField(
             enabled: isEnabled,
             maxLines: maxLines,
+            maxLength: maxLength,
             keyboardType: textInputType,
             controller: textController,
             textAlignVertical: TextAlignVertical.center,

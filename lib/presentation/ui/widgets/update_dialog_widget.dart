@@ -38,14 +38,7 @@ class UpdateDialogWidget extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'قم بتحديث تطبيقك',
-                  textAlign: TextAlign.center,
-                  style: context.textFontWeight600
-                      .onFontSize(context.resources.fontSize.dp17)
-                      .onFontFamily(fontFamily: fontFamilyAR),
-                ),
-                Text(
-                  'Update your application',
+                  context.string.appUpdateTitle,
                   textAlign: TextAlign.center,
                   style: context.textFontWeight600
                       .onFontSize(context.resources.fontSize.dp17),
@@ -54,14 +47,7 @@ class UpdateDialogWidget extends StatelessWidget {
                   height: context.resources.dimen.dp20,
                 ),
                 Text(
-                  'نحن نعمل على تحسين الأداء وإصلاح بعض المشاكل لنجعل تجربتك سلسة',
-                  textAlign: TextAlign.center,
-                  style: context.textFontWeight400
-                      .onFontSize(context.resources.fontSize.dp12)
-                      .onFontFamily(fontFamily: fontFamilyAR),
-                ),
-                Text(
-                  'We improve performance and fix some bugs to make your experience seamless',
+                  context.string.appUpdateBody,
                   textAlign: TextAlign.center,
                   style: context.textFontWeight400
                       .onFontSize(context.resources.fontSize.dp12),
@@ -72,7 +58,8 @@ class UpdateDialogWidget extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
-                    launchAppUrl(Platform.isAndroid ? 'com.gov.uaq.hrms' : '');
+                    launchAppUrl(
+                        Platform.isAndroid ? 'com.gov.uaq.hrms' : '6468637952');
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(

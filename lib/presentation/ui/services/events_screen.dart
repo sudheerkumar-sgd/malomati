@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
-import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/presentation/ui/guest/guest_back_app_bar.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_events.dart';
-import 'package:malomati/presentation/ui/services/widgets/item_hr_approvals.dart';
 
 import '../../../injection_container.dart';
 import '../../bloc/services/services_bloc.dart';

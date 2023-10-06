@@ -115,4 +115,10 @@ class ServicesUseCase extends BaseUseCase {
     return await apisRepository.sendPushNotifications(
         requestParams: requestParams);
   }
+
+  Future<Either<Failure, Map<String, dynamic>>> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitJobEmailRequest(
+        requestParams: requestParams);
+  }
 }

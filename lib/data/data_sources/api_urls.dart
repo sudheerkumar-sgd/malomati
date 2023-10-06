@@ -58,3 +58,5 @@ const String notificationsListApiUrl =
 const String firebaseApiUrl = 'fcm/send';
 const String holidayEventsApiUrl =
     'UAQSGD_MOB_ERP_GetEvents/GetEvents/getNextHolidays';
+const String submitJobEmailApiUrl =
+    'UAQSGD_MOB_EmailNotificationRequest/sendEmailNotification';

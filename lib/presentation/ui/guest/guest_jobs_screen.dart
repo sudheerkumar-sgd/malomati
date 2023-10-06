@@ -6,8 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
@@ -15,7 +13,6 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../core/common/log.dart';
-import '../../../data/model/api_request_model.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/drawables/drawable_assets.dart';
 import '../services/widgets/dialog_upload_attachment.dart';
@@ -28,6 +25,7 @@ class GuestJobsScreen extends StatelessWidget {
   static const String route = '/GuestJobsScreen';
   GuestJobsScreen({super.key});
   late Resources resources;
+  late BuildContext context;
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
@@ -38,17 +36,33 @@ class GuestJobsScreen extends StatelessWidget {
   final ValueNotifier<bool> _isUploadChanged = ValueNotifier(false);
   final _uploadFiles = [];
 
-  onSubmit(String clickedButton) {
-    if (_formKey.currentState!.validate()) {
-      _submitAdvanceSalaryRequest();
+  _getFile(BuildContext context) async {
+    String filePath = '';
+    String fileName = '';
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result != null) {
+      fileName = result.files.single.name;
+      filePath = result.files.single.path ?? '';
     }
-  }
-
-  _submitAdvanceSalaryRequest() {
-    final certificateRequestModel = ApiRequestModel();
-    _servicesBloc.submitServicesRequest(
-        apiUrl: badgeApiUrl,
-        requestParams: certificateRequestModel.toBadgeRequest());
+    if (filePath.isNotEmpty) {
+      File file = File(filePath);
+      printLog(message: '${file.lengthSync()}');
+      if (file.lengthSync() <= maxUploadFilesize * 2) {
+        final bytes = file.readAsBytesSync();
+        final data = {
+          'fileName': fileName,
+          'fileNamebase64data': base64Encode(bytes),
+        };
+        _uploadFiles.add(data);
+        _isUploadChanged.value = !_isUploadChanged.value;
+      } else if (context.mounted) {
+        Dialogs.showInfoDialog(
+            context, PopupType.fail, "Upload file should not be more then 2mb");
+      }
+    } else {
+      printLog(message: 'message');
+    }
   }
 
   Future<void> _showSelectFileOptions(BuildContext context) async {
@@ -61,40 +75,51 @@ class GuestJobsScreen extends StatelessWidget {
     });
   }
 
-  Future<void> _selectFile(BuildContext context) async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
-
-    if (result != null) {
-      final fileName = result.files.single.name;
-      if (fileName.isNotEmpty) {
-        File file = File(result.files.single.path ?? '');
-        printLog(message: '${file.lengthSync()}');
-        if (file.lengthSync() <= maxUploadFilesize) {
-          final bytes = file.readAsBytesSync();
-          final data = {
-            'fileName': fileName,
-            'fileNamebase64data': base64Encode(bytes),
-          };
-          _uploadFiles.add(data);
-          _isUploadChanged.value = !_isUploadChanged.value;
-        } else if (context.mounted) {
-          Dialogs.showInfoDialog(context, PopupType.fail,
-              "Upload file should not be more then 1mb");
-        }
-      }
-    } else {
-      printLog(message: 'message');
-    }
-  }
-
   _onDeleteUpload(int id) {
     _uploadFiles.removeAt(id);
     _isUploadChanged.value = !_isUploadChanged.value;
   }
 
+  onSubmit(String clickedButton) {
+    if (_formKey.currentState!.validate()) {
+      bool isValidEmail = RegExp(
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+          .hasMatch(emailIdController.text);
+      if (!isValidEmail) {
+        Dialogs.showInfoDialog(
+            context, PopupType.fail, 'Please enter valid email');
+      } else if (mobileNumberController.text.length < 10) {
+        Dialogs.showInfoDialog(
+            context, PopupType.fail, 'Please enter valid Mobile Number');
+      } else if (_uploadFiles.isEmpty) {
+        Dialogs.showInfoDialog(
+            context, PopupType.fail, 'Please add attachemnt');
+      } else {
+        _submitJobRequest();
+      }
+    }
+  }
+
+  _submitJobRequest() {
+    Map<String, dynamic> jobRequest = {
+      "sendToEmail": "career@uaqgov.ae",
+      "ccEmail": emailIdController.text,
+      "languageCode": "en",
+      "subject":
+          "New CV ${firstNameController.text} ${lastNameController.text}",
+      "messageContent":
+          "<b>Dear HR</b>,<br/><br/>Kindly be informed that there is a new CV Submitted. Please find below details and attachment of the candidate.<br/><br/>Name: ${firstNameController.text} ${lastNameController.text}<br/><br/>Email: ${emailIdController.text}<br/><br/>Mobile Number: ${mobileNumberController.text}<br/><br/><br/><b>Thanks,<br/><br/>Malomati</b>",
+      "attachments": {
+        "documentName": _uploadFiles[0]['fileName'],
+        "document": _uploadFiles[0]['fileNamebase64data']
+      }
+    };
+    _servicesBloc.submitJobEmailRequest(requestParams: jobRequest);
+  }
+
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     resources = context.resources;
     return SafeArea(
       child: Scaffold(
@@ -105,40 +130,15 @@ class GuestJobsScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
-              } else if (state is OnServicesRequestSubmitSuccess) {
+              } else if (state is OnJobEmailSubmitSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
-                if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
-                  Dialogs.showInfoDialog(
-                          context,
-                          PopupType.success,
-                          state.servicesRequestSuccessResponse
-                              .getDisplayMessage(resources))
+                if (state.jobEmailSubmitSuccess['statusCode'] == '200') {
+                  Dialogs.showInfoDialog(context, PopupType.success,
+                          state.jobEmailSubmitSuccess['status'])
                       .then((value) => Navigator.pop(context));
-                  for (int i = 0;
-                      i <
-                          (state.servicesRequestSuccessResponse.entity
-                                  ?.aPPROVERSLIST.length ??
-                              0);
-                      i++) {
-                    _servicesBloc.sendPushNotifications(
-                        requestParams: getFCMMessageData(
-                            to: state.servicesRequestSuccessResponse.entity
-                                    ?.aPPROVERSLIST[i] ??
-                                '',
-                            title: 'Badge',
-                            body:
-                                '${context.userDB.get(userFullNameUsKey)} has applied for Badge ID',
-                            type: '',
-                            notificationId: state.servicesRequestSuccessResponse
-                                    .entity?.nTFID ??
-                                ''));
-                  }
                 } else {
-                  Dialogs.showInfoDialog(
-                      context,
-                      PopupType.fail,
-                      state.servicesRequestSuccessResponse
-                          .getDisplayMessage(resources));
+                  Dialogs.showInfoDialog(context, PopupType.fail,
+                      state.jobEmailSubmitSuccess['status']);
                 }
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
@@ -198,6 +198,7 @@ class GuestJobsScreen extends StatelessWidget {
                             RightIconTextWidget(
                               isEnabled: true,
                               height: resources.dimen.dp27,
+                              maxLength: 12,
                               labelText: context.string.mobileNo,
                               textInputType: TextInputType.number,
                               errorMessage: context.string.mobileNo,
@@ -252,8 +253,7 @@ class GuestJobsScreen extends StatelessWidget {
                                                 )
                                               : InkWell(
                                                   onTap: () {
-                                                    _showSelectFileOptions(
-                                                        context);
+                                                    _getFile(context);
                                                   },
                                                   child: Row(
                                                     children: [

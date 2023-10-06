@@ -175,6 +175,15 @@ class ServicesBloc extends Cubit<ServicesState> {
     //     (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
   }
 
+  Future<void> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result = await servicesUseCase.submitJobEmailRequest(
+        requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnJobEmailSubmitSuccess(jobEmailSubmitSuccess: r)));
+  }
+
   String _getErrorMessage(Failure failure) {
     return failure.errorMessage;
   }

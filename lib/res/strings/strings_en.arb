@@ -516,7 +516,9 @@
     "uploadCV":"Upload CV",
     "jobs":"Jobs",
     "events":"Events",
-    "uaqApps":"UAQ Apps",
+    "uaqApps":"Apps",
+    "appUpdateTitle":"Update your application",
+    "appUpdateBody":"We improve performance and fix some bugs to make your experience seamless",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

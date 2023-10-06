@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
@@ -14,6 +15,14 @@ class ItemEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var resources = context.resources;
+    printLog(
+        message:
+            'dfdff ${DateTime.now().compareTo(getDateTimeByString('yyyy-MM-ddThh:mm:ss', data.sTARTDATE ?? ''))}');
+    var isEventDone =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+                .compareTo(getDateTimeByString(
+                    'yyyy-MM-ddThh:mm:ss', data.sTARTDATE ?? '')) >
+            0;
     return Container(
       padding: EdgeInsets.symmetric(
           vertical: resources.dimen.dp10, horizontal: resources.dimen.dp15),
@@ -28,7 +37,9 @@ class ItemEvents extends StatelessWidget {
                 vertical: resources.dimen.dp7,
                 horizontal: resources.dimen.dp15),
             decoration: BackgroundBoxDecoration(
-                    boxColor: resources.color.viewBgColor,
+                    boxColor: isEventDone
+                        ? resources.color.colorD6D6D6
+                        : resources.color.viewBgColor,
                     radious: resources.dimen.dp10)
                 .roundedCornerBox,
             child: RichText(
@@ -62,8 +73,12 @@ class ItemEvents extends StatelessWidget {
           ),
           Text(
             data.nAME ?? '',
-            style:
-                context.textFontWeight600.onFontSize(resources.fontSize.dp15),
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp15)
+                .onFontFamily(fontFamily: fontFamilyAR)
+                .onColor(isEventDone
+                    ? resources.color.bottomSheetIconUnSelected
+                    : resources.color.textColor),
           )
         ],
       ),

@@ -73,4 +73,6 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, String>> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, Map<String, dynamic>>> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams});
 }

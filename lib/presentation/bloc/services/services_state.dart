@@ -91,6 +91,12 @@ class OnHolidayEventsSuccess extends ServicesState {
   OnHolidayEventsSuccess({required this.holidayEvents});
 }
 
+class OnJobEmailSubmitSuccess extends ServicesState {
+  final Map<String, dynamic> jobEmailSubmitSuccess;
+
+  OnJobEmailSubmitSuccess({required this.jobEmailSubmitSuccess});
+}
+
 class OnRequestsCountSuccess extends ServicesState {
   final RequestsCountEntity requestsCountEntity;
 

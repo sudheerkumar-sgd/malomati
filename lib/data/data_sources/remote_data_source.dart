@@ -85,6 +85,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<String> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
+  Future<Map<String, dynamic>> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -706,6 +708,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } catch (e) {
       if (e is ServerException) rethrow;
       throw e.toString();
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.post(
+        submitJobEmailApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: jsonEncode(requestParams),
+      );
+      var apiResponse = response.data;
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
     }
   }
 }

@@ -227,12 +227,14 @@
     "notifications":"إشعارات",
     "red":"احمر",
     "blue":"ازرق",
-    "loginAsGuest":"تسجيل الدخول كضيف",
+    "loginAsGuest":"الدخول كزائر",
     "jobs":"وظائف",
-    "events":"الأحداث",
-    "uaqApps":"UAQ تطبيقات",
+    "events":"الفعاليات",
+    "uaqApps":"تطبيقات",
     "firstName":"الاسم الأول",
     "lastName":"الاسم الاخير",
-    "mobileNo":"رقم المحمول.",
-    "uploadCV":"رفع السيرة الذاتية"
+    "mobileNo":"رقم المحمول",
+    "uploadCV":"ارفاق السيرة الذاتية",
+    "appUpdateTitle":"قم بتحديث تطبيقك",
+    "appUpdateBody":"نحن نعمل على تحسين الأداء وإصلاح بعض المشاكل لنجعل تجربتك سلسة"
 }

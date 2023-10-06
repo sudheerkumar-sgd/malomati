@@ -61,6 +61,8 @@ class ConstantConfig {
     FavoriteEntity(
         name: 'Badge', nameAR: 'بطاقة العمل', iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
+        name: 'Events', nameAR: 'الفعاليات', iconPath: DrawableAssets.icEvent),
+    FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
   ];
   final managerServices = [
@@ -79,11 +81,9 @@ class ConstantConfig {
     FavoriteEntity(
         name: 'Jobs', nameAR: 'وظائف', iconPath: DrawableAssets.icJobs),
     FavoriteEntity(
-        name: 'Events', nameAR: 'الأحداث', iconPath: DrawableAssets.icEvent),
+        name: 'Events', nameAR: 'الفعاليات', iconPath: DrawableAssets.icEvent),
     FavoriteEntity(
-        name: 'UAQ Apps',
-        nameAR: 'UAQ تطبيقات',
-        iconPath: DrawableAssets.icApps),
+        name: 'UAQ Apps', nameAR: 'تطبيقات', iconPath: DrawableAssets.icApps),
   ];
 
   final dashboardFavorites = [
