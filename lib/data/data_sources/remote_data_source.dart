@@ -19,6 +19,7 @@ import 'package:malomati/data/model/payslip_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/data/model/requsts_count_model.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
+import 'package:malomati/data/model/weather_model.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
@@ -32,6 +33,7 @@ import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/entities/requests_count_entity.dart';
+import '../../domain/entities/weather_entity.dart';
 import '../model/attendance_List_model.dart';
 import 'api_urls.dart';
 import 'dio_logging_interceptor.dart';
@@ -86,6 +88,8 @@ abstract class RemoteDataSource {
   Future<String> sendPushNotifications(
       {required Map<String, dynamic> requestParams});
   Future<Map<String, dynamic>> submitJobEmailRequest(
+      {required Map<String, dynamic> requestParams});
+  Future<WeatherEntity> getWeatherReport(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -727,6 +731,34 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;
+    }
+  }
+
+  @override
+  Future<WeatherEntity> getWeatherReport(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = 'https://api.open-meteo.com/v1/forecast';
+    try {
+      var response = await dio2.get(
+        '',
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+
+      if (response.data?['current_weather'] != null) {
+        var weatherJson = response.data['current_weather'];
+        var weatherEntity =
+            WeatherModel.fromJson(weatherJson).toWeatherEntity();
+        return weatherEntity;
+      } else {
+        return WeatherEntity();
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
     }
   }
 }

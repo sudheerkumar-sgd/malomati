@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
@@ -264,4 +265,18 @@ Map<String, dynamic> getFCMMessageData(
 String getLeavesApproverFCMBodyText(
     String prefix, String leaveName, String fromDate, String toDate) {
   return '$prefix has applied for $leaveName Request from $fromDate to $toDate';
+}
+
+String getWeatherIcon(int weatherCode) {
+  switch (weatherCode) {
+    case 2 || 3:
+      return DrawableAssets.icCloudy; //Cloudy
+    //case 45&&48: return DrawableAssets.bgWeather;//Foggy
+    case 61 || 63 || 65 || 66 || 67:
+      return DrawableAssets.icRain; //Rain
+    case 95 || 96 || 99:
+      return DrawableAssets.icStorm; //Thunderstorm
+    default:
+      return DrawableAssets.icSun;
+  }
 }

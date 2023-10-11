@@ -32,6 +32,9 @@ const String openedNotificationsKey = "opened_notifications";
 const String userDateOfBirthKey = "user_date_of_birth";
 const String isDateOfBirthShowedKey = "is_date_of_birth_showed";
 const String isAnniversaryShowedKey = "is_anniversary_showed";
+const String lastTemperature = "temperature";
+const String lastWeathercode = "weathercode";
+const String lastWeatherCheckDate = "weather_check_date";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";

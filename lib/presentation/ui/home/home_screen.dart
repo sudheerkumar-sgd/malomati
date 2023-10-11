@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
+import 'package:malomati/domain/entities/weather_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
@@ -31,7 +31,8 @@ import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
-import 'package:http/http.dart' as http;
+
+import '../utils/location.dart';
 
 class HomeScreen extends StatelessWidget {
   static String anualLeaveBalance = '';
@@ -46,6 +47,8 @@ class HomeScreen extends StatelessWidget {
       ValueNotifier<List<EventsEntity>>([]);
   final ValueNotifier<List<FavoriteEntity>> _favoriteEntity =
       ValueNotifier<List<FavoriteEntity>>([]);
+  final ValueNotifier<WeatherEntity> _weatherEntity =
+      ValueNotifier<WeatherEntity>(WeatherEntity());
   final ValueNotifier _eventBannerChange = ValueNotifier<int>(0);
   final ValueNotifier _isFavoriteEdited = ValueNotifier<bool>(false);
   // final ValueNotifier _timeString =
@@ -89,47 +92,21 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  Future<bool> callOnFcmApiSendPushNotifications(List<String> userToken) async {
-    final postUrl = 'fcm.googleapis.com';
-    final data = {
-      "to": "/topics/MOOZA.BINYEEM",
-      "notification": {
-        "title": "Breaking News",
-        "body": "New news story available.",
-        "click_action": "HANDLE_BREAKING_NEWS"
-      },
-      "data": {"story_id": "story_12345"}
-    };
-
-    final headers = {
-      'content-type': 'application/json',
-      'Authorization':
-          'key=AAAAW47t3kQ:APA91bFuEWK4MWc7bVSf24RYAdcBuSPIeu4CLhOV2qOp_UctljSHas5BvNngpFNf_OQVAOWXtuNSjNOdbOqWpXRUscryDK8sPqTGUnVk2qrtwVs21eOVr8mK9sDhcotgxKslSm6vB3LW' // 'key=YOUR_SERVER_KEY'
-    };
-
-    final response = await http.post(Uri.https(postUrl, '/fcm/send'),
-        body: json.encode(data),
-        encoding: Encoding.getByName('utf-8'),
-        headers: headers);
-
-    if (response.statusCode == 200) {
-      // on success do sth
-      print('test ok push CFM');
-      return true;
-    } else {
-      print(' CFM error');
-      // on failure do sth
-      return false;
+  _getWeatherDetails() async {
+    var isLocationOn = await Location.checkGps();
+    if (isLocationOn) {
+      Location.getLocation().then((value) {
+        _homeBloc.getWeatherReport(requestParams: {
+          'latitude': value.latitude,
+          'longitude': value.longitude,
+          'current_weather': true,
+        });
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Future.delayed(const Duration(seconds: 5), () async {
-    //   await callOnFcmApiSendPushNotifications([
-    //     'fzDUuySoS3aQhV-Hl1Iuup:APA91bEM32dGhld9yHlsnldsVsdZ7_-8RslzjUr867QA8C8j3_KDJzSMQJcuJ9PV82mOApgeh4LzdZ9MOkgkoSzzD3649Lgs_303byTvSIqVYPuxRlnan8YytJeN8nV7mXaKasFmK8V0'
-    //   ]);
-    // });
     final userName = context.userDB.get(userNameKey, defaultValue: '');
     _refreshAttendance();
     _homeBloc.getDashboardData(
@@ -145,13 +122,12 @@ class HomeScreen extends StatelessWidget {
         'END_DATE': getDateByformat(
             'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
       });
+      if (context.userDB.get(lastWeatherCheckDate) == null ||
+          getMinutes(context.userDB.get(lastWeatherCheckDate), DateTime.now()) >
+              120) {
+        _getWeatherDetails();
+      }
     });
-    // _homeBloc.getNotificationsList(requestParams: {
-    //   'USER_NAME': userName,
-    //   'START_DATE': getDateByformat(
-    //       'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 7))),
-    //   'END_DATE': getDateByformat('yyy-MM-dd', DateTime.now())
-    // });
     _onAttendanceRespose.addListener(
       () {
         Timer(const Duration(milliseconds: 200), () {
@@ -165,6 +141,9 @@ class HomeScreen extends StatelessWidget {
     final currentDay = DateFormat('dd').format(currentDate);
     final currentMonth = DateFormat('MMMM').format(DateTime.now());
     final currentYear = DateTime.now().year;
+    _weatherEntity.value = WeatherEntity(
+        temperature: context.userDB.get(lastTemperature, defaultValue: 0),
+        weathercode: context.userDB.get(lastWeathercode, defaultValue: 1));
     return SafeArea(
       child: Scaffold(
           backgroundColor: context.resources.color.appScaffoldBg,
@@ -210,6 +189,13 @@ class HomeScreen extends StatelessWidget {
                     ConstantConfig.notificationsCount = list.length;
                     ConstantConfig.isApprovalCountChange.value =
                         !(ConstantConfig.isApprovalCountChange.value);
+                  } else if (state is OnWeatherReportSuccess) {
+                    context.userDB
+                        .put(lastTemperature, state.weatherEntity.temperature);
+                    context.userDB
+                        .put(lastWeathercode, state.weatherEntity.weathercode);
+                    context.userDB.put(lastWeatherCheckDate, DateTime.now());
+                    _weatherEntity.value = state.weatherEntity;
                   } else if (state is OnApiError) {
                     printLog(message: state.message);
                   }
@@ -237,9 +223,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.only(
-                        left: context.resources.dimen.dp15,
-                        top: context.resources.dimen.dp15,
-                        right: context.resources.dimen.dp20,
                         bottom: context.resources.dimen.dp15,
                       ),
                       margin: EdgeInsets.symmetric(
@@ -263,56 +246,102 @@ class HomeScreen extends StatelessWidget {
                           Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(
-                                          text:
-                                              '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
-                                          style: context.textFontWeight600
-                                              .onFontFamily(
-                                                  fontFamily: isLocalEn
-                                                      ? fontFamilyEN
-                                                      : fontFamilyAR)
-                                              .onColor(context
-                                                  .resources.color.colorWhite)
-                                              .onFontSize(context
-                                                  .resources.fontSize.dp17),
-                                          children: [
-                                            TextSpan(
-                                              text: '$currentDay ',
-                                              style: context.textFontWeight600
-                                                  .onFontFamily(
-                                                      fontFamily: fontFamilyEN)
-                                                  .onColor(context.resources
-                                                      .color.colorWhite)
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp17),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
-                                              style: context.textFontWeight600
-                                                  .onColor(context.resources
-                                                      .color.colorWhite)
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp17),
-                                            ),
-                                            TextSpan(
-                                              text: '$currentYear',
-                                              style: context.textFontWeight600
-                                                  .onColor(context.resources
-                                                      .color.colorWhite)
-                                                  .onFontFamily(
-                                                      fontFamily: fontFamilyEN)
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp17),
-                                            ),
-                                          ]),
+                                    child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: RichText(
+                                        text: TextSpan(text: '\n', children: [
+                                          TextSpan(
+                                            text:
+                                                '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
+                                            style: context.textFontWeight600
+                                                .onFontFamily(
+                                                    fontFamily: isLocalEn
+                                                        ? fontFamilyEN
+                                                        : fontFamilyAR)
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontSize(context
+                                                    .resources.fontSize.dp17),
+                                          ),
+                                          TextSpan(
+                                            text: '$currentDay ',
+                                            style: context.textFontWeight600
+                                                .onFontFamily(
+                                                    fontFamily: fontFamilyEN)
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontSize(context
+                                                    .resources.fontSize.dp17),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                '${context.resources.isLocalEn ? currentMonth : getArabicMonthName(currentMonth)}, ',
+                                            style: context.textFontWeight600
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontSize(context
+                                                    .resources.fontSize.dp17),
+                                          ),
+                                          TextSpan(
+                                            text: '$currentYear',
+                                            style: context.textFontWeight600
+                                                .onColor(context
+                                                    .resources.color.colorWhite)
+                                                .onFontFamily(
+                                                    fontFamily: fontFamilyEN)
+                                                .onFontSize(context
+                                                    .resources.fontSize.dp17),
+                                          ),
+                                        ]),
+                                      ),
                                     ),
                                   ),
+                                  Container(
+                                      width: 74,
+                                      height: 61,
+                                      padding: EdgeInsets.only(
+                                          top: context.resources.dimen.dp5,
+                                          right: context.resources.dimen.dp10),
+                                      decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(
+                                            DrawableAssets.bgWeather),
+                                      )),
+                                      child: ValueListenableBuilder(
+                                          valueListenable: _weatherEntity,
+                                          builder: (context, value, child) {
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                ImageWidget(
+                                                        path: getWeatherIcon(
+                                                            value.weathercode ??
+                                                                0))
+                                                    .loadImage,
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Text(
+                                                  '${(value.temperature ?? 0).round()}\u2103',
+                                                  style: context
+                                                      .textFontWeight600
+                                                      .onFontSize(context
+                                                          .resources
+                                                          .fontSize
+                                                          .dp11)
+                                                      .onColor(context.resources
+                                                          .color.viewBgColor)
+                                                      .onFontFamily(
+                                                          fontFamily:
+                                                              fontFamilyEN),
+                                                ),
+                                              ],
+                                            );
+                                          })),
                                   // const Spacer(),
                                   // ImageWidget(
                                   //         path: DrawableAssets.icWeather,
@@ -320,9 +349,6 @@ class HomeScreen extends StatelessWidget {
                                   //             context.resources.iconBgColor)
                                   //     .loadImage
                                 ],
-                              ),
-                              SizedBox(
-                                height: context.resources.dimen.dp20,
                               ),
                               ValueListenableBuilder(
                                   valueListenable: _punchStatus,
@@ -360,6 +386,9 @@ class HomeScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
+                                        SizedBox(
+                                          width: context.resources.dimen.dp15,
+                                        ),
                                         Expanded(
                                           child: Column(
                                             children: [
@@ -612,6 +641,9 @@ class HomeScreen extends StatelessWidget {
                                               ),
                                             ],
                                           ),
+                                        ),
+                                        SizedBox(
+                                          width: context.resources.dimen.dp15,
                                         ),
                                       ],
                                     );
