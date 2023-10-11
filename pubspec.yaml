@@ -266,6 +266,12 @@ flutter:
      - assets/images/ic_smart_uaq_app.png
      - assets/images/ic_tarasol_suite_app.png
      - assets/images/ic_cross.svg
+     - assets/images/ic_sun.svg
+     - assets/images/bg_weather.svg
+     - assets/images/bg_weather.png
+     - assets/images/ic_cloudy.svg
+     - assets/images/ic_storm.svg
+     - assets/images/ic_rain.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

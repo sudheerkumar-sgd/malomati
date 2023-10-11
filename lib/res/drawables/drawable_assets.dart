@@ -106,4 +106,9 @@ class DrawableAssets {
   static const icSmartUaqApp = '${drawablePath}ic_smart_uaq_app.png';
   static const icTarasolSuiteApp = '${drawablePath}ic_tarasol_suite_app.png';
   static const icCross = '${drawablePath}ic_cross.svg';
+  static const icSun = '${drawablePath}ic_sun.svg';
+  static const bgWeather = '${drawablePath}bg_weather.png';
+  static const icRain = '${drawablePath}ic_rain.svg';
+  static const icStorm = '${drawablePath}ic_storm.svg';
+  static const icCloudy = '${drawablePath}ic_cloudy.svg';
 }

@@ -8,6 +8,7 @@ import '../../../domain/entities/api_entity.dart';
 import '../../../domain/entities/favorite_entity.dart';
 import '../../../domain/entities/finance_approval_entity.dart';
 import '../../../domain/entities/requests_count_entity.dart';
+import '../../../domain/entities/weather_entity.dart';
 import '../../../domain/use_case/home_usecase.dart';
 
 part 'home_state.dart';
@@ -74,6 +75,14 @@ class HomeBloc extends Cubit<HomeState> {
         await homeUseCase.getNotificationsList(requestParams: requestParams);
     emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
         (r) => OnNotificationsListSuccess(notificationsList: r)));
+  }
+
+  Future<void> getWeatherReport(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await homeUseCase.getWeatherReport(requestParams: requestParams);
+    emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnWeatherReportSuccess(weatherEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {

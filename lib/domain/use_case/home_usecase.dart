@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
+import 'package:malomati/domain/entities/weather_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -44,6 +45,11 @@ class HomeUseCase extends BaseUseCase {
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getNotificationsList(
         requestParams: requestParams);
+  }
+
+  Future<Either<Failure, WeatherEntity>> getWeatherReport(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getWeatherReport(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<FavoriteEntity>>> getFavoritesData(

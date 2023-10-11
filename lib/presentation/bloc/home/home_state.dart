@@ -61,6 +61,14 @@ class OnNotificationsListSuccess extends HomeState {
   List<Object?> get props => [notificationsList];
 }
 
+class OnWeatherReportSuccess extends HomeState {
+  final WeatherEntity weatherEntity;
+
+  OnWeatherReportSuccess({required this.weatherEntity});
+  @override
+  List<Object?> get props => [weatherEntity];
+}
+
 class OnApiError extends HomeState {
   final String message;
 

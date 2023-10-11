@@ -26,6 +26,7 @@ import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
+import 'package:malomati/domain/entities/weather_entity.dart';
 
 import '../../config/constant_config.dart';
 import '../../core/network/network_info.dart';
@@ -537,6 +538,25 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse = await dataSource.submitJobEmailRequest(
             requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, WeatherEntity>> getWeatherReport(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getWeatherReport(requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

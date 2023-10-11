@@ -74,8 +74,8 @@ android {
         }
         development {
             resValue "string", "app_name", "dev-malomati"
-            //applicationIdSuffix ".development"
-            //versionNameSuffix "-dev"
+            //applicationIdSuffix ".ae.test"
+            versionNameSuffix "-dev"
         }
     }
 }
