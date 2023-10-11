@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
+import 'package:malomati/presentation/ui/widgets/info_loader_widget.dart';
 import '../../../res/drawables/drawable_assets.dart';
 import '../widgets/image_widget.dart';
 
@@ -63,6 +64,18 @@ class Dialogs {
         type: popupType,
         message: message,
         title: title,
+      ),
+    );
+  }
+
+  static Future showInfoLoader(
+    BuildContext context,
+    String message,
+  ) async {
+    return showDialog(
+      context: context,
+      builder: (context) => InfoLoaderWidget(
+        message: message,
       ),
     );
   }

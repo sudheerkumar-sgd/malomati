@@ -148,6 +148,7 @@ class LeavesScreen extends StatelessWidget {
     leaveRequestModel.sTARTDATE = _startDateController.text;
     leaveRequestModel.eNDDATE = _endDateController.text;
     if (leaveRequestModel.aBSENCETYPEID == LeaveType.permission.id) {
+      leaveRequestModel.eNDDATE = _startDateController.text;
       leaveRequestModel.sTARTTIME = getDateByformat(
           'HH:mm',
           getDateTimeByString('$dateFormat $timeFormat',
@@ -207,7 +208,7 @@ class LeavesScreen extends StatelessWidget {
         }
       },
     );
-    if (leaveType == LeaveType.permission) {
+    if (leaveType.id == LeaveType.permission.id) {
       leaveSubType = LeaveSubType.confirmed;
       _endTimeController.addListener(
         () {
@@ -495,47 +496,49 @@ class LeavesScreen extends StatelessWidget {
                               },
                               child: RightIconTextWidget(
                                 height: resources.dimen.dp27,
-                                labelText: context.string.startDate,
-                                hintText: context.string.chooseStartDate,
+                                labelText:
+                                    leaveType.id == LeaveType.permission.id
+                                        ? context.string.date
+                                        : context.string.startDate,
+                                hintText:
+                                    leaveType.id == LeaveType.permission.id
+                                        ? context.string.chooseDate
+                                        : context.string.chooseStartDate,
                                 fontFamily: fontFamilyEN,
-                                errorMessage: context.string.chooseStartDate,
+                                errorMessage:
+                                    leaveType.id == LeaveType.permission.id
+                                        ? context.string.chooseDate
+                                        : context.string.chooseStartDate,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _startDateController,
                               ),
                             ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if (leaveType != LeaveType.permission) {
-                                  _selectDate(context, _endDateController,
-                                      firstDate: getDateTimeByString(
-                                          dateFormat,
-                                          _endDateController.text.isEmpty
-                                              ? _startDateController.text
-                                              : _endDateController.text));
-                                } else {
-                                  _selectDate(context, _endDateController,
-                                      initialDate: getDateTimeByString(
-                                          dateFormat,
-                                          _startDateController.text),
-                                      firstDate: getDateTimeByString(dateFormat,
-                                          _startDateController.text),
-                                      lastDate: getDateTimeByString(dateFormat,
-                                          _startDateController.text));
-                                }
-                              },
-                              child: RightIconTextWidget(
-                                height: resources.dimen.dp27,
-                                labelText: context.string.endDate,
-                                hintText: context.string.chooseEndDate,
-                                fontFamily: fontFamilyEN,
-                                errorMessage: context.string.chooseEndDate,
-                                suffixIconPath: DrawableAssets.icCalendar,
-                                textController: _endDateController,
+                            if (leaveType.id != LeaveType.permission.id) ...[
+                              SizedBox(
+                                height: resources.dimen.dp20,
                               ),
-                            ),
+                              InkWell(
+                                onTap: () {
+                                  if (leaveType != LeaveType.permission) {
+                                    _selectDate(context, _endDateController,
+                                        firstDate: getDateTimeByString(
+                                            dateFormat,
+                                            _endDateController.text.isEmpty
+                                                ? _startDateController.text
+                                                : _endDateController.text));
+                                  }
+                                },
+                                child: RightIconTextWidget(
+                                  height: resources.dimen.dp27,
+                                  labelText: context.string.endDate,
+                                  hintText: context.string.chooseEndDate,
+                                  fontFamily: fontFamilyEN,
+                                  errorMessage: context.string.chooseEndDate,
+                                  suffixIconPath: DrawableAssets.icCalendar,
+                                  textController: _endDateController,
+                                ),
+                              )
+                            ],
                             ValueListenableBuilder(
                                 valueListenable: _isleaveTypeChanged,
                                 builder: (contex, value, widget) {

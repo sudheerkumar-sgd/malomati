@@ -84,7 +84,7 @@
     "name": "SGD OFFC",
     "latitude": "+25.5201",
     "longitude": "+055.5452",
-    "radius": 300,
+    "radius": 900,
     "mac": "",
     "type": 0,
     "ble_code": "",

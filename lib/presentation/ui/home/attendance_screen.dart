@@ -180,9 +180,10 @@ class AttendanceScreen extends StatelessWidget {
   }
 
   _submitAttendance(BuildContext context, Map option) async {
+    //printLog(message: 'position $position');
     if (position != null) {
       var department = getDepartmentByLocation(
-          position?.latitude ?? 0, position?.longitude ?? 0);
+          (position?.latitude ?? 0), position?.longitude ?? 0);
       if ((department['name'] ?? '').isEmpty) {
         Dialogs.showInfoDialog(context, PopupType.fail,
             context.string.attendancelocationErrorMessage);
@@ -195,20 +196,23 @@ class AttendanceScreen extends StatelessWidget {
           "method": option['id'],
           "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
         };
-        printLog(message: requestParams.toString());
+        //printLog(message: requestParams.toString());
         _attendanceBloc.submitAttendance(requestParams: requestParams);
       }
     } else {
       var isLocationOn = await Location.checkGps();
       if (isLocationOn) {
         if (context.mounted) {
-          Dialogs.showInfoDialog(
+          Dialogs.showInfoLoader(
             context,
-            PopupType.fail,
-            'Featching Location Details, please try again',
+            'Featching Location Details',
           );
         }
-        position = await Location.getLocation();
+        Location.getLocation().then((value) {
+          Navigator.of(context, rootNavigator: true).pop();
+          position = value;
+          _submitAttendance(context, option);
+        });
       } else if (context.mounted) {
         Dialogs.showInfoDialog(
           context,
