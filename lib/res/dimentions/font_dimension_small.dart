@@ -22,6 +22,8 @@ class FontDimensionsSmall extends FontDimensions {
   @override
   double get dp15 => 15 * fontScale;
   @override
+  double get dp16 => 16 * fontScale;
+  @override
   double get dp17 => 17 * fontScale;
   @override
   double get dp20 => 20 * fontScale;

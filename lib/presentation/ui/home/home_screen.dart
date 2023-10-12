@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
@@ -60,7 +59,7 @@ class HomeScreen extends StatelessWidget {
   // }
 
   _refreshAttendance() {
-    var date = DateFormat('ddMMyyyy').format(DateTime.now());
+    var date = getDateByformat('ddMMyyyy', DateTime.now());
     Map<String, dynamic> attendanceRequestParams = {
       'date-range': '$date-$date',
     };
@@ -137,9 +136,9 @@ class HomeScreen extends StatelessWidget {
     );
     _homeBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
     final currentDate = DateTime.now();
-    final currentDayName = DateFormat('EEEE').format(currentDate);
-    final currentDay = DateFormat('dd').format(currentDate);
-    final currentMonth = DateFormat('MMMM').format(DateTime.now());
+    final currentDayName = getDateByformat('EEEE', currentDate);
+    final currentDay = getDateByformat('dd', currentDate);
+    final currentMonth = getDateByformat('MMMM', DateTime.now());
     final currentYear = DateTime.now().year;
     _weatherEntity.value = WeatherEntity(
         temperature: context.userDB.get(lastTemperature, defaultValue: 0),
@@ -228,6 +227,7 @@ class HomeScreen extends StatelessWidget {
                       margin: EdgeInsets.symmetric(
                         horizontal: context.resources.dimen.dp25,
                       ),
+                      clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(
                               Radius.circular(context.resources.dimen.dp20)),
@@ -249,7 +249,9 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: isLocalEn
+                                          ? Alignment.bottomRight
+                                          : Alignment.bottomLeft,
                                       child: RichText(
                                         text: TextSpan(text: '\n', children: [
                                           TextSpan(
@@ -263,7 +265,7 @@ class HomeScreen extends StatelessWidget {
                                                 .onColor(context
                                                     .resources.color.colorWhite)
                                                 .onFontSize(context
-                                                    .resources.fontSize.dp17),
+                                                    .resources.fontSize.dp16),
                                           ),
                                           TextSpan(
                                             text: '$currentDay ',
@@ -273,7 +275,7 @@ class HomeScreen extends StatelessWidget {
                                                 .onColor(context
                                                     .resources.color.colorWhite)
                                                 .onFontSize(context
-                                                    .resources.fontSize.dp17),
+                                                    .resources.fontSize.dp16),
                                           ),
                                           TextSpan(
                                             text:
@@ -282,7 +284,7 @@ class HomeScreen extends StatelessWidget {
                                                 .onColor(context
                                                     .resources.color.colorWhite)
                                                 .onFontSize(context
-                                                    .resources.fontSize.dp17),
+                                                    .resources.fontSize.dp16),
                                           ),
                                           TextSpan(
                                             text: '$currentYear',
@@ -292,7 +294,7 @@ class HomeScreen extends StatelessWidget {
                                                 .onFontFamily(
                                                     fontFamily: fontFamilyEN)
                                                 .onFontSize(context
-                                                    .resources.fontSize.dp17),
+                                                    .resources.fontSize.dp16),
                                           ),
                                         ]),
                                       ),
@@ -303,12 +305,22 @@ class HomeScreen extends StatelessWidget {
                                       height: 61,
                                       padding: EdgeInsets.only(
                                           top: context.resources.dimen.dp5,
-                                          right: context.resources.dimen.dp10),
-                                      decoration: const BoxDecoration(
+                                          right: isLocalEn
+                                              ? context.resources.dimen.dp12
+                                              : 0,
+                                          left: isLocalEn
+                                              ? 0
+                                              : context.resources.dimen.dp12),
+                                      transform: Matrix4.translationValues(
+                                          isLocalEn ? 2.0 : -2.0, -0.5, 0.0),
+                                      decoration: BoxDecoration(
                                           image: DecorationImage(
                                         fit: BoxFit.fill,
                                         image: AssetImage(
-                                            DrawableAssets.bgWeather),
+                                          isLocalEn
+                                              ? DrawableAssets.bgWeather
+                                              : DrawableAssets.bgWeatherAr,
+                                        ),
                                       )),
                                       child: ValueListenableBuilder(
                                           valueListenable: _weatherEntity,
@@ -326,6 +338,8 @@ class HomeScreen extends StatelessWidget {
                                                   height: 3,
                                                 ),
                                                 Text(
+                                                  textDirection:
+                                                      TextDirection.ltr,
                                                   '${(value.temperature ?? 0).round()}\u2103',
                                                   style: context
                                                       .textFontWeight600

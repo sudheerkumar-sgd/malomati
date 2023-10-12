@@ -217,7 +217,7 @@ class LeavesScreen extends StatelessWidget {
                 getDateTimeByString('$dateFormat $timeFormat',
                     '${_startDateController.text} ${_startTimeController.text}'),
                 getDateTimeByString('$dateFormat $timeFormat',
-                    '${_endDateController.text} ${_endTimeController.text}'));
+                    '${_startDateController.text} ${_endTimeController.text}'));
             var text = '';
             if (minutes >= 30) {
               if (minutes >= 60) {
@@ -280,7 +280,7 @@ class LeavesScreen extends StatelessWidget {
                                     ? '${selectedLeaveType?.name}'
                                     : leaveType.name,
                                 '${_startDateController.text} ${_startTimeController.text}',
-                                '${_endDateController.text} ${_endTimeController.text}'),
+                                '${leaveType.id == LeaveType.permission.id ? _startDateController.text : _endDateController.text} ${_endTimeController.text}'),
                             type: fcmTypeHRApprovals,
                             notificationId:
                                 state.leaveSubmitResponse.entity?.nTFID ?? ''));
