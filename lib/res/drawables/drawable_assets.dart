@@ -112,4 +112,5 @@ class DrawableAssets {
   static const icRain = '${drawablePath}ic_rain.svg';
   static const icStorm = '${drawablePath}ic_storm.svg';
   static const icCloudy = '${drawablePath}ic_cloudy.svg';
+  static const icTeamNotification = '${drawablePath}ic_team_notification.svg';
 }

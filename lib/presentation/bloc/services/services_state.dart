@@ -97,6 +97,12 @@ class OnJobEmailSubmitSuccess extends ServicesState {
   OnJobEmailSubmitSuccess({required this.jobEmailSubmitSuccess});
 }
 
+class OnFCMSuccess extends ServicesState {
+  final String response;
+
+  OnFCMSuccess({required this.response});
+}
+
 class OnRequestsCountSuccess extends ServicesState {
   final RequestsCountEntity requestsCountEntity;
 

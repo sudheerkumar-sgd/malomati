@@ -169,10 +169,17 @@ class ServicesBloc extends Cubit<ServicesState> {
   }
 
   Future<void> sendPushNotifications(
-      {required Map<String, dynamic> requestParams}) async {
-    await servicesUseCase.sendPushNotifications(requestParams: requestParams);
-    // emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
-    //     (r) => OnRequestsCountSuccess(requestsCountEntity: r)));
+      {required Map<String, dynamic> requestParams,
+      bool showLoader = false}) async {
+    if (showLoader) {
+      emit(OnServicesLoading());
+      final result = await servicesUseCase.sendPushNotifications(
+          requestParams: requestParams);
+      emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+          (r) => OnFCMSuccess(response: r)));
+    } else {
+      servicesUseCase.sendPushNotifications(requestParams: requestParams);
+    }
   }
 
   Future<void> submitJobEmailRequest(

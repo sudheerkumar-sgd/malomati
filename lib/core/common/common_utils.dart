@@ -244,18 +244,22 @@ Map<String, dynamic> getFCMMessageData(
     required String title,
     required String body,
     String type = '',
+    String imageUrl = '',
     String notificationId = ''}) {
   return {
     "to": '/topics/$to',
     "notification": {
       "title": title,
       "body": body,
-      "click_action": "HR_APPROVALS"
+      "image_url": imageUrl,
+      "click_action": "FLUTTER_NOTIFICATION_CLICK"
     },
     "data": {
       "title": title,
       "body": body,
+      "image_url": imageUrl,
       "type": type,
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
       "notification_id": notificationId
     },
     "priority": "high"

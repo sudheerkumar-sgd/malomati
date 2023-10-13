@@ -1,13 +1,16 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/constants/data_constants.dart';
 import 'package:malomati/presentation/ui/home/widgets/call_confirmation.dart';
 import 'package:malomati/presentation/ui/more/about_malomati.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
 import 'package:malomati/presentation/ui/more/privacy_and_policy.dart';
+import 'package:malomati/presentation/ui/more/team_notification_screen.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
@@ -81,6 +84,22 @@ class MoreScreen extends StatelessWidget {
                                       activeColor: resources.color.viewBgColor,
                                       value: isNotificationEnabled,
                                       onChanged: (value) {
+                                        if (value) {
+                                          FirebaseMessaging.instance
+                                              .subscribeToTopic(context.userDB
+                                                  .get(userNameKey,
+                                                      defaultValue: 'a'));
+                                          FirebaseMessaging.instance
+                                              .subscribeToTopic('MALOMATI');
+                                        } else {
+                                          FirebaseMessaging.instance
+                                              .unsubscribeFromTopic(context
+                                                  .userDB
+                                                  .get(userNameKey,
+                                                      defaultValue: 'a'));
+                                          FirebaseMessaging.instance
+                                              .unsubscribeFromTopic('MALOMATI');
+                                        }
                                         _isNotificationEnabled.value =
                                             !isNotificationEnabled;
                                       });
@@ -478,6 +497,51 @@ class MoreScreen extends StatelessWidget {
                           const Spacer(),
                         ]),
                       ),
+                      if (notificationUser.contains(context.userDB
+                          .get(userNameKey, defaultValue: '')
+                          .toString()
+                          .toUpperCase())) ...[
+                        SizedBox(
+                          height: context.resources.dimen.dp15,
+                        ),
+                        Divider(
+                          color: context.resources.color.colorD6D6D6,
+                          height: 0.5,
+                        ),
+                        SizedBox(
+                          height: context.resources.dimen.dp15,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // Navigator.of(context, rootNavigator: false).pushNamed(
+                            //   AboutMalomati.route,
+                            // );
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: TeamNotificationScreen(),
+                              ),
+                            );
+                          },
+                          child: Row(children: [
+                            ImageWidget(
+                                    path: DrawableAssets.icTeamNotification,
+                                    backgroundTint: resources.iconBgColor)
+                                .loadImage,
+                            SizedBox(
+                              width: resources.dimen.dp10,
+                            ),
+                            Text(
+                              context.string.teamNotification,
+                              style: context.textFontWeight400
+                                  .onColor(context.resources.color.textColor)
+                                  .onFontSize(context.resources.fontSize.dp15),
+                            ),
+                            const Spacer(),
+                          ]),
+                        )
+                      ],
                       SizedBox(
                         height: context.resources.dimen.dp50,
                       ),

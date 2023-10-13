@@ -184,3 +184,5 @@ const months = [
   'November',
   'December'
 ];
+
+const notificationUser = ['MOOZA.BINYEEM', 'MOHAMMED.KAMRAN', 'SUDHEER.AKULA'];

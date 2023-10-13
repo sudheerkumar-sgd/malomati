@@ -136,11 +136,15 @@ class _MainScreenState extends State<MainScreen> {
             context: context,
             builder: (context) {
               return NotificationDialogWidget(
-                title: message['notification']?.title ?? '',
-                message: message['notification']?.body ?? '',
+                title:
+                    message['notification']?.title ?? message['data']['title'],
+                message:
+                    message['notification']?.body ?? message['data']['body'],
                 imageUrl: Platform.isAndroid
-                    ? message['notification']?.android?.imageUrl ?? ''
-                    : message['notification']?.apple?.imageUrl ?? '',
+                    ? message['notification']?.android?.imageUrl ??
+                        message['data']['image_url']
+                    : message['notification']?.apple?.imageUrl ??
+                        message['data']['image_url'],
               );
             });
       }

@@ -242,6 +242,7 @@
     "@aboutMalomati": {
         "type": "text"
     },
+    "teamNotification": "Team Notification",
     "contactAssistance": "Contact Assistance",
     "@contactAssistance": {
         "type": "text"
@@ -520,6 +521,9 @@
     "uaqApps":"Apps",
     "appUpdateTitle":"Update your application",
     "appUpdateBody":"We improve performance and fix some bugs to make your experience seamless",
+    "title":"Ttile",
+    "imageorVideoURL":"Image or Video URL",
+    "test":"Test",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

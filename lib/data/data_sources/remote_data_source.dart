@@ -701,11 +701,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         }),
         data: jsonEncode(requestParams),
       );
-
-      printLog(message: response.data);
       switch (response.statusCode) {
         case 200:
-          return response.data;
+          return 'Send Successfully';
         default:
           throw _getExceptionType(response);
       }

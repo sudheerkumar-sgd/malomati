@@ -64,6 +64,7 @@
     "color": "اللون",
     "privacyAndPolicy": "الخصوصية والسياسة",
     "aboutMalomati": "عن معلوماتي",
+    "teamNotification": "إشعار الفريق",
     "contactAssistance": "مساعدة الاتصال",
     "logout": "تسجيل خروج",
     "profile": "حساب تعريفي",
@@ -237,5 +238,8 @@
     "mobileNo":"رقم المحمول",
     "uploadCV":"ارفاق السيرة الذاتية",
     "appUpdateTitle":"قم بتحديث تطبيقك",
-    "appUpdateBody":"نحن نعمل على تحسين الأداء وإصلاح بعض المشاكل لنجعل تجربتك سلسة"
+    "appUpdateBody":"نحن نعمل على تحسين الأداء وإصلاح بعض المشاكل لنجعل تجربتك سلسة",
+    "title":"عنوان",
+    "test":"اختبر",
+    "imageorVideoURL":"عنوان URL للصورة أو الفيديو"
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 
@@ -5,7 +7,14 @@ import '../../../../res/drawables/background_box_decoration.dart';
 
 class SubmitCancelWidget extends StatelessWidget {
   final Function(String) callBack;
-  const SubmitCancelWidget({required this.callBack, super.key});
+  String actionButtonName;
+  String cancelButtonName;
+  SubmitCancelWidget({
+    required this.callBack,
+    this.actionButtonName = '',
+    this.cancelButtonName = '',
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +24,9 @@ class SubmitCancelWidget extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              cancelButtonName.isEmpty
+                  ? Navigator.pop(context)
+                  : callBack(cancelButtonName);
             },
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -26,7 +37,9 @@ class SubmitCancelWidget extends StatelessWidget {
                       radious: context.resources.dimen.dp15)
                   .roundedCornerBox,
               child: Text(
-                context.string.cancel,
+                cancelButtonName.isEmpty
+                    ? context.string.cancel
+                    : cancelButtonName,
                 style: context.textFontWeight600
                     .onFontSize(context.resources.fontSize.dp17)
                     .onColor(context.resources.color.colorWhite)
@@ -42,7 +55,9 @@ class SubmitCancelWidget extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              callBack(context.string.submit);
+              callBack(actionButtonName.isEmpty
+                  ? context.string.submit
+                  : actionButtonName);
             },
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -53,7 +68,9 @@ class SubmitCancelWidget extends StatelessWidget {
                       radious: context.resources.dimen.dp15)
                   .roundedCornerBox,
               child: Text(
-                context.string.submit,
+                actionButtonName.isEmpty
+                    ? context.string.submit
+                    : actionButtonName,
                 style: context.textFontWeight600
                     .onFontSize(context.resources.fontSize.dp17)
                     .onColor(context.resources.color.colorWhite)
