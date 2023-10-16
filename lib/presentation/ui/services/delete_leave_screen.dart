@@ -52,8 +52,7 @@ class DeleteLeaveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
-    userName =
-        'TAREK.MAGDY'; //context.userDB.get(userNameKey, defaultValue: '');
+    userName = context.userDB.get(userNameKey, defaultValue: '');
     _servicesBloc.getLeaves(
         apiUrl: deleteleavesApiUrl, requestParams: {'USER_NAME': userName});
     return SafeArea(

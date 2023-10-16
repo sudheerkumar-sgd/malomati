@@ -7,120 +7,170 @@ import '../res/drawables/drawable_assets.dart';
 class ConstantConfig {
   final services = [
     FavoriteEntity(
+        id: 1,
         name: 'HR Approvals',
         nameAR: 'موافقات الموارد البشرية',
         iconPath: DrawableAssets.icHrApprovals),
     FavoriteEntity(
+        id: 2,
         name: 'Finance Approvals',
         nameAR: 'موافقات المالية',
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
+        id: 3,
         name: 'Annual Leaves',
         nameAR: 'الإجازة الدورية',
         iconPath: DrawableAssets.icAnualleaves),
     FavoriteEntity(
+        id: 4,
         name: 'Permission',
         nameAR: 'إذن خروج',
         iconPath: DrawableAssets.icServicePermission),
     FavoriteEntity(
+        id: 5,
         name: 'Sick Leaves',
         nameAR: 'اجازة مرضية',
         iconPath: DrawableAssets.icSickleaves),
     FavoriteEntity(
+        id: 6,
         name: 'Mission Leaves',
         nameAR: 'اجازة مهمة رسمية',
         iconPath: DrawableAssets.icMissionleaves),
     FavoriteEntity(
+        id: 7,
         name: 'Other Leaves',
         nameAR: 'الإجازات اخرى',
         iconPath: DrawableAssets.icServiceLeave),
     FavoriteEntity(
+        id: 8,
         name: 'Initiatives',
         nameAR: 'المبادرات',
         iconPath: DrawableAssets.icInitiatives),
     FavoriteEntity(
+        id: 9,
         name: 'Certificates',
         nameAR: 'شهادة الراتب',
         iconPath: DrawableAssets.icServiceCertificate),
     FavoriteEntity(
+        id: 10,
         name: 'Thank You',
         nameAR: 'شكراً لك',
         iconPath: DrawableAssets.icServiceThankyou),
     FavoriteEntity(
+        id: 11,
         name: 'Payslip',
         nameAR: 'كشف الراتب',
         iconPath: DrawableAssets.icPayslip),
     FavoriteEntity(
+        id: 12,
         name: 'Advance Salary',
         nameAR: 'راتب الإجازة',
         iconPath: DrawableAssets.icAdvancesalary),
     FavoriteEntity(
+        id: 13,
         name: 'Overtime',
         nameAR: 'العمل الإضافي',
         iconPath: DrawableAssets.icOvertime),
     FavoriteEntity(
-        name: 'Badge', nameAR: 'بطاقة العمل', iconPath: DrawableAssets.icBadge),
+        id: 14,
+        name: 'Badge',
+        nameAR: 'بطاقة العمل',
+        iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
+        id: 15,
         name: 'Delete Leave',
         nameAR: 'حذف ترك',
         iconPath: DrawableAssets.icDeleteLeave),
+    FavoriteEntity(
+        id: 16,
+        name: 'Warning',
+        nameAR: 'التحذير',
+        iconPath: DrawableAssets.icWarning),
     // FavoriteEntity(
     //     name: 'View Warning',
     //     nameAR: 'مشاهدة التحذير',
     //     iconPath: DrawableAssets.icWarning),
     FavoriteEntity(
-        name: 'Events', nameAR: 'الفعاليات', iconPath: DrawableAssets.icEvent),
+        id: 17,
+        name: 'Holidays',
+        nameAR: 'العطلات',
+        iconPath: DrawableAssets.icEvent),
     FavoriteEntity(
-        name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
+        id: 18,
+        name: 'My Team',
+        nameAR: 'فريقي',
+        iconPath: DrawableAssets.icMyteam),
   ];
   final managerServices = [
     FavoriteEntity(
+        id: 1,
         name: 'HR Approvals',
         nameAR: 'موافقات الموارد البشرية',
         iconPath: DrawableAssets.icHrApprovals),
     FavoriteEntity(
+        id: 2,
         name: 'Finance Approvals',
         nameAR: 'موافقات المالية',
         iconPath: DrawableAssets.icFinanceApprovals),
     FavoriteEntity(
-        name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),
+        id: 18,
+        name: 'My Team',
+        nameAR: 'فريقي',
+        iconPath: DrawableAssets.icMyteam),
+    FavoriteEntity(
+        id: 16,
+        name: 'Warning',
+        nameAR: 'التحذير',
+        iconPath: DrawableAssets.icWarning),
   ];
   final guestServices = [
     FavoriteEntity(
-        name: 'Jobs', nameAR: 'وظائف', iconPath: DrawableAssets.icJobs),
+        id: 31, name: 'Jobs', nameAR: 'وظائف', iconPath: DrawableAssets.icJobs),
     FavoriteEntity(
-        name: 'Events', nameAR: 'الفعاليات', iconPath: DrawableAssets.icEvent),
+        id: 17,
+        name: 'Holidays',
+        nameAR: 'العطلات',
+        iconPath: DrawableAssets.icEvent),
     FavoriteEntity(
-        name: 'UAQ Apps', nameAR: 'تطبيقات', iconPath: DrawableAssets.icApps),
+        id: 32,
+        name: 'UAQ Apps',
+        nameAR: 'تطبيقات',
+        iconPath: DrawableAssets.icApps),
   ];
 
   final dashboardFavorites = [
     {
+      'id': 3,
       'name': 'Annual Leaves',
       'nameAR': 'الإجازة الدورية',
       'iconPath': DrawableAssets.icAnualleaves
     },
     {
+      'id': 4,
       'name': 'Permission',
       'nameAR': 'إذن خروج',
       'iconPath': DrawableAssets.icServicePermission
     },
     {
+      'id': 10,
       'name': 'Thank You',
       'nameAR': 'شكراً لك',
       'iconPath': DrawableAssets.icServiceThankyou
     },
     {
+      'id': 0,
       'name': favoriteAdd,
       'nameAR': favoriteAddAR,
       'iconPath': DrawableAssets.icServiceAdd
     },
     {
+      'id': 0,
       'name': favoriteAdd,
       'nameAR': favoriteAddAR,
       'iconPath': DrawableAssets.icServiceAdd
     },
     {
+      'id': 0,
       'name': favoriteAdd,
       'nameAR': favoriteAddAR,
       'iconPath': DrawableAssets.icServiceAdd

@@ -15,13 +15,13 @@ import '../utils/dialogs.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class EventsScreen extends StatelessWidget {
+class HolidaysScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<List<EventsEntity>> _notificationList = ValueNotifier([]);
 
   String userName = '';
 
-  EventsScreen({super.key});
+  HolidaysScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,8 @@ class EventsScreen extends StatelessWidget {
                     height: context.resources.dimen.dp10,
                   ),
                   context.userDB.get(isGuestKey, defaultValue: false)
-                      ? GuestBackAppBarWidget(title: context.string.events)
-                      : BackAppBarWidget(title: context.string.events),
+                      ? GuestBackAppBarWidget(title: context.string.holidays)
+                      : BackAppBarWidget(title: context.string.holidays),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),

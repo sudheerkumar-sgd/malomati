@@ -115,4 +115,5 @@ class DrawableAssets {
   static const icTeamNotification = '${drawablePath}ic_team_notification.svg';
   static const icDeleteLeave = '${drawablePath}ic_delete_leave.svg';
   static const icWarning = '${drawablePath}ic_warning.svg';
+  static const icViewWarning = '${drawablePath}ic_view_warning.svg';
 }

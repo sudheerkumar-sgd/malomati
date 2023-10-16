@@ -188,7 +188,8 @@
     },
     "financeApprovals": "Finance Approvals",
     "deleteLeave": "Delete Leave",
-    "warnings": "View warning",
+    "warnings": "Warning",
+    "viewWarnings": "View warning",
     "done": "Done",
     "@done": {
         "type": "text"
@@ -520,6 +521,7 @@
     "uploadCV":"Upload CV",
     "jobs":"Jobs",
     "events":"Events",
+    "holidays":"Holidays",
     "uaqApps":"Apps",
     "appUpdateTitle":"Update your application",
     "appUpdateBody":"We improve performance and fix some bugs to make your experience seamless",

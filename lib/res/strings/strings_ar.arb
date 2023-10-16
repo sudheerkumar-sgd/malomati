@@ -47,8 +47,9 @@
     "otherLeaves": "إجازة أخرى" ,
     "hrApprovals": "موافقات الموارد البشرية",
     "financeApprovals": "موافقات المالية",
-    "deleteLeave": "حذف ترك",
-    "warnings": "مشاهدة التحذير",
+    "deleteLeave": "حذف الإجازة",
+    "warnings": "إنذار",
+    "viewWarnings": "عرض إنذارات",
     "edit": "تعديل",
     "done": "حفظ",
     "selfService": "الخدمة الذاتية",
@@ -234,6 +235,7 @@
     "loginAsGuest":"الدخول كزائر",
     "jobs":"وظائف",
     "events":"الفعاليات",
+    "holidays":"العطلات",
     "uaqApps":"تطبيقات",
     "firstName":"الاسم الأول",
     "lastName":"الاسم الاخير",
@@ -243,5 +245,5 @@
     "appUpdateBody":"نحن نعمل على تحسين الأداء وإصلاح بعض المشاكل لنجعل تجربتك سلسة",
     "title":"عنوان",
     "test":"اختبر",
-    "imageorVideoURL":"عنوان URL للصورة أو الفيديو"
+    "imageorVideoURL":"صورة او رابط الفيديو"
 }

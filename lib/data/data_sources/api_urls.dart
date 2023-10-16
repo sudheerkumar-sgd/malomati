@@ -64,3 +64,5 @@ const String holidayEventsApiUrl =
     'UAQSGD_MOB_ERP_GetEvents/GetEvents/getNextHolidays';
 const String submitJobEmailApiUrl =
     'UAQSGD_MOB_EmailNotificationRequest/sendEmailNotification';
+const String submitWarningsApiUrl =
+    'UAQSGD_MOB_ERP_CreateWarningRequest/CreateWarnings/Warnings';

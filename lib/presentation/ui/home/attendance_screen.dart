@@ -137,6 +137,11 @@ class AttendanceScreen extends StatelessWidget {
           'isEnabled': canUserRegularIn()
         },
         {
+          'name': context.string.shortLeaveIn,
+          'id': '4',
+          'isEnabled': canPunchInEnable()
+        },
+        {
           'name': context.string.officialIn,
           'id': '1',
           'isEnabled': canPunchInEnable()
@@ -144,11 +149,6 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.overtimeIn,
           'id': '9',
-          'isEnabled': canPunchInEnable()
-        },
-        {
-          'name': context.string.shortLeaveIn,
-          'id': '4',
           'isEnabled': canPunchInEnable()
         },
       ];
@@ -160,6 +160,11 @@ class AttendanceScreen extends StatelessWidget {
           'isEnabled': canPunchOutEnable()
         },
         {
+          'name': context.string.shortLeaveOut,
+          'id': '4',
+          'isEnabled': canPunchOutEnable()
+        },
+        {
           'name': context.string.officialWorkOut,
           'id': '2',
           'isEnabled': canPunchOutEnable()
@@ -167,11 +172,6 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.overtimeOut,
           'id': '10',
-          'isEnabled': canPunchOutEnable()
-        },
-        {
-          'name': context.string.shortLeaveOut,
-          'id': '4',
           'isEnabled': canPunchOutEnable()
         },
       ];

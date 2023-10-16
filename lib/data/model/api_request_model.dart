@@ -82,4 +82,14 @@ extension SourceModelExtension on ApiRequestModel {
         "DELETED_LEAVE": lEAVE,
         "REASON": aPPROVALCOMMENT,
       };
+  Map<String, dynamic> toWarningRequest() => {
+        "USER_NAME": uSERNAME,
+        "CREATOR_USER_NAME": uSERNAME,
+        "REASON": rEASON,
+        "APPROVAL_COMMENT": nOTE,
+        "START_DATE": "",
+        "END_DATE": "",
+        "FILE_NAME": "",
+        "BLOB_FILE": ""
+      };
 }

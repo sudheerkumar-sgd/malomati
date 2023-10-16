@@ -247,16 +247,18 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
+                                  const SizedBox(
+                                    width: 74,
+                                  ),
                                   Expanded(
                                     child: Align(
-                                      alignment: isLocalEn
-                                          ? Alignment.bottomRight
-                                          : Alignment.bottomLeft,
+                                      alignment: Alignment.center,
                                       child: RichText(
+                                        textAlign: TextAlign.center,
                                         text: TextSpan(text: '\n', children: [
                                           TextSpan(
                                             text:
-                                                '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}, ',
+                                                '${context.resources.isLocalEn ? currentDayName : getArabicDayName(currentDayName)}\n',
                                             style: context.textFontWeight600
                                                 .onFontFamily(
                                                     fontFamily: isLocalEn
@@ -304,7 +306,7 @@ class HomeScreen extends StatelessWidget {
                                       width: 74,
                                       height: 61,
                                       padding: EdgeInsets.only(
-                                          top: context.resources.dimen.dp5,
+                                          top: context.resources.dimen.dp7,
                                           right: isLocalEn
                                               ? context.resources.dimen.dp12
                                               : 0,
@@ -312,7 +314,7 @@ class HomeScreen extends StatelessWidget {
                                               ? 0
                                               : context.resources.dimen.dp12),
                                       transform: Matrix4.translationValues(
-                                          isLocalEn ? 2.0 : -2.0, -0.5, 0.0),
+                                          isLocalEn ? 2.0 : -2.0, -1, 0.0),
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                         fit: BoxFit.fill,
@@ -325,14 +327,22 @@ class HomeScreen extends StatelessWidget {
                                       child: ValueListenableBuilder(
                                           valueListenable: _weatherEntity,
                                           builder: (context, value, child) {
+                                            String iconPath = getWeatherIcon(
+                                                value.weathercode ?? 0);
+                                            Color? iconColor;
+                                            if (iconPath ==
+                                                DrawableAssets.icSun) {
+                                              iconColor =
+                                                  context.resources.iconBgColor;
+                                            }
                                             return Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
                                               children: [
                                                 ImageWidget(
-                                                        path: getWeatherIcon(
-                                                            value.weathercode ??
-                                                                0))
+                                                        path: iconPath,
+                                                        backgroundTint:
+                                                            iconColor)
                                                     .loadImage,
                                                 const SizedBox(
                                                   height: 3,

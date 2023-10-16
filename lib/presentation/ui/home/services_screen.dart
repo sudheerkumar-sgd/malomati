@@ -7,8 +7,9 @@ import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/create_warning_screen.dart';
 import 'package:malomati/presentation/ui/services/delete_leave_screen.dart';
-import 'package:malomati/presentation/ui/services/events_screen.dart';
+import 'package:malomati/presentation/ui/services/holidays_screen.dart';
 import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
@@ -27,57 +28,83 @@ import '../widgets/services_app_bar.dart';
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
   static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
-    Widget? screenWidget = InitiativesScreen();
-    if ((favoriteEntity.name ?? '').toLowerCase().contains('initiatives')) {
-      screenWidget = InitiativesScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('certificate')) {
-      screenWidget = CertificatesScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('thank')) {
-      screenWidget = ThankyouScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('advance salary')) {
-      screenWidget = AdvanceSalaryScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('overtime')) {
-      screenWidget = OvertimeScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('badge')) {
-      screenWidget = BadgeScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('my team')) {
-      screenWidget = MyTeamScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('payslip')) {
-      screenWidget = PayslipsScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('hr approvals')) {
-      screenWidget = HrApprovalsScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('finance approvals')) {
-      screenWidget = FinanceApprovalsScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('jobs')) {
-      screenWidget = GuestJobsScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('events')) {
-      screenWidget = EventsScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('uaq apps')) {
-      screenWidget = const UAQAppsScreen();
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('delete leave')) {
-      screenWidget = DeleteLeaveScreen();
-    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('leave') ||
-        (favoriteEntity.name ?? '').toLowerCase().contains('permission')) {
-      screenWidget = LeavesScreen(
-        leaveType: LeaveType.values.firstWhere(
-            ((element) => element.name == (favoriteEntity.name ?? ''))),
+    Widget? screenWidget;
+    switch (favoriteEntity.id) {
+      case 1:
+        {
+          screenWidget = HrApprovalsScreen();
+        }
+      case 2:
+        {
+          screenWidget = FinanceApprovalsScreen();
+        }
+      case 3 || 4 || 5 || 6 || 7:
+        {
+          screenWidget = LeavesScreen(
+            leaveType: LeaveType.values.firstWhere(
+                ((element) => element.name == (favoriteEntity.name ?? ''))),
+          );
+        }
+      case 8:
+        {
+          screenWidget = InitiativesScreen();
+        }
+      case 9:
+        {
+          screenWidget = CertificatesScreen();
+        }
+      case 10:
+        {
+          screenWidget = ThankyouScreen();
+        }
+      case 11:
+        {
+          screenWidget = PayslipsScreen();
+        }
+      case 12:
+        {
+          screenWidget = AdvanceSalaryScreen();
+        }
+      case 13:
+        {
+          screenWidget = OvertimeScreen();
+        }
+      case 14:
+        {
+          screenWidget = BadgeScreen();
+        }
+      case 15:
+        {
+          screenWidget = DeleteLeaveScreen();
+        }
+      case 16:
+        {
+          screenWidget = CreateWarningScreen();
+        }
+      case 17:
+        {
+          screenWidget = HolidaysScreen();
+        }
+      case 18:
+        {
+          screenWidget = MyTeamScreen();
+        }
+      case 31:
+        {
+          screenWidget = GuestJobsScreen();
+        }
+      case 32:
+        {
+          screenWidget = const UAQAppsScreen();
+        }
+    }
+    if (screenWidget != null) {
+      Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.rightToLeft, child: screenWidget),
       );
     }
-
-    Navigator.push(
-      context,
-      PageTransition(type: PageTransitionType.rightToLeft, child: screenWidget),
-    );
   }
 
   @override
