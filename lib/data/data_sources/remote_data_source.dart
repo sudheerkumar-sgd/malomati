@@ -24,8 +24,8 @@ import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/domain/entities/leave_details_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
-import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
@@ -61,8 +61,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<List<EmployeeEntity>> getEmployeesByManager(
       {required Map<String, dynamic> requestParams});
-  Future<List<NameIdEntity>> getLeaves(
-      {required Map<String, dynamic> requestParams});
+  Future<List<LeaveDetailsEntity>> getLeaves(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<List<HrApprovalEntity>> getHrApprovalsList(
       {required Map<String, dynamic> requestParams});
   Future<HrapprovalDetailsEntity> getHrApprovalDetails(
@@ -386,23 +386,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<NameIdEntity>> getLeaves(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<List<LeaveDetailsEntity>> getLeaves(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
     try {
       var response = await dio.get(
-        leavesApiUrl,
+        apiUrl,
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
         queryParameters: requestParams,
       );
+      List<dynamic>? leavesListJson;
       if (response.data?['LeaveDetails'] != null) {
-        var leavesListJson = response.data['LeaveDetails'] as List;
-        var deptEmployeesList = leavesListJson
-            .map(
-                (leaveJson) => LeavesModel.fromJson(leaveJson).toNameIdEntity())
+        leavesListJson = response.data['LeaveDetails'] as List;
+      } else if (response.data?['LeavesList'] != null) {
+        leavesListJson = response.data['LeavesList'] as List;
+      }
+      if (leavesListJson != null) {
+        var leavesList = leavesListJson
+            .map((leaveJson) =>
+                LeavesModel.fromJson(leaveJson).toLeaveDetailsEntity())
             .toList();
-        return deptEmployeesList;
+        return leavesList;
       } else {
         return [];
       }

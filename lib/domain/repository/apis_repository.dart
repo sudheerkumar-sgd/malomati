@@ -7,7 +7,6 @@ import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
-import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
@@ -15,6 +14,7 @@ import '../../core/error/failures.dart';
 import '../entities/attendance_list_entity.dart';
 import '../entities/finance_approval_entity.dart';
 import '../entities/hrapproval_details_entity.dart';
+import '../entities/leave_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
 import '../entities/requests_count_entity.dart';
@@ -48,8 +48,8 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByManager(
       {required Map<String, dynamic> requestParams});
-  Future<Either<Failure, List<NameIdEntity>>> getLeaves(
-      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<LeaveDetailsEntity>>> getLeaves(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalsList(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, HrapprovalDetailsEntity>> getHrApprovalDetails(

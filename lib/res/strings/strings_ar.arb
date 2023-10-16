@@ -47,6 +47,8 @@
     "otherLeaves": "إجازة أخرى" ,
     "hrApprovals": "موافقات الموارد البشرية",
     "financeApprovals": "موافقات المالية",
+    "deleteLeave": "حذف ترك",
+    "warnings": "مشاهدة التحذير",
     "edit": "تعديل",
     "done": "حفظ",
     "selfService": "الخدمة الذاتية",

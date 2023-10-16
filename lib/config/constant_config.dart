@@ -61,6 +61,14 @@ class ConstantConfig {
     FavoriteEntity(
         name: 'Badge', nameAR: 'بطاقة العمل', iconPath: DrawableAssets.icBadge),
     FavoriteEntity(
+        name: 'Delete Leave',
+        nameAR: 'حذف ترك',
+        iconPath: DrawableAssets.icDeleteLeave),
+    // FavoriteEntity(
+    //     name: 'View Warning',
+    //     nameAR: 'مشاهدة التحذير',
+    //     iconPath: DrawableAssets.icWarning),
+    FavoriteEntity(
         name: 'Events', nameAR: 'الفعاليات', iconPath: DrawableAssets.icEvent),
     FavoriteEntity(
         name: 'My Team', nameAR: 'فريقي', iconPath: DrawableAssets.icMyteam),

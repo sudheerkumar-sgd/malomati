@@ -187,6 +187,8 @@
         "type": "text"
     },
     "financeApprovals": "Finance Approvals",
+    "deleteLeave": "Delete Leave",
+    "warnings": "View warning",
     "done": "Done",
     "@done": {
         "type": "text"

@@ -7,6 +7,7 @@ import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/delete_leave_screen.dart';
 import 'package:malomati/presentation/ui/services/events_screen.dart';
 import 'package:malomati/presentation/ui/services/finance_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
@@ -27,15 +28,7 @@ class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
   static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
     Widget? screenWidget = InitiativesScreen();
-    if ((favoriteEntity.name ?? '').toLowerCase().contains('leave') ||
-        (favoriteEntity.name ?? '').toLowerCase().contains('permission')) {
-      screenWidget = LeavesScreen(
-        leaveType: LeaveType.values.firstWhere(
-            ((element) => element.name == (favoriteEntity.name ?? ''))),
-      );
-    } else if ((favoriteEntity.name ?? '')
-        .toLowerCase()
-        .contains('initiatives')) {
+    if ((favoriteEntity.name ?? '').toLowerCase().contains('initiatives')) {
       screenWidget = InitiativesScreen();
     } else if ((favoriteEntity.name ?? '')
         .toLowerCase()
@@ -69,6 +62,16 @@ class ServicesScreen extends StatelessWidget {
       screenWidget = EventsScreen();
     } else if ((favoriteEntity.name ?? '').toLowerCase().contains('uaq apps')) {
       screenWidget = const UAQAppsScreen();
+    } else if ((favoriteEntity.name ?? '')
+        .toLowerCase()
+        .contains('delete leave')) {
+      screenWidget = DeleteLeaveScreen();
+    } else if ((favoriteEntity.name ?? '').toLowerCase().contains('leave') ||
+        (favoriteEntity.name ?? '').toLowerCase().contains('permission')) {
+      screenWidget = LeavesScreen(
+        leaveType: LeaveType.values.firstWhere(
+            ((element) => element.name == (favoriteEntity.name ?? ''))),
+      );
     }
 
     Navigator.push(

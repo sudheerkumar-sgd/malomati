@@ -4,7 +4,6 @@ import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
-import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
@@ -13,6 +12,7 @@ import 'package:malomati/domain/use_case/services_usecase.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/finance_approval_entity.dart';
 import '../../../domain/entities/hrapproval_details_entity.dart';
+import '../../../domain/entities/leave_details_entity.dart';
 import '../../../domain/entities/leave_submit_response_entity.dart';
 
 part 'services_state.dart';
@@ -74,9 +74,11 @@ class ServicesBloc extends Cubit<ServicesState> {
             OnServicesRequestSubmitSuccess(servicesRequestSuccessResponse: r)));
   }
 
-  Future<void> getLeaves({required Map<String, dynamic> requestParams}) async {
-    final result =
-        await servicesUseCase.getLeaves(requestParams: requestParams);
+  Future<void> getLeaves(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    final result = await servicesUseCase.getLeaves(
+        apiUrl: apiUrl, requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnLeavesSuccess(leavesList: r)));
   }

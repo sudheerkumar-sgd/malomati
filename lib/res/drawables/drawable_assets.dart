@@ -113,4 +113,6 @@ class DrawableAssets {
   static const icStorm = '${drawablePath}ic_storm.svg';
   static const icCloudy = '${drawablePath}ic_cloudy.svg';
   static const icTeamNotification = '${drawablePath}ic_team_notification.svg';
+  static const icDeleteLeave = '${drawablePath}ic_delete_leave.svg';
+  static const icWarning = '${drawablePath}ic_warning.svg';
 }

@@ -21,7 +21,6 @@ import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
-import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
@@ -32,6 +31,7 @@ import '../../config/constant_config.dart';
 import '../../core/network/network_info.dart';
 import '../../domain/entities/attendance_list_entity.dart';
 import '../../domain/entities/hrapproval_details_entity.dart';
+import '../../domain/entities/leave_details_entity.dart';
 import '../../domain/repository/apis_repository.dart';
 import '../../injection_container.dart';
 
@@ -283,13 +283,14 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, List<NameIdEntity>>> getLeaves(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, List<LeaveDetailsEntity>>> getLeaves(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
-        final apiResponse =
-            await dataSource.getLeaves(requestParams: requestParams);
+        final apiResponse = await dataSource.getLeaves(
+            apiUrl: apiUrl, requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

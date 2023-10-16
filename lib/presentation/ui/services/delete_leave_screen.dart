@@ -16,9 +16,9 @@ import '../../../domain/entities/leave_details_entity.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class AdvanceSalaryScreen extends StatelessWidget {
-  static const String route = '/AdvanceSalaryScreen';
-  AdvanceSalaryScreen({super.key});
+class DeleteLeaveScreen extends StatelessWidget {
+  static const String route = '/DeleteLeaveScreen';
+  DeleteLeaveScreen({super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
@@ -40,21 +40,22 @@ class AdvanceSalaryScreen extends StatelessWidget {
   }
 
   _submitAdvanceSalaryRequest() {
-    final advanceSalaryRequestModel = ApiRequestModel();
-    advanceSalaryRequestModel.uSERNAME = userName;
-    advanceSalaryRequestModel.aPPROVALCOMMENT = _commentsController.text;
-    advanceSalaryRequestModel.lEAVE = leave;
+    final deleteLeaveRequestModel = ApiRequestModel();
+    deleteLeaveRequestModel.uSERNAME = userName;
+    deleteLeaveRequestModel.aPPROVALCOMMENT = _commentsController.text;
+    deleteLeaveRequestModel.lEAVE = leave;
     _servicesBloc.submitServicesRequest(
-        apiUrl: advanceSalaryApiUrl,
-        requestParams: advanceSalaryRequestModel.toAdvanceSalaryRequest());
+        apiUrl: deleteLeaveApiUrl,
+        requestParams: deleteLeaveRequestModel.toDeleteLeaveRequest());
   }
 
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
+    userName =
+        'TAREK.MAGDY'; //context.userDB.get(userNameKey, defaultValue: '');
     _servicesBloc.getLeaves(
-        apiUrl: leavesApiUrl, requestParams: {'USER_NAME': userName});
+        apiUrl: deleteleavesApiUrl, requestParams: {'USER_NAME': userName});
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -90,7 +91,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
                             to: state.servicesRequestSuccessResponse.entity
                                     ?.aPPROVERSLIST[i] ??
                                 '',
-                            title: 'Advance Salary',
+                            title: 'Delete Leave',
                             body:
                                 '${context.userDB.get(userFullNameUsKey)} has applied for Advance Salary',
                             type: '',
@@ -122,7 +123,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.advanceSalary),
+                  BackAppBarWidget(title: context.string.deleteLeave),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
@@ -150,7 +151,7 @@ class AdvanceSalaryScreen extends StatelessWidget {
                               isEnabled: true,
                               maxLines: 5,
                               height: resources.dimen.dp27,
-                              labelText: context.string.comments,
+                              labelText: context.string.reason,
                               textController: _commentsController,
                             ),
                           ],

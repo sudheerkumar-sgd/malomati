@@ -75,4 +75,11 @@ extension SourceModelExtension on ApiRequestModel {
         "FILE_NAME_NEW": fILENAMENEW,
         "BLOB_FILE_NEW": bLOBFILENEW,
       };
+  Map<String, dynamic> toDeleteLeaveRequest() => {
+        "USER_NAME": uSERNAME,
+        "CREATOR_USER_NAME": cREATORUSERNAME,
+        "LEAVE": lEAVE,
+        "DELETED_LEAVE": lEAVE,
+        "REASON": aPPROVALCOMMENT,
+      };
 }

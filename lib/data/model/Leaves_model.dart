@@ -2,6 +2,7 @@
 
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/leave_details_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/entities/leave_type_entity.dart';
@@ -9,13 +10,16 @@ import '../../domain/entities/leave_type_entity.dart';
 class LeavesModel extends BaseModel {
   String? lEAVEDETAIL;
   String? aBSENCEATTENDANCEID;
+  String? lEAVEUS;
+  String? lEAVEAR;
   int? noOfDays;
 
   LeavesModel();
 
   factory LeavesModel.fromJson(Map<String, dynamic> json) {
     var departmentModel = LeavesModel();
-    departmentModel.lEAVEDETAIL = json['LEAVE_DETAIL'];
+    departmentModel.lEAVEUS = json['LEAVE_DETAIL'] ?? json['LEAVE_US'];
+    departmentModel.lEAVEAR = json['LEAVE_AR'];
     departmentModel.aBSENCEATTENDANCEID = '${json['ABSENCE_ATTENDANCE_ID']}';
     return departmentModel;
   }
@@ -48,5 +52,13 @@ extension SourceModelExtension on LeavesModel {
     WorkingDaysEntity workingDaysEntity = WorkingDaysEntity();
     workingDaysEntity.noOfDays = '$noOfDays';
     return workingDaysEntity;
+  }
+
+  LeaveDetailsEntity toLeaveDetailsEntity() {
+    LeaveDetailsEntity leaveDetailsEntity = LeaveDetailsEntity();
+    leaveDetailsEntity.id = aBSENCEATTENDANCEID;
+    leaveDetailsEntity.nameUS = lEAVEUS;
+    leaveDetailsEntity.nameAR = lEAVEAR;
+    return leaveDetailsEntity;
   }
 }

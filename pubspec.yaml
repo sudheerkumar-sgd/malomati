@@ -274,6 +274,8 @@ flutter:
      - assets/images/ic_storm.svg
      - assets/images/ic_rain.svg
      - assets/images/ic_team_notification.svg
+     - assets/images/ic_delete_leave.svg
+     - assets/images/ic_warning.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

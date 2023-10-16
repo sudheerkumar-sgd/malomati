@@ -38,7 +38,7 @@ class OnEmployeesSuccess extends ServicesState {
 }
 
 class OnLeavesSuccess extends ServicesState {
-  final List<NameIdEntity> leavesList;
+  final List<LeaveDetailsEntity> leavesList;
 
   OnLeavesSuccess({required this.leavesList});
 }

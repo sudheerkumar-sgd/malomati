@@ -25,10 +25,14 @@ const String certificateApiUrl =
     'UAQSGD_MOB_ERP_SalaryCertificateRequest/SalaryCertificate';
 const String advanceSalaryApiUrl =
     'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary';
+const String deleteLeaveApiUrl =
+    'UAQSGD_MOB_ERP_RequestToDeleteLeaves/DeleteLeaves/Delete';
 const String badgeApiUrl = 'UAQSGD_MOB_ERP_BadgeRequest/CreateBadge';
 const String overtimeApiUrl = 'UAQSGD_MOB_ERP_OvertimeRequest/OvertimeRequest';
 const String leavesApiUrl =
     'UAQSGD_MOB_ERP_AdvanceSalaryRequest/AdvanceSalary/LeaveDetails';
+const String deleteleavesApiUrl =
+    'UAQSGD_MOB_ERP_RequestToDeleteLeaves/DeleteLeaves/Leaves';
 const String employeesByManagerApiUrl = 'UAQSGD_MOB_ERP_GetMyTeam/GetMyTeam';
 const String hrApprovalListApiUrl = 'UAQSGD_MOB_ERP_HRApprovals/Approvals';
 const String hrApprovalDetailsApiUrl =
