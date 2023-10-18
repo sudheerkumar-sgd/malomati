@@ -252,7 +252,8 @@ Map<String, dynamic> getFCMMessageData(
       "title": title,
       "body": body,
       "image_url": imageUrl,
-      "click_action": "FLUTTER_NOTIFICATION_CLICK"
+      "click_action": "FLUTTER_NOTIFICATION_CLICK",
+      "sound": "default",
     },
     "data": {
       "title": title,

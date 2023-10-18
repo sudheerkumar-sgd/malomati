@@ -13,6 +13,7 @@ import 'package:malomati/res/resources.dart';
 import '../services/widgets/submit_cancel_widget.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
+import '../widgets/notification_dialog_widget.dart';
 
 class TeamNotificationScreen extends StatelessWidget {
   static const String route = '/TeamNotificationScreen';
@@ -26,11 +27,27 @@ class TeamNotificationScreen extends StatelessWidget {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
 
-  onSubmit(String clickedButton) {
+  onSubmit(String clickedButton) async {
     if (_formKey.currentState!.validate()) {
-      _sendPushNotifications(clickedButton == context.string.test
-          ? context.userDB.get(userNameKey, defaultValue: 'a')
-          : '');
+      if (clickedButton == context.string.test) {
+        await _sendPushNotifications(
+            context.userDB.get(userNameKey, defaultValue: 'a'));
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return NotificationDialogWidget(
+                title: titleController.text,
+                message: bodyController.text,
+                imageUrl: urlController.text,
+                actionButtionTitle: context.string.send,
+              );
+            }).then((value) {
+          if (value != null) {
+            _sendPushNotifications('MALOMATI');
+          }
+        });
+      }
     }
   }
 
@@ -127,6 +144,7 @@ class TeamNotificationScreen extends StatelessWidget {
                   ),
                   SubmitCancelWidget(
                     callBack: onSubmit,
+                    actionButtonName: context.string.preview,
                     cancelButtonName: context.string.test,
                   ),
                   SizedBox(

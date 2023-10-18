@@ -188,7 +188,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                           type: fcmTypeHRApprovals,
                           notificationId: '${widget.data.nOTIFICATIONID}'));
                 }
-                if ((state.apiEntity.entity?.oRIGINALRECIPIENT ?? '')
+                if ((state.apiEntity.entity?.cREATORUSERNAME ?? '')
                     .isNotEmpty) {
                   String noticationBody = '';
                   switch (selectedAction) {
@@ -204,7 +204,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                   }
                   _servicesBloc.sendPushNotifications(
                       requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.oRIGINALRECIPIENT ?? '',
+                          to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
                           title: 'HR Approval',
                           body: noticationBody,
                           type: '',

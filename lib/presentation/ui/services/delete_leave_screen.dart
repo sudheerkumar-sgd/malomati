@@ -92,7 +92,7 @@ class DeleteLeaveScreen extends StatelessWidget {
                                 '',
                             title: 'Delete Leave',
                             body:
-                                '${context.userDB.get(userFullNameUsKey)} has applied for Advance Salary',
+                                '${context.userDB.get(userFullNameUsKey)} has applied for Delete Leave Request',
                             type: '',
                             notificationId: state.servicesRequestSuccessResponse
                                     .entity?.nTFID ??

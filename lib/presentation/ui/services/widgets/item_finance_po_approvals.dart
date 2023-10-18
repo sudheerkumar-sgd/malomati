@@ -115,7 +115,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                           type: fcmTypeFinanceApprovals,
                           notificationId: '${widget.data.nOTIFICATIONID}'));
                 }
-                if ((state.apiEntity.entity?.oRIGINALRECIPIENT ?? '')
+                if ((state.apiEntity.entity?.cREATORUSERNAME ?? '')
                     .isNotEmpty) {
                   String noticationBody = '';
                   switch (selectedAction) {
@@ -131,7 +131,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                   }
                   _servicesBloc.sendPushNotifications(
                       requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.oRIGINALRECIPIENT ?? '',
+                          to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
                           title: 'HR Approval',
                           body: noticationBody,
                           type: '',

@@ -10,7 +10,7 @@ class LeaveSubmitResponseModel extends BaseModel {
   String? nTFID;
   String? iTEMKEY;
   String? sTATUS;
-  String? oRIGINALRECIPIENT;
+  String? cREATORUSERNAME;
   List<String> aPPROVERSLIST = [];
 
   LeaveSubmitResponseModel();
@@ -20,8 +20,7 @@ class LeaveSubmitResponseModel extends BaseModel {
     leaveSubmitResponseModel.sTATUS = json['STATUS'];
     leaveSubmitResponseModel.nTFID = '${json['NTF_ID']}';
     leaveSubmitResponseModel.iTEMKEY = '${json['ITEM_KEY']}';
-    leaveSubmitResponseModel.oRIGINALRECIPIENT =
-        '${json['ORIGINAL_RECIPIENT']}';
+    leaveSubmitResponseModel.cREATORUSERNAME = '${json['CREATOR_USER_NAME']}';
     if (json['APPROVER_LIST'] != null) {
       leaveSubmitResponseModel.aPPROVERSLIST = (json['APPROVER_LIST'] as List)
           .map((e) => e['CURRENT_APPROVER'].toString())
@@ -55,7 +54,7 @@ extension SourceModelExtension on LeaveSubmitResponseModel {
     leaveSubmitResponseEntity.iTEMKEY = iTEMKEY;
     leaveSubmitResponseEntity.nTFID = nTFID;
     leaveSubmitResponseEntity.aPPROVERSLIST = aPPROVERSLIST;
-    leaveSubmitResponseEntity.oRIGINALRECIPIENT = oRIGINALRECIPIENT;
+    leaveSubmitResponseEntity.cREATORUSERNAME = cREATORUSERNAME;
     return leaveSubmitResponseEntity;
   }
 }

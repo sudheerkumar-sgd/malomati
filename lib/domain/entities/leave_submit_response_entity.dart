@@ -7,11 +7,11 @@ class LeaveSubmitResponseEntity extends BaseEntity {
   String? iTEMKEY;
   String? sTATUS;
   List<String> aPPROVERSLIST = [];
-  String? oRIGINALRECIPIENT;
+  String? cREATORUSERNAME;
 
   LeaveSubmitResponseEntity();
 
   @override
   List<Object?> get props =>
-      [nTFID, iTEMKEY, sTATUS, aPPROVERSLIST, oRIGINALRECIPIENT];
+      [nTFID, iTEMKEY, sTATUS, aPPROVERSLIST, cREATORUSERNAME];
 }

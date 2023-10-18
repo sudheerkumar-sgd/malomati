@@ -54,6 +54,8 @@ class ShowAttachmentDialog extends StatelessWidget {
             Expanded(
               child: SfPdfViewer.memory(
                 data.fileData!,
+                canShowSignaturePadDialog: false,
+                canShowHyperlinkDialog: false,
               ),
             )
           },

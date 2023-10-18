@@ -51,9 +51,16 @@ const departments = [
   {
     "IsSuccess": true,
     "Message": "Success",
-    "Dept_Name_EN": "UAQ  Municipality ",
+    "Dept_Name_EN": "UAQ  Municipality",
     "Dept_Name_AR": "بلدية ام القيوين",
     "PAYROLL_ID": 107
+  },
+  {
+    "IsSuccess": true,
+    "Message": "Success",
+    "Dept_Name_EN": "Real State Corporation",
+    "Dept_Name_AR": "المؤسسة العقارية",
+    "PAYROLL_ID": 111
   }
 ];
 
@@ -193,4 +200,4 @@ const months = [
   'December'
 ];
 
-const notificationUser = ['MOOZA.BINYEEM', 'MOHAMMED.KAMRAN', 'SUDHEER.AKULA'];
+const notificationUser = ['MOOZA.BINYEEM', 'MOHAMMED.KAMRAN'];

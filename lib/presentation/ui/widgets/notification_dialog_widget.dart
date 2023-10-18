@@ -8,8 +8,13 @@ class NotificationDialogWidget extends StatelessWidget {
   final String message;
   final String title;
   final String imageUrl;
+  final String actionButtionTitle;
   const NotificationDialogWidget(
-      {required this.message, this.imageUrl = '', this.title = '', super.key});
+      {required this.message,
+      this.imageUrl = '',
+      this.title = '',
+      this.actionButtionTitle = '',
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,7 @@ class NotificationDialogWidget extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context, 'send');
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -61,7 +66,9 @@ class NotificationDialogWidget extends StatelessWidget {
                         radious: context.resources.dimen.dp15)
                     .roundedCornerBox,
                 child: Text(
-                  context.string.close,
+                  actionButtionTitle.isEmpty
+                      ? context.string.close
+                      : actionButtionTitle,
                   style: context.textFontWeight400
                       .onFontSize(context.resources.fontSize.dp15)
                       .onColor(context.resources.color.colorWhite)

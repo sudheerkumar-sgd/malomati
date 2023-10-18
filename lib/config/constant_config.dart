@@ -79,16 +79,16 @@ class ConstantConfig {
     FavoriteEntity(
         id: 15,
         name: 'Delete Leave',
-        nameAR: 'حذف ترك',
+        nameAR: 'حذف الإجازة',
         iconPath: DrawableAssets.icDeleteLeave),
-    FavoriteEntity(
-        id: 16,
-        name: 'Warning',
-        nameAR: 'التحذير',
-        iconPath: DrawableAssets.icWarning),
+    // FavoriteEntity(
+    //     id: 16,
+    //     name: 'Warning',
+    //     nameAR: 'إنذار',
+    //     iconPath: DrawableAssets.icWarning),
     // FavoriteEntity(
     //     name: 'View Warning',
-    //     nameAR: 'مشاهدة التحذير',
+    //     nameAR: 'عرض إنذارات',
     //     iconPath: DrawableAssets.icWarning),
     FavoriteEntity(
         id: 17,
@@ -120,7 +120,7 @@ class ConstantConfig {
     FavoriteEntity(
         id: 16,
         name: 'Warning',
-        nameAR: 'التحذير',
+        nameAR: 'إنذار',
         iconPath: DrawableAssets.icWarning),
   ];
   final guestServices = [
@@ -340,6 +340,9 @@ class ConstantConfig {
   static int requestsRejectCount = 0;
   static int requestsPendingCount = 0;
   static int notificationsCount = 0;
+  static int badgeCount = 0;
+  static ValueNotifier<Map<String, dynamic>?> onFCMMessageReceived =
+      ValueNotifier(null);
   static const fcmServerApiKey =
       'AAAAW47t3kQ:APA91bFuEWK4MWc7bVSf24RYAdcBuSPIeu4CLhOV2qOp_UctljSHas5BvNngpFNf_OQVAOWXtuNSjNOdbOqWpXRUscryDK8sPqTGUnVk2qrtwVs21eOVr8mK9sDhcotgxKslSm6vB3LW';
 }

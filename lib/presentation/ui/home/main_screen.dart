@@ -17,6 +17,8 @@ import 'package:malomati/presentation/ui/services/services_navigator_screen.dart
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import '../../../config/constant_config.dart';
+import '../../../core/constants/data_constants.dart';
 import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
@@ -165,6 +167,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    ConstantConfig.badgeCount = 0;
     setupFirebaseNotificationMessage();
     FlutterAppBadger.isAppBadgeSupported()
         .then((value) => FlutterAppBadger.removeBadge());
@@ -193,13 +196,22 @@ class _MainScreenState extends State<MainScreen> {
         statusBarIconBrightness: Brightness.dark));
     Future.delayed(const Duration(milliseconds: 500), () {
       _showBirthday(context);
+      ConstantConfig.onFCMMessageReceived.addListener(() {
+        if (!notificationUser.contains(context.userDB
+            .get(userNameKey, defaultValue: '')
+            .toString()
+            .toUpperCase())) {
+          _handleMessage(ConstantConfig.onFCMMessageReceived.value);
+          ConstantConfig.onFCMMessageReceived.value = null;
+        }
+      });
     });
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =
             await _navbarNotifier.onBackButtonPressed(_selectedIndex.value);
         if (isExitingApp) {
-          if (backpressCount > 1) {
+          if (backpressCount >= 1) {
             return isExitingApp;
           } else {
             backpressCount++;

@@ -13,6 +13,7 @@ class DrawableAssets {
   static const gifAnniversayAr = '${drawablePath}gif/work_anniversary_ar.gif';
   static const gifBirthdayEn = '${drawablePath}gif/birthday_en.gif';
   static const gifBirthdayAr = '${drawablePath}gif/birthday_ar.gif';
+  static const gifDown = '${drawablePath}gif/ic_down.gif';
   //tour images
   static const homePage = '${drawablePath}tour/home_page.png';
   static const homePageAr = '${drawablePath}tour/home page_ar.png';

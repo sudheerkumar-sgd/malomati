@@ -10,7 +10,6 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/utils/location.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import '../../../core/constants/data_constants.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/drawables/drawable_assets.dart';
@@ -125,7 +124,7 @@ class AttendanceScreen extends StatelessWidget {
 
   bool canUserRegularIn() {
     var time = DateTime.now().hour;
-    return (time < 8);
+    return (time < 8 && (attendanceEntity?.punch1Time ?? '').isEmpty);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {
@@ -291,8 +290,7 @@ class AttendanceScreen extends StatelessWidget {
                             builder: (context, value, widget) {
                               return RichText(
                                   text: TextSpan(
-                                      text:
-                                          '${context.resources.isLocalEn ? getCurrentDateByformat('EEEE') : getArabicDayName(getCurrentDateByformat('EEEE'))}, ',
+                                      text: '',
                                       style: context.textFontWeight600
                                           .onColor(
                                               context.resources.color.textColor)
@@ -311,10 +309,13 @@ class AttendanceScreen extends StatelessWidget {
                                           .onFontFamily(
                                               fontFamily: fontFamilyEN)
                                           .onFontSize(
-                                              context.resources.fontSize.dp17),
+                                              context.resources.fontSize.dp20),
                                     )
                                   ]));
                             }),
+                        SizedBox(
+                          height: resources.dimen.dp5,
+                        ),
                         Text(
                           '${context.string.location}: ${department['name'] ?? ''}',
                           textAlign: TextAlign.center,
