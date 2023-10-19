@@ -39,3 +39,37 @@ class WarningReasonsModel extends BaseModel {
 extension SourceModelExtension on WarningReasonsModel {
   NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
 }
+
+class WarningListModel extends BaseModel {
+  String? name;
+  String? id;
+
+  WarningListModel();
+
+  factory WarningListModel.fromJson(Map<String, dynamic> json) {
+    var warningListModel = WarningListModel();
+    warningListModel.name = json['VALUE'];
+    warningListModel.id = json['ID'];
+    return warningListModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+      };
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+      ];
+
+  @override
+  BaseEntity toEntity<T>() {
+    return LeaveTypeEntity();
+  }
+}
+
+extension WarningListExtension on WarningListModel {
+  NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+}

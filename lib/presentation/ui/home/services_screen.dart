@@ -16,6 +16,7 @@ import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
 import 'package:malomati/presentation/ui/services/payslips_screen.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
+import 'package:malomati/presentation/ui/services/view_warnings_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../domain/entities/favorite_entity.dart';
@@ -88,6 +89,10 @@ class ServicesScreen extends StatelessWidget {
       case 18:
         {
           screenWidget = MyTeamScreen();
+        }
+      case 19:
+        {
+          screenWidget = ViewWarningsScreen();
         }
       case 31:
         {

@@ -81,15 +81,16 @@ class ConstantConfig {
         name: 'Delete Leave',
         nameAR: 'حذف الإجازة',
         iconPath: DrawableAssets.icDeleteLeave),
-    // FavoriteEntity(
-    //     id: 16,
-    //     name: 'Warning',
-    //     nameAR: 'إنذار',
-    //     iconPath: DrawableAssets.icWarning),
-    // FavoriteEntity(
-    //     name: 'View Warning',
-    //     nameAR: 'عرض إنذارات',
-    //     iconPath: DrawableAssets.icWarning),
+    FavoriteEntity(
+        id: 16,
+        name: 'Warning',
+        nameAR: 'التحذير',
+        iconPath: DrawableAssets.icWarning),
+    FavoriteEntity(
+        id: 19,
+        name: 'View Warning',
+        nameAR: 'مشاهدة التحذير',
+        iconPath: DrawableAssets.icWarning),
     FavoriteEntity(
         id: 17,
         name: 'Holidays',

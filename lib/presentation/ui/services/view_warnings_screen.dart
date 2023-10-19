@@ -4,10 +4,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/domain/entities/finance_approval_entity.dart';
+import 'package:malomati/domain/entities/warning_list_entity.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_warnings.dart';
@@ -19,7 +18,7 @@ import '../widgets/back_app_bar.dart';
 
 class ViewWarningsScreen extends StatelessWidget {
   final _serviceBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<FinanceApprovalEntity>> _notificationList =
+  final ValueNotifier<List<WarningListEntity>> _warningsList =
       ValueNotifier([]);
 
   String userName = '';
@@ -40,33 +39,22 @@ class ViewWarningsScreen extends StatelessWidget {
             'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
       });
     });
+    _warningsList.value = [
+      WarningListEntity(),
+      WarningListEntity(),
+      WarningListEntity()
+    ];
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
         body: BlocProvider<ServicesBloc>(
           create: (context) => _serviceBloc,
-          child: BlocListener<HomeBloc, HomeState>(
+          child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnLoading) {
                 Dialogs.loader(context);
               } else if (state is OnNotificationsListSuccess) {
-                noNotificationText = context.string.noHrRequests;
-                String deletedNotification = context.userDB
-                    .get(deletedNotificationsKey, defaultValue: '');
-                final list = state.notificationsList
-                    .where((element) => !deletedNotification
-                        .contains('${element.nOTIFICATIONID}'))
-                    .toList();
-                _notificationList.value = list;
-                final notificationIds = (state.notificationsList
-                        .map((e) => '${e.nOTIFICATIONID}')
-                        .toList())
-                    .join('#');
-                context.userDB.put(openedNotificationsKey, notificationIds);
-                ConstantConfig.notificationsCount = 0;
-                ConstantConfig.isApprovalCountChange.value =
-                    !(ConstantConfig.isApprovalCountChange.value);
-              } else if (state is OnApiError) {
+              } else if (state is OnServicesError) {
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -85,7 +73,7 @@ class ViewWarningsScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: ValueListenableBuilder(
-                        valueListenable: _notificationList,
+                        valueListenable: _warningsList,
                         builder: (context, notificationList, child) {
                           return (notificationList.isEmpty)
                               ? noNotificationText.isNotEmpty
@@ -104,7 +92,7 @@ class ViewWarningsScreen extends StatelessWidget {
                                   controller: ScrollController(),
                                   scrollDirection: Axis.vertical,
                                   itemBuilder: (context, index) => ItemWarnings(
-                                        data: notificationList[index],
+                                        data: WarningListEntity(),
                                       ),
                                   separatorBuilder: (context, index) =>
                                       SizedBox(
