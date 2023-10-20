@@ -6,13 +6,13 @@ const departments = [
     "Dept_Name_AR": "دائرة التنمية الاقتصادية",
     "PAYROLL_ID": 104
   },
-  {
-    "IsSuccess": true,
-    "Message": "Success",
-    "Dept_Name_EN": "Department of Falaj Al Mualla",
-    "Dept_Name_AR": "بلدية فلج المعلا",
-    "PAYROLL_ID": 102
-  },
+  // {
+  //   "IsSuccess": true,
+  //   "Message": "Success",
+  //   "Dept_Name_EN": "Department of Falaj Al Mualla",
+  //   "Dept_Name_AR": "بلدية فلج المعلا",
+  //   "PAYROLL_ID": 102
+  // },
   {
     "IsSuccess": true,
     "Message": "Success",
