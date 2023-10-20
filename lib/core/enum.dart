@@ -1,6 +1,7 @@
 enum ThemeEnum {
   red('red'),
-  blue('blue');
+  blue('blue'),
+  peach('peach');
 
   final String name;
   const ThemeEnum(this.name);

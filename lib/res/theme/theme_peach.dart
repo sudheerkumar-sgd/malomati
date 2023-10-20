@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
 
-class ThemeRed extends ApplicationTheme {
-  static ThemeRed? _instance;
+class ThemePeach extends ApplicationTheme {
+  static ThemePeach? _instance;
 
-  static ThemeRed get instance {
-    _instance ??= ThemeRed._init();
+  static ThemePeach get instance {
+    _instance ??= ThemePeach._init();
     return _instance!;
   }
 
@@ -16,46 +16,46 @@ class ThemeRed extends ApplicationTheme {
     _fontFamily = fontFamily;
   }
 
-  ThemeRed._init();
+  ThemePeach._init();
 
   @override
   ThemeData? get theme => ThemeData(
-        primarySwatch: const MaterialColor(4293667135, {
-          50: Color(0xfffde8ea),
-          100: Color(0xfffbd0d5),
-          200: Color(0xfff7a1ab),
-          300: Color(0xfff37281),
-          400: Color(0xffee4457),
-          500: Color(0xffea152d),
-          600: Color(0xffbb1124),
-          700: Color(0xff8d0c1b),
-          800: Color(0xff5e0812),
-          900: Color(0xff2f0409)
+        primarySwatch: const MaterialColor(4287047461, {
+          50: Color.fromRGBO(135, 39, 38, 0.1),
+          100: Color.fromRGBO(135, 39, 38, 0.2),
+          200: Color.fromRGBO(135, 39, 38, 0.3),
+          300: Color.fromRGBO(135, 39, 38, 0.4),
+          400: Color.fromRGBO(135, 39, 38, 0.5),
+          500: Color.fromRGBO(135, 39, 38, 0.6),
+          600: Color.fromRGBO(135, 39, 38, 0.7),
+          700: Color.fromRGBO(135, 39, 38, 0.8),
+          800: Color.fromRGBO(135, 39, 38, 0.9),
+          900: Color.fromRGBO(135, 39, 38, 1.0),
         }),
         brightness: Brightness.light,
-        primaryColor: const Color(0xffec293f),
-        primaryColorLight: const Color(0xfffbd0d5),
-        primaryColorDark: const Color(0xff8d0c1b),
+        primaryColor: const Color(0xff872725),
+        primaryColorLight: const Color(0xfff4d8d7),
+        primaryColorDark: const Color(0xff782321),
         canvasColor: const Color(0xfffafafa),
         scaffoldBackgroundColor: const Color(0xfffafafa),
         cardColor: const Color(0xffffffff),
-        dividerColor: const Color(0x1f233057),
-        highlightColor: const Color(0x00000000),
-        splashColor: const Color(0x00000000),
+        dividerColor: const Color(0x1f000000),
+        highlightColor: const Color(0x66bcbcbc),
+        splashColor: const Color(0x66c8c8c8),
         unselectedWidgetColor: const Color(0x8a000000),
         disabledColor: const Color(0x61000000),
-        secondaryHeaderColor: const Color(0xfffde8ea),
+        secondaryHeaderColor: const Color(0xfffaebeb),
         dialogBackgroundColor: const Color(0xffffffff),
-        indicatorColor: const Color(0xffea152d),
+        indicatorColor: const Color(0xff872725),
         hintColor: const Color(0x8a000000),
         fontFamily: _fontFamily ?? 'Inter',
         progressIndicatorTheme:
-            const ProgressIndicatorThemeData(color: Color(0xffea152d)),
+            const ProgressIndicatorThemeData(color: Color(0xff872725)),
         datePickerTheme:
-            const DatePickerThemeData(headerBackgroundColor: Color(0xffea152d)),
+            const DatePickerThemeData(headerBackgroundColor: Color(0xff872725)),
         scrollbarTheme: const ScrollbarThemeData().copyWith(
           radius: const Radius.circular(10.0),
-          thumbColor: MaterialStateProperty.all(const Color(0xffEC294E)),
+          thumbColor: MaterialStateProperty.all(const Color(0xff872725)),
         ),
         buttonTheme: const ButtonThemeData(
           textTheme: ButtonTextTheme.normal,
@@ -73,15 +73,15 @@ class ThemeRed extends ApplicationTheme {
           alignedDropdown: false,
           buttonColor: Color(0xffe0e0e0),
           disabledColor: Color(0x61000000),
-          highlightColor: Color(0x00000000),
-          splashColor: Color(0x00000000),
+          highlightColor: Color(0x29000000),
+          splashColor: Color(0x1f000000),
           focusColor: Color(0x1f000000),
           hoverColor: Color(0x0a000000),
           colorScheme: ColorScheme(
-            primary: Color(0xffec293f),
-            secondary: Color(0xffea152d),
+            primary: Color(0xff872725),
+            secondary: Color(0xffc83a37),
             surface: Color(0xffffffff),
-            background: Color(0xfff7a1ab),
+            background: Color(0xffe9b0af),
             error: Color(0xffd32f2f),
             onPrimary: Color(0xffffffff),
             onSecondary: Color(0xffffffff),

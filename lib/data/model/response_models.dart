@@ -1,20 +1,25 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 
 import '../../domain/entities/leave_type_entity.dart';
+import '../../domain/entities/warning_list_entity.dart';
 
 class WarningReasonsModel extends BaseModel {
-  String? name;
+  String? nameAR;
+  String? nameEN;
   String? id;
 
   WarningReasonsModel();
 
   factory WarningReasonsModel.fromJson(Map<String, dynamic> json) {
     var warningReasonsModel = WarningReasonsModel();
-    warningReasonsModel.name = json['VALUE'];
+    warningReasonsModel.nameAR = json['VALUE_AR'];
+    warningReasonsModel.nameEN = json['VALUE_AR'];
     warningReasonsModel.id = json['ID'];
     return warningReasonsModel;
   }
@@ -27,7 +32,8 @@ class WarningReasonsModel extends BaseModel {
   @override
   List<Object?> get props => [
         id,
-        name,
+        nameAR,
+        nameEN,
       ];
 
   @override
@@ -37,31 +43,34 @@ class WarningReasonsModel extends BaseModel {
 }
 
 extension SourceModelExtension on WarningReasonsModel {
-  NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+  NameIdEntity toNameIdEntity() =>
+      NameIdEntity(id, isLocalEn ? nameEN : nameAR);
 }
 
 class WarningListModel extends BaseModel {
-  String? name;
-  String? id;
+  String? date;
+  String? receivedBy;
+  String? reason;
+  String? note;
 
   WarningListModel();
 
   factory WarningListModel.fromJson(Map<String, dynamic> json) {
     var warningListModel = WarningListModel();
-    warningListModel.name = json['VALUE'];
-    warningListModel.id = json['ID'];
+    warningListModel.date = json['LAST_UPDATE_DATE'];
+    warningListModel.reason = json['REASON'];
+    warningListModel.receivedBy = json['RECEIVED_BY'];
+    warningListModel.note = json['NOTE'];
     return warningListModel;
   }
 
   @override
-  Map<String, dynamic> toJson() => {
-        "ID": id,
-      };
+  Map<String, dynamic> toJson() => {};
 
   @override
   List<Object?> get props => [
-        id,
-        name,
+        date,
+        reason,
       ];
 
   @override
@@ -71,5 +80,12 @@ class WarningListModel extends BaseModel {
 }
 
 extension WarningListExtension on WarningListModel {
-  NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+  WarningListEntity toWarningListEntity() {
+    WarningListEntity warningListEntity = WarningListEntity();
+    warningListEntity.date = date;
+    warningListEntity.receivedBy = receivedBy;
+    warningListEntity.reason = reason;
+    warningListEntity.note = note;
+    return warningListEntity;
+  }
 }

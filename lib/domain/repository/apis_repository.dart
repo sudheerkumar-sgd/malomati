@@ -19,6 +19,7 @@ import '../entities/leave_submit_response_entity.dart';
 import '../entities/login_entity.dart';
 import '../entities/requests_count_entity.dart';
 import '../entities/thankyou_entity.dart';
+import '../entities/warning_list_entity.dart';
 import '../entities/weather_entity.dart';
 
 abstract class ApisRepository {
@@ -77,5 +78,7 @@ abstract class ApisRepository {
   Future<Either<Failure, Map<String, dynamic>>> submitJobEmailRequest(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, WeatherEntity>> getWeatherReport(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<WarningListEntity>>> getWarningList(
       {required Map<String, dynamic> requestParams});
 }

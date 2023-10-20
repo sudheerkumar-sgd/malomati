@@ -59,8 +59,7 @@ class ServicesAppBarWidget extends StatelessWidget {
                                 height: context.resources.dimen.dp15,
                                 decoration: ShapeDecoration(
                                     shape: const CircleBorder(),
-                                    color:
-                                        context.resources.color.bgGradientEnd),
+                                    color: context.resources.color.viewBgColor),
                                 child: Text(
                                     '${ConstantConfig.notificationsCount}',
                                     textAlign: TextAlign.center,

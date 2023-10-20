@@ -278,6 +278,7 @@ flutter:
      - assets/images/ic_delete_leave.svg
      - assets/images/ic_warning.svg
      - assets/images/ic_view_warning.svg
+     - assets/images/ic_close_peach.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -124,11 +124,32 @@ const thankYouReasonList = [
 ];
 
 const warningReasons = [
-  {"ID": "99585", "VALUE": "لمخالفات الدوام الرسمي"},
-  {"ID": "99586", "VALUE": "لإرتكابكم مخالفة إدارية"},
-  {"ID": "173682", "VALUE": "مغادرة مكان العمل بدون إذن أو عذر"},
-  {"ID": "173680", "VALUE": "التأخير عن العمل"},
-  {"ID": "173681", "VALUE": "التواجد دون مبرر مقبول في غير المكان المخصص للعمل"}
+  {
+    "ID": "99585",
+    "VALUE_AR": "لمخالفات الدوام الرسمي",
+    'VALUE_EN': "For official working hours violations"
+  },
+  {
+    "ID": "99586",
+    "VALUE_AR": "لإرتكابكم مخالفة إدارية",
+    'VALUE_EN': "Because you have committed an administrative violation"
+  },
+  {
+    "ID": "173682",
+    "VALUE_AR": "مغادرة مكان العمل بدون إذن أو عذر",
+    'VALUE_EN': "Leaving the workplace without permission or excuse"
+  },
+  {
+    "ID": "173680",
+    "VALUE_AR": "التأخير عن العمل",
+    'VALUE_EN': "You are Late to office"
+  },
+  {
+    "ID": "173681",
+    "VALUE_AR": "التواجد دون مبرر مقبول في غير المكان المخصص للعمل",
+    'VALUE_EN':
+        "Being present without acceptable justification in a place other than one designated for work"
+  },
 ];
 
 const aboutMalomati =

@@ -97,6 +97,12 @@ class OnJobEmailSubmitSuccess extends ServicesState {
   OnJobEmailSubmitSuccess({required this.jobEmailSubmitSuccess});
 }
 
+class OnWarningListSuccess extends ServicesState {
+  final List<WarningListEntity> warningList;
+
+  OnWarningListSuccess({required this.warningList});
+}
+
 class OnFCMSuccess extends ServicesState {
   final String response;
 

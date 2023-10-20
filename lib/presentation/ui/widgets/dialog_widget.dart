@@ -22,9 +22,7 @@ class DialogWidget extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: ImageWidget(
-                      path: context.resources.isRedTheme
-                          ? DrawableAssets.icClose
-                          : DrawableAssets.icCloseBlue,
+                      path: DrawableAssets.getCloseDrawable(context),
                       padding: EdgeInsets.only(
                           left: context.resources.dimen.dp20,
                           top: context.resources.dimen.dp10,

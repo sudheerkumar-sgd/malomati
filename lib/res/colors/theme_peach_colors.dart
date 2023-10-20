@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'base_clors.dart';
 
-class ThemeRedColors implements BaseColors {
+class ThemePeachColors implements BaseColors {
   final Map<int, Color> _primary = const {
-    50: Color.fromRGBO(193, 33, 63, 0.1),
-    100: Color.fromRGBO(193, 33, 63, 0.2),
-    200: Color.fromRGBO(193, 33, 63, 0.3),
-    300: Color.fromRGBO(193, 33, 63, 0.4),
-    400: Color.fromRGBO(193, 33, 63, 0.5),
-    500: Color.fromRGBO(193, 33, 63, 0.6),
-    600: Color.fromRGBO(193, 33, 63, 0.7),
-    700: Color.fromRGBO(193, 33, 63, 0.8),
-    800: Color.fromRGBO(193, 33, 63, 0.9),
-    900: Color.fromRGBO(193, 33, 63, 1.0),
+    50: Color.fromRGBO(135, 39, 38, 0.1),
+    100: Color.fromRGBO(135, 39, 38, 0.2),
+    200: Color.fromRGBO(135, 39, 38, 0.3),
+    300: Color.fromRGBO(135, 39, 38, 0.4),
+    400: Color.fromRGBO(135, 39, 38, 0.5),
+    500: Color.fromRGBO(135, 39, 38, 0.6),
+    600: Color.fromRGBO(135, 39, 38, 0.7),
+    700: Color.fromRGBO(135, 39, 38, 0.8),
+    800: Color.fromRGBO(135, 39, 38, 0.9),
+    900: Color.fromRGBO(135, 39, 38, 1.0),
   };
 
   @override
@@ -23,10 +23,10 @@ class ThemeRedColors implements BaseColors {
   MaterialColor get colorPrimary => MaterialColor(0xff1686ce, _primary);
 
   @override
-  Color get colorPrimaryText => const Color(0xffC1213F);
+  Color get colorPrimaryText => const Color(0xff49ABFF);
 
   @override
-  Color get colorSecondaryText => const Color(0xffEC294E);
+  Color get colorSecondaryText => const Color(0xff3593FF);
 
   @override
   Color get colorWhite => const Color(0xffffffff);
@@ -44,10 +44,10 @@ class ThemeRedColors implements BaseColors {
   Color get bgColor => Colors.white;
 
   @override
-  Color get bgGradientEnd => const Color(0xFFC1213F);
+  Color get bgGradientEnd => const Color(0xFFBE8F7C);
 
   @override
-  Color get bgGradientStart => const Color(0xFFEC294E);
+  Color get bgGradientStart => const Color(0xFFC9A292);
 
   @override
   Color get textColor => const Color(0xFF233057);
@@ -56,16 +56,16 @@ class ThemeRedColors implements BaseColors {
   Color get textColorLight => const Color(0xFF979797);
 
   @override
-  Color get viewBgColor => const Color(0xFFDD143A);
+  Color get viewBgColor => const Color(0xFF872635);
 
   @override
-  Color get viewBgColorLight => const Color(0xFFEC294E);
+  Color get viewBgColorLight => const Color(0xFF9E2639);
 
   @override
   Color get colorEDECEC => const Color(0xffEDECEC);
 
   @override
-  Color get bottomSheetIconSelected => bgGradientEnd;
+  Color get bottomSheetIconSelected => const Color(0xff872635);
 
   @override
   Color get bottomSheetIconUnSelected => const Color(0xffD8D8D8);
@@ -74,7 +74,7 @@ class ThemeRedColors implements BaseColors {
   Color get appScaffoldBg => const Color(0xffF5F5F5);
 
   @override
-  Color get colorF5C3C3 => const Color(0xffF5C3C3);
+  Color get colorF5C3C3 => const Color(0xffC9A292);
 
   @override
   Color get textColor212B4B => const Color(0xff212B4B);

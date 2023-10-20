@@ -14,6 +14,7 @@ import '../../../domain/entities/finance_approval_entity.dart';
 import '../../../domain/entities/hrapproval_details_entity.dart';
 import '../../../domain/entities/leave_details_entity.dart';
 import '../../../domain/entities/leave_submit_response_entity.dart';
+import '../../../domain/entities/warning_list_entity.dart';
 
 part 'services_state.dart';
 
@@ -191,6 +192,14 @@ class ServicesBloc extends Cubit<ServicesState> {
         requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnJobEmailSubmitSuccess(jobEmailSubmitSuccess: r)));
+  }
+
+  Future<void> getWarningList(
+      {required Map<String, dynamic> requestParams}) async {
+    final result =
+        await servicesUseCase.getWarningList(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnWarningListSuccess(warningList: r)));
   }
 
   String _getErrorMessage(Failure failure) {

@@ -5,9 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/warning_list_entity.dart';
-import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_warnings.dart';
 
@@ -29,21 +27,13 @@ class ViewWarningsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var noNotificationText = '';
     var resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
+    userName =
+        'TAREK.MAGDY'; // context.userDB.get(userNameKey, defaultValue: '');
     Timer(const Duration(milliseconds: 50), () {
-      _serviceBloc.getHrApprovalDetails(requestParams: {
+      _serviceBloc.getWarningList(requestParams: {
         'USER_NAME': userName,
-        'START_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
-        'END_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
       });
     });
-    _warningsList.value = [
-      WarningListEntity(),
-      WarningListEntity(),
-      WarningListEntity()
-    ];
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -51,9 +41,9 @@ class ViewWarningsScreen extends StatelessWidget {
           create: (context) => _serviceBloc,
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
-              if (state is OnLoading) {
-                Dialogs.loader(context);
-              } else if (state is OnNotificationsListSuccess) {
+              if (state is OnWarningListSuccess) {
+                noNotificationText = context.string.noHrRequests;
+                _warningsList.value = state.warningList;
               } else if (state is OnServicesError) {
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
@@ -74,8 +64,8 @@ class ViewWarningsScreen extends StatelessWidget {
                   Expanded(
                     child: ValueListenableBuilder(
                         valueListenable: _warningsList,
-                        builder: (context, notificationList, child) {
-                          return (notificationList.isEmpty)
+                        builder: (context, warningsList, child) {
+                          return (warningsList.isEmpty)
                               ? noNotificationText.isNotEmpty
                                   ? Center(
                                       child: Text(
@@ -92,13 +82,13 @@ class ViewWarningsScreen extends StatelessWidget {
                                   controller: ScrollController(),
                                   scrollDirection: Axis.vertical,
                                   itemBuilder: (context, index) => ItemWarnings(
-                                        data: WarningListEntity(),
+                                        data: warningsList[index],
                                       ),
                                   separatorBuilder: (context, index) =>
                                       SizedBox(
                                         height: resources.dimen.dp20,
                                       ),
-                                  itemCount: notificationList.length);
+                                  itemCount: warningsList.length);
                         }),
                   ),
                 ],

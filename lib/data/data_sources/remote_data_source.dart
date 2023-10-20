@@ -18,6 +18,7 @@ import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/payslip_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
 import 'package:malomati/data/model/requsts_count_model.dart';
+import 'package:malomati/data/model/response_models.dart';
 import 'package:malomati/data/model/thankyou_model.dart';
 import 'package:malomati/data/model/weather_model.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
@@ -28,6 +29,7 @@ import 'package:malomati/domain/entities/leave_details_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
+import 'package:malomati/domain/entities/warning_list_entity.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
@@ -90,6 +92,8 @@ abstract class RemoteDataSource {
   Future<Map<String, dynamic>> submitJobEmailRequest(
       {required Map<String, dynamic> requestParams});
   Future<WeatherEntity> getWeatherReport(
+      {required Map<String, dynamic> requestParams});
+  Future<List<WarningListEntity>> getWarningList(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -763,6 +767,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } catch (e) {
       if (e is ServerException) rethrow;
       throw e.toString();
+    }
+  }
+
+  @override
+  Future<List<WarningListEntity>> getWarningList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        warningListApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data?['WarningList'] != null) {
+        var warningListJson = response.data['WarningList'] as List;
+        var warningsList = warningListJson
+            .map((warningJson) =>
+                WarningListModel.fromJson(warningJson).toWarningListEntity())
+            .toList();
+        return warningsList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
     }
   }
 }

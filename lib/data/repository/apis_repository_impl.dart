@@ -32,6 +32,7 @@ import '../../core/network/network_info.dart';
 import '../../domain/entities/attendance_list_entity.dart';
 import '../../domain/entities/hrapproval_details_entity.dart';
 import '../../domain/entities/leave_details_entity.dart';
+import '../../domain/entities/warning_list_entity.dart';
 import '../../domain/repository/apis_repository.dart';
 import '../../injection_container.dart';
 
@@ -558,6 +559,25 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse =
             await dataSource.getWeatherReport(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<WarningListEntity>>> getWarningList(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getWarningList(requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

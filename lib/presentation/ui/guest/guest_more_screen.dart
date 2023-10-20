@@ -11,7 +11,6 @@ import 'package:page_transition/page_transition.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../../../res/resources.dart';
-import '../widgets/animated_toggle.dart';
 import '../widgets/image_widget.dart';
 
 enum LanguageType { en, ar }
@@ -183,22 +182,96 @@ class GuestMoreScreen extends StatelessWidget {
                               .onFontSize(context.resources.fontSize.dp15),
                         ),
                         const Spacer(),
-                        SizedBox(
-                          width: 114,
-                          child: AnimatedToggle(
-                            width: 114,
-                            height: 17,
-                            values: [context.string.red, context.string.blue],
-                            selectedPossition: resources.isRedTheme ? 0 : 1,
-                            onToggleCallback: (value) {
-                              resources.setTheme();
-                            },
-                            buttonColor: resources.color.viewBgColor,
-                            backgroundColor:
-                                resources.color.bottomSheetIconUnSelected,
-                            textColor: const Color(0xFFFFFFFF),
-                          ),
-                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                resources.setTheme(ThemeEnum.red);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(2.0),
+                                decoration: BackgroundBoxDecoration(
+                                        boxColor: resources.getTheme() ==
+                                                ThemeEnum.red
+                                            ? resources.color.viewBgColor
+                                            : const Color(0x00000000),
+                                        radious: 0)
+                                    .roundedCornerBox,
+                                child: Container(
+                                  clipBehavior: Clip.none,
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BackgroundBoxDecoration(
+                                          boxColor: const Color(0xFFDD143A),
+                                          boarderColor: resources.getTheme() ==
+                                                  ThemeEnum.red
+                                              ? resources.color.colorWhite
+                                              : const Color(0x00000000),
+                                          boarderWidth: 2,
+                                          radious: 0)
+                                      .roundedCornerBox,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                resources.setTheme(ThemeEnum.blue);
+                              },
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(left: resources.dimen.dp10),
+                                padding: const EdgeInsets.all(2.0),
+                                color: resources.getTheme() == ThemeEnum.blue
+                                    ? resources.color.viewBgColor
+                                    : const Color(0x00000000),
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BackgroundBoxDecoration(
+                                          boxColor: const Color(0xff0E4CB7),
+                                          boarderColor: resources.getTheme() ==
+                                                  ThemeEnum.blue
+                                              ? resources.color.colorWhite
+                                              : const Color(0x00000000),
+                                          boarderWidth: 2,
+                                          radious: 0)
+                                      .roundedCornerBox,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                resources.setTheme(ThemeEnum.peach);
+                              },
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(left: resources.dimen.dp10),
+                                padding: const EdgeInsets.all(2.0),
+                                decoration: BackgroundBoxDecoration(
+                                        boxColor: resources.getTheme() ==
+                                                ThemeEnum.peach
+                                            ? resources.color.viewBgColor
+                                            : const Color(0x00000000),
+                                        radious: 0)
+                                    .roundedCornerBox,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BackgroundBoxDecoration(
+                                          boxColor: const Color(0xFF872635),
+                                          boarderColor: resources.getTheme() ==
+                                                  ThemeEnum.peach
+                                              ? resources.color.colorWhite
+                                              : const Color(0x00000000),
+                                          boarderWidth: 2,
+                                          radious: 0)
+                                      .roundedCornerBox,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ]),
                       SizedBox(
                         height: context.resources.dimen.dp15,

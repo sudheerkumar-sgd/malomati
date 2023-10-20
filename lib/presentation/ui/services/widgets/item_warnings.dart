@@ -3,6 +3,7 @@ import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
+import '../../../../core/common/common_utils.dart';
 import '../../../../domain/entities/warning_list_entity.dart';
 
 class ItemWarnings extends StatelessWidget {
@@ -24,10 +25,11 @@ class ItemWarnings extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              text: data.date ?? '27/06/2023, 10:41AM',
+              text: getDateByformat('dd/MM/yyyy, hh:mm a',
+                  getDateTimeByString('yyyy-MM-ddThh:mm:ss', data.date ?? '')),
               style: context.textFontWeight400
                   .onFontFamily(fontFamily: fontFamilyEN)
-                  .onColor(resources.color.bgGradientStart)
+                  .onColor(Theme.of(context).colorScheme.error)
                   .onFontSize(resources.fontSize.dp12),
             ),
             textAlign: TextAlign.start,
@@ -44,7 +46,7 @@ class ItemWarnings extends StatelessWidget {
                   .onFontSize(resources.fontSize.dp12),
               children: [
                 TextSpan(
-                  text: data.receivedBy ?? 'Shaikha Bintook',
+                  text: (data.receivedBy ?? '').replaceAll('.', ' '),
                   style: context.textFontWeight400
                       .onFontFamily(
                           fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR)
@@ -65,7 +67,7 @@ class ItemWarnings extends StatelessWidget {
                     .onFontSize(resources.fontSize.dp12),
                 children: [
                   TextSpan(
-                    text: data.reason ?? 'Late Punch-In',
+                    text: data.reason ?? '',
                     style: context.textFontWeight400
                         .onFontFamily(
                             fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR)
@@ -73,26 +75,28 @@ class ItemWarnings extends StatelessWidget {
                   ),
                 ]),
           ),
-          SizedBox(
-            height: context.resources.dimen.dp5,
-          ),
-          RichText(
-            text: TextSpan(
-              text: '${context.string.note}: ',
-              style: context.textFontWeight600
-                  .onFontFamily(
-                      fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR)
-                  .onFontSize(resources.fontSize.dp12),
-              children: [
-                TextSpan(
-                  text: data.notes ?? 'Punched late on 23rd Sept 2023',
-                  style: context.textFontWeight400
-                      .onFontFamily(fontFamily: fontFamilyEN)
-                      .onFontSize(resources.fontSize.dp12),
-                ),
-              ],
+          if ((data.note ?? '').isNotEmpty) ...[
+            SizedBox(
+              height: context.resources.dimen.dp5,
             ),
-          ),
+            RichText(
+              text: TextSpan(
+                text: '${context.string.note}: ',
+                style: context.textFontWeight600
+                    .onFontFamily(
+                        fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR)
+                    .onFontSize(resources.fontSize.dp12),
+                children: [
+                  TextSpan(
+                    text: data.note ?? '',
+                    style: context.textFontWeight400
+                        .onFontFamily(fontFamily: fontFamilyEN)
+                        .onFontSize(resources.fontSize.dp12),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );

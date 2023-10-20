@@ -84,7 +84,7 @@ extension SourceModelExtension on ApiRequestModel {
       };
   Map<String, dynamic> toWarningRequest() => {
         "USER_NAME": uSERNAME,
-        "CREATOR_USER_NAME": uSERNAME,
+        "CREATOR_USER_NAME": cREATORUSERNAME,
         "REASON": rEASON,
         "APPROVAL_COMMENT": nOTE,
         "START_DATE": "",

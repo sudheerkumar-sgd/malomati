@@ -63,7 +63,7 @@ class CreateWarningScreen extends StatelessWidget {
   _submitThankyouRequest() {
     final warningRequestModel = ApiRequestModel();
     warningRequestModel.uSERNAME = employee?.uSERNAME ?? '';
-    warningRequestModel.uSERNAME = employee?.uSERNAME ?? '';
+    warningRequestModel.cREATORUSERNAME = userName;
     warningRequestModel.rEASON = reason?.name ?? '';
     warningRequestModel.nOTE = _noteController.text;
     _servicesBloc.submitServicesRequest(

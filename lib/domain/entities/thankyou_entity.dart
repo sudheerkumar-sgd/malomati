@@ -12,6 +12,7 @@ class ThankyouEntity extends BaseEntity {
   String? uSERNAME;
   String? reasonEn;
   String? reasonAr;
+  String? note;
   String? creationDate;
 
   ThankyouEntity();

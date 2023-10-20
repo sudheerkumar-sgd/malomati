@@ -6,10 +6,10 @@ class WarningListEntity extends BaseEntity {
   String? date;
   String? receivedBy;
   String? reason;
-  String? notes;
+  String? note;
 
   WarningListEntity();
 
   @override
-  List<Object?> get props => [date, receivedBy, reason, notes];
+  List<Object?> get props => [date, receivedBy, reason, note];
 }

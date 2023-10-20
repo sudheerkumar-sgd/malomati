@@ -15,6 +15,7 @@ import '../../core/error/failures.dart';
 import '../entities/hrapproval_details_entity.dart';
 import '../entities/leave_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
+import '../entities/warning_list_entity.dart';
 
 class ServicesUseCase extends BaseUseCase {
   final ApisRepository apisRepository;
@@ -122,5 +123,10 @@ class ServicesUseCase extends BaseUseCase {
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.submitJobEmailRequest(
         requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<WarningListEntity>>> getWarningList(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getWarningList(requestParams: requestParams);
   }
 }

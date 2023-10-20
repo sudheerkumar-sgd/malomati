@@ -358,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                                                           .fontSize
                                                           .dp11)
                                                       .onColor(context.resources
-                                                          .color.viewBgColor)
+                                                          .iconBgColor)
                                                       .onFontFamily(
                                                           fontFamily:
                                                               fontFamilyEN),

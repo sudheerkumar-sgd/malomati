@@ -19,7 +19,7 @@ class FavoriteEntity extends BaseEntity {
     id = json['id'] ?? _getIdByName(name ?? '');
   }
   @override
-  List<Object?> get props => [id, name, nameAR, iconPath];
+  List<Object?> get props => [id];
 
   int _getIdByName(String name) {
     var favoraiteEntity = ConstantConfig()

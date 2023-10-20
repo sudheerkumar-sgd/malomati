@@ -1,3 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:malomati/core/extensions/build_context_extension.dart';
+
+import '../../core/enum.dart';
+
 class DrawableAssets {
   static const drawablePath = 'assets/images/';
   //No event banners
@@ -117,4 +122,13 @@ class DrawableAssets {
   static const icDeleteLeave = '${drawablePath}ic_delete_leave.svg';
   static const icWarning = '${drawablePath}ic_warning.svg';
   static const icViewWarning = '${drawablePath}ic_view_warning.svg';
+  static const icClosePeach = '${drawablePath}ic_close_peach.svg';
+
+  static String getCloseDrawable(BuildContext context) {
+    return context.resources.getTheme() == ThemeEnum.red
+        ? DrawableAssets.icClose
+        : context.resources.getTheme() == ThemeEnum.blue
+            ? DrawableAssets.icCloseBlue
+            : DrawableAssets.icClosePeach;
+  }
 }

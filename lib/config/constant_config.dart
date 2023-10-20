@@ -90,7 +90,7 @@ class ConstantConfig {
         id: 19,
         name: 'View Warning',
         nameAR: 'مشاهدة التحذير',
-        iconPath: DrawableAssets.icWarning),
+        iconPath: DrawableAssets.icViewWarning),
     FavoriteEntity(
         id: 17,
         name: 'Holidays',
@@ -121,7 +121,7 @@ class ConstantConfig {
     FavoriteEntity(
         id: 16,
         name: 'Warning',
-        nameAR: 'إنذار',
+        nameAR: 'التحذير',
         iconPath: DrawableAssets.icWarning),
   ];
   final guestServices = [

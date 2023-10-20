@@ -66,3 +66,5 @@ const String submitJobEmailApiUrl =
     'UAQSGD_MOB_EmailNotificationRequest/sendEmailNotification';
 const String submitWarningsApiUrl =
     'UAQSGD_MOB_ERP_CreateWarningRequest/CreateWarnings/Warnings';
+const String warningListApiUrl =
+    'UAQSGD_MOB_ERP_CreateWarningRequest/CreateWarnings/WarningList';

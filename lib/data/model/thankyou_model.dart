@@ -14,6 +14,7 @@ class ThankyouModel extends BaseModel {
   String? uSERNAME;
   String? reasonEn;
   String? reasonAr;
+  String? note;
   String? creationDate;
 
   ThankyouModel();
@@ -26,6 +27,7 @@ class ThankyouModel extends BaseModel {
     thankyouModel.departmentNameEn = json['CONC_DEPARTMENT_NAME_EN'];
     thankyouModel.reasonEn = json['REASON_EN'];
     thankyouModel.reasonAr = json['REASON_AR'];
+    thankyouModel.note = json['NOTE'];
     thankyouModel.uSERNAME = json['USER_NAME'];
     thankyouModel.creationDate = json['CREATION_DATE'];
     thankyouModel.pERSONID = '${json['PERSON_ID']}';
@@ -57,6 +59,7 @@ extension SourceModelExtension on ThankyouModel {
     thankyouEntity.departmentNameEn = departmentNameEn;
     thankyouEntity.reasonAr = reasonAr;
     thankyouEntity.reasonEn = reasonEn;
+    thankyouEntity.note = note;
     thankyouEntity.creationDate = creationDate;
     return thankyouEntity;
   }

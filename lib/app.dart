@@ -4,8 +4,6 @@ import 'package:malomati/config/app_routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:malomati/core/common/common.dart';
 import 'core/enum.dart';
-import 'res/theme/theme_blue.dart';
-import 'res/theme/theme_red.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,10 +17,7 @@ class App extends StatelessWidget {
     var value = context.userDB;
     final Locale locale =
         Locale(value.get(appLocalKey, defaultValue: LocalEnum.en.name));
-    var theme = (value.get(appThemeKey, defaultValue: ThemeEnum.red.name) ==
-            ThemeEnum.blue.name)
-        ? ThemeBlue.instance
-        : ThemeRed.instance;
+    var theme = context.resources.theme;
     theme.fontFamily(
         locale.languageCode == LocalEnum.ar.name ? fontFamilyAR : fontFamilyEN);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

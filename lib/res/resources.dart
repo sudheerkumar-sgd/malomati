@@ -3,14 +3,16 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/colors/base_clors.dart';
-import 'package:malomati/res/colors/theme_blue_colors.dart';
+import 'package:malomati/res/colors/theme_peach_colors.dart';
 import 'package:malomati/res/dimentions/font_dimension.dart';
 import 'package:malomati/res/dimentions/font_dimension_big.dart';
 import 'package:malomati/res/dimentions/font_dimension_small.dart';
 import 'package:malomati/res/theme/app_theme.dart';
 import 'package:malomati/res/theme/theme_blue.dart';
+import 'package:malomati/res/theme/theme_peach.dart';
 import 'package:malomati/res/theme/theme_red.dart';
 import '../core/enum.dart';
+import 'colors/theme_blue_colors.dart';
 import 'colors/theme_red_colors.dart';
 import 'dimentions/app_dimension.dart';
 import 'dimentions/font_dimension_default.dart';
@@ -23,26 +25,30 @@ class Resources {
     final theme = Hive.box(appSettingsDb).get(appThemeKey);
     return (theme == ThemeEnum.blue.name)
         ? ThemeBlueColors()
-        : ThemeRedColors();
+        : (theme == ThemeEnum.peach.name)
+            ? ThemePeachColors()
+            : ThemeRedColors();
   }
 
   ApplicationTheme get theme {
     final theme = Hive.box(appSettingsDb).get(appThemeKey);
-    return (theme == ThemeEnum.blue.name)
-        ? ThemeBlue.instance
-        : ThemeRed.instance;
+    return (theme == ThemeEnum.peach.name)
+        ? ThemePeach.instance
+        : (theme == ThemeEnum.blue.name)
+            ? ThemeBlue.instance
+            : ThemeRed.instance;
   }
 
   AppDimension get dimen {
     return AppDimension();
   }
 
-  void setTheme() {
-    final theme =
-        context.settingDB.get(appThemeKey, defaultValue: ThemeEnum.red.name);
-    (theme == ThemeEnum.blue.name)
-        ? context.settingDB.put(appThemeKey, ThemeEnum.red.name)
-        : context.settingDB.put(appThemeKey, ThemeEnum.blue.name);
+  void setTheme(ThemeEnum theme) {
+    (theme == ThemeEnum.peach)
+        ? context.settingDB.put(appThemeKey, ThemeEnum.peach.name)
+        : (theme == ThemeEnum.blue)
+            ? context.settingDB.put(appThemeKey, ThemeEnum.blue.name)
+            : context.settingDB.put(appThemeKey, ThemeEnum.red.name);
     Phoenix.rebirth(context);
   }
 
@@ -67,15 +73,13 @@ class Resources {
     return (local == LocalEnum.en.name);
   }
 
-  bool get isRedTheme => getTheme();
-
-  bool getTheme() {
+  ThemeEnum getTheme() {
     final theme =
         context.settingDB.get(appThemeKey, defaultValue: ThemeEnum.red.name);
-    return (theme == ThemeEnum.red.name);
+    return ThemeEnum.values.byName(theme);
   }
 
-  Color get iconBgColor => color.bgGradientStart;
+  Color get iconBgColor => color.viewBgColorLight;
 
   FontSizeEnum? currentFontSize;
 

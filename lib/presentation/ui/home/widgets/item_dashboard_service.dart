@@ -80,9 +80,7 @@ class ItemDashboardService extends StatelessWidget {
                         padding: EdgeInsets.only(
                             right: context.resources.dimen.dp20),
                         child: ImageWidget(
-                          path: context.resources.isRedTheme
-                              ? DrawableAssets.icClose
-                              : DrawableAssets.icCloseBlue,
+                          path: DrawableAssets.getCloseDrawable(context),
                         ).loadImage),
                   ),
                 )),
@@ -100,7 +98,7 @@ class ItemDashboardService extends StatelessWidget {
                             padding: const EdgeInsets.all(5),
                             decoration: ShapeDecoration(
                                 shape: const CircleBorder(),
-                                color: context.resources.color.bgGradientEnd),
+                                color: context.resources.color.viewBgColor),
                             child: Text('$count',
                                 textAlign: TextAlign.center,
                                 style: context.textFontWeight600

@@ -64,6 +64,24 @@ class ItemThankyouReceived extends StatelessWidget {
         SizedBox(
           height: context.resources.dimen.dp5,
         ),
+        if ((data.note ?? '').isNotEmpty) ...[
+          RichText(
+            text: TextSpan(
+                text: '${context.string.note}: ',
+                style: context.textFontWeight400.onFontFamily(
+                    fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+                children: [
+                  TextSpan(
+                    text: data.note ?? '',
+                    style: context.textFontWeight600.onFontFamily(
+                        fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR),
+                  ),
+                ]),
+          ),
+          SizedBox(
+            height: context.resources.dimen.dp5,
+          ),
+        ],
         RichText(
           text: TextSpan(
             text: '${context.string.date}: ',
