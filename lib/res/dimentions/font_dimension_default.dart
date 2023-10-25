@@ -26,6 +26,10 @@ class FontDimensionsDefault extends FontDimensions {
   @override
   double get dp17 => 17 * fontScale;
   @override
+  double get dp18 => 18 * fontScale;
+  @override
+  double get dp19 => 19 * fontScale;
+  @override
   double get dp20 => 20 * fontScale;
   @override
   double get dp25 => 25 * fontScale;

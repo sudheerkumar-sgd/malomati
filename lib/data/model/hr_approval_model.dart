@@ -15,6 +15,7 @@ class HrApprovalModel extends BaseModel {
   String? bEGINDATECHAR;
   String? dUEDATECHAR;
   String? nOTIFICATIONTYPE;
+  String? cOMMENTS;
   String? fNAME;
   String? fVALUE;
   List<AttachmentEntity>? attachments;
@@ -24,20 +25,21 @@ class HrApprovalModel extends BaseModel {
   factory HrApprovalModel.fromJson(Map<String, dynamic> json) {
     var hrApprovalModel = HrApprovalModel();
     hrApprovalModel.nOTIFICATIONID = '${json['NOTIFICATION_ID']}';
-    hrApprovalModel.fROMUSER = '${json['FROM_USER']}';
-    hrApprovalModel.sUBJECTAR = '${json['SUBJECT_AR']}';
-    hrApprovalModel.sUBJECTUS = '${json['SUBJECT_US']}';
-    hrApprovalModel.bEGINDATE = '${json['BEGIN_DATE']}';
-    hrApprovalModel.bEGINDATECHAR = '${json['BEGIN_DATE_CHAR']}';
-    hrApprovalModel.dUEDATECHAR = '${json['DUE_DATE_CHAR']}';
-    hrApprovalModel.nOTIFICATIONTYPE = '${json['NOTIFICATION_TYPE']}';
+    hrApprovalModel.fROMUSER = '${json['FROM_USER'] ?? ''}';
+    hrApprovalModel.sUBJECTAR = '${json['SUBJECT_AR'] ?? ''}';
+    hrApprovalModel.sUBJECTUS = '${json['SUBJECT_US'] ?? ''}';
+    hrApprovalModel.bEGINDATE = '${json['BEGIN_DATE'] ?? ''}';
+    hrApprovalModel.bEGINDATECHAR = '${json['BEGIN_DATE_CHAR'] ?? ''}';
+    hrApprovalModel.dUEDATECHAR = '${json['DUE_DATE_CHAR'] ?? ''}';
+    hrApprovalModel.nOTIFICATIONTYPE = '${json['NOTIFICATION_TYPE'] ?? ''}';
+    hrApprovalModel.cOMMENTS = json['COMMENTS'] ?? '';
     return hrApprovalModel;
   }
 
   factory HrApprovalModel.fromJsonDetails(Map<String, dynamic> json) {
     var hrApprovalModel = HrApprovalModel();
-    hrApprovalModel.fNAME = '${json['F_NAME']}';
-    hrApprovalModel.fVALUE = '${json['F_VALUE']}';
+    hrApprovalModel.fNAME = '${json['F_NAME'] ?? ''}';
+    hrApprovalModel.fVALUE = '${json['F_VALUE'] ?? ''}';
     if (json['AttachmentList'] != null) {
       final attachmentsListJson = json['AttachmentList'] as List;
       final attachmentsList = attachmentsListJson
@@ -74,6 +76,7 @@ extension SourceModelExtension on HrApprovalModel {
     hrApprovalEntity.bEGINDATECHAR = bEGINDATECHAR;
     hrApprovalEntity.dUEDATECHAR = dUEDATECHAR;
     hrApprovalEntity.nOTIFICATIONTYPE = nOTIFICATIONTYPE;
+    hrApprovalEntity.cOMMENTS = cOMMENTS;
     return hrApprovalEntity;
   }
 

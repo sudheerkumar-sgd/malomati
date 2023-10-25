@@ -762,13 +762,22 @@ class LeavesScreen extends StatelessWidget {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp100,
-                              isEnabled: true,
-                              maxLines: 8,
-                              labelText: context.string.comments,
-                              textController: _commentController,
-                            ),
+                            ValueListenableBuilder(
+                                valueListenable: _isleaveTypeChanged,
+                                builder: (context, value, child) {
+                                  return RightIconTextWidget(
+                                    height: resources.dimen.dp100,
+                                    isEnabled: true,
+                                    maxLines: 8,
+                                    labelText: context.string.comments,
+                                    textController: _commentController,
+                                    errorMessage:
+                                        (selectedLeaveType?.id == 68 ||
+                                                leaveType.id == '68')
+                                            ? context.string.comments
+                                            : '',
+                                  );
+                                }),
                           ],
                         ),
                       ),

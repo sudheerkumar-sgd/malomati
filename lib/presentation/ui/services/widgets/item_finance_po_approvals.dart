@@ -18,6 +18,7 @@ import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
 import '../../utils/dialogs.dart';
 import '../../widgets/alert_dialog_widget.dart';
+import 'dialog_request_answer_more_info.dart';
 
 const APPROVE = 'APPROVE';
 const REJECT = 'REJECT';
@@ -413,93 +414,47 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            // InkWell(
-                            //   onTap: () {
-                            //     _submitHrApproval(
-                            //         context,
-                            //         '${approvalDetails.nOTIFICATIONID ?? ''}',
-                            //         APPROVE);
-                            //   },
-                            //   child: Container(
-                            //     width: double.infinity,
-                            //     padding: EdgeInsets.symmetric(
-                            //         horizontal: context.resources.dimen.dp15,
-                            //         vertical: context.resources.dimen.dp5),
-                            //     decoration: BackgroundBoxDecoration(
-                            //             boxColor: context
-                            //                 .resources.color.colorGreen26B757,
-                            //             radious: context.resources.dimen.dp15)
-                            //         .roundedCornerBox,
-                            //     child: Text(
-                            //       context.string.approve,
-                            //       style: context.textFontWeight400
-                            //           .onFontSize(
-                            //               context.resources.fontSize.dp15)
-                            //           .onColor(
-                            //               context.resources.color.colorWhite)
-                            //           .copyWith(height: 1),
-                            //       textAlign: TextAlign.center,
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: resources.dimen.dp10,
-                            // ),
+                            InkWell(
+                              onTap: () {
+                                _submitHrApproval(
+                                    context,
+                                    '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                    APPROVE);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: context.resources.dimen.dp15,
+                                    vertical: context.resources.dimen.dp5),
+                                decoration: BackgroundBoxDecoration(
+                                        boxColor: context
+                                            .resources.color.colorGreen26B757,
+                                        radious: context.resources.dimen.dp15)
+                                    .roundedCornerBox,
+                                child: Text(
+                                  context.string.approve,
+                                  style: context.textFontWeight400
+                                      .onFontSize(
+                                          context.resources.fontSize.dp15)
+                                      .onColor(
+                                          context.resources.color.colorWhite)
+                                      .copyWith(height: 1),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp10,
+                            ),
                             Row(
                               children: [
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      _submitHrApproval(
-                                          context,
-                                          '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                          APPROVE);
                                       // _submitHrApproval(
                                       //     context,
                                       //     '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                      //     REJECT);
-                                    },
-                                    child: Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              context.resources.dimen.dp15,
-                                          vertical:
-                                              context.resources.dimen.dp5),
-                                      decoration: BackgroundBoxDecoration(
-                                              boxColor: context.resources.color
-                                                  .colorGreen26B757,
-                                              radious:
-                                                  context.resources.dimen.dp15)
-                                          .roundedCornerBox,
-                                      child: Text(
-                                        context.string.approve,
-                                        style: context.textFontWeight400
-                                            .onFontSize(
-                                                context.resources.fontSize.dp15)
-                                            .onColor(context
-                                                .resources.color.colorWhite)
-                                            .copyWith(height: 1),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: resources.dimen.dp10,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      // showDialog(
-                                      //         context: context,
-                                      //         builder: (context) =>
-                                      //             DialogRequestAnswerMoreInfo())
-                                      //     .then((value) => _submitHrApproval(
-                                      //         context,
-                                      //         '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                      //         REQUESTMOREINFO,
-                                      //         comments: value));
+                                      //     APPROVE);
                                       _submitHrApproval(
                                           context,
                                           '${approvalDetails.nOTIFICATIONID ?? ''}',
@@ -519,6 +474,56 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                           .roundedCornerBox,
                                       child: Text(
                                         context.string.reject,
+                                        style: context.textFontWeight400
+                                            .onFontSize(
+                                                context.resources.fontSize.dp15)
+                                            .onColor(context
+                                                .resources.color.colorWhite)
+                                            .copyWith(height: 1),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: resources.dimen.dp10,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  DialogRequestAnswerMoreInfo())
+                                          .then((value) {
+                                        if (value != null) {
+                                          _submitHrApproval(
+                                              context,
+                                              '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                              REQUESTMOREINFO,
+                                              comments: value);
+                                        }
+                                      });
+                                      // _submitHrApproval(
+                                      //     context,
+                                      //     '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                      //     REJECT);
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              context.resources.dimen.dp15,
+                                          vertical:
+                                              context.resources.dimen.dp5),
+                                      decoration: BackgroundBoxDecoration(
+                                              boxColor: context.resources.color
+                                                  .colorOrangeEB920C,
+                                              radious:
+                                                  context.resources.dimen.dp15)
+                                          .roundedCornerBox,
+                                      child: Text(
+                                        context.string.returntext,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)

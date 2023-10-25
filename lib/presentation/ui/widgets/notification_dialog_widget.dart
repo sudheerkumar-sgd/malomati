@@ -62,7 +62,7 @@ class NotificationDialogWidget extends StatelessWidget {
                     horizontal: context.resources.dimen.dp40,
                     vertical: context.resources.dimen.dp7),
                 decoration: BackgroundBoxDecoration(
-                        boxColor: context.resources.color.bgGradientStart,
+                        boxColor: context.resources.color.viewBgColorLight,
                         radious: context.resources.dimen.dp15)
                     .roundedCornerBox,
                 child: Text(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
+import 'package:malomati/presentation/ui/requests/requests_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
 
 import '../home/home_navigator_screen.dart';
@@ -39,6 +40,13 @@ class NavbarNotifier extends ChangeNotifier {
         if (ServicesNavigatorScreen.servicesKey.currentState != null &&
             ServicesNavigatorScreen.servicesKey.currentState!.canPop()) {
           ServicesNavigatorScreen.servicesKey.currentState!.pop();
+          exitingApp = false;
+        }
+        break;
+      case 2:
+        if (RequestsNavigatorScreen.requestKey.currentState != null &&
+            RequestsNavigatorScreen.requestKey.currentState!.canPop()) {
+          RequestsNavigatorScreen.requestKey.currentState!.pop();
           exitingApp = false;
         }
         break;

@@ -52,6 +52,7 @@ class DeleteLeaveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
+    var noLeavesText = '';
     userName = context.userDB.get(userNameKey, defaultValue: '');
     _servicesBloc.getLeaves(
         apiUrl: deleteleavesApiUrl, requestParams: {'USER_NAME': userName});
@@ -66,6 +67,7 @@ class DeleteLeaveScreen extends StatelessWidget {
                 isLoading = true;
                 Dialogs.loader(context);
               } else if (state is OnLeavesSuccess) {
+                noLeavesText = context.string.noDeleteLeaves;
                 _leaves.value = state.leavesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 if (isLoading) {
@@ -117,56 +119,74 @@ class DeleteLeaveScreen extends StatelessWidget {
               margin: EdgeInsets.symmetric(
                   vertical: context.resources.dimen.dp20,
                   horizontal: context.resources.dimen.dp25),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: context.resources.dimen.dp10,
-                  ),
-                  BackAppBarWidget(title: context.string.deleteLeave),
-                  SizedBox(
-                    height: context.resources.dimen.dp20,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ValueListenableBuilder(
-                                valueListenable: _leaves,
-                                builder: (context, leaves, widget) {
-                                  return DropDownWidget<LeaveDetailsEntity>(
-                                    list: leaves,
-                                    labelText: context.string.leaves,
-                                    errorMessage: context.string.leaves,
-                                    callback: onLeavesSelected,
-                                  );
-                                }),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            RightIconTextWidget(
-                              isEnabled: true,
-                              maxLines: 5,
-                              height: resources.dimen.dp27,
-                              labelText: context.string.reason,
-                              textController: _commentsController,
-                            ),
-                          ],
+              child: ValueListenableBuilder(
+                  valueListenable: _leaves,
+                  builder: (context, leaves, child) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: context.resources.dimen.dp10,
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: resources.dimen.dp20,
-                  ),
-                  SubmitCancelWidget(callBack: onSubmit),
-                  SizedBox(
-                    height: resources.dimen.dp10,
-                  ),
-                ],
-              ),
+                        BackAppBarWidget(title: context.string.deleteLeave),
+                        SizedBox(
+                          height: context.resources.dimen.dp20,
+                        ),
+                        if (leaves.isNotEmpty) ...[
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    DropDownWidget<LeaveDetailsEntity>(
+                                      list: leaves,
+                                      labelText: context.string.leaves,
+                                      errorMessage: context.string.leaves,
+                                      callback: onLeavesSelected,
+                                    ),
+                                    SizedBox(
+                                      height: resources.dimen.dp20,
+                                    ),
+                                    RightIconTextWidget(
+                                      isEnabled: true,
+                                      maxLines: 5,
+                                      height: resources.dimen.dp27,
+                                      labelText: context.string.reason,
+                                      textController: _commentsController,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: resources.dimen.dp20,
+                          ),
+                          SubmitCancelWidget(callBack: onSubmit),
+                          SizedBox(
+                            height: resources.dimen.dp10,
+                          ),
+                        ],
+                        if (leaves.isEmpty) ...[
+                          Expanded(
+                            child: noLeavesText.isNotEmpty
+                                ? Center(
+                                    child: Text(
+                                      noLeavesText,
+                                      style: context.textFontWeight600,
+                                    ),
+                                  )
+                                : const Center(
+                                    child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator())),
+                          )
+                        ]
+                      ],
+                    );
+                  }),
             ),
           ),
         ),

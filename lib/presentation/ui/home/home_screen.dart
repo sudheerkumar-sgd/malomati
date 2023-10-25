@@ -532,7 +532,7 @@ class HomeScreen extends StatelessWidget {
                                                         .onFontSize(context
                                                             .resources
                                                             .fontSize
-                                                            .dp12),
+                                                            .dp14),
                                                   ),
                                                 ],
                                               ),
@@ -659,7 +659,7 @@ class HomeScreen extends StatelessWidget {
                                                         .onFontSize(context
                                                             .resources
                                                             .fontSize
-                                                            .dp12),
+                                                            .dp14),
                                                   ),
                                                 ],
                                               ),
@@ -819,7 +819,7 @@ class HomeScreen extends StatelessWidget {
                                   Text(
                                     context.string.myFavoriteService,
                                     style: context.textFontWeight700.onFontSize(
-                                        context.resources.fontSize.dp17),
+                                        context.resources.fontSize.dp18),
                                   ),
                                   ValueListenableBuilder(
                                       valueListenable: _isFavoriteEdited,

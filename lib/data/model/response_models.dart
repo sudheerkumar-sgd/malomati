@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
@@ -50,7 +49,8 @@ extension SourceModelExtension on WarningReasonsModel {
 class WarningListModel extends BaseModel {
   String? date;
   String? receivedBy;
-  String? reason;
+  String? reasonEN;
+  String? reasonAR;
   String? note;
 
   WarningListModel();
@@ -58,7 +58,8 @@ class WarningListModel extends BaseModel {
   factory WarningListModel.fromJson(Map<String, dynamic> json) {
     var warningListModel = WarningListModel();
     warningListModel.date = json['LAST_UPDATE_DATE'];
-    warningListModel.reason = json['REASON'];
+    warningListModel.reasonEN = json['REASON_EN'];
+    warningListModel.reasonAR = json['REASON_AR'];
     warningListModel.receivedBy = json['RECEIVED_BY'];
     warningListModel.note = json['NOTE'];
     return warningListModel;
@@ -70,7 +71,8 @@ class WarningListModel extends BaseModel {
   @override
   List<Object?> get props => [
         date,
-        reason,
+        reasonEN,
+        reasonAR,
       ];
 
   @override
@@ -84,7 +86,8 @@ extension WarningListExtension on WarningListModel {
     WarningListEntity warningListEntity = WarningListEntity();
     warningListEntity.date = date;
     warningListEntity.receivedBy = receivedBy;
-    warningListEntity.reason = reason;
+    warningListEntity.reasonEN = reasonEN;
+    warningListEntity.reasonAR = reasonAR;
     warningListEntity.note = note;
     return warningListEntity;
   }

@@ -319,13 +319,14 @@ class MoreScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              width: resources.dimen.dp10,
+                            ),
                             InkWell(
                               onTap: () {
                                 resources.setTheme(ThemeEnum.blue);
                               },
                               child: Container(
-                                margin:
-                                    EdgeInsets.only(left: resources.dimen.dp10),
                                 padding: const EdgeInsets.all(2.0),
                                 color: resources.getTheme() == ThemeEnum.blue
                                     ? resources.color.viewBgColor
@@ -345,13 +346,14 @@ class MoreScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                              width: resources.dimen.dp10,
+                            ),
                             InkWell(
                               onTap: () {
                                 resources.setTheme(ThemeEnum.peach);
                               },
                               child: Container(
-                                margin:
-                                    EdgeInsets.only(left: resources.dimen.dp10),
                                 padding: const EdgeInsets.all(2.0),
                                 decoration: BackgroundBoxDecoration(
                                         boxColor: resources.getTheme() ==

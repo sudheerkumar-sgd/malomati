@@ -39,14 +39,15 @@ class ShowAttachmentDialog extends StatelessWidget {
             ),
           ),
           if (data.fileData != null && isImage(data.fileName ?? '')) ...{
-            Padding(
+            Expanded(
+                child: Padding(
               padding: EdgeInsets.only(
                   left: context.resources.dimen.dp20,
                   top: context.resources.dimen.dp10,
                   right: context.resources.dimen.dp20,
                   bottom: context.resources.dimen.dp20),
               child: Image.memory(data.fileData!),
-            )
+            ))
           },
           if (data.fileData != null && isPdf(data.fileName ?? '')) ...{
             Expanded(

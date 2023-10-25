@@ -27,8 +27,7 @@ class ViewWarningsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var noNotificationText = '';
     var resources = context.resources;
-    userName =
-        'TAREK.MAGDY'; // context.userDB.get(userNameKey, defaultValue: '');
+    userName = context.userDB.get(userNameKey, defaultValue: '');
     Timer(const Duration(milliseconds: 50), () {
       _serviceBloc.getWarningList(requestParams: {
         'USER_NAME': userName,
@@ -42,7 +41,7 @@ class ViewWarningsScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnWarningListSuccess) {
-                noNotificationText = context.string.noHrRequests;
+                noNotificationText = context.string.noWarnings;
                 _warningsList.value = state.warningList;
               } else if (state is OnServicesError) {
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
@@ -57,7 +56,7 @@ class ViewWarningsScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.warnings),
+                  BackAppBarWidget(title: context.string.viewWarnings),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),

@@ -132,12 +132,12 @@ class AttendanceScreen extends StatelessWidget {
       return [
         {
           'name': context.string.regularIn,
-          'id': '6',
+          'id': '5',
           'isEnabled': canUserRegularIn()
         },
         {
           'name': context.string.shortLeaveIn,
-          'id': '4',
+          'id': '3',
           'isEnabled': canPunchInEnable()
         },
         {
@@ -155,7 +155,7 @@ class AttendanceScreen extends StatelessWidget {
       return [
         {
           'name': context.string.regularOut,
-          'id': '7',
+          'id': '6',
           'isEnabled': canPunchOutEnable()
         },
         {

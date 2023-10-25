@@ -530,6 +530,8 @@
     "test":"Test",
     "preview":"Preview",
     "send":"Send",
+    "noDeleteLeaves":"There is no leaves to delete",
+    "noWarnings":"There is no warnings",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

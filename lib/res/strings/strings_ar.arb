@@ -49,7 +49,7 @@
     "financeApprovals": "موافقات المالية",
     "deleteLeave": "حذف الإجازة",
     "warnings": "إنذار",
-    "viewWarnings": "عرض إنذارات",
+    "viewWarnings": "عرض الإنذارات",
     "edit": "تعديل",
     "done": "حفظ",
     "selfService": "الخدمة الذاتية",
@@ -247,5 +247,7 @@
     "test":"اختبر",
     "preview":"معاينة",
     "send":"إرسال",
-    "imageorVideoURL":"صورة او رابط الفيديو"
+    "imageorVideoURL":"صورة او رابط الفيديو",
+    "noDeleteLeaves":"لا يوجد اجازت مؤكدة للحذف",
+    "noWarnings":"لا يوجد تحذيرات"
 }

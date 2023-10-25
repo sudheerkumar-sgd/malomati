@@ -14,6 +14,7 @@ class HrApprovalEntity extends BaseEntity {
   String? nOTIFICATIONTYPE;
   String? fNAME;
   String? fVALUE;
+  String? cOMMENTS;
   List<AttachmentEntity>? attachments;
 
   HrApprovalEntity();

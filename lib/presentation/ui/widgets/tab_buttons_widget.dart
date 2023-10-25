@@ -60,7 +60,7 @@ class TabsButtonsWidget extends StatelessWidget {
                                 horizontal: context.resources.dimen.dp10),
                             decoration: BackgroundBoxDecoration(
                               boxColor: value == index
-                                  ? context.resources.color.bgGradientStart
+                                  ? context.resources.color.viewBgColorLight
                                   : context.resources.color.colorF5C3C3,
                               radious: context.resources.dimen.dp10,
                             ).roundedCornerBox,

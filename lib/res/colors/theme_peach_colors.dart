@@ -44,10 +44,10 @@ class ThemePeachColors implements BaseColors {
   Color get bgColor => Colors.white;
 
   @override
-  Color get bgGradientEnd => const Color(0xFFBE8F7C);
+  Color get bgGradientEnd => const Color(0xFFC9896F);
 
   @override
-  Color get bgGradientStart => const Color(0xFFC9A292);
+  Color get bgGradientStart => const Color(0xFFD4A08A);
 
   @override
   Color get textColor => const Color(0xFF233057);

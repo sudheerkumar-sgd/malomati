@@ -84,12 +84,12 @@ class ConstantConfig {
     FavoriteEntity(
         id: 16,
         name: 'Warning',
-        nameAR: 'التحذير',
+        nameAR: 'إنذار',
         iconPath: DrawableAssets.icWarning),
     FavoriteEntity(
         id: 19,
         name: 'View Warning',
-        nameAR: 'مشاهدة التحذير',
+        nameAR: 'عرض الإنذارات',
         iconPath: DrawableAssets.icViewWarning),
     FavoriteEntity(
         id: 17,

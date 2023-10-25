@@ -225,7 +225,7 @@ class TourScreen extends StatelessWidget {
                                             ),
                                             decoration: BackgroundBoxDecoration(
                                               boxColor: context.resources.color
-                                                  .bgGradientStart,
+                                                  .viewBgColorLight,
                                               radious:
                                                   context.resources.dimen.dp10,
                                             ).roundedCornerBox,
@@ -269,7 +269,7 @@ class TourScreen extends StatelessWidget {
                                             ),
                                             decoration: BackgroundBoxDecoration(
                                               boxColor: context.resources.color
-                                                  .bgGradientStart,
+                                                  .viewBgColorLight,
                                               radious:
                                                   context.resources.dimen.dp10,
                                             ).roundedCornerBox,
@@ -298,7 +298,7 @@ class TourScreen extends StatelessWidget {
                                           ),
                                           decoration: BackgroundBoxDecoration(
                                             boxColor: context.resources.color
-                                                .bgGradientStart,
+                                                .viewBgColorLight,
                                             radious:
                                                 context.resources.dimen.dp10,
                                           ).roundedCornerBox,

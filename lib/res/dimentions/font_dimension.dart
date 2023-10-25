@@ -10,6 +10,8 @@ abstract class FontDimensions {
   double get dp15 => 15;
   double get dp16 => 16;
   double get dp17 => 17;
+  double get dp18 => 18;
+  double get dp19 => 19;
   double get dp20 => 20;
   double get dp25 => 25;
   double get dp27 => 27;

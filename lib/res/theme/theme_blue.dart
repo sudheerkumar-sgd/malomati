@@ -39,7 +39,7 @@ class ThemeBlue extends ApplicationTheme {
         scaffoldBackgroundColor: const Color(0xfffafafa),
         cardColor: const Color(0xffffffff),
         dividerColor: const Color(0x1f000000),
-        highlightColor: const Color(0x66bcbcbc),
+        highlightColor: const Color(0x00000000),
         splashColor: const Color(0x00000000),
         unselectedWidgetColor: const Color(0x8a000000),
         disabledColor: const Color(0x61000000),

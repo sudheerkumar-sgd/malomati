@@ -7,6 +7,7 @@ import '../../../../res/drawables/background_box_decoration.dart';
 class DialogRequestAnswerMoreInfo extends StatelessWidget {
   final TextEditingController controller = TextEditingController();
   DialogRequestAnswerMoreInfo({super.key});
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,27 +42,33 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
             SizedBox(
               height: resources.dimen.dp5,
             ),
-            TextInputWidget(
-              maxLines: 3,
-              textController: controller,
-              textStyle:
-                  context.textFontWeight400.onFontSize(resources.fontSize.dp12),
-              fillColor: resources.color.colorLightBg,
-              boarderRadius: resources.dimen.dp8,
-            ).textInputFiled,
+            Form(
+              key: _formKey,
+              child: TextInputWidget(
+                      maxLines: 3,
+                      textController: controller,
+                      textStyle: context.textFontWeight400
+                          .onFontSize(resources.fontSize.dp12),
+                      fillColor: resources.color.colorLightBg,
+                      boarderRadius: resources.dimen.dp8,
+                      errorMessage: context.string.question)
+                  .textInputFiled,
+            ),
             SizedBox(
               height: context.resources.dimen.dp10,
             ),
             InkWell(
               onTap: () {
-                Navigator.pop(context, controller.text);
+                if (_formKey.currentState!.validate()) {
+                  Navigator.pop(context, controller.text);
+                }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: context.resources.dimen.dp40,
                     vertical: context.resources.dimen.dp7),
                 decoration: BackgroundBoxDecoration(
-                        boxColor: context.resources.color.bgGradientStart,
+                        boxColor: context.resources.color.viewBgColorLight,
                         radious: context.resources.dimen.dp15)
                     .roundedCornerBox,
                 child: Text(

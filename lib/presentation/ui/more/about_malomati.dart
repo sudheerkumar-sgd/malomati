@@ -81,7 +81,7 @@ class AboutMalomati extends StatelessWidget {
                                 .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
-                            text: '4th ',
+                            text: '23rd ',
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),

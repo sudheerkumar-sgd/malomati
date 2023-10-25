@@ -133,7 +133,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                                   strokeWidth: resources.dimen.dp15,
                                   color: percentage == 1
                                       ? resources.color.colorGreen26B757
-                                      : resources.color.bgGradientStart),
+                                      : resources.color.viewBgColorLight),
                               size: const Size(200, 200))
                           : const SizedBox(
                               width: 200,
@@ -167,7 +167,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
               style: context.textFontWeight400
                   .onFontSize(resources.fontSize.dp15)
                   .onFontFamily(fontFamily: fontFamilyEN)
-                  .onColor(resources.color.bgGradientStart),
+                  .onColor(resources.color.viewBgColorLight),
             ),
             SizedBox(
               height: resources.dimen.dp30,

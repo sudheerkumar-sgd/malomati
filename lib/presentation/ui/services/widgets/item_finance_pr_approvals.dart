@@ -18,6 +18,7 @@ import '../../../bloc/services/services_bloc.dart';
 import '../../utils/dialogs.dart';
 import '../../widgets/alert_dialog_widget.dart';
 import '../finance_approvals_screen.dart';
+import 'dialog_request_answer_more_info.dart';
 
 const APPROVE = 'APPROVE';
 const REJECT = 'REJECT';
@@ -345,51 +346,51 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            // InkWell(
-                            //   onTap: () {
-                            //     _submitHrApproval(
-                            //         context,
-                            //         '${approvalDetails.nOTIFICATIONID ?? ''}',
-                            //         APPROVE);
-                            //   },
-                            //   child: Container(
-                            //     width: double.infinity,
-                            //     padding: EdgeInsets.symmetric(
-                            //         horizontal: context.resources.dimen.dp15,
-                            //         vertical: context.resources.dimen.dp5),
-                            //     decoration: BackgroundBoxDecoration(
-                            //             boxColor: context
-                            //                 .resources.color.colorGreen26B757,
-                            //             radious: context.resources.dimen.dp15)
-                            //         .roundedCornerBox,
-                            //     child: Text(
-                            //       context.string.approve,
-                            //       style: context.textFontWeight400
-                            //           .onFontSize(
-                            //               context.resources.fontSize.dp15)
-                            //           .onColor(
-                            //               context.resources.color.colorWhite)
-                            //           .copyWith(height: 1),
-                            //       textAlign: TextAlign.center,
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(
-                            //   height: resources.dimen.dp10,
-                            // ),
+                            InkWell(
+                              onTap: () {
+                                _submitHrApproval(
+                                    context,
+                                    '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                    APPROVE);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: context.resources.dimen.dp15,
+                                    vertical: context.resources.dimen.dp5),
+                                decoration: BackgroundBoxDecoration(
+                                        boxColor: context
+                                            .resources.color.colorGreen26B757,
+                                        radious: context.resources.dimen.dp15)
+                                    .roundedCornerBox,
+                                child: Text(
+                                  context.string.approve,
+                                  style: context.textFontWeight400
+                                      .onFontSize(
+                                          context.resources.fontSize.dp15)
+                                      .onColor(
+                                          context.resources.color.colorWhite)
+                                      .copyWith(height: 1),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp10,
+                            ),
                             Row(
                               children: [
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      // _submitHrApproval(
-                                      //     context,
-                                      //     '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                      //     REJECT);
                                       _submitHrApproval(
                                           context,
                                           '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                          APPROVE);
+                                          REJECT);
+                                      // _submitHrApproval(
+                                      //     context,
+                                      //     '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                      //     APPROVE);
                                     },
                                     child: Container(
                                       width: double.infinity,
@@ -399,13 +400,12 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                           vertical:
                                               context.resources.dimen.dp5),
                                       decoration: BackgroundBoxDecoration(
-                                              boxColor: context.resources.color
-                                                  .colorGreen26B757,
+                                              boxColor: const Color(0xFFDD143A),
                                               radious:
                                                   context.resources.dimen.dp15)
                                           .roundedCornerBox,
                                       child: Text(
-                                        context.string.approve,
+                                        context.string.reject,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)
@@ -423,19 +423,19 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      _submitHrApproval(
-                                          context,
-                                          '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                          REJECT);
-                                      // showDialog(
-                                      //         context: context,
-                                      //         builder: (context) =>
-                                      //             DialogRequestAnswerMoreInfo())
-                                      //     .then((value) => _submitHrApproval(
-                                      //         context,
-                                      //         '${approvalDetails.nOTIFICATIONID ?? ''}',
-                                      //         REQUESTMOREINFO,
-                                      //         comments: value));
+                                      // _submitHrApproval(
+                                      //     context,
+                                      //     '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                      //     REJECT);
+                                      showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  DialogRequestAnswerMoreInfo())
+                                          .then((value) => _submitHrApproval(
+                                              context,
+                                              '${approvalDetails.nOTIFICATIONID ?? ''}',
+                                              REQUESTMOREINFO,
+                                              comments: value));
                                     },
                                     child: Container(
                                       width: double.infinity,
@@ -445,12 +445,13 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                           vertical:
                                               context.resources.dimen.dp5),
                                       decoration: BackgroundBoxDecoration(
-                                              boxColor: const Color(0xFFDD143A),
+                                              boxColor: context.resources.color
+                                                  .colorOrangeEB920C,
                                               radious:
                                                   context.resources.dimen.dp15)
                                           .roundedCornerBox,
                                       child: Text(
-                                        context.string.reject,
+                                        context.string.returntext,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)

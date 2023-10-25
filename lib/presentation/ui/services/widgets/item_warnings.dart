@@ -67,7 +67,7 @@ class ItemWarnings extends StatelessWidget {
                     .onFontSize(resources.fontSize.dp12),
                 children: [
                   TextSpan(
-                    text: data.reason ?? '',
+                    text: isLocalEn ? data.reasonEN ?? '' : data.reasonAR ?? '',
                     style: context.textFontWeight400
                         .onFontFamily(
                             fontFamily: isLocalEn ? fontFamilyEN : fontFamilyAR)

@@ -103,7 +103,9 @@ class Dialogs {
                           padding: EdgeInsets.all(context.resources.dimen.dp5),
                           margin: EdgeInsets.only(
                               right: context.resources.dimen.dp10),
-                          child: ImageWidget(path: DrawableAssets.icClose)
+                          child: ImageWidget(
+                                  path:
+                                      DrawableAssets.getCloseDrawable(context))
                               .loadImage),
                     )),
                 widget,

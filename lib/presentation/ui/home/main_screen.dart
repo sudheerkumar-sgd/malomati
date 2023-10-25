@@ -10,7 +10,6 @@ import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
-import 'package:malomati/presentation/ui/home/requests_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
@@ -19,6 +18,7 @@ import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../../../config/constant_config.dart';
 import '../../../core/constants/data_constants.dart';
+import '../requests/requests_navigator_screen.dart';
 import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return const ServicesNavigatorScreen();
       case 2:
-        return RequestsScreen();
+        return const RequestsNavigatorScreen();
       case 3:
         return const MoreNavigatorScreen();
       default:
