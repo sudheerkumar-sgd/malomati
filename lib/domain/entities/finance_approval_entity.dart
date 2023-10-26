@@ -1,5 +1,6 @@
 class FinanceApprovalEntity {
   var nOTIFICATIONID;
+  var iTEMKEY;
   String? uSERNAME;
   String? mESSAGETYPE;
   String? oRIGINALRECIPIENT;
@@ -27,6 +28,7 @@ class FinanceApprovalEntity {
   String? pURREQNUM;
   String? cREATIONDATE;
   String? aCTION;
+  String? sTATUS;
 
   FinanceApprovalEntity();
 }

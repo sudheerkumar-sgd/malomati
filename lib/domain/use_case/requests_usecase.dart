@@ -1,28 +1,29 @@
 import 'package:dartz/dartz.dart';
-import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
-import '../entities/attendance_list_entity.dart';
+import '../entities/api_entity.dart';
+import '../entities/finance_approval_entity.dart';
+import '../entities/leave_submit_response_entity.dart';
+import '../entities/request_details_entity.dart';
 
 class RequestsUseCase extends BaseUseCase {
   final ApisRepository apisRepository;
   RequestsUseCase({required this.apisRepository});
 
-  Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceReport(
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getRequestsList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getAttendance(requestParams: requestParams);
+    return await apisRepository.getRequestsList(requestParams: requestParams);
   }
 
-  Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
+  Future<Either<Failure, RequestDetailsEntity>> getRequestlDetails(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getAttendanceDetails(
+    return await apisRepository.getRequestlDetails(
         requestParams: requestParams);
   }
 
-  Future<Either<Failure, String>> submitAttendanceDetails(
-      {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitAttendanceDetails(
-        requestParams: requestParams);
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitHrApproval({required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitHrApproval(requestParams: requestParams);
   }
 }

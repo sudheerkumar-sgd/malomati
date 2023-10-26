@@ -2,6 +2,7 @@ import 'package:malomati/domain/entities/finance_approval_entity.dart';
 
 class FinanceApprovalModel {
   var nOTIFICATIONID;
+  var iTEMKEY;
   String? uSERNAME;
   String? mESSAGETYPE;
   String? oRIGINALRECIPIENT;
@@ -29,11 +30,13 @@ class FinanceApprovalModel {
   String? pURREQNUM;
   String? cREATIONDATE;
   String? aCTION;
+  String? sTATUS;
 
   FinanceApprovalModel();
 
   FinanceApprovalModel.fromJson(Map<String, dynamic> json) {
     nOTIFICATIONID = json['NOTIFICATION_ID'];
+    iTEMKEY = json['ITEM_KEY'];
     uSERNAME = json['USER_NAME'];
     mESSAGETYPE = json['MESSAGE_TYPE'];
     oRIGINALRECIPIENT = json['ORIGINAL_RECIPIENT'];
@@ -63,6 +66,7 @@ class FinanceApprovalModel {
     pURREQNUM = '${json['PUR_REQ_NUM']}';
     cREATIONDATE = json['CREATION_DATE'];
     aCTION = json['ACTION'];
+    sTATUS = json['STATUS'];
   }
 }
 
@@ -70,6 +74,7 @@ extension SourceModelExtension on FinanceApprovalModel {
   FinanceApprovalEntity toFinanceApprovalEntity() {
     final financeApprovalEntity = FinanceApprovalEntity();
     financeApprovalEntity.nOTIFICATIONID = nOTIFICATIONID;
+    financeApprovalEntity.iTEMKEY = iTEMKEY;
     financeApprovalEntity.uSERNAME = uSERNAME;
     financeApprovalEntity.mESSAGETYPE = mESSAGETYPE;
     financeApprovalEntity.oRIGINALRECIPIENT = oRIGINALRECIPIENT;
@@ -99,6 +104,7 @@ extension SourceModelExtension on FinanceApprovalModel {
     financeApprovalEntity.bEGINDATE = bEGINDATE;
     financeApprovalEntity.cREATIONDATE = cREATIONDATE;
     financeApprovalEntity.aCTION = aCTION;
+    financeApprovalEntity.sTATUS = sTATUS;
     return financeApprovalEntity;
   }
 }

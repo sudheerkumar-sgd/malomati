@@ -23,6 +23,7 @@ import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
+import 'package:malomati/domain/entities/request_details_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/entities/weather_entity.dart';
@@ -578,6 +579,44 @@ class ApisRepositoryImpl extends ApisRepository {
       try {
         final apiResponse =
             await dataSource.getWarningList(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FinanceApprovalEntity>>> getRequestsList(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getRequestsList(requestParams: requestParams);
+        return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RequestDetailsEntity>> getRequestlDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse =
+            await dataSource.getRequestlDetails(requestParams: requestParams);
         return Right(apiResponse);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));

@@ -68,3 +68,7 @@ const String submitWarningsApiUrl =
     'UAQSGD_MOB_ERP_CreateWarningRequest/CreateWarnings/Warnings';
 const String warningListApiUrl =
     'UAQSGD_MOB_ERP_CreateWarningRequest/CreateWarnings/WarningList';
+const String requestsListApiUrl =
+    'UAQSGD_MOB_ERP_NotificationHistoryRequest/NotiList';
+const String requestsDetailsApiUrl =
+    'UAQSGD_MOB_ERP_NotificationHistoryRequest/NotiList/Dtls';

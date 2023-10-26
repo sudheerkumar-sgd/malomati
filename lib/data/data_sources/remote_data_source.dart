@@ -34,6 +34,7 @@ import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import '../../config/base_url_config.dart';
 import '../../core/error/exceptions.dart';
 import '../../domain/entities/employee_entity.dart';
+import '../../domain/entities/request_details_entity.dart';
 import '../../domain/entities/requests_count_entity.dart';
 import '../../domain/entities/weather_entity.dart';
 import '../model/attendance_List_model.dart';
@@ -69,6 +70,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<HrapprovalDetailsEntity> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams});
+  Future<RequestDetailsEntity> getRequestlDetails(
+      {required Map<String, dynamic> requestParams});
   Future<PayslipEntity> getPayslipDetails(
       {required Map<String, dynamic> requestParams});
   Future<WorkingDaysEntity> getWorkingDays(
@@ -94,6 +97,8 @@ abstract class RemoteDataSource {
   Future<WeatherEntity> getWeatherReport(
       {required Map<String, dynamic> requestParams});
   Future<List<WarningListEntity>> getWarningList(
+      {required Map<String, dynamic> requestParams});
+  Future<List<FinanceApprovalEntity>> getRequestsList(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -791,6 +796,54 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       } else {
         return [];
       }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<FinanceApprovalEntity>> getRequestsList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        requestsListApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data?['Notifications'] != null) {
+        var financeApprovalListJson = response.data['Notifications'] as List;
+        var financeApprovalList = financeApprovalListJson
+            .map((financeApprovalJson) =>
+                FinanceApprovalModel.fromJson(financeApprovalJson)
+                    .toFinanceApprovalEntity())
+            .toList();
+        return financeApprovalList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RequestDetailsEntity> getRequestlDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        requestsDetailsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      var apiResponse =
+          RequestsDetailsModel.fromJson(response.data).toRequestDetailsEntity();
+      return apiResponse;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;

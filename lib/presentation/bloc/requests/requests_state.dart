@@ -12,12 +12,28 @@ class OnRequestsDataLoading extends RequestsState {
   List<Object?> get props => [];
 }
 
-class OnAttendanceSuccess extends RequestsState {
-  final ApiEntity<AttendanceListEntity> attendanceEntity;
+class OnRequestListSuccess extends RequestsState {
+  final List<FinanceApprovalEntity> requestsList;
 
-  OnAttendanceSuccess({required this.attendanceEntity});
+  OnRequestListSuccess({required this.requestsList});
   @override
-  List<Object?> get props => [attendanceEntity];
+  List<Object?> get props => [requestsList];
+}
+
+class OnRequestDetailsSuccess extends RequestsState {
+  final RequestDetailsEntity requestlDetails;
+
+  OnRequestDetailsSuccess({required this.requestlDetails});
+  @override
+  List<Object?> get props => [requestlDetails];
+}
+
+class OnsubmitHrApprovalSuccess extends RequestsState {
+  final ApiEntity<LeaveSubmitResponseEntity> apiEntity;
+
+  OnsubmitHrApprovalSuccess({required this.apiEntity});
+  @override
+  List<Object?> get props => [apiEntity];
 }
 
 class OnRequestsApiError extends RequestsState {

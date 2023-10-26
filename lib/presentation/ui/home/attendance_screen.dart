@@ -55,7 +55,7 @@ class AttendanceScreen extends StatelessWidget {
       ValueNotifier<String>(getCurrentDateByformat('hh:mm:ss aa'));
   List<Map> attendanceOptions = [];
   final AttendanceEntity? attendanceEntity;
-  Position? position;
+  //Position? position;
   Map department = {};
   final viewTransformationController = TransformationController();
   final _attendanceBloc = sl<AttendanceBloc>();
@@ -92,10 +92,14 @@ class AttendanceScreen extends StatelessWidget {
     }
   }
 
-  _getLocationDetails() async {
+  _getLocationDetails(BuildContext context) async {
     var isLocationOn = await Location.checkGps();
-    if (isLocationOn) {
-      position = await Location.getLocation();
+    if (!isLocationOn && context.mounted) {
+      Dialogs.showInfoDialog(
+        context,
+        PopupType.fail,
+        'please Enable Location to submit attendance',
+      );
     }
   }
 
@@ -179,52 +183,68 @@ class AttendanceScreen extends StatelessWidget {
 
   _submitAttendance(BuildContext context, Map option) async {
     //printLog(message: 'position $position');
-    if (position != null) {
-      var department = getDepartmentByLocation(
-          (position?.latitude ?? 0), position?.longitude ?? 0);
-      if ((department['name'] ?? '').isEmpty) {
-        Dialogs.showInfoDialog(context, PopupType.fail,
-            context.string.attendancelocationErrorMessage);
-      } else {
-        Map<String, dynamic> requestParams = {
-          "userid": context.userDB.get(oracleLoginIdKey),
-          "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
-          "latitude": department['latitude'],
-          "longitude": department['longitude'],
-          "method": option['id'],
-          "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
-        };
-        //printLog(message: requestParams.toString());
-        _attendanceBloc.submitAttendance(requestParams: requestParams);
-      }
-    } else {
-      var isLocationOn = await Location.checkGps();
-      if (isLocationOn) {
-        if (context.mounted) {
-          Dialogs.showInfoLoader(
-            context,
-            'Featching Location Details',
-          );
-        }
-        Location.getLocation().then((value) {
-          Navigator.of(context, rootNavigator: true).pop();
-          position = value;
-          _submitAttendance(context, option);
-        });
-      } else if (context.mounted) {
-        Dialogs.showInfoDialog(
-          context,
-          PopupType.fail,
-          'please Enable Location to submit attendance',
-        );
-      }
+    // if (position != null) {
+    //   var department = getDepartmentByLocation(
+    //       (position?.latitude ?? 0), position?.longitude ?? 0);
+    //   if ((department['name'] ?? '').isEmpty) {
+    //     Dialogs.showInfoDialog(context, PopupType.fail,
+    //         context.string.attendancelocationErrorMessage);
+    //   } else {
+    //     Map<String, dynamic> requestParams = {
+    //       "userid": context.userDB.get(oracleLoginIdKey),
+    //       "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
+    //       "latitude": department['latitude'],
+    //       "longitude": department['longitude'],
+    //       "method": option['id'],
+    //       "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
+    //     };
+    //     //printLog(message: requestParams.toString());
+    //     _attendanceBloc.submitAttendance(requestParams: requestParams);
+    //   }
+    // } else {
+    if (context.mounted) {
+      Dialogs.showInfoLoader(
+        context,
+        'Featching Location Details',
+      );
     }
+    var isLocationOn = await Location.checkGps();
+    if (isLocationOn) {
+      Location.getLocation().then((value) {
+        Navigator.of(context, rootNavigator: true).pop();
+        Position position = value;
+        var department =
+            getDepartmentByLocation((position.latitude), position.longitude);
+        if ((department['name'] ?? '').isEmpty) {
+          Dialogs.showInfoDialog(context, PopupType.fail,
+              context.string.attendancelocationErrorMessage);
+        } else {
+          Map<String, dynamic> requestParams = {
+            "userid": context.userDB.get(oracleLoginIdKey),
+            "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
+            "latitude": department['latitude'],
+            "longitude": department['longitude'],
+            "method": option['id'],
+            "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
+          };
+          //printLog(message: requestParams.toString());
+          _attendanceBloc.submitAttendance(requestParams: requestParams);
+        }
+      });
+    } else if (context.mounted) {
+      Dialogs.showInfoDialog(
+        context,
+        PopupType.fail,
+        'please Enable Location to submit attendance',
+      );
+    }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     _setZoomToMapview();
-    _getLocationDetails();
+    _getLocationDetails(context);
     resources = context.resources;
     startTimer(duration: 1, callback: _setTime);
     attendanceOptions = _getAttendanceOptions(context);

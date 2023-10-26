@@ -249,5 +249,9 @@
     "send":"إرسال",
     "imageorVideoURL":"صورة او رابط الفيديو",
     "noDeleteLeaves":"لا يوجد اجازت مؤكدة للحذف",
-    "noWarnings":"لا يوجد تحذيرات"
+    "noWarnings":"لا يوجد تحذيرات",
+    "requestedOn":"Requested on",
+    "requestDetails":"Request Details",
+    "action":"Action",
+    "answer":"Answer"
 }

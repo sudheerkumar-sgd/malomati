@@ -532,6 +532,10 @@
     "send":"Send",
     "noDeleteLeaves":"There is no leaves to delete",
     "noWarnings":"There is no warnings",
+    "requestedOn":"Requested on",
+    "requestDetails":"Request Details",
+    "action":"Action",
+    "answer":"Answer",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",
