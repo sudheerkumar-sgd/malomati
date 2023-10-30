@@ -238,6 +238,13 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     approvalDetails.sUPPLIERNAME ?? '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(
+                                            fontFamily: isStringArabic(
+                                                    approvalDetails
+                                                            .sUPPLIERNAME ??
+                                                        '')
+                                                ? fontFamilyAR
+                                                : fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
@@ -260,6 +267,12 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     approvalDetails.fROMROLE ?? '',
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(
+                                            fontFamily: isStringArabic(
+                                                    approvalDetails.fROMROLE ??
+                                                        '')
+                                                ? fontFamilyAR
+                                                : fontFamilyEN)
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),

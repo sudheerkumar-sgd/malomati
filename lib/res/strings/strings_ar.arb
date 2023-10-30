@@ -163,7 +163,7 @@
     "employeesNotPunchedIn":"الموظفين الذين لم يلتزموا بتسجيل الحضور",
     "teamAttendanceReport": "تقرير حضور الفريق",
     "view": "المشاهدة",
-    "close": "إلغاء",
+    "close": "اغلاق",
     "thanks": "شكرًا",
     "sorry": "عذرًا لقد حدث خطأ",
     "eventNewjoinWishTitle": "يسعدنا أن تكون ضمن فريقنا",
@@ -250,8 +250,11 @@
     "imageorVideoURL":"صورة او رابط الفيديو",
     "noDeleteLeaves":"لا يوجد اجازت مؤكدة للحذف",
     "noWarnings":"لا يوجد تحذيرات",
-    "requestedOn":"Requested on",
-    "requestDetails":"Request Details",
-    "action":"Action",
-    "answer":"Answer"
+    "requestedOn":"تم الطلب في يوم",
+    "requestDetails":"تفاصيل الطلب",
+    "action":"حالة الطلب",
+    "answer":"إجابة السؤال",
+    "pendingWith":"الموافقة لدي المسؤل",
+    "rejectedBy":"تم رفض الطلب من قبل",
+    "returnForCorrection":"تم ارجاع الطلب للمراجعة"
 }

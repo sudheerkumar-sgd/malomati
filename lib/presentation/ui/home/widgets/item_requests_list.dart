@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -19,6 +21,7 @@ class ItemRequestsList extends StatelessWidget {
   final FinanceApprovalEntity data;
   final ValueNotifier<RequestDetailsEntity?> _requestDetails =
       ValueNotifier(null);
+  late BuildContext context;
 
   ItemRequestsList({required this.data, super.key});
 
@@ -38,16 +41,17 @@ class ItemRequestsList extends StatelessWidget {
       case 'APPROVED':
         return requestDetails.action ?? '';
       case 'REJECTED':
-        return 'Rejected by ${requestDetails.rejectedBy}';
+        return '${context.string.rejectedBy} ${requestDetails.rejectedBy}';
       case 'QUESTION':
-        return 'Return for correction';
+        return context.string.returnForCorrection;
       default:
-        return 'Pending with ${requestDetails.approversList.join(', ')}';
+        return '${context.string.pendingWith} ${requestDetails.approversList.join(', ')}';
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     var resources = context.resources;
     return BlocProvider(
       create: (context) => _requestsBloc,
@@ -210,57 +214,71 @@ class ItemRequestsList extends StatelessWidget {
                                               children: List.generate(
                                                 details
                                                     .notificationDetails.length,
-                                                (index) => index > 1 &&
-                                                        (details
-                                                                    .notificationDetails[
-                                                                        index]
-                                                                    .fVALUE ??
-                                                                '')
-                                                            .isNotEmpty
-                                                    ? Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              details
-                                                                      .notificationDetails[
-                                                                          index]
-                                                                      .fNAME ??
-                                                                  '',
-                                                              style: context
-                                                                  .textFontWeight400
-                                                                  .onFontSize(
-                                                                      resources
-                                                                          .fontSize
-                                                                          .dp12)
-                                                                  .copyWith(
-                                                                      height:
-                                                                          1.5),
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              details
+                                                (index) {
+                                                  final String labelText =
+                                                      getArabicName(details
+                                                              .notificationDetails[
+                                                                  index]
+                                                              .fNAME ??
+                                                          '');
+                                                  final String valueText =
+                                                      getArabicName(details
+                                                              .notificationDetails[
+                                                                  index]
+                                                              .fVALUE ??
+                                                          '');
+                                                  return index > 1 &&
+                                                          (details
                                                                       .notificationDetails[
                                                                           index]
                                                                       .fVALUE ??
-                                                                  '',
-                                                              style: context
-                                                                  .textFontWeight600
-                                                                  .onFontSize(
-                                                                      resources
-                                                                          .fontSize
-                                                                          .dp12)
-                                                                  .copyWith(
-                                                                      height:
-                                                                          1.2),
+                                                                  '')
+                                                              .isNotEmpty
+                                                      ? Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Expanded(
+                                                              child: Text(
+                                                                labelText,
+                                                                style: context
+                                                                    .textFontWeight400
+                                                                    .onFontSize(
+                                                                        resources
+                                                                            .fontSize
+                                                                            .dp12)
+                                                                    .onFontFamily(
+                                                                        fontFamily: isStringArabic(labelText)
+                                                                            ? fontFamilyAR
+                                                                            : fontFamilyEN)
+                                                                    .copyWith(
+                                                                        height:
+                                                                            1.5),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : const SizedBox(),
+                                                            Expanded(
+                                                              child: Text(
+                                                                valueText,
+                                                                style: context
+                                                                    .textFontWeight600
+                                                                    .onFontSize(
+                                                                        resources
+                                                                            .fontSize
+                                                                            .dp12)
+                                                                    .onFontFamily(
+                                                                        fontFamily: isStringArabic(valueText)
+                                                                            ? fontFamilyAR
+                                                                            : fontFamilyEN)
+                                                                    .copyWith(
+                                                                        height:
+                                                                            1.2),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : const SizedBox();
+                                                },
                                               ),
                                             ),
                                             SizedBox(
@@ -353,7 +371,8 @@ class ItemRequestsList extends StatelessWidget {
                                                         builder: (context) =>
                                                             DialogRequestAnswerMoreInfo(
                                                               questionText:
-                                                                  'test',
+                                                                  details.question ??
+                                                                      '',
                                                             )).then((value) {
                                                       if (value != null) {
                                                         final requestParams = {

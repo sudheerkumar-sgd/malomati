@@ -5,7 +5,6 @@ import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
-import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -37,15 +36,13 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
       ValueNotifier(HrapprovalDetailsEntity());
-  List<LeaveTypeEntity> leaveTypes = [];
   String selectedAction = '';
 
-  _submitHrApproval(BuildContext context, String id, String action,
-      {String? comments}) {
+  _submitHrApproval(BuildContext context, String action, {String? comments}) {
     selectedAction = action;
     final requestParams = {
       "ACTION_TYPE": action,
-      "NOTIFICATION_ID": id,
+      "NOTIFICATION_ID": widget.data.nOTIFICATIONID,
       "TO_USER": "",
       "FROM_USER": "",
       "COMMENTS": comments ?? action
@@ -54,91 +51,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
     // Navigator.pop(context);
   }
 
-  String _getArabicName(String name) {
-    if (isLocalEn) return name;
-    String arabicName = name;
-    switch (name.toLowerCase()) {
-      case 'confirmed':
-        {
-          arabicName = 'مؤكد';
-        }
-      case 'planned':
-        {
-          arabicName = 'مخطط';
-        }
-      case 'annual leave':
-        {
-          arabicName = 'الاجازة الدوريه';
-        }
-      case 'paid leave':
-        {
-          arabicName = 'اجازه مدفوعه';
-        }
-      case 'submitted date':
-        {
-          arabicName = 'تاريخ التقديم';
-        }
-      case 'absence status':
-        {
-          arabicName = 'حالة الغياب';
-        }
-      case 'absence type':
-        {
-          arabicName = 'نوع الغياب';
-        }
-      case 'absence category':
-        {
-          arabicName = 'فئة الغياب';
-        }
-      case 'date start':
-        {
-          arabicName = 'تاريخ البدء';
-        }
-      case 'date end':
-        {
-          arabicName = 'تاريخ الانتهاء';
-        }
-      case 'days':
-        {
-          arabicName = 'الايام';
-        }
-      case 'start time':
-        {
-          arabicName = 'وقت البدء';
-        }
-      case 'end time':
-        {
-          arabicName = 'وقت الإنتهاء';
-        }
-      case 'time start':
-        {
-          arabicName = 'وقت البدء';
-        }
-      case 'time end':
-        {
-          arabicName = 'وقت الانتهاء';
-        }
-      case 'hours':
-        {
-          arabicName = 'ساعات';
-        }
-      case 'attachement':
-        {
-          arabicName = 'المرفقات';
-        }
-      default:
-        {
-          final leaveType =
-              leaveTypes.where((element) => element.name == name).toList();
-          if (leaveType.isNotEmpty) arabicName = leaveType[0].nameAr ?? name;
-        }
-    }
-    return arabicName;
-  }
-
   String _getFontFamily(String name) {
-    if (name != _getArabicName(name)) return fontFamilyAR;
-    return fontFamilyEN;
+    return isStringArabic(name) ? fontFamilyAR : fontFamilyEN;
   }
 
   @override
@@ -171,8 +85,6 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
           listener: (context, state) {
             if (state is OnServicesLoading) {
               Dialogs.loader(context);
-            } else if (state is OnLeaveTypesSuccess) {
-              leaveTypes = state.leaveTypeEntity;
             } else if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
             } else if (state is OnsubmitHrApprovalSuccess) {
@@ -227,7 +139,9 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                 onTap: () {
                   _isExpanded.value = !_isExpanded.value;
                   _servicesBloc.getHrApprovalDetails(requestParams: {
-                    'NOTIFICATION_ID': widget.data.nOTIFICATIONID
+                    'NOTIFICATION_ID': widget.data.nOTIFICATIONID,
+                    "USER_NAME": widget.data.uSERNAME,
+                    "ITEM_KEY": widget.data.iTEMKEY,
                   });
                 },
                 child: Row(
@@ -323,59 +237,67 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                           children: List.generate(
                                             notificationDetails
                                                 .notificationDetails.length,
-                                            (index) => index > 1
-                                                ? Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text(
-                                                          _getArabicName(
-                                                              notificationDetails
-                                                                      .notificationDetails[
-                                                                          index]
-                                                                      .fNAME ??
-                                                                  ''),
-                                                          style: context
-                                                              .textFontWeight400
-                                                              .onFontSize(
-                                                                  resources
-                                                                      .fontSize
-                                                                      .dp13)
-                                                              .copyWith(
-                                                                  height: 2),
+                                            (index) {
+                                              final String labelText =
+                                                  getArabicName(notificationDetails
+                                                          .notificationDetails[
+                                                              index]
+                                                          .fNAME ??
+                                                      '');
+                                              final String valueText =
+                                                  getArabicName(notificationDetails
+                                                          .notificationDetails[
+                                                              index]
+                                                          .fVALUE ??
+                                                      '');
+                                              return index > 1
+                                                  ? Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            labelText,
+                                                            style: context
+                                                                .textFontWeight400
+                                                                .onFontSize(
+                                                                    resources
+                                                                        .fontSize
+                                                                        .dp13)
+                                                                .copyWith(
+                                                                    height: 2),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          _getArabicName(
-                                                              notificationDetails
-                                                                      .notificationDetails[
-                                                                          index]
-                                                                      .fVALUE ??
-                                                                  ''),
-                                                          style: context
-                                                              .textFontWeight600
-                                                              .onFontSize(
-                                                                  resources
-                                                                      .fontSize
-                                                                      .dp13)
-                                                              .onFontFamily(
-                                                                  fontFamily: _getFontFamily(notificationDetails
-                                                                          .notificationDetails[
-                                                                              index]
-                                                                          .fVALUE ??
-                                                                      ''))
-                                                              .copyWith(
-                                                                  height: 2),
+                                                        Expanded(
+                                                          child: Text(
+                                                            valueText,
+                                                            style: context
+                                                                .textFontWeight600
+                                                                .onFontSize(
+                                                                    resources
+                                                                        .fontSize
+                                                                        .dp13)
+                                                                .onFontFamily(
+                                                                    fontFamily:
+                                                                        _getFontFamily(
+                                                                            valueText))
+                                                                .copyWith(
+                                                                    height: 2),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : const SizedBox(),
+                                                      ],
+                                                    )
+                                                  : const SizedBox();
+                                            },
                                           ),
                                         ),
-                                        if ((widget.data.cOMMENTS ?? '')
+                                        if ((notificationDetails.uSERCOMMENTS ??
+                                                '')
                                             .isNotEmpty) ...[
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
                                           Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                 child: Text(
@@ -383,18 +305,19 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                   style: context
                                                       .textFontWeight400
                                                       .onFontSize(resources
-                                                          .fontSize.dp13)
-                                                      .copyWith(height: 2),
+                                                          .fontSize.dp13),
                                                 ),
                                               ),
                                               Expanded(
                                                 child: Text(
-                                                  widget.data.cOMMENTS ?? '',
+                                                  notificationDetails
+                                                          .uSERCOMMENTS ??
+                                                      '',
                                                   style: context
                                                       .textFontWeight600
                                                       .onFontSize(resources
                                                           .fontSize.dp13)
-                                                      .copyWith(height: 2),
+                                                      .copyWith(height: 1.2),
                                                 ),
                                               ),
                                             ],
@@ -420,10 +343,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                           InkWell(
                                             onTap: () {
                                               _submitHrApproval(
-                                                  context,
-                                                  widget.data.nOTIFICATIONID ??
-                                                      '',
-                                                  APPROVE);
+                                                  context, APPROVE);
                                             },
                                             child: Container(
                                               width: double.infinity,
@@ -466,11 +386,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                 child: InkWell(
                                                   onTap: () {
                                                     _submitHrApproval(
-                                                        context,
-                                                        widget.data
-                                                                .nOTIFICATIONID ??
-                                                            '',
-                                                        REJECT);
+                                                        context, REJECT);
                                                     // _submitHrApproval(
                                                     //     context,
                                                     //     widget.data
@@ -533,9 +449,6 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                       if (value != null) {
                                                         _submitHrApproval(
                                                             context,
-                                                            widget.data
-                                                                    .nOTIFICATIONID ??
-                                                                '',
                                                             REQUESTMOREINFO,
                                                             comments: value);
                                                       }

@@ -77,61 +77,65 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
             SizedBox(
               height: context.resources.dimen.dp15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    width: context.resources.dimen.dp80,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: context.resources.dimen.dp10,
-                        vertical: context.resources.dimen.dp5),
-                    decoration: BackgroundBoxDecoration(
-                            boxColor: context.resources.color.textColorLight,
-                            radious: context.resources.dimen.dp15)
-                        .roundedCornerBox,
-                    child: Text(
-                      context.string.cancel,
-                      style: context.textFontWeight400
-                          .onFontSize(context.resources.fontSize.dp12)
-                          .onColor(context.resources.color.colorWhite)
-                          .copyWith(height: 1),
-                      textAlign: TextAlign.center,
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: context.resources.dimen.dp80,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: context.resources.dimen.dp10,
+                          vertical: context.resources.dimen.dp5),
+                      decoration: BackgroundBoxDecoration(
+                              boxColor: context.resources.color.textColorLight,
+                              radious: context.resources.dimen.dp15)
+                          .roundedCornerBox,
+                      child: Text(
+                        context.string.cancel,
+                        style: context.textFontWeight400
+                            .onFontSize(context.resources.fontSize.dp12)
+                            .onColor(context.resources.color.colorWhite)
+                            .copyWith(height: 1),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: context.resources.dimen.dp10,
-                ),
-                InkWell(
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pop(context, controller.text);
-                    }
-                  },
-                  child: Container(
-                    width: context.resources.dimen.dp80,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: context.resources.dimen.dp10,
-                        vertical: context.resources.dimen.dp5),
-                    decoration: BackgroundBoxDecoration(
-                            boxColor: context.resources.color.viewBgColorLight,
-                            radious: context.resources.dimen.dp15)
-                        .roundedCornerBox,
-                    child: Text(
-                      context.string.submit,
-                      style: context.textFontWeight400
-                          .onFontSize(context.resources.fontSize.dp12)
-                          .onColor(context.resources.color.colorWhite)
-                          .copyWith(height: 1),
-                      textAlign: TextAlign.center,
+                  SizedBox(
+                    width: context.resources.dimen.dp10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.pop(context, controller.text);
+                      }
+                    },
+                    child: Container(
+                      width: context.resources.dimen.dp80,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: context.resources.dimen.dp10,
+                          vertical: context.resources.dimen.dp5),
+                      decoration: BackgroundBoxDecoration(
+                              boxColor:
+                                  context.resources.color.viewBgColorLight,
+                              radious: context.resources.dimen.dp15)
+                          .roundedCornerBox,
+                      child: Text(
+                        context.string.submit,
+                        style: context.textFontWeight400
+                            .onFontSize(context.resources.fontSize.dp12)
+                            .onColor(context.resources.color.colorWhite)
+                            .copyWith(height: 1),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

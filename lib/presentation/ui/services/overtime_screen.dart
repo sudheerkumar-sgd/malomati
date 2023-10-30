@@ -128,11 +128,11 @@ class OvertimeScreen extends StatelessWidget {
     apiRequestModel.uSERNAME = userName;
     apiRequestModel.oVERTIMEDATE = _startDateController.text;
     apiRequestModel.fROMTIME = getDateByformat(
-        'hh:mm',
+        'HH:mm',
         getDateTimeByString('$dateFormat $timeFormat',
             '${_startDateController.text} ${_fromTimeController.text}'));
     apiRequestModel.tOTIME = getDateByformat(
-        'hh:mm',
+        'HH:mm',
         getDateTimeByString('$dateFormat $timeFormat',
             '${_startDateController.text} ${_toTimeController.text}'));
     apiRequestModel.nOOFHOURS = _noOfHoursController.text;

@@ -14,11 +14,12 @@ class HrApprovalDetailsModel extends BaseModel {
   List<HrApprovalEntity> notificationDetails = [];
   List<FinanceDetailsItemEntity> financeNotificationDetails = [];
   List<AttachmentEntity> attachements = [];
-
+  String? uSERCOMMENTS;
   HrApprovalDetailsModel();
 
   factory HrApprovalDetailsModel.fromJson(Map<String, dynamic> json) {
     var hrApprovalDetailsModel = HrApprovalDetailsModel();
+    hrApprovalDetailsModel.uSERCOMMENTS = json['USER_COMMENTS'];
     if (json['NotificationDetails'] != null) {
       var hrApprovalsJson = json['NotificationDetails'] as List;
       var hrApprovalList = hrApprovalsJson
@@ -78,6 +79,7 @@ class HrApprovalDetailsModel extends BaseModel {
 extension SourceModelExtension on HrApprovalDetailsModel {
   HrapprovalDetailsEntity toHrapprovalDetailsEntity() {
     HrapprovalDetailsEntity hrapprovalDetailsEntity = HrapprovalDetailsEntity();
+    hrapprovalDetailsEntity.uSERCOMMENTS = uSERCOMMENTS;
     hrapprovalDetailsEntity.notificationDetails = notificationDetails;
     hrapprovalDetailsEntity.financeNotificationDetails =
         financeNotificationDetails;

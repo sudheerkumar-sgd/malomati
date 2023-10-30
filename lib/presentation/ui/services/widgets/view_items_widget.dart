@@ -201,8 +201,12 @@ class ViewItemsWidget extends StatelessWidget {
           ),
           Text(
             item.iTEMDESCRIPTION ?? '',
-            style:
-                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+            style: context.textFontWeight600
+                .onFontSize(resources.fontSize.dp13)
+                .onFontFamily(
+                    fontFamily: isStringArabic(item.iTEMDESCRIPTION ?? '')
+                        ? fontFamilyAR
+                        : fontFamilyEN),
           ),
           SizedBox(
             height: resources.dimen.dp20,

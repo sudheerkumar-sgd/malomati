@@ -236,7 +236,13 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                             Text(
                               approvalDetails.hDRDESCRIPTION ?? '',
                               style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13),
+                                  .onFontSize(resources.fontSize.dp13)
+                                  .onFontFamily(
+                                      fontFamily: isStringArabic(
+                                              approvalDetails.hDRDESCRIPTION ??
+                                                  '')
+                                          ? fontFamilyAR
+                                          : fontFamilyEN),
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

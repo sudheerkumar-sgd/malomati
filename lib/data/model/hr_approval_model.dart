@@ -18,6 +18,8 @@ class HrApprovalModel extends BaseModel {
   String? cOMMENTS;
   String? fNAME;
   String? fVALUE;
+  String? uSERNAME;
+  String? iTEMKEY;
   List<AttachmentEntity>? attachments;
 
   HrApprovalModel();
@@ -33,6 +35,8 @@ class HrApprovalModel extends BaseModel {
     hrApprovalModel.dUEDATECHAR = '${json['DUE_DATE_CHAR'] ?? ''}';
     hrApprovalModel.nOTIFICATIONTYPE = '${json['NOTIFICATION_TYPE'] ?? ''}';
     hrApprovalModel.cOMMENTS = json['COMMENTS'] ?? '';
+    hrApprovalModel.uSERNAME = json['USER_NAME'] ?? '';
+    hrApprovalModel.iTEMKEY = json['ITEM_KEY'] ?? '';
     return hrApprovalModel;
   }
 
@@ -77,6 +81,8 @@ extension SourceModelExtension on HrApprovalModel {
     hrApprovalEntity.dUEDATECHAR = dUEDATECHAR;
     hrApprovalEntity.nOTIFICATIONTYPE = nOTIFICATIONTYPE;
     hrApprovalEntity.cOMMENTS = cOMMENTS;
+    hrApprovalEntity.uSERNAME = uSERNAME;
+    hrApprovalEntity.iTEMKEY = iTEMKEY;
     return hrApprovalEntity;
   }
 

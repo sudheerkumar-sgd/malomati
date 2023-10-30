@@ -8,6 +8,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
@@ -15,6 +16,8 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
+
+import '../../data/model/leave_type_list_model.dart';
 
 Future<void> openMapsSheet(
     BuildContext context, String title, double lat, double lang) async {
@@ -284,4 +287,96 @@ String getWeatherIcon(int weatherCode) {
     default:
       return DrawableAssets.icSun;
   }
+}
+
+String getArabicName(String name) {
+  if (isLocalEn) return name;
+  String arabicName = name;
+  switch (name.toLowerCase()) {
+    case 'confirmed':
+      {
+        arabicName = 'مؤكد';
+      }
+    case 'planned':
+      {
+        arabicName = 'مخطط';
+      }
+    case 'annual leave':
+      {
+        arabicName = 'الاجازة الدوريه';
+      }
+    case 'paid leave':
+      {
+        arabicName = 'اجازه مدفوعه';
+      }
+    case 'submitted date':
+      {
+        arabicName = 'تاريخ التقديم';
+      }
+    case 'absence status':
+      {
+        arabicName = 'حالة الغياب';
+      }
+    case 'absence type':
+      {
+        arabicName = 'نوع الغياب';
+      }
+    case 'absence category':
+      {
+        arabicName = 'فئة الغياب';
+      }
+    case 'date start':
+      {
+        arabicName = 'تاريخ البدء';
+      }
+    case 'date end':
+      {
+        arabicName = 'تاريخ الانتهاء';
+      }
+    case 'days':
+      {
+        arabicName = 'الايام';
+      }
+    case 'start time':
+      {
+        arabicName = 'وقت البدء';
+      }
+    case 'end time':
+      {
+        arabicName = 'وقت الإنتهاء';
+      }
+    case 'time start':
+      {
+        arabicName = 'وقت البدء';
+      }
+    case 'time end':
+      {
+        arabicName = 'وقت الانتهاء';
+      }
+    case 'hours':
+      {
+        arabicName = 'ساعات';
+      }
+    case 'attachement':
+      {
+        arabicName = 'المرفقات';
+      }
+    default:
+      {
+        final leaveTypeJson = ConstantConfig().leaveTypes;
+        final list =
+            LeaveTypeListModel.fromJson(leaveTypeJson).toleaveTypeList();
+        final leaveType = list.leaveTypeList
+            .where((element) => element.name == name)
+            .toList();
+        if (leaveType.isNotEmpty) arabicName = leaveType[0].nameAr ?? name;
+      }
+  }
+  return arabicName;
+}
+
+bool isStringArabic(String text) {
+  final RegExp arabic = RegExp(r'[\u0621-\u064A]+');
+  if (arabic.hasMatch(text.trim())) return true;
+  return false;
 }

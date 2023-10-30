@@ -239,7 +239,14 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                   Text(
                                     approvalDetails.sUPPLIERNAME ?? '',
                                     style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13),
+                                        .onFontSize(resources.fontSize.dp13)
+                                        .onFontFamily(
+                                            fontFamily: isStringArabic(
+                                                    approvalDetails
+                                                            .sUPPLIERNAME ??
+                                                        '')
+                                                ? fontFamilyAR
+                                                : fontFamilyEN),
                                   ),
                                 ]),
                                 TableRow(children: [

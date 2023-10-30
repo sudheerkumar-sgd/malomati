@@ -536,6 +536,9 @@
     "requestDetails":"Request Details",
     "action":"Action",
     "answer":"Answer",
+    "pendingWith":"Pending with",
+    "rejectedBy":"Rejected by",
+    "returnForCorrection":"Return for correction",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

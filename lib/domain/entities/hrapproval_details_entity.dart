@@ -10,6 +10,7 @@ class HrapprovalDetailsEntity extends BaseEntity {
   List<HrApprovalEntity> notificationDetails = [];
   List<AttachmentEntity> attachements = [];
   List<FinanceDetailsItemEntity> financeNotificationDetails = [];
+  String? uSERCOMMENTS;
 
   HrapprovalDetailsEntity();
   @override

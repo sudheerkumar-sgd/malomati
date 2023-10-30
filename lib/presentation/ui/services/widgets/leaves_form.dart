@@ -12,6 +12,7 @@ import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
+import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
@@ -146,7 +147,13 @@ class LeavesForm extends StatelessWidget {
     selectedEmpUserName = selectedEmployee?.uSERNAME ?? '';
   }
 
-  _submitLeaveRequest(BuildContext context) {
+  onSubmit(String clickedButton) {
+    if (_formKey.currentState!.validate()) {
+      _submitLeaveRequest();
+    }
+  }
+
+  _submitLeaveRequest() {
     final leaveRequestModel = LeaveRequestModel();
     leaveRequestModel.lEAVETYPE = leaveSubType.name;
     leaveRequestModel.uSERNAME = selectedEmpUserName;
@@ -603,65 +610,7 @@ class LeavesForm extends StatelessWidget {
                 SizedBox(
                   height: resources.dimen.dp20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp15,
-                              vertical: resources.dimen.dp7),
-                          decoration: BackgroundBoxDecoration(
-                                  boxColor:
-                                      context.resources.color.textColorLight,
-                                  radious: context.resources.dimen.dp15)
-                              .roundedCornerBox,
-                          child: Text(
-                            context.string.cancel,
-                            style: context.textFontWeight600
-                                .onFontSize(context.resources.fontSize.dp17)
-                                .onColor(resources.color.colorWhite)
-                                .copyWith(height: 1),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: resources.dimen.dp20,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            _submitLeaveRequest(context);
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.resources.dimen.dp15,
-                              vertical: resources.dimen.dp7),
-                          decoration: BackgroundBoxDecoration(
-                                  boxColor: context.resources.color.viewBgColor,
-                                  radious: context.resources.dimen.dp15)
-                              .roundedCornerBox,
-                          child: Text(
-                            context.string.submit,
-                            style: context.textFontWeight600
-                                .onFontSize(context.resources.fontSize.dp17)
-                                .onColor(resources.color.colorWhite)
-                                .copyWith(height: 1),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                SubmitCancelWidget(callBack: onSubmit),
                 SizedBox(
                   height: resources.dimen.dp10,
                 ),

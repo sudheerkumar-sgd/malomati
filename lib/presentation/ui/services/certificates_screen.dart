@@ -6,10 +6,10 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
+import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
-import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../data/data_sources/api_urls.dart';
 import '../../../data/model/api_request_model.dart';
@@ -26,15 +26,21 @@ class CertificatesScreen extends StatelessWidget {
   final TextEditingController _jobTitleController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
   String? showSalary;
+  String userName = '';
 
   onShowSalarySelected(NameIdEntity? value) {
     showSalary = value?.id ?? '';
   }
 
-  _submitInitiativeRequest(BuildContext context) {
+  onSubmit(String clickedButton) {
+    if (_formKey.currentState!.validate()) {
+      _submitCertificateRequest();
+    }
+  }
+
+  _submitCertificateRequest() {
     final certificateRequestModel = ApiRequestModel();
-    certificateRequestModel.uSERNAME =
-        context.userDB.get(userNameKey, defaultValue: '');
+    certificateRequestModel.uSERNAME = userName;
     certificateRequestModel.eNTITYNAME = _toController.text;
     certificateRequestModel.sHOWSALARY = showSalary;
     _servicesBloc.submitServicesRequest(
@@ -45,6 +51,7 @@ class CertificatesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
     _nameController.text = context.userDB.get(
         resources.isLocalEn ? userFullNameUsKey : userFullNameArKey,
         defaultValue: '');
@@ -163,66 +170,7 @@ class CertificatesScreen extends StatelessWidget {
                   SizedBox(
                     height: resources.dimen.dp20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: context.resources.dimen.dp15,
-                                vertical: resources.dimen.dp7),
-                            decoration: BackgroundBoxDecoration(
-                                    boxColor:
-                                        context.resources.color.textColorLight,
-                                    radious: context.resources.dimen.dp15)
-                                .roundedCornerBox,
-                            child: Text(
-                              context.string.cancel,
-                              style: context.textFontWeight600
-                                  .onFontSize(context.resources.fontSize.dp17)
-                                  .onColor(resources.color.colorWhite)
-                                  .copyWith(height: 1),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: resources.dimen.dp20,
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              _submitInitiativeRequest(context);
-                            }
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: context.resources.dimen.dp15,
-                                vertical: resources.dimen.dp7),
-                            decoration: BackgroundBoxDecoration(
-                                    boxColor:
-                                        context.resources.color.viewBgColor,
-                                    radious: context.resources.dimen.dp15)
-                                .roundedCornerBox,
-                            child: Text(
-                              context.string.submit,
-                              style: context.textFontWeight600
-                                  .onFontSize(context.resources.fontSize.dp17)
-                                  .onColor(resources.color.colorWhite)
-                                  .copyWith(height: 1),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  SubmitCancelWidget(callBack: onSubmit),
                   SizedBox(
                     height: resources.dimen.dp10,
                   ),
