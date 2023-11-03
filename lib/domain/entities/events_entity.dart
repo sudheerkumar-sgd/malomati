@@ -12,6 +12,8 @@ class EventsEntity {
   String? uSERNAME;
   String? sTARTDATE;
   String? nAME;
+  String? bannerUrlEn;
+  String? bannerUrlAr;
 
   EventsEntity();
 }

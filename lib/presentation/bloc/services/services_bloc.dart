@@ -3,6 +3,7 @@ import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
@@ -43,8 +44,11 @@ class ServicesBloc extends Cubit<ServicesState> {
   }
 
   Future<void> getEmployeesByDepartment(
-      {required Map<String, dynamic> requestParams}) async {
-    emit(OnServicesLoading());
+      {required Map<String, dynamic> requestParams,
+      bool showLoading = true}) async {
+    if (showLoading) {
+      emit(OnServicesLoading());
+    }
 
     final result = await servicesUseCase.getEmployeesByDepartment(
         requestParams: requestParams);
@@ -200,6 +204,15 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.getWarningList(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnWarningListSuccess(warningList: r)));
+  }
+
+  Future<void> getInvoicesList(
+      {required Map<String, dynamic> requestParams}) async {
+    emit(OnServicesLoading());
+    final result =
+        await servicesUseCase.getInvoicesList(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnInvoicesListSuccess(invoiceList: r)));
   }
 
   String _getErrorMessage(Failure failure) {

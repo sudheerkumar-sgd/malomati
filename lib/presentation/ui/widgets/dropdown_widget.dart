@@ -20,16 +20,18 @@ class DropDownWidget<T> extends StatelessWidget {
   T? selectedValue;
   Function(T?)? callback;
   final ValueNotifier<bool> _onItemChanged = ValueNotifier(false);
+  final Color? fillColor;
   DropDownWidget(
       {required this.list,
       this.height = defaultHeight,
-      this.isEnabled = false,
+      this.isEnabled = true,
       this.labelText = '',
       this.hintText = '',
       this.errorMessage = '',
       this.textController,
       this.suffixIconPath,
       this.fontFamily = '',
+      this.fillColor,
       this.selectedValue,
       this.callback,
       super.key});
@@ -39,9 +41,8 @@ class DropDownWidget<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Visibility(
-          visible: labelText.isNotEmpty,
-          child: Text(
+        if (labelText.isNotEmpty) ...[
+          Text(
             labelText,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -52,10 +53,10 @@ class DropDownWidget<T> extends StatelessWidget {
                         : fontFamilyAR)
                 .onFontSize(context.resources.fontSize.dp12),
           ),
-        ),
-        SizedBox(
-          height: context.resources.dimen.dp10,
-        ),
+          SizedBox(
+            height: context.resources.dimen.dp10,
+          ),
+        ],
         ValueListenableBuilder(
             valueListenable: _onItemChanged,
             builder: (context, onItemChanged, widget) {
@@ -70,7 +71,7 @@ class DropDownWidget<T> extends StatelessWidget {
                   contentPadding: EdgeInsets.symmetric(
                       vertical: context.resources.dimen.dp5,
                       horizontal: context.resources.dimen.dp10),
-                  fillColor: context.resources.color.colorWhite,
+                  fillColor: fillColor ?? context.resources.color.colorWhite,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.all(

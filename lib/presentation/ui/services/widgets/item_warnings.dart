@@ -8,7 +8,7 @@ import '../../../../domain/entities/warning_list_entity.dart';
 
 class ItemWarnings extends StatelessWidget {
   final WarningListEntity data;
-  ItemWarnings({required this.data, super.key});
+  const ItemWarnings({required this.data, super.key});
 
   @override
   Widget build(BuildContext context) {

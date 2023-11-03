@@ -17,6 +17,8 @@ class HrApprovalEntity extends BaseEntity {
   String? cOMMENTS;
   String? uSERNAME;
   String? iTEMKEY;
+  String? moreInfoQuestion;
+  String? moreInfoAnswer;
   List<AttachmentEntity>? attachments;
 
   HrApprovalEntity();

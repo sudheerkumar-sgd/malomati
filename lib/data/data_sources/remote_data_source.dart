@@ -25,6 +25,7 @@ import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
+import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_details_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
@@ -99,6 +100,8 @@ abstract class RemoteDataSource {
   Future<List<WarningListEntity>> getWarningList(
       {required Map<String, dynamic> requestParams});
   Future<List<FinanceApprovalEntity>> getRequestsList(
+      {required Map<String, dynamic> requestParams});
+  Future<List<InvoiceListEntity>> getInvoicesList(
       {required Map<String, dynamic> requestParams});
 }
 
@@ -793,6 +796,33 @@ class RemoteDataSourceImpl implements RemoteDataSource {
                 WarningListModel.fromJson(warningJson).toWarningListEntity())
             .toList();
         return warningsList;
+      } else {
+        return [];
+      }
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<InvoiceListEntity>> getInvoicesList(
+      {required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        invoiceListApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        queryParameters: requestParams,
+      );
+      if (response.data?['InvoiceList'] != null) {
+        var invoiceListJson = response.data['InvoiceList'] as List;
+        var invoiceList = invoiceListJson
+            .map((invoiceJson) =>
+                InvoiceListModel.fromJson(invoiceJson).toInvoiceListEntity())
+            .toList();
+        return invoiceList;
       } else {
         return [];
       }

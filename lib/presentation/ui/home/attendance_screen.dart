@@ -246,7 +246,7 @@ class AttendanceScreen extends StatelessWidget {
     _setZoomToMapview();
     _getLocationDetails(context);
     resources = context.resources;
-    startTimer(duration: 1, callback: _setTime);
+    startTimer(duration: const Duration(seconds: 1), callback: _setTime);
     attendanceOptions = _getAttendanceOptions(context);
     department = getDepartmentByLocation(
         double.parse(attendanceEntity?.gpsLatitude ?? '0.0'),

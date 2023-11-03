@@ -4,6 +4,7 @@ import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
@@ -128,5 +129,10 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, List<WarningListEntity>>> getWarningList(
       {required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getWarningList(requestParams: requestParams);
+  }
+
+  Future<Either<Failure, List<InvoiceListEntity>>> getInvoicesList(
+      {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getInvoicesList(requestParams: requestParams);
   }
 }

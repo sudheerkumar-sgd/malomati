@@ -30,6 +30,14 @@ class EmployeeModel extends BaseModel {
     return departmentModel;
   }
 
+  factory EmployeeModel.fromUserList(Map<String, dynamic> json) {
+    var departmentModel = EmployeeModel();
+    departmentModel.empNameEN = '${json['USER_NAME']}';
+    departmentModel.empNameAR = '${json['USER_NAME']}';
+    departmentModel.uSERNAME = '${json['USER_NAME']}';
+    return departmentModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "token": pERSONID,

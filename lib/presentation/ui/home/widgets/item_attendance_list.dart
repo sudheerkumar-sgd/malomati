@@ -3,8 +3,6 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
-import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import 'package:malomati/res/drawables/drawable_assets.dart';
 
 enum AttendanceStatus {
   weekOff('Week Off', Color(0xffEB920C)),
@@ -363,7 +361,7 @@ class ItemAttendanceList extends StatelessWidget {
         builder: (context, isExpaned, widget) {
           return InkWell(
             onTap: () {
-              _isExpanded.value = !isExpaned;
+              //_isExpanded.value = !isExpaned;
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -394,59 +392,56 @@ class ItemAttendanceList extends StatelessWidget {
                               .onFontSize(context.resources.fontSize.dp12),
                         ),
                       ),
-                      ImageWidget(
-                              path: isExpaned
-                                  ? DrawableAssets.icChevronUp
-                                  : DrawableAssets.icChevronDown)
-                          .loadImage
+                      // ImageWidget(
+                      //         path: isExpaned
+                      //             ? DrawableAssets.icChevronUp
+                      //             : DrawableAssets.icChevronDown)
+                      //     .loadImage
                     ],
                   ),
-                  Visibility(
-                    visible: isExpaned,
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          left: context.resources.dimen.dp15,
-                          top: context.resources.dimen.dp8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Visibility(
-                                    visible: _getAttendanceStatus() != null,
-                                    child: Text(
-                                      _getAttendanceStatusName(
-                                          context, _getAttendanceStatus()),
-                                      style: context.textFontWeight400
-                                          .onColor(context
-                                              .resources.color.textColor212B4B)
-                                          .onFontSize(
-                                              context.resources.fontSize.dp11),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: context.resources.dimen.dp5,
-                                  ),
-                                  Text(
-                                    attendanceEntity.departmentLocation ?? '',
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: context.resources.dimen.dp15,
+                        top: context.resources.dimen.dp8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible: _getAttendanceStatus() != null,
+                                  child: Text(
+                                    _getAttendanceStatusName(
+                                        context, _getAttendanceStatus()),
                                     style: context.textFontWeight400
                                         .onColor(context
                                             .resources.color.textColor212B4B)
                                         .onFontSize(
                                             context.resources.fontSize.dp11),
                                   ),
-                                ],
-                              ),
-                              _getAttendanceLog(context),
-                            ],
-                          ),
-                        ],
-                      ),
+                                ),
+                                SizedBox(
+                                  height: context.resources.dimen.dp5,
+                                ),
+                                Text(
+                                  attendanceEntity.departmentLocation ?? '',
+                                  style: context.textFontWeight400
+                                      .onColor(context
+                                          .resources.color.textColor212B4B)
+                                      .onFontSize(
+                                          context.resources.fontSize.dp11),
+                                ),
+                              ],
+                            ),
+                            _getAttendanceLog(context),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],

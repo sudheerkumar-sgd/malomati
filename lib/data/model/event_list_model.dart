@@ -15,6 +15,7 @@ class EventListModel extends BaseModel {
     var birthdayListJson = [];
     var anniversaryListJson = [];
     var newJoineeListJson = [];
+    var bannerListJson = [];
     if (json['BirthdayList'] != null) {
       birthdayListJson = json['BirthdayList'] as List;
     }
@@ -23,6 +24,9 @@ class EventListModel extends BaseModel {
     }
     if (json['NewJoineeList'] != null) {
       newJoineeListJson = json['NewJoineeList'] as List;
+    }
+    if (json['BannerList'] != null) {
+      bannerListJson = json['BannerList'] as List;
     }
 
     final birthdayList = birthdayListJson
@@ -34,10 +38,14 @@ class EventListModel extends BaseModel {
     final newJoineeList = newJoineeListJson
         .map((newJoinee) => EventModel.fromJson(newJoinee).toEventsEntity())
         .toList();
+    final bannerList = bannerListJson
+        .map((bannerJson) => EventModel.fromJson(bannerJson).toEventsEntity())
+        .toList();
     var eventListModel = EventListModel();
     eventListModel.eventsList.addAll(birthdayList);
     eventListModel.eventsList.addAll(anniversaryList);
     eventListModel.eventsList.addAll(newJoineeList);
+    eventListModel.eventsList.addAll(bannerList);
     return eventListModel;
   }
 

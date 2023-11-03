@@ -152,6 +152,34 @@ const warningReasons = [
   },
 ];
 
+const vactionNotificationType = [
+  {
+    "ID": 1,
+    "MESSAGE_TYPE": "ALL",
+    "DESCRIPTION": "All",
+  },
+  {
+    "ID": 2,
+    "MESSAGE_TYPE": "HRSSA",
+    "DESCRIPTION": "HR Requests",
+  },
+  {
+    "ID": 3,
+    "MESSAGE_TYPE": "APINVAPR",
+    "DESCRIPTION": "Invoice Requests",
+  },
+  {
+    "ID": 4,
+    "MESSAGE_TYPE": "POAPPRV",
+    "DESCRIPTION": "PO Requests",
+  },
+  {
+    "ID": 5,
+    "MESSAGE_TYPE": "REQAPPRV",
+    "DESCRIPTION": "All Finance Requests",
+  },
+];
+
 const aboutMalomati =
     'Malomati is Umm Al Quwain Government Self Service Mobile Application for its employees. The application is developed by UAQ Department of eGovernment and will enable employees to use features of the Oracle EBS self-services features over mobile using with the same credentials as the ERP login. Malomati smart application provides six relevant services, which are listed below.';
 String getArabicDayName(String dayNameEn) {

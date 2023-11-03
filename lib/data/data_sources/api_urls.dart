@@ -72,3 +72,6 @@ const String requestsListApiUrl =
     'UAQSGD_MOB_ERP_NotificationHistoryRequest/NotiList';
 const String requestsDetailsApiUrl =
     'UAQSGD_MOB_ERP_NotificationHistoryRequest/NotiList/Dtls';
+const String delegationRequestApiUrl =
+    '/UAQSGD_MOB_ERP_CreateDelegationRequest/DelegationRequest';
+const String invoiceListApiUrl = 'UAQSGD_MOB_ERP_CancelInvoiceRequest/Invoice';

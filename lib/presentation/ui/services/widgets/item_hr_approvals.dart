@@ -38,13 +38,18 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
       ValueNotifier(HrapprovalDetailsEntity());
   String selectedAction = '';
 
-  _submitHrApproval(BuildContext context, String action, {String? comments}) {
+  _submitHrApproval(
+    BuildContext context,
+    String action, {
+    String? toUser,
+    String? comments,
+  }) {
     selectedAction = action;
     final requestParams = {
       "ACTION_TYPE": action,
       "NOTIFICATION_ID": widget.data.nOTIFICATIONID,
-      "TO_USER": "",
-      "FROM_USER": "",
+      "TO_USER": toUser,
+      "FROM_USER": context.userDB.get(userNameKey, defaultValue: ''),
       "COMMENTS": comments ?? action
     };
     _servicesBloc.submitHrApproval(requestParams: requestParams);
@@ -323,6 +328,71 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                             ],
                                           )
                                         ],
+                                        if ((widget.data.moreInfoQuestion ?? '')
+                                            .isNotEmpty) ...[
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  context.string.question,
+                                                  style: context
+                                                      .textFontWeight400
+                                                      .onFontSize(resources
+                                                          .fontSize.dp13),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  widget.data
+                                                          .moreInfoQuestion ??
+                                                      '',
+                                                  style: context
+                                                      .textFontWeight600
+                                                      .onFontSize(resources
+                                                          .fontSize.dp13)
+                                                      .copyWith(height: 1.2),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                        if ((widget.data.moreInfoAnswer ?? '')
+                                            .isNotEmpty) ...[
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  context.string.answer,
+                                                  style: context
+                                                      .textFontWeight400
+                                                      .onFontSize(resources
+                                                          .fontSize.dp13),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  widget.data.moreInfoAnswer ??
+                                                      '',
+                                                  style: context
+                                                      .textFontWeight600
+                                                      .onFontSize(resources
+                                                          .fontSize.dp13)
+                                                      .copyWith(height: 1.2),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                         SizedBox(
                                           height: resources.dimen.dp20,
                                         ),
@@ -442,15 +512,22 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                 child: InkWell(
                                                   onTap: () {
                                                     showDialog(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                DialogRequestAnswerMoreInfo())
-                                                        .then((value) {
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            DialogRequestAnswerMoreInfo(
+                                                              workFlowUserList:
+                                                                  notificationDetails
+                                                                      .userList,
+                                                            )).then((value) {
                                                       if (value != null) {
                                                         _submitHrApproval(
-                                                            context,
-                                                            REQUESTMOREINFO,
-                                                            comments: value);
+                                                          context,
+                                                          REQUESTMOREINFO,
+                                                          toUser: value[
+                                                              'user_name'],
+                                                          comments:
+                                                              value['question'],
+                                                        );
                                                       }
                                                     });
                                                     // _submitHrApproval(

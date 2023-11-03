@@ -75,7 +75,7 @@ class LeavesScreen extends StatelessWidget {
       case LeaveType.anualLeave:
         {
           currentBalanceText = HomeScreen.anualLeaveBalance;
-          return context.string.anualLeaves;
+          return context.string.annualLeaves;
         }
       case LeaveType.permission:
         {

@@ -25,6 +25,7 @@ class TeamNotificationScreen extends StatelessWidget {
   late BuildContext context;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController urlController = TextEditingController();
+  final TextEditingController audioURLController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
 
   onSubmit(String clickedButton) async {
@@ -59,6 +60,7 @@ class TeamNotificationScreen extends StatelessWidget {
             body: bodyController.text,
             type: 'POPUP',
             imageUrl: urlController.text,
+            audioUrl: audioURLController.text,
             notificationId: '${Random(123456).nextInt(123456)}'),
         showLoader: true);
   }
@@ -122,6 +124,15 @@ class TeamNotificationScreen extends StatelessWidget {
                               height: resources.dimen.dp27,
                               labelText: context.string.imageorVideoURL,
                               textController: urlController,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            RightIconTextWidget(
+                              isEnabled: true,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.audioURL,
+                              textController: audioURLController,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

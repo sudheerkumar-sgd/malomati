@@ -143,6 +143,24 @@ class HomeScreen extends StatelessWidget {
     _weatherEntity.value = WeatherEntity(
         temperature: context.userDB.get(lastTemperature, defaultValue: 0),
         weathercode: context.userDB.get(lastWeathercode, defaultValue: 1));
+    final pageController = PageController(
+      initialPage: 0,
+    );
+    startTimer(
+        duration: const Duration(seconds: 4),
+        callback: () {
+          int nextIndex =
+              _eventBannerChange.value == _eventsListEntity.value.length - 1
+                  ? 0
+                  : (_eventBannerChange.value + 1);
+          if (nextIndex > 0) {
+            pageController.animateToPage(nextIndex,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.linear);
+          } else {
+            pageController.jumpTo(nextIndex.toDouble());
+          }
+        });
     return SafeArea(
       child: Scaffold(
           backgroundColor: context.resources.color.appScaffoldBg,
@@ -329,20 +347,15 @@ class HomeScreen extends StatelessWidget {
                                           builder: (context, value, child) {
                                             String iconPath = getWeatherIcon(
                                                 value.weathercode ?? 0);
-                                            Color? iconColor;
-                                            if (iconPath ==
-                                                DrawableAssets.icSun) {
-                                              iconColor =
-                                                  context.resources.iconBgColor;
-                                            }
                                             return Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
                                               children: [
                                                 ImageWidget(
                                                         path: iconPath,
-                                                        backgroundTint:
-                                                            iconColor)
+                                                        backgroundTint: context
+                                                            .resources
+                                                            .iconBgColor)
                                                     .loadImage,
                                                 const SizedBox(
                                                   height: 3,
@@ -769,6 +782,7 @@ class HomeScreen extends StatelessWidget {
                                               ).loadImage
                                             : PageView(
                                                 clipBehavior: Clip.none,
+                                                controller: pageController,
                                                 children: [
                                                   for (int i = 0;
                                                       i < eventsList.length;
@@ -788,7 +802,7 @@ class HomeScreen extends StatelessWidget {
                                       SizedBox(
                                         height: context.resources.dimen.dp10,
                                       ),
-                                      if (eventsList.isEmpty) ...{
+                                      if (eventsList.isNotEmpty) ...{
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,

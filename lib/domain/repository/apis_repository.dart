@@ -5,6 +5,7 @@ import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
+import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
@@ -85,5 +86,7 @@ abstract class ApisRepository {
   Future<Either<Failure, List<FinanceApprovalEntity>>> getRequestsList(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, RequestDetailsEntity>> getRequestlDetails(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<InvoiceListEntity>>> getInvoicesList(
       {required Map<String, dynamic> requestParams});
 }

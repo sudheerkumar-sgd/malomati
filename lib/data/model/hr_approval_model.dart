@@ -20,6 +20,8 @@ class HrApprovalModel extends BaseModel {
   String? fVALUE;
   String? uSERNAME;
   String? iTEMKEY;
+  String? moreInfoQuestion;
+  String? moreInfoAnswer;
   List<AttachmentEntity>? attachments;
 
   HrApprovalModel();
@@ -37,6 +39,20 @@ class HrApprovalModel extends BaseModel {
     hrApprovalModel.cOMMENTS = json['COMMENTS'] ?? '';
     hrApprovalModel.uSERNAME = json['USER_NAME'] ?? '';
     hrApprovalModel.iTEMKEY = json['ITEM_KEY'] ?? '';
+    if (json['MORE_INFO_ANSWER'] == null) {
+      var list = ('${json['MORE_INFO_QUESTION'] ?? ''}').split(',');
+      if (list.isNotEmpty) {
+        hrApprovalModel.moreInfoQuestion = list[0].trim();
+      }
+      if (list.length > 1) {
+        hrApprovalModel.moreInfoAnswer = list[1].trim();
+      }
+    } else {
+      hrApprovalModel.moreInfoQuestion =
+          '${json['MORE_INFO_QUESTION'] ?? ''}'.trim();
+      hrApprovalModel.moreInfoAnswer =
+          '${json['MORE_INFO_ANSWER'] ?? ''}'.trim();
+    }
     return hrApprovalModel;
   }
 
@@ -83,6 +99,8 @@ extension SourceModelExtension on HrApprovalModel {
     hrApprovalEntity.cOMMENTS = cOMMENTS;
     hrApprovalEntity.uSERNAME = uSERNAME;
     hrApprovalEntity.iTEMKEY = iTEMKEY;
+    hrApprovalEntity.moreInfoQuestion = moreInfoQuestion;
+    hrApprovalEntity.moreInfoAnswer = moreInfoAnswer;
     return hrApprovalEntity;
   }
 

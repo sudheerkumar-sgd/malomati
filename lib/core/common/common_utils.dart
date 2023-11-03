@@ -160,8 +160,8 @@ DateTime getDateTimeByString(String format, String date) {
   }
 }
 
-startTimer({required double duration, required Function callback}) {
-  Timer.periodic(const Duration(seconds: 1), (Timer t) => callback());
+startTimer({required Duration duration, required Function callback}) {
+  Timer.periodic(duration, (Timer t) => callback());
 }
 
 int daysBetween(DateTime from, DateTime to) {
@@ -248,20 +248,25 @@ Map<String, dynamic> getFCMMessageData(
     required String body,
     String type = '',
     String imageUrl = '',
+    String audioUrl = '',
     String notificationId = ''}) {
   return {
     "to": '/topics/$to',
     "notification": {
+      "id": notificationId,
       "title": title,
       "body": body,
       "image_url": imageUrl,
+      "audio_url": audioUrl,
       "click_action": "FLUTTER_NOTIFICATION_CLICK",
       "sound": "default",
     },
     "data": {
+      "id": notificationId,
       "title": title,
       "body": body,
       "image_url": imageUrl,
+      "audio_url": audioUrl,
       "type": type,
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
       "notification_id": notificationId

@@ -6,6 +6,7 @@ import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 
 import '../../domain/entities/hr_approval_entity.dart';
+import '../../domain/entities/invoice_list_entity.dart';
 import '../../domain/entities/leave_type_entity.dart';
 import '../../domain/entities/request_details_entity.dart';
 import '../../domain/entities/warning_list_entity.dart';
@@ -218,5 +219,93 @@ extension RequestsDetailsExtension on RequestsDetailsModel {
     requestDetailsEntity.notificationDetails = notificationDetails;
     requestDetailsEntity.approversList = approversList;
     return requestDetailsEntity;
+  }
+}
+
+class NameValueModel extends BaseModel {
+  String? name;
+  String? id;
+
+  NameValueModel();
+
+  factory NameValueModel.fromVactionTypeJson(Map<String, dynamic> json) {
+    var nameValueModel = NameValueModel();
+    nameValueModel.name = json['DESCRIPTION'];
+    nameValueModel.id = json['MESSAGE_TYPE'];
+    return nameValueModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "ID": id,
+      };
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+      ];
+
+  @override
+  BaseEntity toEntity<T>() {
+    return LeaveTypeEntity();
+  }
+}
+
+extension NameValueModelExtension on NameValueModel {
+  NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+}
+
+class InvoiceListModel extends BaseModel {
+  String? departmentId;
+  String? invoiceID;
+  String? invoiceDate;
+  String? invoiceNumber;
+  String? vendorName;
+  String? invoiceAmount;
+  String? invoiceType;
+  String? description;
+
+  InvoiceListModel();
+
+  factory InvoiceListModel.fromJson(Map<String, dynamic> json) {
+    var invoiceListModel = InvoiceListModel();
+    invoiceListModel.departmentId = json['DEPARTMENT_ID'];
+    invoiceListModel.invoiceID = json['INVOICE_ID'];
+    invoiceListModel.invoiceDate = json['INVOICE_DATE'];
+    invoiceListModel.invoiceNumber = json['INVOICE_NUM'];
+    invoiceListModel.vendorName = json['VENDOR_NAME'];
+    invoiceListModel.invoiceAmount = json['INVOICE_AMOUNT'];
+    invoiceListModel.invoiceType = json['INVOICE_TYPE'];
+    invoiceListModel.description = json['DESCRIPTION'];
+    return invoiceListModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {};
+
+  @override
+  List<Object?> get props => [
+        departmentId,
+      ];
+
+  @override
+  BaseEntity toEntity<T>() {
+    return LeaveTypeEntity();
+  }
+}
+
+extension InvoiceListExtension on InvoiceListModel {
+  InvoiceListEntity toInvoiceListEntity() {
+    InvoiceListEntity invoiceListEntity = InvoiceListEntity();
+    invoiceListEntity.departmentId = departmentId;
+    invoiceListEntity.invoiceID = invoiceID;
+    invoiceListEntity.invoiceDate = invoiceDate;
+    invoiceListEntity.invoiceNumber = invoiceNumber;
+    invoiceListEntity.vendorName = vendorName;
+    invoiceListEntity.invoiceAmount = invoiceAmount;
+    invoiceListEntity.invoiceType = invoiceType;
+    invoiceListEntity.description = description;
+    return invoiceListEntity;
   }
 }

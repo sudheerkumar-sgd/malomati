@@ -53,7 +53,11 @@ class _MainScreenState extends State<MainScreen> {
 
   void initAudio(String path) {
     _player.setLoopMode(LoopMode.off);
-    _player.setAsset(path);
+    if (path.toLowerCase().contains('http://') || path.contains('https://')) {
+      _player.setUrl(path);
+    } else {
+      _player.setAsset(path);
+    }
     _player.play();
   }
 
@@ -134,6 +138,9 @@ class _MainScreenState extends State<MainScreen> {
         ServicesScreen.onServiceClick(
             context, FavoriteEntity(name: 'Finance Approvals'));
       } else if (message['data']['type'] == 'POPUP') {
+        if (message['data']['audio_url'].isNotEmpty) {
+          initAudio(message['data']['audio_url']);
+        }
         showDialog(
             context: context,
             builder: (context) {
@@ -158,6 +165,7 @@ class _MainScreenState extends State<MainScreen> {
       if (availability == const UpdateAvailable()) {
         showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (context) {
               return const UpdateDialogWidget();
             });
@@ -168,29 +176,16 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     ConstantConfig.badgeCount = 0;
-    setupFirebaseNotificationMessage();
-    FlutterAppBadger.isAppBadgeSupported()
-        .then((value) => FlutterAppBadger.removeBadge());
-    _checkIsUpdateAvailabe();
+    Future.delayed(const Duration(seconds: 1), () {
+      setupFirebaseNotificationMessage();
+      FlutterAppBadger.isAppBadgeSupported()
+          .then((value) => FlutterAppBadger.removeBadge());
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Timer(const Duration(seconds: 3), () {
-    //   _showBirthday(context);
-    // });
-    // final Color background = context.resources.color.appScaffoldBg;
-    // final Color fill = context.resources.color.appScaffoldBg;
-    // final List<Color> gradient = [
-    //   background,
-    //   background,
-    //   fill,
-    //   fill,
-    // ];
-    // const double fillPercent = 80; // fills 56.23% for container from bottom
-    // const double fillStop = (100 - fillPercent) / 100;
-    // final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: context.resources.color.appScaffoldBg,
         statusBarIconBrightness: Brightness.dark));
@@ -205,6 +200,7 @@ class _MainScreenState extends State<MainScreen> {
           ConstantConfig.onFCMMessageReceived.value = null;
         }
       });
+      _checkIsUpdateAvailabe();
     });
     return WillPopScope(
       onWillPop: () async {
@@ -228,14 +224,6 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: Container(
         color: context.resources.color.appScaffoldBg,
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: gradient,
-        //     stops: stops,
-        //     end: Alignment.bottomCenter,
-        //     begin: Alignment.topCenter,
-        //   ),
-        // ),
         child: SafeArea(
           child: ValueListenableBuilder(
               valueListenable: _selectedIndex,

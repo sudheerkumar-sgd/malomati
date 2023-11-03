@@ -103,6 +103,12 @@ class OnWarningListSuccess extends ServicesState {
   OnWarningListSuccess({required this.warningList});
 }
 
+class OnInvoicesListSuccess extends ServicesState {
+  final List<InvoiceListEntity> invoiceList;
+
+  OnInvoicesListSuccess({required this.invoiceList});
+}
+
 class OnFCMSuccess extends ServicesState {
   final String response;
 

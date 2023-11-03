@@ -1,7 +1,9 @@
 import 'package:malomati/data/model/base_model.dart';
+import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/finance_details_item_model.dart';
 import 'package:malomati/domain/entities/attachment_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/finance_details_item_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import '../../domain/entities/attendance_entity.dart';
@@ -15,11 +17,13 @@ class HrApprovalDetailsModel extends BaseModel {
   List<FinanceDetailsItemEntity> financeNotificationDetails = [];
   List<AttachmentEntity> attachements = [];
   String? uSERCOMMENTS;
+  List<EmployeeEntity> userList = [];
   HrApprovalDetailsModel();
 
   factory HrApprovalDetailsModel.fromJson(Map<String, dynamic> json) {
     var hrApprovalDetailsModel = HrApprovalDetailsModel();
-    hrApprovalDetailsModel.uSERCOMMENTS = json['USER_COMMENTS'];
+    hrApprovalDetailsModel.uSERCOMMENTS =
+        '${json['USER_COMMENTS'] ?? ''}'.trim();
     if (json['NotificationDetails'] != null) {
       var hrApprovalsJson = json['NotificationDetails'] as List;
       var hrApprovalList = hrApprovalsJson
@@ -28,6 +32,15 @@ class HrApprovalDetailsModel extends BaseModel {
                   .toHrApprovalDetailsEntity())
           .toList();
       hrApprovalDetailsModel.notificationDetails = hrApprovalList;
+    }
+
+    if (json['USER_LIST'] != null) {
+      var userListJson = json['USER_LIST'] as List;
+      var userList = userListJson
+          .map((userJson) =>
+              EmployeeModel.fromUserList(userJson).toEmployeeEntity())
+          .toList();
+      hrApprovalDetailsModel.userList = userList;
     }
 
     if (json['Items'] != null) {
@@ -84,6 +97,7 @@ extension SourceModelExtension on HrApprovalDetailsModel {
     hrapprovalDetailsEntity.financeNotificationDetails =
         financeNotificationDetails;
     hrapprovalDetailsEntity.attachements = attachements;
+    hrapprovalDetailsEntity.userList = userList;
     return hrapprovalDetailsEntity;
   }
 }
