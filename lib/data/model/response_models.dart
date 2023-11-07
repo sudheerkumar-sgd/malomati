@@ -258,6 +258,7 @@ extension NameValueModelExtension on NameValueModel {
 
 class InvoiceListModel extends BaseModel {
   String? departmentId;
+  String? departmentName;
   String? invoiceID;
   String? invoiceDate;
   String? invoiceNumber;
@@ -271,6 +272,7 @@ class InvoiceListModel extends BaseModel {
   factory InvoiceListModel.fromJson(Map<String, dynamic> json) {
     var invoiceListModel = InvoiceListModel();
     invoiceListModel.departmentId = json['DEPARTMENT_ID'];
+    invoiceListModel.departmentName = json['DEPARTMENT_NAME'];
     invoiceListModel.invoiceID = json['INVOICE_ID'];
     invoiceListModel.invoiceDate = json['INVOICE_DATE'];
     invoiceListModel.invoiceNumber = json['INVOICE_NUM'];
@@ -299,6 +301,7 @@ extension InvoiceListExtension on InvoiceListModel {
   InvoiceListEntity toInvoiceListEntity() {
     InvoiceListEntity invoiceListEntity = InvoiceListEntity();
     invoiceListEntity.departmentId = departmentId;
+    invoiceListEntity.departmentName = departmentName;
     invoiceListEntity.invoiceID = invoiceID;
     invoiceListEntity.invoiceDate = invoiceDate;
     invoiceListEntity.invoiceNumber = invoiceNumber;

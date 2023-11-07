@@ -13,10 +13,9 @@ import '../../../core/common/common_utils.dart';
 import '../../../data/model/api_request_model.dart';
 import '../../../domain/entities/invoice_list_entity.dart';
 import '../../../domain/entities/leave_details_entity.dart';
-import '../../../res/drawables/drawable_assets.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
-import '../widgets/dropdown_widget.dart';
+import '../widgets/right_icon_text_widget.dart';
 
 class CancelInvoiceScreen extends StatelessWidget {
   static const String route = '/CancelInvoiceScreen';
@@ -38,7 +37,7 @@ class CancelInvoiceScreen extends StatelessWidget {
 
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
-      _submitAdvanceSalaryRequest();
+      _submitCancelInvoiceRequest();
     }
   }
 
@@ -46,13 +45,15 @@ class CancelInvoiceScreen extends StatelessWidget {
     _selectedInvoiceEntity.value = invoiceListEntity;
   }
 
-  _submitAdvanceSalaryRequest() {
-    final advanceSalaryRequestModel = ApiRequestModel();
-    advanceSalaryRequestModel.uSERNAME = userName;
-    advanceSalaryRequestModel.lEAVE = leave;
+  _submitCancelInvoiceRequest() {
+    final cancelInvoiceRequestModel = ApiRequestModel();
+    cancelInvoiceRequestModel.oRGID =
+        _selectedInvoiceEntity.value?.departmentId ?? '';
+    cancelInvoiceRequestModel.iNVOICEID =
+        _selectedInvoiceEntity.value?.invoiceNumber ?? '';
     _servicesBloc.submitServicesRequest(
-        apiUrl: advanceSalaryApiUrl,
-        requestParams: advanceSalaryRequestModel.toAdvanceSalaryRequest());
+        apiUrl: cancelInvoiceApiUrl,
+        requestParams: cancelInvoiceRequestModel.toCancelInvoiceRequest());
   }
 
   @override
@@ -104,7 +105,7 @@ class CancelInvoiceScreen extends StatelessWidget {
                                 '',
                             title: 'Cancel Invoice',
                             body:
-                                '${context.userDB.get(userFullNameUsKey)} has Requested Cancel Invoice',
+                                '${context.userDB.get(userFullNameUsKey)} has Requested to Cancel Invoice',
                             type: '',
                             notificationId: state.servicesRequestSuccessResponse
                                     .entity?.nTFID ??
@@ -162,6 +163,27 @@ class CancelInvoiceScreen extends StatelessWidget {
                                                   textEditingValue.text
                                                       .toLowerCase());
                                             });
+                                          },
+                                          fieldViewBuilder: (context,
+                                              textEditingController,
+                                              focusNode,
+                                              onFieldSubmitted) {
+                                            return RightIconTextWidget(
+                                              isEnabled: true,
+                                              height: resources.dimen.dp27,
+                                              textInputType:
+                                                  TextInputType.number,
+                                              labelText:
+                                                  context.string.invoiceNumber,
+                                              hintText:
+                                                  context.string.invoiceNumber,
+                                              errorMessage:
+                                                  context.string.invoiceNumber,
+                                              fontFamily: fontFamilyEN,
+                                              textController:
+                                                  textEditingController,
+                                              focusNode: focusNode,
+                                            );
                                           },
                                           onSelected:
                                               (InvoiceListEntity selection) {

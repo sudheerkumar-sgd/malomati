@@ -163,12 +163,20 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                     Expanded(
                       child: RichText(
                         text: TextSpan(
-                            text:
-                                '${approvalDetails.sUPPLIERNAME}\n${approvalDetails.sUBJECT}\n',
+                            text: '${approvalDetails.sUPPLIERNAME}\n',
                             style: context.textFontWeight400
                                 .onFontSize(resources.fontSize.dp12)
+                                .onFontFamily(
+                                    fontFamily: getFontNameByString(
+                                        approvalDetails.sUPPLIERNAME ?? ''))
                                 .copyWith(height: 1.5),
                             children: [
+                              TextSpan(
+                                text: '${approvalDetails.sUBJECT}\n',
+                                style: context.textFontWeight400
+                                    .onFontSize(resources.fontSize.dp12)
+                                    .onFontFamily(fontFamily: fontFamilyEN),
+                              ),
                               TextSpan(
                                 text: '${context.string.submittedOn} : ',
                                 style: context.textFontWeight400
@@ -241,12 +249,9 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                     style: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp13)
                                         .onFontFamily(
-                                            fontFamily: isStringArabic(
-                                                    approvalDetails
-                                                            .sUPPLIERNAME ??
-                                                        '')
-                                                ? fontFamilyAR
-                                                : fontFamilyEN),
+                                            fontFamily: getFontNameByString(
+                                                approvalDetails.sUPPLIERNAME ??
+                                                    '')),
                                   ),
                                 ]),
                                 TableRow(children: [
@@ -283,65 +288,85 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                         .copyWith(height: 1.5),
                                   ),
                                 ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.invoiceDescription,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    approvalDetails.iNVDESCRIPTION ?? '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.itemAmount,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.tax,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.total,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    '${approvalDetails.tOTAL ?? ''}',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
+                                if ((approvalDetails.iNVDESCRIPTION ?? '')
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.invoiceDescription,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.iNVDESCRIPTION ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: getFontNameByString(
+                                                  approvalDetails
+                                                          .iNVDESCRIPTION ??
+                                                      ''))
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                ],
+                                if ('${approvalDetails.iTEMAMOUNT ?? ''}'
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.itemAmount,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.iTEMAMOUNT ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                ],
+                                if ('${approvalDetails.tAXAMOUNT ?? ''}'
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.tax,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.tAXAMOUNT ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                ],
+                                if ('${approvalDetails.tOTAL ?? ''}'
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.total,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      '${approvalDetails.tOTAL ?? ''}',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                ],
                                 TableRow(children: [
                                   InkWell(
                                     onTap: () {

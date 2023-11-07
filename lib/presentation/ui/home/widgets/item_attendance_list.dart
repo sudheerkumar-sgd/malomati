@@ -412,6 +412,7 @@ class ItemAttendanceList extends StatelessWidget {
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Visibility(
                                   visible: _getAttendanceStatus() != null,
@@ -425,17 +426,20 @@ class ItemAttendanceList extends StatelessWidget {
                                             context.resources.fontSize.dp11),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: context.resources.dimen.dp5,
-                                ),
-                                Text(
-                                  attendanceEntity.departmentLocation ?? '',
-                                  style: context.textFontWeight400
-                                      .onColor(context
-                                          .resources.color.textColor212B4B)
-                                      .onFontSize(
-                                          context.resources.fontSize.dp11),
-                                ),
+                                if ((attendanceEntity.departmentLocation ?? '')
+                                    .isNotEmpty) ...[
+                                  SizedBox(
+                                    height: context.resources.dimen.dp5,
+                                  ),
+                                  Text(
+                                    attendanceEntity.departmentLocation ?? '',
+                                    style: context.textFontWeight400
+                                        .onColor(context
+                                            .resources.color.textColor212B4B)
+                                        .onFontSize(
+                                            context.resources.fontSize.dp11),
+                                  ),
+                                ]
                               ],
                             ),
                             _getAttendanceLog(context),

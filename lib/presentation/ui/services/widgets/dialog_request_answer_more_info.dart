@@ -100,6 +100,8 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
+                                selectedEmployee = null;
+                                department = null;
                                 _selectedEmployeeType.value = 0;
                               },
                               child: Row(
@@ -142,19 +144,15 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                               padding: EdgeInsets.only(
                                   left: isLocalEn ? 15.0 : 0.0,
                                   right: isLocalEn ? 0.0 : 15.0),
-                              child: IgnorePointer(
-                                ignoring: type == 1,
-                                child: DropDownWidget<EmployeeEntity>(
-                                  list: workFlowUserList ?? [],
-                                  height: resources.dimen.dp27,
-                                  hintText: context.string.selectEmployee,
-                                  suffixIconPath: DrawableAssets.icChevronDown,
-                                  fillColor:
-                                      context.resources.color.colorLightBg,
-                                  selectedValue:
-                                      type == 0 ? selectedEmployee : null,
-                                  callback: onEmployeeSelected,
-                                ),
+                              child: DropDownWidget<EmployeeEntity>(
+                                isEnabled: type == 0,
+                                list: workFlowUserList ?? [],
+                                height: resources.dimen.dp27,
+                                hintText: context.string.selectEmployee,
+                                suffixIconPath: DrawableAssets.icChevronDown,
+                                fillColor: context.resources.color.colorLightBg,
+                                selectedValue: selectedEmployee,
+                                callback: onEmployeeSelected,
                               ),
                             ),
                             SizedBox(
@@ -162,6 +160,8 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
+                                selectedEmployee = null;
+                                department = null;
                                 _selectedEmployeeType.value = 1;
                               },
                               child: Row(
@@ -208,18 +208,15 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                               padding: EdgeInsets.only(
                                   left: isLocalEn ? 15.0 : 0.0,
                                   right: isLocalEn ? 0.0 : 15.0),
-                              child: IgnorePointer(
-                                ignoring: type == 0,
-                                child: DropDownWidget<DepartmentEntity>(
-                                  list: _departments,
-                                  height: resources.dimen.dp27,
-                                  hintText: context.string.department,
-                                  suffixIconPath: DrawableAssets.icChevronDown,
-                                  fillColor:
-                                      context.resources.color.colorLightBg,
-                                  selectedValue: type == 1 ? department : null,
-                                  callback: onDepartmentSelected,
-                                ),
+                              child: DropDownWidget<DepartmentEntity>(
+                                isEnabled: type == 1,
+                                list: _departments,
+                                height: resources.dimen.dp27,
+                                hintText: context.string.department,
+                                suffixIconPath: DrawableAssets.icChevronDown,
+                                fillColor: context.resources.color.colorLightBg,
+                                selectedValue: department,
+                                callback: onDepartmentSelected,
                               ),
                             ),
                             SizedBox(
@@ -232,20 +229,17 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                                     padding: EdgeInsets.only(
                                         left: isLocalEn ? 15.0 : 0.0,
                                         right: isLocalEn ? 0.0 : 15.0),
-                                    child: IgnorePointer(
-                                      ignoring: type == 0,
-                                      child: DropDownWidget<EmployeeEntity>(
-                                        list: employeesList,
-                                        height: resources.dimen.dp27,
-                                        hintText: context.string.selectEmployee,
-                                        suffixIconPath:
-                                            DrawableAssets.icChevronDown,
-                                        fillColor: context
-                                            .resources.color.colorLightBg,
-                                        selectedValue:
-                                            type == 1 ? selectedEmployee : null,
-                                        callback: onEmployeeSelected,
-                                      ),
+                                    child: DropDownWidget<EmployeeEntity>(
+                                      isEnabled: type == 1,
+                                      list: employeesList,
+                                      height: resources.dimen.dp27,
+                                      hintText: context.string.selectEmployee,
+                                      suffixIconPath:
+                                          DrawableAssets.icChevronDown,
+                                      fillColor:
+                                          context.resources.color.colorLightBg,
+                                      selectedValue: selectedEmployee,
+                                      callback: onEmployeeSelected,
                                     ),
                                   );
                                 }),

@@ -75,9 +75,9 @@ class RequestsScreen extends StatelessWidget {
     _startDateController.text =
         DateFormat(dateFormat).format(DateTime(date.year, date.month, 1));
     _endDateController.text = DateFormat(dateFormat).format(DateTime.now());
-    // Future.delayed(const Duration(seconds: 1), () {
-    //   getRequests();
-    // });
+    Future.delayed(const Duration(seconds: 1), () {
+      getRequests();
+    });
     _startDateController.addListener(
       () {
         _endDateController.text = '';
@@ -267,35 +267,187 @@ class RequestsScreen extends StatelessWidget {
                               : EdgeInsets.only(
                                   left: context.resources.dimen.dp20),
                           child: Scrollbar(
-                              controller: controller,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              child: (_selectedListType.value ==
-                                      SelectedListType.attendance)
-                                  ? StreamBuilder(
-                                      stream:
-                                          _attendanceBloc.getAttendanceReport,
-                                      builder: (context, snapshot) {
-                                        return snapshot.data?.isEmpty ?? true
-                                            ? const Center(
-                                                child: SizedBox(
-                                                    width: 40,
-                                                    height: 40,
-                                                    child:
-                                                        CircularProgressIndicator()),
-                                              )
-                                            : ListView.separated(
-                                                itemCount:
-                                                    snapshot.data?.length ?? 0,
-                                                itemBuilder: (context, index) {
-                                                  return ItemAttendanceList(
-                                                    attendanceEntity:
-                                                        snapshot.data![index],
-                                                  );
-                                                },
-                                                separatorBuilder: (context,
-                                                        index) =>
-                                                    Container(
+                            controller: controller,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: (_selectedListType.value ==
+                                    SelectedListType.attendance)
+                                ? StreamBuilder(
+                                    stream: _attendanceBloc.getAttendanceReport,
+                                    builder: (context, snapshot) {
+                                      return snapshot.data?.isEmpty ?? true
+                                          ? const Center(
+                                              child: SizedBox(
+                                                  width: 40,
+                                                  height: 40,
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            )
+                                          : ListView.separated(
+                                              itemCount:
+                                                  snapshot.data?.length ?? 0,
+                                              itemBuilder: (context, index) {
+                                                return ItemAttendanceList(
+                                                  attendanceEntity:
+                                                      snapshot.data![index],
+                                                );
+                                              },
+                                              separatorBuilder: (context,
+                                                      index) =>
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp25),
+                                                    color: context.resources
+                                                        .color.colorD6D6D6,
+                                                    height: 0.5,
+                                                  ));
+                                    })
+                                : ValueListenableBuilder(
+                                    valueListenable: _requestsList,
+                                    builder: (context, list, child) {
+                                      return ListView.separated(
+                                          itemCount: list.length + 1,
+                                          itemBuilder: (context, index) {
+                                            return index == 0
+                                                ? Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: context.resources
+                                                            .dimen.dp20,
+                                                      ),
+                                                      Expanded(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            _selectDate(context,
+                                                                _startDateController,
+                                                                initialDate: _startDateController
+                                                                        .text
+                                                                        .isNotEmpty
+                                                                    ? getDateTimeByString(
+                                                                        dateFormat,
+                                                                        _startDateController
+                                                                            .text)
+                                                                    : DateTime
+                                                                        .now());
+                                                          },
+                                                          child:
+                                                              RightIconTextWidget(
+                                                            height: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp27,
+                                                            labelText: context
+                                                                .string
+                                                                .startDate,
+                                                            hintText: context
+                                                                .string
+                                                                .chooseStartDate,
+                                                            fontFamily:
+                                                                fontFamilyEN,
+                                                            errorMessage: context
+                                                                .string
+                                                                .chooseStartDate,
+                                                            suffixIconPath:
+                                                                DrawableAssets
+                                                                    .icCalendar,
+                                                            textController:
+                                                                _startDateController,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: context.resources
+                                                            .dimen.dp20,
+                                                      ),
+                                                      Expanded(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            _selectDate(context,
+                                                                _endDateController,
+                                                                initialDate: getDateTimeByString(
+                                                                    dateFormat,
+                                                                    _endDateController
+                                                                            .text
+                                                                            .isEmpty
+                                                                        ? _startDateController
+                                                                            .text
+                                                                        : _endDateController
+                                                                            .text),
+                                                                firstDate: getDateTimeByString(
+                                                                    dateFormat,
+                                                                    _startDateController
+                                                                        .text));
+                                                          },
+                                                          child:
+                                                              RightIconTextWidget(
+                                                            height: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp27,
+                                                            labelText: context
+                                                                .string.endDate,
+                                                            hintText: context
+                                                                .string
+                                                                .chooseEndDate,
+                                                            fontFamily:
+                                                                fontFamilyEN,
+                                                            errorMessage: context
+                                                                .string
+                                                                .chooseEndDate,
+                                                            suffixIconPath:
+                                                                DrawableAssets
+                                                                    .icCalendar,
+                                                            textController:
+                                                                _endDateController,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: context.resources
+                                                            .dimen.dp10,
+                                                      ),
+                                                    ],
+                                                  )
+                                                : isRequestsLoading
+                                                    ? Center(
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: context
+                                                                      .resources
+                                                                      .dimen
+                                                                      .dp20),
+                                                          height: context
+                                                              .resources
+                                                              .dimen
+                                                              .dp20,
+                                                          width: context
+                                                              .resources
+                                                              .dimen
+                                                              .dp20,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: context
+                                                                .resources
+                                                                .dimen
+                                                                .dp2,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : ItemRequestsList(
+                                                        data: list[index - 1],
+                                                      );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              index > 0
+                                                  ? Container(
                                                       margin:
                                                           EdgeInsets.symmetric(
                                                               horizontal:
@@ -306,169 +458,10 @@ class RequestsScreen extends StatelessWidget {
                                                       color: context.resources
                                                           .color.colorD6D6D6,
                                                       height: 0.5,
-                                                    ));
-                                      })
-                                  // : ValueListenableBuilder(
-                                  //     valueListenable: _requestsList,
-                                  //     builder: (context, list, child) {
-                                  //       return ListView.separated(
-                                  //           itemCount: list.length + 1,
-                                  //           itemBuilder: (context, index) {
-                                  //             return index == 0
-                                  //                 ? Row(
-                                  //                     crossAxisAlignment:
-                                  //                         CrossAxisAlignment
-                                  //                             .start,
-                                  //                     children: [
-                                  //                       SizedBox(
-                                  //                         width: context.resources
-                                  //                             .dimen.dp20,
-                                  //                       ),
-                                  //                       Expanded(
-                                  //                         child: InkWell(
-                                  //                           onTap: () {
-                                  //                             _selectDate(context,
-                                  //                                 _startDateController,
-                                  //                                 initialDate: _startDateController
-                                  //                                         .text
-                                  //                                         .isNotEmpty
-                                  //                                     ? getDateTimeByString(
-                                  //                                         dateFormat,
-                                  //                                         _startDateController
-                                  //                                             .text)
-                                  //                                     : DateTime
-                                  //                                         .now());
-                                  //                           },
-                                  //                           child:
-                                  //                               RightIconTextWidget(
-                                  //                             height: context
-                                  //                                 .resources
-                                  //                                 .dimen
-                                  //                                 .dp27,
-                                  //                             labelText: context
-                                  //                                 .string
-                                  //                                 .startDate,
-                                  //                             hintText: context
-                                  //                                 .string
-                                  //                                 .chooseStartDate,
-                                  //                             fontFamily:
-                                  //                                 fontFamilyEN,
-                                  //                             errorMessage: context
-                                  //                                 .string
-                                  //                                 .chooseStartDate,
-                                  //                             suffixIconPath:
-                                  //                                 DrawableAssets
-                                  //                                     .icCalendar,
-                                  //                             textController:
-                                  //                                 _startDateController,
-                                  //                           ),
-                                  //                         ),
-                                  //                       ),
-                                  //                       SizedBox(
-                                  //                         width: context.resources
-                                  //                             .dimen.dp20,
-                                  //                       ),
-                                  //                       Expanded(
-                                  //                         child: InkWell(
-                                  //                           onTap: () {
-                                  //                             _selectDate(context,
-                                  //                                 _endDateController,
-                                  //                                 initialDate: getDateTimeByString(
-                                  //                                     dateFormat,
-                                  //                                     _endDateController
-                                  //                                             .text
-                                  //                                             .isEmpty
-                                  //                                         ? _startDateController
-                                  //                                             .text
-                                  //                                         : _endDateController
-                                  //                                             .text),
-                                  //                                 firstDate: getDateTimeByString(
-                                  //                                     dateFormat,
-                                  //                                     _startDateController
-                                  //                                         .text));
-                                  //                           },
-                                  //                           child:
-                                  //                               RightIconTextWidget(
-                                  //                             height: context
-                                  //                                 .resources
-                                  //                                 .dimen
-                                  //                                 .dp27,
-                                  //                             labelText: context
-                                  //                                 .string.endDate,
-                                  //                             hintText: context
-                                  //                                 .string
-                                  //                                 .chooseEndDate,
-                                  //                             fontFamily:
-                                  //                                 fontFamilyEN,
-                                  //                             errorMessage: context
-                                  //                                 .string
-                                  //                                 .chooseEndDate,
-                                  //                             suffixIconPath:
-                                  //                                 DrawableAssets
-                                  //                                     .icCalendar,
-                                  //                             textController:
-                                  //                                 _endDateController,
-                                  //                           ),
-                                  //                         ),
-                                  //                       ),
-                                  //                       SizedBox(
-                                  //                         width: context.resources
-                                  //                             .dimen.dp10,
-                                  //                       ),
-                                  //                     ],
-                                  //                   )
-                                  //                 : isRequestsLoading
-                                  //                     ? Center(
-                                  //                         child: Container(
-                                  //                           margin:
-                                  //                               EdgeInsets.only(
-                                  //                                   top: context
-                                  //                                       .resources
-                                  //                                       .dimen
-                                  //                                       .dp20),
-                                  //                           height: context
-                                  //                               .resources
-                                  //                               .dimen
-                                  //                               .dp20,
-                                  //                           width: context
-                                  //                               .resources
-                                  //                               .dimen
-                                  //                               .dp20,
-                                  //                           child:
-                                  //                               CircularProgressIndicator(
-                                  //                             strokeWidth: context
-                                  //                                 .resources
-                                  //                                 .dimen
-                                  //                                 .dp2,
-                                  //                           ),
-                                  //                         ),
-                                  //                       )
-                                  //                     : ItemRequestsList(
-                                  //                         data: list[index - 1],
-                                  //                       );
-                                  //           },
-                                  //           separatorBuilder: (context, index) =>
-                                  //               index > 0
-                                  //                   ? Container(
-                                  //                       margin:
-                                  //                           EdgeInsets.symmetric(
-                                  //                               horizontal:
-                                  //                                   context
-                                  //                                       .resources
-                                  //                                       .dimen
-                                  //                                       .dp25),
-                                  //                       color: context.resources
-                                  //                           .color.colorD6D6D6,
-                                  //                       height: 0.5,
-                                  //                     )
-                                  //                   : const SizedBox());
-                                  //     }),
-                                  : Center(
-                                      child: Text(
-                                        "Comming Soon",
-                                        style: context.textFontWeight600,
-                                      ),
-                                    )),
+                                                    )
+                                                  : const SizedBox());
+                                    }),
+                          ),
                         ),
                       );
                     }),

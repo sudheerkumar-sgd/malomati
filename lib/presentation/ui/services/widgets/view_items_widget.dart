@@ -191,65 +191,73 @@ class ViewItemsWidget extends StatelessWidget {
                 .onFontSize(resources.fontSize.dp13)
                 .onFontFamily(fontFamily: fontFamilyEN),
           ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.itemDescription}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            item.iTEMDESCRIPTION ?? '',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(
-                    fontFamily: isStringArabic(item.iTEMDESCRIPTION ?? '')
-                        ? fontFamilyAR
-                        : fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
-          Text(
-            '${context.string.quantity}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.qUANTITY ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.unitPrice}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.uNITPRICE ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.lineAmount}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.lINEAMOUNT ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
+          if ((item.iTEMDESCRIPTION ?? '').isNotEmpty) ...[
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+            Text(
+              '${context.string.itemDescription}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              item.iTEMDESCRIPTION ?? '',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(
+                      fontFamily: isStringArabic(item.iTEMDESCRIPTION ?? '')
+                          ? fontFamilyAR
+                          : fontFamilyEN),
+            ),
+          ],
+          if ((item.qUANTITY ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              '${context.string.quantity}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.qUANTITY ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
+          if ((item.uNITPRICE ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+            Text(
+              '${context.string.unitPrice}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.uNITPRICE ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
+          if ((item.lINEAMOUNT ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+            Text(
+              '${context.string.lineAmount}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.lINEAMOUNT ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
           SizedBox(
             height: resources.dimen.dp20,
           ),
@@ -268,61 +276,69 @@ class ViewItemsWidget extends StatelessWidget {
           SizedBox(
             height: resources.dimen.dp30,
           ),
-          Text(
-            '${context.string.itemDescription}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            item.iTEMDESCRIPTION ?? '',
-            style:
-                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-          ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
-          Text(
-            '${context.string.quantity}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.qUANTITY ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.unitPrice}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.uNITPRICE ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.amount}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${(item.uNITPRICE ?? 0) * (item.qUANTITY ?? 0)}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
+          if ((item.iTEMDESCRIPTION ?? '').isNotEmpty) ...[
+            Text(
+              '${context.string.itemDescription}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              item.iTEMDESCRIPTION ?? '',
+              style:
+                  context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+            ),
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+          ],
+          if ((item.qUANTITY ?? 0) > 0) ...[
+            Text(
+              '${context.string.quantity}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.qUANTITY ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+          ],
+          if ((item.uNITPRICE ?? 0) > 0) ...[
+            Text(
+              '${context.string.unitPrice}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.uNITPRICE ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+          ],
+          if ((item.uNITPRICE ?? 0) > 0) ...[
+            Text(
+              '${context.string.amount}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${(item.uNITPRICE ?? 0) * (item.qUANTITY ?? 0)}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+          ]
         ],
       ),
     );
@@ -349,75 +365,85 @@ class ViewItemsWidget extends StatelessWidget {
                 .onFontSize(resources.fontSize.dp13)
                 .onFontFamily(fontFamily: fontFamilyEN),
           ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
-          Text(
-            '${context.string.itemDescription}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            item.dESCRIPTION ?? '',
-            style:
-                context.textFontWeight600.onFontSize(resources.fontSize.dp13),
-          ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
-          Text(
-            '${context.string.poNumber}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.pONUMBER ?? ''}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp20,
-          ),
-          Text(
-            '${context.string.quantity}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.qUANTITY ?? '0'}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            '${context.string.unitPrice}:',
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.uNITPRICE ?? '0'}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
-          SizedBox(
-            height: resources.dimen.dp30,
-          ),
-          Text(
-            "${context.string.amount}:",
-            style:
-                context.textFontWeight400.onFontSize(resources.fontSize.dp13),
-          ),
-          Text(
-            '${item.aMOUNT ?? 0}',
-            style: context.textFontWeight600
-                .onFontSize(resources.fontSize.dp13)
-                .onFontFamily(fontFamily: fontFamilyEN),
-          ),
+          if ((item.dESCRIPTION ?? '').isNotEmpty) ...[
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              '${context.string.itemDescription}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              item.dESCRIPTION ?? '',
+              style:
+                  context.textFontWeight600.onFontSize(resources.fontSize.dp13),
+            ),
+          ],
+          if ((item.pONUMBER ?? '').isNotEmpty) ...[
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              '${context.string.poNumber}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.pONUMBER ?? ''}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
+          if ((item.qUANTITY ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              '${context.string.quantity}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.qUANTITY ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
+          if ((item.uNITPRICE ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp30,
+            ),
+            Text(
+              '${context.string.unitPrice}:',
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.uNITPRICE ?? '0'}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
+          if ((item.aMOUNT ?? 0) > 0) ...[
+            SizedBox(
+              height: resources.dimen.dp20,
+            ),
+            Text(
+              "${context.string.amount}:",
+              style:
+                  context.textFontWeight400.onFontSize(resources.fontSize.dp13),
+            ),
+            Text(
+              '${item.aMOUNT ?? 0}',
+              style: context.textFontWeight600
+                  .onFontSize(resources.fontSize.dp13)
+                  .onFontFamily(fontFamily: fontFamilyEN),
+            ),
+          ],
           SizedBox(
             height: resources.dimen.dp20,
           ),

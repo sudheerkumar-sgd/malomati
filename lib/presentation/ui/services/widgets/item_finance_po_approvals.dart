@@ -284,66 +284,77 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                     height: resources.dimen.dp5,
                                   ),
                                 ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.description,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    approvalDetails.pODESCRIPTION ?? '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  SizedBox(
-                                    height: resources.dimen.dp5,
-                                  ),
-                                  SizedBox(
-                                    height: resources.dimen.dp5,
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.amount,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    approvalDetails.tOTALAMOUNT ?? '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  SizedBox(
-                                    height: resources.dimen.dp5,
-                                  ),
-                                  SizedBox(
-                                    height: resources.dimen.dp5,
-                                  ),
-                                ]),
-                                TableRow(children: [
-                                  Text(
-                                    context.string.tax,
-                                    style: context.textFontWeight400
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                  Text(
-                                    approvalDetails.tAXAMOUNT ?? '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp13)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .copyWith(height: 1.5),
-                                  ),
-                                ]),
+                                if ((approvalDetails.pODESCRIPTION ?? '')
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.description,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.pODESCRIPTION ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                  TableRow(children: [
+                                    SizedBox(
+                                      height: resources.dimen.dp5,
+                                    ),
+                                    SizedBox(
+                                      height: resources.dimen.dp5,
+                                    ),
+                                  ]),
+                                ],
+                                if ("${approvalDetails.tOTALAMOUNT ?? ''}"
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.amount,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.tOTALAMOUNT ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                  TableRow(children: [
+                                    SizedBox(
+                                      height: resources.dimen.dp5,
+                                    ),
+                                    SizedBox(
+                                      height: resources.dimen.dp5,
+                                    ),
+                                  ]),
+                                ],
+                                if (('${approvalDetails.tAXAMOUNT ?? ''}')
+                                    .isNotEmpty) ...[
+                                  TableRow(children: [
+                                    Text(
+                                      context.string.tax,
+                                      style: context.textFontWeight400
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                    Text(
+                                      approvalDetails.tAXAMOUNT ?? '',
+                                      style: context.textFontWeight600
+                                          .onFontSize(resources.fontSize.dp13)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .copyWith(height: 1.5),
+                                    ),
+                                  ]),
+                                ],
                                 // TableRow(children: [
                                 //   Text(
                                 //     context.string.paymentTerms,

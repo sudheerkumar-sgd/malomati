@@ -16,6 +16,7 @@ class RightIconTextWidget extends StatelessWidget {
   final int? maxLines;
   final int? maxLength;
   final String fontFamily;
+  final FocusNode? focusNode;
   const RightIconTextWidget(
       {this.height = defaultHeight,
       this.isEnabled = false,
@@ -28,6 +29,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.maxLines,
       this.maxLength,
       this.fontFamily = '',
+      this.focusNode,
       super.key});
 
   @override
@@ -61,6 +63,7 @@ class RightIconTextWidget extends StatelessWidget {
             keyboardType: textInputType,
             controller: textController,
             textAlignVertical: TextAlignVertical.center,
+            focusNode: focusNode,
             validator: (value) {
               if (errorMessage.isNotEmpty && (value == null || value.isEmpty)) {
                 return errorMessage.isNotEmpty ? errorMessage : null;

@@ -4,6 +4,7 @@ import 'package:malomati/domain/entities/base_entity.dart';
 
 class InvoiceListEntity extends BaseEntity {
   String? departmentId;
+  String? departmentName;
   String? invoiceID;
   String? invoiceDate;
   String? invoiceNumber;

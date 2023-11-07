@@ -75,3 +75,5 @@ const String requestsDetailsApiUrl =
 const String delegationRequestApiUrl =
     '/UAQSGD_MOB_ERP_CreateDelegationRequest/DelegationRequest';
 const String invoiceListApiUrl = 'UAQSGD_MOB_ERP_CancelInvoiceRequest/Invoice';
+const String cancelInvoiceApiUrl =
+    'UAQSGD_MOB_ERP_CancelInvoiceRequest/Invoice/CancelINV';

@@ -385,3 +385,7 @@ bool isStringArabic(String text) {
   if (arabic.hasMatch(text.trim())) return true;
   return false;
 }
+
+String getFontNameByString(String text) {
+  return isStringArabic(text) ? fontFamilyAR : fontFamilyEN;
+}

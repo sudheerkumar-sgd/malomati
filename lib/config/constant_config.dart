@@ -91,16 +91,16 @@ class ConstantConfig {
         name: 'View Warning',
         nameAR: 'عرض الإنذارات',
         iconPath: DrawableAssets.icViewWarning),
-    // FavoriteEntity(
-    //     id: 20,
-    //     name: 'Vacation Rules',
-    //     nameAR: 'قاعدة الإجازة',
-    //     iconPath: DrawableAssets.icVacationRules),
-    // FavoriteEntity(
-    //     id: 21,
-    //     name: 'Cancel Invoice',
-    //     nameAR: 'الغاء الفاتورة',
-    //     iconPath: DrawableAssets.icCancelInvoice),
+    FavoriteEntity(
+        id: 20,
+        name: 'Vacation Rules',
+        nameAR: 'قاعدة الإجازة',
+        iconPath: DrawableAssets.icVacationRules),
+    FavoriteEntity(
+        id: 21,
+        name: 'Cancel Invoice',
+        nameAR: 'الغاء الفاتورة',
+        iconPath: DrawableAssets.icCancelInvoice),
     FavoriteEntity(
         id: 17,
         name: 'Holidays',
@@ -133,16 +133,16 @@ class ConstantConfig {
         name: 'Warning',
         nameAR: 'التحذير',
         iconPath: DrawableAssets.icWarning),
-    // FavoriteEntity(
-    //     id: 20,
-    //     name: 'Vacation Rules',
-    //     nameAR: 'قاعدة الإجازة',
-    //     iconPath: DrawableAssets.icVacationRules),
-    // FavoriteEntity(
-    //     id: 21,
-    //     name: 'Cancel Invoice',
-    //     nameAR: 'الغاء الفاتورة',
-    //     iconPath: DrawableAssets.icCancelInvoice),
+    FavoriteEntity(
+        id: 20,
+        name: 'Vacation Rules',
+        nameAR: 'قاعدة الإجازة',
+        iconPath: DrawableAssets.icVacationRules),
+    FavoriteEntity(
+        id: 21,
+        name: 'Cancel Invoice',
+        nameAR: 'الغاء الفاتورة',
+        iconPath: DrawableAssets.icCancelInvoice),
   ];
   final guestServices = [
     FavoriteEntity(

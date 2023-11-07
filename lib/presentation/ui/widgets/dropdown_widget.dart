@@ -116,11 +116,13 @@ class DropDownWidget<T> extends StatelessWidget {
                                 ? fontFamilyEN
                                 : fontFamilyAR)
                     .onFontSize(context.resources.fontSize.dp12),
-                onChanged: (T? value) {
-                  _onItemChanged.value = !_onItemChanged.value;
-                  selectedValue = value;
-                  callback!(value);
-                },
+                onChanged: isEnabled
+                    ? (T? value) {
+                        _onItemChanged.value = !_onItemChanged.value;
+                        selectedValue = value;
+                        callback!(value);
+                      }
+                    : null,
                 items: list.map<DropdownMenuItem<T>>((T value) {
                   return DropdownMenuItem<T>(
                     value: value,

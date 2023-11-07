@@ -32,6 +32,10 @@ class ApiRequestModel {
   String? fILENAMENEW;
   String? bLOBFILENEW;
 
+  //
+  String? oRGID;
+  String? iNVOICEID;
+
   ApiRequestModel();
 }
 
@@ -91,5 +95,9 @@ extension SourceModelExtension on ApiRequestModel {
         "END_DATE": "",
         "FILE_NAME": "",
         "BLOB_FILE": ""
+      };
+  Map<String, dynamic> toCancelInvoiceRequest() => {
+        "ORG_ID": oRGID,
+        "INVOICE_ID": iNVOICEID,
       };
 }

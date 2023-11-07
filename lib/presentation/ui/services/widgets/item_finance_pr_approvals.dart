@@ -162,12 +162,19 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                     Expanded(
                       child: RichText(
                         text: TextSpan(
-                            text:
-                                '${approvalDetails.sUPPLIERNAME}\n${approvalDetails.sUBJECT}\n',
+                            text: '${approvalDetails.sUPPLIERNAME}\n',
                             style: context.textFontWeight400
                                 .onFontSize(resources.fontSize.dp12)
+                                .onFontFamily(
+                                    fontFamily: getFontNameByString(
+                                        approvalDetails.sUPPLIERNAME ?? ''))
                                 .copyWith(height: 1.5),
                             children: [
+                              TextSpan(
+                                text: '${approvalDetails.sUBJECT}\n',
+                                style: context.textFontWeight400
+                                    .onFontSize(resources.fontSize.dp12),
+                              ),
                               TextSpan(
                                 text: '${context.string.submittedOn} : ',
                                 style: context.textFontWeight400
@@ -228,51 +235,61 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                             SizedBox(
                               height: resources.dimen.dp10,
                             ),
-                            Text(
-                              context.string.description,
-                              style: context.textFontWeight400
-                                  .onFontSize(resources.fontSize.dp13),
-                            ),
-                            Text(
-                              approvalDetails.hDRDESCRIPTION ?? '',
-                              style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13)
-                                  .onFontFamily(
-                                      fontFamily: isStringArabic(
-                                              approvalDetails.hDRDESCRIPTION ??
-                                                  '')
-                                          ? fontFamilyAR
-                                          : fontFamilyEN),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            Text(
-                              context.string.total,
-                              style: context.textFontWeight400
-                                  .onFontSize(resources.fontSize.dp13)
-                                  .copyWith(height: 1.5),
-                            ),
-                            Text(
-                              approvalDetails.hDRTOTAL ?? '',
-                              style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13)
-                                  .onFontFamily(fontFamily: fontFamilyEN)
-                                  .copyWith(height: 1.5),
-                            ),
-                            Text(
-                              '${context.string.tax} (${context.string.nonRecoverable})',
-                              style: context.textFontWeight400
-                                  .onFontSize(resources.fontSize.dp13)
-                                  .copyWith(height: 1.5),
-                            ),
-                            Text(
-                              approvalDetails.tAXNONRECOVERABLE ?? '',
-                              style: context.textFontWeight600
-                                  .onFontSize(resources.fontSize.dp13)
-                                  .onFontFamily(fontFamily: fontFamilyEN)
-                                  .copyWith(height: 1.5),
-                            ),
+                            if ((approvalDetails.hDRDESCRIPTION ?? '')
+                                .isNotEmpty) ...[
+                              Text(
+                                context.string.description,
+                                style: context.textFontWeight400
+                                    .onFontSize(resources.fontSize.dp13),
+                              ),
+                              Text(
+                                approvalDetails.hDRDESCRIPTION ?? '',
+                                style: context.textFontWeight600
+                                    .onFontSize(resources.fontSize.dp13)
+                                    .onFontFamily(
+                                        fontFamily: isStringArabic(
+                                                approvalDetails
+                                                        .hDRDESCRIPTION ??
+                                                    '')
+                                            ? fontFamilyAR
+                                            : fontFamilyEN),
+                              ),
+                              SizedBox(
+                                height: resources.dimen.dp20,
+                              ),
+                            ],
+                            if ((approvalDetails.hDRTOTAL ?? '')
+                                .isNotEmpty) ...[
+                              Text(
+                                context.string.total,
+                                style: context.textFontWeight400
+                                    .onFontSize(resources.fontSize.dp13)
+                                    .copyWith(height: 1.5),
+                              ),
+                              Text(
+                                approvalDetails.hDRTOTAL ?? '',
+                                style: context.textFontWeight600
+                                    .onFontSize(resources.fontSize.dp13)
+                                    .onFontFamily(fontFamily: fontFamilyEN)
+                                    .copyWith(height: 1.5),
+                              ),
+                            ],
+                            if ((approvalDetails.tAXNONRECOVERABLE ?? '')
+                                .isNotEmpty) ...[
+                              Text(
+                                '${context.string.tax} (${context.string.nonRecoverable})',
+                                style: context.textFontWeight400
+                                    .onFontSize(resources.fontSize.dp13)
+                                    .copyWith(height: 1.5),
+                              ),
+                              Text(
+                                approvalDetails.tAXNONRECOVERABLE ?? '',
+                                style: context.textFontWeight600
+                                    .onFontSize(resources.fontSize.dp13)
+                                    .onFontFamily(fontFamily: fontFamilyEN)
+                                    .copyWith(height: 1.5),
+                              ),
+                            ],
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
