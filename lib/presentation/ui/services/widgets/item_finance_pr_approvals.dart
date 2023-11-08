@@ -474,7 +474,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                                   context.resources.dimen.dp15)
                                           .roundedCornerBox,
                                       child: Text(
-                                        context.string.returntext,
+                                        context.string.moreInfo,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)

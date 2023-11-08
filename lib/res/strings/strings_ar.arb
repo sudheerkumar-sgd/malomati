@@ -280,5 +280,6 @@
     "workflowParticipant":"مشارك دفق الأعمال",
     "anyUser":"اي مستخدم",
     "informationRequested":"البيانات المطلوبة",
-    "selectEmployee":"اختيار المرسل اليه"
+    "selectEmployee":"اختيار المرسل اليه",
+    "moreInfo":"معلومات اكث"
 }

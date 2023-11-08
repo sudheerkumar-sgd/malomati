@@ -563,6 +563,7 @@
     "anyUser":"Any user",
     "informationRequested":"Information requested",
     "selectEmployee":"Select Employee",
+    "moreInfo":"More info.",
     "transactionSubTittleText": "{bankName} • {dateString}",
     "@transactionSubTittleText": {
         "description": "Tooltip shown on the overview fab button",

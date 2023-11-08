@@ -85,170 +85,176 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                   SizedBox(
                     height: resources.dimen.dp20,
                   ),
-                  Text(
-                    context.string.informationRequestedFrom,
-                    style: context.textFontWeight600
-                        .onFontSize(resources.fontSize.dp12),
-                  ),
-                  SizedBox(
-                    height: resources.dimen.dp20,
-                  ),
-                  ValueListenableBuilder(
-                      valueListenable: _selectedEmployeeType,
-                      builder: (context, type, child) {
-                        return Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                selectedEmployee = null;
-                                department = null;
-                                _selectedEmployeeType.value = 0;
-                              },
-                              child: Row(
-                                children: [
-                                  Transform.scale(
-                                    scale: 0.7,
-                                    child: SizedBox(
-                                      width: 6,
-                                      height: 6,
-                                      child: Radio<int>(
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          value: 0,
-                                          groupValue: type,
-                                          onChanged: (int? value) {
-                                            _selectedEmployeeType.value =
-                                                value ?? 0;
-                                          }),
+                  if (workFlowUserList?.isNotEmpty == true) ...[
+                    Text(
+                      context.string.informationRequestedFrom,
+                      style: context.textFontWeight600
+                          .onFontSize(resources.fontSize.dp12),
+                    ),
+                    SizedBox(
+                      height: resources.dimen.dp20,
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: _selectedEmployeeType,
+                        builder: (context, type, child) {
+                          return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  selectedEmployee = null;
+                                  department = null;
+                                  _selectedEmployeeType.value = 0;
+                                },
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                      scale: 0.7,
+                                      child: SizedBox(
+                                        width: 6,
+                                        height: 6,
+                                        child: Radio<int>(
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            value: 0,
+                                            groupValue: type,
+                                            onChanged: (int? value) {
+                                              _selectedEmployeeType.value =
+                                                  value ?? 0;
+                                            }),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: resources.dimen.dp10,
-                                  ),
-                                  Text(
-                                    context.string.workflowParticipant,
-                                    style: context.textFontWeight600
-                                        .onColor(
-                                            context.resources.color.textColor)
-                                        .onFontSize(
-                                            context.resources.fontSize.dp10)
-                                        .copyWith(height: 1),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp7,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: isLocalEn ? 15.0 : 0.0,
-                                  right: isLocalEn ? 0.0 : 15.0),
-                              child: DropDownWidget<EmployeeEntity>(
-                                isEnabled: type == 0,
-                                list: workFlowUserList ?? [],
-                                height: resources.dimen.dp27,
-                                hintText: context.string.selectEmployee,
-                                suffixIconPath: DrawableAssets.icChevronDown,
-                                fillColor: context.resources.color.colorLightBg,
-                                selectedValue: selectedEmployee,
-                                callback: onEmployeeSelected,
-                              ),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                selectedEmployee = null;
-                                department = null;
-                                _selectedEmployeeType.value = 1;
-                              },
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: resources.dimen.dp1,
-                                  ),
-                                  Transform.scale(
-                                    scale: 0.7,
-                                    child: SizedBox(
-                                      width: 6,
-                                      height: 6,
-                                      child: Radio<int>(
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          value: 1,
-                                          groupValue: type,
-                                          onChanged: (int? value) {
-                                            _selectedEmployeeType.value =
-                                                value ?? 0;
-                                          }),
+                                    SizedBox(
+                                      width: resources.dimen.dp10,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: resources.dimen.dp10,
-                                  ),
-                                  Text(
-                                    context.string.anyUser,
-                                    style: context.textFontWeight600
-                                        .onColor(
-                                            context.resources.color.textColor)
-                                        .onFontSize(
-                                            context.resources.fontSize.dp10)
-                                        .copyWith(height: 1),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp5,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: isLocalEn ? 15.0 : 0.0,
-                                  right: isLocalEn ? 0.0 : 15.0),
-                              child: DropDownWidget<DepartmentEntity>(
-                                isEnabled: type == 1,
-                                list: _departments,
-                                height: resources.dimen.dp27,
-                                hintText: context.string.department,
-                                suffixIconPath: DrawableAssets.icChevronDown,
-                                fillColor: context.resources.color.colorLightBg,
-                                selectedValue: department,
-                                callback: onDepartmentSelected,
-                              ),
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp5,
-                            ),
-                            ValueListenableBuilder(
-                                valueListenable: _allEmployeesList,
-                                builder: (context, employeesList, child) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        left: isLocalEn ? 15.0 : 0.0,
-                                        right: isLocalEn ? 0.0 : 15.0),
-                                    child: DropDownWidget<EmployeeEntity>(
-                                      isEnabled: type == 1,
-                                      list: employeesList,
-                                      height: resources.dimen.dp27,
-                                      hintText: context.string.selectEmployee,
-                                      suffixIconPath:
-                                          DrawableAssets.icChevronDown,
-                                      fillColor:
-                                          context.resources.color.colorLightBg,
-                                      selectedValue: selectedEmployee,
-                                      callback: onEmployeeSelected,
+                                    Text(
+                                      context.string.workflowParticipant,
+                                      style: context.textFontWeight600
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp10)
+                                          .copyWith(height: 1),
                                     ),
-                                  );
-                                }),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                          ],
-                        );
-                      }),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: resources.dimen.dp7,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: isLocalEn ? 15.0 : 0.0,
+                                    right: isLocalEn ? 0.0 : 15.0),
+                                child: DropDownWidget<EmployeeEntity>(
+                                  isEnabled: type == 0,
+                                  list: workFlowUserList ?? [],
+                                  height: resources.dimen.dp27,
+                                  hintText: context.string.selectEmployee,
+                                  suffixIconPath: DrawableAssets.icChevronDown,
+                                  fillColor:
+                                      context.resources.color.colorLightBg,
+                                  selectedValue: selectedEmployee,
+                                  callback: onEmployeeSelected,
+                                ),
+                              ),
+                              SizedBox(
+                                height: resources.dimen.dp20,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  selectedEmployee = null;
+                                  department = null;
+                                  _selectedEmployeeType.value = 1;
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: resources.dimen.dp1,
+                                    ),
+                                    Transform.scale(
+                                      scale: 0.7,
+                                      child: SizedBox(
+                                        width: 6,
+                                        height: 6,
+                                        child: Radio<int>(
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            value: 1,
+                                            groupValue: type,
+                                            onChanged: (int? value) {
+                                              _selectedEmployeeType.value =
+                                                  value ?? 0;
+                                            }),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: resources.dimen.dp10,
+                                    ),
+                                    Text(
+                                      context.string.anyUser,
+                                      style: context.textFontWeight600
+                                          .onColor(
+                                              context.resources.color.textColor)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp10)
+                                          .copyWith(height: 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: resources.dimen.dp5,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: isLocalEn ? 15.0 : 0.0,
+                                    right: isLocalEn ? 0.0 : 15.0),
+                                child: DropDownWidget<DepartmentEntity>(
+                                  isEnabled: type == 1,
+                                  list: _departments,
+                                  height: resources.dimen.dp27,
+                                  hintText: context.string.department,
+                                  suffixIconPath: DrawableAssets.icChevronDown,
+                                  fillColor:
+                                      context.resources.color.colorLightBg,
+                                  selectedValue: department,
+                                  callback: onDepartmentSelected,
+                                ),
+                              ),
+                              SizedBox(
+                                height: resources.dimen.dp5,
+                              ),
+                              ValueListenableBuilder(
+                                  valueListenable: _allEmployeesList,
+                                  builder: (context, employeesList, child) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: isLocalEn ? 15.0 : 0.0,
+                                          right: isLocalEn ? 0.0 : 15.0),
+                                      child: DropDownWidget<EmployeeEntity>(
+                                        isEnabled: type == 1,
+                                        list: employeesList,
+                                        height: resources.dimen.dp27,
+                                        hintText: context.string.selectEmployee,
+                                        suffixIconPath:
+                                            DrawableAssets.icChevronDown,
+                                        fillColor: context
+                                            .resources.color.colorLightBg,
+                                        selectedValue: selectedEmployee,
+                                        callback: onEmployeeSelected,
+                                      ),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: resources.dimen.dp20,
+                              ),
+                            ],
+                          );
+                        }),
+                  ]
                 ],
                 if (questionText.isNotEmpty) ...[
                   Text(
@@ -263,7 +269,7 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                 Text(
                   questionText.isNotEmpty
                       ? context.string.answer
-                      : context.string.question,
+                      : context.string.informationRequested,
                   style: context.textFontWeight400
                       .onFontSize(resources.fontSize.dp12),
                 ),

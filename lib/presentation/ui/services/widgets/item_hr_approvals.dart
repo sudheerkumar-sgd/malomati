@@ -561,7 +561,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                                                                     .dp15)
                                                             .roundedCornerBox,
                                                     child: Text(
-                                                      context.string.returntext,
+                                                      context.string.moreInfo,
                                                       style: context
                                                           .textFontWeight400
                                                           .onFontSize(context

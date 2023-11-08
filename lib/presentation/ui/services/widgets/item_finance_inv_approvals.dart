@@ -320,7 +320,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                           .copyWith(height: 1.5),
                                     ),
                                     Text(
-                                      approvalDetails.iTEMAMOUNT ?? '',
+                                      '${approvalDetails.iTEMAMOUNT ?? ''}',
                                       style: context.textFontWeight600
                                           .onFontSize(resources.fontSize.dp13)
                                           .onFontFamily(
@@ -339,7 +339,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                           .copyWith(height: 1.5),
                                     ),
                                     Text(
-                                      approvalDetails.tAXAMOUNT ?? '',
+                                      '${approvalDetails.tAXAMOUNT ?? ''}',
                                       style: context.textFontWeight600
                                           .onFontSize(resources.fontSize.dp13)
                                           .onFontFamily(
@@ -545,7 +545,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                                                   context.resources.dimen.dp15)
                                           .roundedCornerBox,
                                       child: Text(
-                                        context.string.returntext,
+                                        context.string.moreInfo,
                                         style: context.textFontWeight400
                                             .onFontSize(
                                                 context.resources.fontSize.dp15)
