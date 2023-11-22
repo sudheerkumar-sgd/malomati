@@ -258,9 +258,11 @@ extension NameValueModelExtension on NameValueModel {
 
 class InvoiceListModel extends BaseModel {
   String? departmentId;
-  String? departmentName;
+  String? departmentNameEn;
+  String? departmentNameAr;
   String? invoiceID;
   String? invoiceDate;
+  String? creationDate;
   String? invoiceNumber;
   String? vendorName;
   String? invoiceAmount;
@@ -272,12 +274,14 @@ class InvoiceListModel extends BaseModel {
   factory InvoiceListModel.fromJson(Map<String, dynamic> json) {
     var invoiceListModel = InvoiceListModel();
     invoiceListModel.departmentId = json['DEPARTMENT_ID'];
-    invoiceListModel.departmentName = json['DEPARTMENT_NAME'];
-    invoiceListModel.invoiceID = json['INVOICE_ID'];
+    invoiceListModel.departmentNameEn = json['DEPARTMENT_NAME_EN'];
+    invoiceListModel.departmentNameAr = json['DEPARTMENT_NAME_AR'];
+    invoiceListModel.invoiceID = '${json['INVOICE_ID']}';
     invoiceListModel.invoiceDate = json['INVOICE_DATE'];
+    invoiceListModel.creationDate = json['CREATION_DATE'];
     invoiceListModel.invoiceNumber = json['INVOICE_NUM'];
     invoiceListModel.vendorName = json['VENDOR_NAME'];
-    invoiceListModel.invoiceAmount = json['INVOICE_AMOUNT'];
+    invoiceListModel.invoiceAmount = '${json['AMOUNT_TOTAL']}';
     invoiceListModel.invoiceType = json['INVOICE_TYPE'];
     invoiceListModel.description = json['DESCRIPTION'];
     return invoiceListModel;
@@ -301,9 +305,11 @@ extension InvoiceListExtension on InvoiceListModel {
   InvoiceListEntity toInvoiceListEntity() {
     InvoiceListEntity invoiceListEntity = InvoiceListEntity();
     invoiceListEntity.departmentId = departmentId;
-    invoiceListEntity.departmentName = departmentName;
+    invoiceListEntity.departmentNameEn = departmentNameEn;
+    invoiceListEntity.departmentNameAr = departmentNameAr;
     invoiceListEntity.invoiceID = invoiceID;
     invoiceListEntity.invoiceDate = invoiceDate;
+    invoiceListEntity.creationDate = creationDate;
     invoiceListEntity.invoiceNumber = invoiceNumber;
     invoiceListEntity.vendorName = vendorName;
     invoiceListEntity.invoiceAmount = invoiceAmount;

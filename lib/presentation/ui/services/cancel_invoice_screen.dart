@@ -28,8 +28,8 @@ class CancelInvoiceScreen extends StatelessWidget {
       ValueNotifier<List<InvoiceListEntity>>([]);
   String? leave;
   bool isLoading = false;
-  final ValueNotifier<InvoiceListEntity?> _selectedInvoiceEntity =
-      ValueNotifier(null);
+  InvoiceListEntity? _selectedInvoiceEntity;
+  final ValueNotifier<String?> _selectedInvoiceID = ValueNotifier(null);
 
   onLeavesSelected(LeaveDetailsEntity? value) {
     leave = value?.id ?? '';
@@ -42,15 +42,16 @@ class CancelInvoiceScreen extends StatelessWidget {
   }
 
   onInvoiceNumberSelect(InvoiceListEntity? invoiceListEntity) {
-    _selectedInvoiceEntity.value = invoiceListEntity;
+    _selectedInvoiceEntity = invoiceListEntity;
+    _selectedInvoiceID.value = _selectedInvoiceEntity?.invoiceID;
   }
 
   _submitCancelInvoiceRequest() {
     final cancelInvoiceRequestModel = ApiRequestModel();
     cancelInvoiceRequestModel.oRGID =
-        _selectedInvoiceEntity.value?.departmentId ?? '';
+        _selectedInvoiceEntity?.departmentId ?? '';
     cancelInvoiceRequestModel.iNVOICEID =
-        _selectedInvoiceEntity.value?.invoiceNumber ?? '';
+        _selectedInvoiceEntity?.invoiceNumber ?? '';
     _servicesBloc.submitServicesRequest(
         apiUrl: cancelInvoiceApiUrl,
         requestParams: cancelInvoiceRequestModel.toCancelInvoiceRequest());
@@ -150,47 +151,103 @@ class CancelInvoiceScreen extends StatelessWidget {
                                 valueListenable: _invoiceList,
                                 builder: (context, invoiceList, child) {
                                   return invoiceList.isNotEmpty
-                                      ? Autocomplete<InvoiceListEntity>(
-                                          optionsBuilder: (TextEditingValue
-                                              textEditingValue) {
-                                            if (textEditingValue.text == '') {
-                                              return const Iterable<
-                                                  InvoiceListEntity>.empty();
-                                            }
-                                            return invoiceList.where(
-                                                (InvoiceListEntity option) {
-                                              return option.toString().contains(
-                                                  textEditingValue.text
-                                                      .toLowerCase());
-                                            });
-                                          },
-                                          fieldViewBuilder: (context,
-                                              textEditingController,
-                                              focusNode,
-                                              onFieldSubmitted) {
-                                            return RightIconTextWidget(
-                                              isEnabled: true,
-                                              height: resources.dimen.dp27,
-                                              textInputType:
-                                                  TextInputType.number,
-                                              labelText:
-                                                  context.string.invoiceNumber,
-                                              hintText:
-                                                  context.string.invoiceNumber,
-                                              errorMessage:
-                                                  context.string.invoiceNumber,
-                                              fontFamily: fontFamilyEN,
-                                              textController:
-                                                  textEditingController,
-                                              focusNode: focusNode,
-                                            );
-                                          },
-                                          onSelected:
-                                              (InvoiceListEntity selection) {
-                                            _selectedInvoiceEntity.value =
-                                                selection;
-                                          },
-                                        )
+                                      ? LayoutBuilder(
+                                          builder: (context, constraints) {
+                                          return Autocomplete<
+                                              InvoiceListEntity>(
+                                            optionsBuilder: (TextEditingValue
+                                                textEditingValue) {
+                                              if (textEditingValue.text == '') {
+                                                return const Iterable<
+                                                    InvoiceListEntity>.empty();
+                                              }
+                                              return invoiceList.where(
+                                                  (InvoiceListEntity option) {
+                                                return option
+                                                    .toString()
+                                                    .contains(textEditingValue
+                                                        .text
+                                                        .toLowerCase());
+                                              });
+                                            },
+                                            fieldViewBuilder: (context,
+                                                textEditingController,
+                                                focusNode,
+                                                onFieldSubmitted) {
+                                              return RightIconTextWidget(
+                                                isEnabled: true,
+                                                height: resources.dimen.dp27,
+                                                labelText: context
+                                                    .string.invoiceNumber,
+                                                hintText: context
+                                                    .string.invoiceNumber,
+                                                errorMessage: context
+                                                    .string.invoiceNumber,
+                                                fontFamily: fontFamilyEN,
+                                                textController:
+                                                    textEditingController,
+                                                focusNode: focusNode,
+                                              );
+                                            },
+                                            optionsViewBuilder: (context,
+                                                    onSelected, options) =>
+                                                Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                          bottom:
+                                                              Radius.circular(
+                                                                  4.0)),
+                                                ),
+                                                child: SizedBox(
+                                                  height: 52.0 * options.length,
+                                                  width:
+                                                      constraints.biggest.width,
+                                                  child: ListView.builder(
+                                                    padding: EdgeInsets.zero,
+                                                    itemCount: options.length,
+                                                    shrinkWrap: false,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      final InvoiceListEntity
+                                                          option = options
+                                                              .elementAt(index);
+                                                      return InkWell(
+                                                        onTap: () =>
+                                                            onSelected(option),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(16.0),
+                                                          child: Text(
+                                                            option.invoiceNumber ??
+                                                                '',
+                                                            style: context
+                                                                .textFontWeight400
+                                                                .onFontFamily(
+                                                                    fontFamily:
+                                                                        fontFamilyEN),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            onSelected:
+                                                (InvoiceListEntity selection) {
+                                              _selectedInvoiceEntity =
+                                                  selection;
+                                              _selectedInvoiceID.value =
+                                                  selection.invoiceID;
+                                            },
+                                          );
+                                        })
                                       : Center(
                                           child: Text(
                                             noInvoiceText,
@@ -202,10 +259,9 @@ class CancelInvoiceScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             ValueListenableBuilder(
-                                valueListenable: _selectedInvoiceEntity,
-                                builder:
-                                    (context, selectedInvoiceEntity, child) {
-                                  return selectedInvoiceEntity != null
+                                valueListenable: _selectedInvoiceID,
+                                builder: (context, selectedInvoiceId, child) {
+                                  return selectedInvoiceId != null
                                       ? Container(
                                           padding: EdgeInsets.all(
                                               resources.dimen.dp20),
@@ -214,227 +270,366 @@ class CancelInvoiceScreen extends StatelessWidget {
                                                       .color.colorWhite,
                                                   radious: resources.dimen.dp10)
                                               .roundedCornerBox,
-                                          child: Row(
+                                          child: Column(
                                             children: [
-                                              Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  padding: EdgeInsets.all(
-                                                      resources.dimen.dp10),
-                                                  color:
-                                                      const Color(0xFFF1F1F1),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        context.string
-                                                            .operatingUnit,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .operatingUnit,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
                                                       ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          isLocalEn
+                                                              ? _selectedInvoiceEntity
+                                                                      ?.departmentNameEn ??
+                                                                  ''
+                                                              : _selectedInvoiceEntity
+                                                                      ?.departmentNameAr ??
+                                                                  '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
                                                       ),
-                                                      Text(
-                                                        context
-                                                            .string.invoiceDate,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
-                                                      ),
-                                                      Text(
-                                                        context.string
-                                                            .creationDate,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
-                                                      ),
-                                                      Text(
-                                                        context
-                                                            .string.vendorName,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
-                                                      ),
-                                                      Text(
-                                                        context.string
-                                                            .invoiceAmount,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
-                                                      ),
-                                                      Text(
-                                                        context
-                                                            .string.invoiceType,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                      SizedBox(
-                                                        height: resources
-                                                            .dimen.dp20,
-                                                      ),
-                                                      Text(
-                                                        context
-                                                            .string.description,
-                                                        style: context
-                                                            .textFontWeight400
-                                                            .onFontSize(
-                                                                resources
-                                                                    .fontSize
-                                                                    .dp10),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: resources.dimen.dp20,
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .invoiceDate,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          getDateByformat(
+                                                              'dd MMM yyyy',
+                                                              getDateTimeByString(
+                                                                  'yyyy-MM-ddThh:mm:ss',
+                                                                  _selectedInvoiceEntity
+                                                                          ?.invoiceDate ??
+                                                                      '')),
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: Column(
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .creationDate,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          getDateByformat(
+                                                              'dd MMM yyyy',
+                                                              getDateTimeByString(
+                                                                  'yyyy-MM-ddThh:mm:ss',
+                                                                  _selectedInvoiceEntity
+                                                                          ?.creationDate ??
+                                                                      '')),
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .vendorName,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          _selectedInvoiceEntity
+                                                                  ?.vendorName ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12)
+                                                              .onFontFamily(
+                                                                  fontFamily:
+                                                                      getFontNameByString(
+                                                                          _selectedInvoiceEntity?.vendorName ??
+                                                                              '')),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      selectedInvoiceEntity
-                                                              .departmentId ??
-                                                          '',
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .invoiceAmount,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          _selectedInvoiceEntity
+                                                                  ?.invoiceAmount ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      getDateByformat(
-                                                          'dd MMM yyyy',
-                                                          getDateTimeByString(
-                                                              'yyyy-MM-ddThh:mm:ss',
-                                                              selectedInvoiceEntity
-                                                                      .invoiceDate ??
-                                                                  '')),
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10)
-                                                          .onFontFamily(
-                                                              fontFamily:
-                                                                  fontFamilyEN),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .invoiceType,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          _selectedInvoiceEntity
+                                                                  ?.invoiceType ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    Text(
-                                                      getDateByformat(
-                                                          'dd MMM yyyy',
-                                                          getDateTimeByString(
-                                                              'yyyy-MM-ddThh:mm:ss',
-                                                              selectedInvoiceEntity
-                                                                      .invoiceDate ??
-                                                                  '')),
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10)
-                                                          .onFontFamily(
-                                                              fontFamily:
-                                                                  fontFamilyEN),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                color: const Color(0xFFF1F1F1),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFF1F1F1),
+                                                        child: Text(
+                                                          context.string
+                                                              .description,
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
-                                                    ),
-                                                    Text(
-                                                      selectedInvoiceEntity
-                                                              .vendorName ??
-                                                          '',
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
-                                                    ),
-                                                    Text(
-                                                      selectedInvoiceEntity
-                                                              .invoiceAmount ??
-                                                          '',
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
-                                                    ),
-                                                    Text(
-                                                      selectedInvoiceEntity
-                                                              .invoiceType ??
-                                                          '',
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10),
-                                                    ),
-                                                    SizedBox(
-                                                      height:
-                                                          resources.dimen.dp20,
-                                                    ),
-                                                    Text(
-                                                      selectedInvoiceEntity
-                                                              .description ??
-                                                          '',
-                                                      style: context
-                                                          .textFontWeight400
-                                                          .onFontSize(resources
-                                                              .fontSize.dp10),
+                                                    Expanded(
+                                                      flex: 3,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(
+                                                            resources
+                                                                .dimen.dp10),
+                                                        color: const Color(
+                                                            0xFFFFFFFF),
+                                                        child: Text(
+                                                          _selectedInvoiceEntity
+                                                                  ?.description ??
+                                                              '',
+                                                          style: context
+                                                              .textFontWeight400
+                                                              .onFontSize(
+                                                                  resources
+                                                                      .fontSize
+                                                                      .dp12)
+                                                              .onFontFamily(
+                                                                  fontFamily:
+                                                                      getFontNameByString(
+                                                                          _selectedInvoiceEntity?.description ??
+                                                                              '')),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

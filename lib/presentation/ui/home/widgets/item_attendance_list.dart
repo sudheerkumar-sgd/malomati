@@ -397,6 +397,28 @@ class ItemAttendanceList extends StatelessWidget {
                       //             ? DrawableAssets.icChevronUp
                       //             : DrawableAssets.icChevronDown)
                       //     .loadImage
+                      if ((attendanceEntity.worktime ?? '').isNotEmpty &&
+                          (attendanceEntity.worktime ?? '00:00') !=
+                              '00:00') ...[
+                        RichText(
+                          text: TextSpan(
+                              text: 'Work time: ',
+                              style: context.textFontWeight400
+                                  .onColor(context.resources.color.textColor)
+                                  .onFontSize(context.resources.fontSize.dp12),
+                              children: [
+                                TextSpan(
+                                  text: attendanceEntity.worktime ?? '',
+                                  style: context.textFontWeight400
+                                      .onColor(
+                                          context.resources.color.textColor)
+                                      .onFontFamily(fontFamily: fontFamilyEN)
+                                      .onFontSize(
+                                          context.resources.fontSize.dp12),
+                                ),
+                              ]),
+                        )
+                      ],
                     ],
                   ),
                   Container(

@@ -74,8 +74,12 @@ class Dialogs {
   ) async {
     return showDialog(
       context: context,
-      builder: (context) => InfoLoaderWidget(
-        message: message,
+      barrierDismissible: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: InfoLoaderWidget(
+          message: message,
+        ),
       ),
     );
   }

@@ -59,6 +59,8 @@ class AttendanceScreen extends StatelessWidget {
   Map department = {};
   final viewTransformationController = TransformationController();
   final _attendanceBloc = sl<AttendanceBloc>();
+  Map? selectedOption;
+  Position? position;
 
   AttendanceScreen(
       {required this.attendanceType,
@@ -182,6 +184,7 @@ class AttendanceScreen extends StatelessWidget {
   }
 
   _submitAttendance(BuildContext context, Map option) async {
+    selectedOption = option;
     //printLog(message: 'position $position');
     // if (position != null) {
     //   var department = getDepartmentByLocation(
@@ -212,23 +215,19 @@ class AttendanceScreen extends StatelessWidget {
     if (isLocationOn) {
       Location.getLocation().then((value) {
         Navigator.of(context, rootNavigator: true).pop();
-        Position position = value;
-        var department =
-            getDepartmentByLocation((position.latitude), position.longitude);
+        position = value;
+        var department = getDepartmentByLocation(
+            (position?.latitude ?? 0.0), position?.longitude ?? 0.0);
         if ((department['name'] ?? '').isEmpty) {
-          Dialogs.showInfoDialog(context, PopupType.fail,
-              context.string.attendancelocationErrorMessage);
+          if (context.mounted) {
+            Dialogs.showInfoLoader(
+              context,
+              'Checking remote work details',
+            );
+          }
+          _getUserDetails();
         } else {
-          Map<String, dynamic> requestParams = {
-            "userid": context.userDB.get(oracleLoginIdKey),
-            "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
-            "latitude": department['latitude'],
-            "longitude": department['longitude'],
-            "method": option['id'],
-            "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
-          };
-          //printLog(message: requestParams.toString());
-          _attendanceBloc.submitAttendance(requestParams: requestParams);
+          _submitAttendanceToServer(context, department: department);
         }
       });
     } else if (context.mounted) {
@@ -241,16 +240,42 @@ class AttendanceScreen extends StatelessWidget {
     // }
   }
 
+  _getUserDetails() {
+    _attendanceBloc.getUserDetails(requestParams: {});
+  }
+
+  _submitAttendanceToServer(BuildContext context, {Map? department}) {
+    Map<String, dynamic> requestParams = {
+      "userid": context.userDB.get(oracleLoginIdKey),
+      "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
+      "latitude": department?['latitude'] ?? position?.latitude ?? 0.0,
+      "longitude": department?['longitude'] ?? position?.longitude ?? 0.0,
+      "method": selectedOption?['id'],
+      "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
+    };
+    //printLog(message: requestParams.toString());
+    _attendanceBloc.submitAttendance(requestParams: requestParams);
+  }
+
+  Future<String> _getPunchlocation() async {
+    if ((department['name'] ?? '').isEmpty) {
+      return await Location.getPlaceByLocation(
+          double.parse(attendanceEntity?.gpsLatitude ?? '0.0'),
+          double.parse(attendanceEntity?.gpsLongitude ?? '0.0'));
+    }
+    return department['name'] ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     _setZoomToMapview();
     _getLocationDetails(context);
     resources = context.resources;
-    startTimer(duration: const Duration(seconds: 1), callback: _setTime);
-    attendanceOptions = _getAttendanceOptions(context);
     department = getDepartmentByLocation(
         double.parse(attendanceEntity?.gpsLatitude ?? '0.0'),
         double.parse(attendanceEntity?.gpsLongitude ?? '0.0'));
+    startTimer(duration: const Duration(seconds: 1), callback: _setTime);
+    attendanceOptions = _getAttendanceOptions(context);
     return SafeArea(
         child: Scaffold(
             backgroundColor: resources.color.appScaffoldBg,
@@ -261,6 +286,16 @@ class AttendanceScreen extends StatelessWidget {
                   if (state is OnAttendanceDataLoading) {
                     Dialogs.loader(context)
                         .then((value) => Navigator.pop(context));
+                  } else if (state is OnUserDetailsSuccess) {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    if (state.attendanceUserDetailsEntity.entity
+                            ?.locationMandatory ==
+                        1) {
+                      _submitAttendanceToServer(context);
+                    } else {
+                      Dialogs.showInfoDialog(context, PopupType.fail,
+                          context.string.attendancelocationErrorMessage);
+                    }
                   } else if (state is OnAttendanceSubmitSuccess) {
                     Navigator.of(context, rootNavigator: true).pop();
                     // Dialogs.showInfoDialog(context, PopupType.success,
@@ -336,14 +371,20 @@ class AttendanceScreen extends StatelessWidget {
                         SizedBox(
                           height: resources.dimen.dp5,
                         ),
-                        Text(
-                          '${context.string.location}: ${department['name'] ?? ''}',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: context.textFontWeight400
-                              .onColor(context.resources.color.textColor)
-                              .onFontSize(context.resources.fontSize.dp13),
-                        ),
+                        FutureBuilder(
+                            future: _getPunchlocation(),
+                            builder: (context, snapshot) {
+                              return Text(
+                                '${context.string.location}: ${snapshot.data ?? ''}',
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.visible,
+                                maxLines: 1,
+                                style: context.textFontWeight400
+                                    .onColor(context.resources.color.textColor)
+                                    .onFontSize(
+                                        context.resources.fontSize.dp13),
+                              );
+                            }),
                         SizedBox(
                           height: resources.dimen.dp10,
                         ),

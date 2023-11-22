@@ -34,7 +34,8 @@ class AdvanceSalaryScreen extends StatelessWidget {
   }
 
   onSubmit(String clickedButton) {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        _servicesBloc.state is! OnServicesLoading) {
       _submitAdvanceSalaryRequest();
     }
   }

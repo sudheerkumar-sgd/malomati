@@ -4,9 +4,11 @@ import 'package:malomati/domain/entities/base_entity.dart';
 
 class InvoiceListEntity extends BaseEntity {
   String? departmentId;
-  String? departmentName;
+  String? departmentNameEn;
+  String? departmentNameAr;
   String? invoiceID;
   String? invoiceDate;
+  String? creationDate;
   String? invoiceNumber;
   String? vendorName;
   String? invoiceAmount;
@@ -22,6 +24,6 @@ class InvoiceListEntity extends BaseEntity {
 
   @override
   String toString() {
-    return invoiceID ?? '';
+    return invoiceNumber ?? '';
   }
 }

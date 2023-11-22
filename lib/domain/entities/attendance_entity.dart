@@ -32,6 +32,7 @@ class AttendanceEntity extends BaseEntity {
   String? spfid8;
   String? spfid9;
   String? spfid10;
+  String? worktime;
 
   AttendanceEntity();
   @override

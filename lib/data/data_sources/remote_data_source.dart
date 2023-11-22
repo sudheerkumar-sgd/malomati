@@ -6,6 +6,7 @@ import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/Leaves_model.dart';
 import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/attendance_user_details_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/employee_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
@@ -52,6 +53,8 @@ abstract class RemoteDataSource {
   Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
       {required Map<String, dynamic> requestParams});
   Future<String> submitAttendanceDetails(
+      {required Map<String, dynamic> requestParams});
+  Future<ApiResponse<AttendanceUserDetailsModel>> getAttendanceUserDetails(
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<DashboardModel>> getDashboardData(
       {required Map<String, dynamic> requestParams});
@@ -215,6 +218,35 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           var apiResponse = ApiResponse<AttendanceListModel>.fromJson(
               response.data,
               (p0) => AttendanceListModel.fromJson(response.data));
+          return apiResponse;
+        default:
+          throw _getExceptionType(response);
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<ApiResponse<AttendanceUserDetailsModel>> getAttendanceUserDetails(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrlAttendanceDevelopment;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var response = await dio2.get(
+        attendanceUserDetailsApiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          var apiResponse = ApiResponse<AttendanceUserDetailsModel>.fromJson(
+              response.data,
+              (p0) => AttendanceUserDetailsModel.fromJson(response.data));
           return apiResponse;
         default:
           throw _getExceptionType(response);

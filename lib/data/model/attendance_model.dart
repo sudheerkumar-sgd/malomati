@@ -33,6 +33,7 @@ class AttendanceModel extends BaseModel {
   String? spfid8 = "";
   String? spfid9 = "";
   String? spfid10 = "";
+  String? worktime = "";
 
   AttendanceModel();
 
@@ -72,6 +73,7 @@ class AttendanceModel extends BaseModel {
     attendanceModel.spfid8 = attendanceJson['spfid8'];
     attendanceModel.spfid9 = attendanceJson['spfid9'];
     attendanceModel.spfid10 = attendanceJson['spfid10'];
+    attendanceModel.worktime = attendanceJson['worktime_hhmm'];
     return attendanceModel;
   }
 
@@ -120,6 +122,7 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.spfid8 = spfid8;
     attendanceEntity.spfid9 = spfid9;
     attendanceEntity.spfid10 = spfid10;
+    attendanceEntity.worktime = worktime;
     return attendanceEntity;
   }
 }

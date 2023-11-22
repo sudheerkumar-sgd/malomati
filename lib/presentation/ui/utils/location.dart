@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:malomati/core/common/log.dart';
 
@@ -32,5 +33,14 @@ class Location {
     var position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     return position;
+  }
+
+  static Future<String> getPlaceByLocation(double lat, double long) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    if (placemarks.isNotEmpty) {
+      return placemarks[0].subLocality ?? placemarks[0].locality ?? '';
+    } else {
+      return '';
+    }
   }
 }
