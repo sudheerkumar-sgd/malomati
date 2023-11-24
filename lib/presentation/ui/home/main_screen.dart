@@ -167,7 +167,9 @@ class _MainScreenState extends State<MainScreen> {
             context: context,
             barrierDismissible: false,
             builder: (context) {
-              return const UpdateDialogWidget();
+              return WillPopScope(
+                  onWillPop: () async => false,
+                  child: const UpdateDialogWidget());
             });
       }
     });

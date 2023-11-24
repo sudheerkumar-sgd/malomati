@@ -1,4 +1,17 @@
 {
+    "transactionSubTittleText": "{bankName} • {dateString}",
+    "@transactionSubTittleText": {
+        "description": "Tooltip shown on the overview fab button",
+        "type": "text",
+        "placeholders": {
+            "bankName": {
+                "type": "String"
+            },
+            "dateString": {
+                "type": "String"
+            }
+        }
+    },
     "appTitle": "Malomati",
     "@appTitle": {
         "description": "The app name",
@@ -564,17 +577,8 @@
     "informationRequested":"Information requested",
     "selectEmployee":"Select Employee",
     "moreInfo":"More info.",
-    "transactionSubTittleText": "{bankName} • {dateString}",
-    "@transactionSubTittleText": {
-        "description": "Tooltip shown on the overview fab button",
-        "type": "text",
-        "placeholders": {
-            "bankName": {
-                "type": "String"
-            },
-            "dateString": {
-                "type": "String"
-            }
-        }
-    }
+    "fetchingLocationDetails":"Fetching Location Details",
+    "checkingRemoteWorkDetails":"Checking remote work details",
+    "locationErrorText":"Please enable location to submit attendance",
+    "noDeleteInvoices":"There is no invoices to delete"
 }

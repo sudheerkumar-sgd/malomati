@@ -51,7 +51,7 @@ class CancelInvoiceScreen extends StatelessWidget {
     cancelInvoiceRequestModel.oRGID =
         _selectedInvoiceEntity?.departmentId ?? '';
     cancelInvoiceRequestModel.iNVOICEID =
-        _selectedInvoiceEntity?.invoiceNumber ?? '';
+        _selectedInvoiceEntity?.invoiceID ?? '';
     _servicesBloc.submitServicesRequest(
         apiUrl: cancelInvoiceApiUrl,
         requestParams: cancelInvoiceRequestModel.toCancelInvoiceRequest());
@@ -79,7 +79,7 @@ class CancelInvoiceScreen extends StatelessWidget {
                 Dialogs.loader(context);
               } else if (state is OnInvoicesListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
-                noInvoiceText = context.string.noDeleteLeaves;
+                noInvoiceText = context.string.noDeleteInvoices;
                 _invoiceList.value = state.invoiceList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 if (isLoading) {

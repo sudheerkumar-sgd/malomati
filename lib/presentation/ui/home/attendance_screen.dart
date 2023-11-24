@@ -208,7 +208,7 @@ class AttendanceScreen extends StatelessWidget {
     if (context.mounted) {
       Dialogs.showInfoLoader(
         context,
-        'Featching Location Details',
+        context.string.fetchingLocationDetails,
       );
     }
     var isLocationOn = await Location.checkGps();
@@ -222,7 +222,7 @@ class AttendanceScreen extends StatelessWidget {
           if (context.mounted) {
             Dialogs.showInfoLoader(
               context,
-              'Checking remote work details',
+              context.string.checkingRemoteWorkDetails,
             );
           }
           _getUserDetails();
@@ -234,7 +234,7 @@ class AttendanceScreen extends StatelessWidget {
       Dialogs.showInfoDialog(
         context,
         PopupType.fail,
-        'please Enable Location to submit attendance',
+        context.string.locationErrorText,
       );
     }
     // }

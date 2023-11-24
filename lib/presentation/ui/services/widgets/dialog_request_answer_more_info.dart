@@ -154,7 +154,6 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                                   suffixIconPath: DrawableAssets.icChevronDown,
                                   fillColor:
                                       context.resources.color.colorLightBg,
-                                  selectedValue: selectedEmployee,
                                   callback: onEmployeeSelected,
                                 ),
                               ),
@@ -243,7 +242,6 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
                                             DrawableAssets.icChevronDown,
                                         fillColor: context
                                             .resources.color.colorLightBg,
-                                        selectedValue: selectedEmployee,
                                         callback: onEmployeeSelected,
                                       ),
                                     );
