@@ -285,5 +285,6 @@
     "fetchingLocationDetails":"معرفة تفاصيل الموقع",
     "checkingRemoteWorkDetails":"فحص تفاصيل العمل عن بُعد",
     "locationErrorText":"يرجى تمكين الموقع لتقديم بصمة الحضور",
-    "noDeleteInvoices":"لا توجد فواتير لحذفها"
+    "noDeleteInvoices":"لا توجد فواتير لحذفها",
+    "totalWorkTime":"إجمالي ساعات العمل"
 }

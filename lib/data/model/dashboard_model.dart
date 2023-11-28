@@ -44,6 +44,7 @@ class DashboardModel extends BaseModel {
   var tHANKYOUINYEAR;
   var sUGGESTOVERALLRATING;
   var tHANKYOUCOUNT;
+  var cANCELINVOICEUSERS;
   List<EventModel>? eventListModel;
 
   DashboardModel(
@@ -84,7 +85,8 @@ class DashboardModel extends BaseModel {
       this.tHANKYOUINMONTH,
       this.tHANKYOUINYEAR,
       this.sUGGESTOVERALLRATING,
-      this.tHANKYOUCOUNT});
+      this.tHANKYOUCOUNT,
+      this.cANCELINVOICEUSERS});
 
   DashboardModel.fromJson(Map<String, dynamic> json) {
     isSuccess = json['IsSuccess'];
@@ -125,6 +127,7 @@ class DashboardModel extends BaseModel {
     tHANKYOUINYEAR = json['THANK_YOU_IN_YEAR'];
     sUGGESTOVERALLRATING = json['SUGGEST_OVERALL_RATING'];
     tHANKYOUCOUNT = json['THANKYOU_COUNT'];
+    cANCELINVOICEUSERS = json['CANCEL_INVOICE_USERS'];
     eventListModel = json['EVENTLIST'] != null ? (json['EVENTLIST']) : [];
   }
 
@@ -195,6 +198,7 @@ extension SourceModelExtension on DashboardModel {
     dashboardEntity.pERMISSIONACCRUAL = pERMISSIONACCRUAL;
     dashboardEntity.tHANKYOUCOUNT = tHANKYOUCOUNT;
     dashboardEntity.tHANKYOUINYEAR = tHANKYOUINYEAR;
+    dashboardEntity.cANCELINVOICEUSERS = cANCELINVOICEUSERS;
     dashboardEntity.eventsEntity =
         eventListModel?.map((e) => e.toEventsEntity()).toList();
     return dashboardEntity;

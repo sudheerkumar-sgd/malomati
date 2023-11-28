@@ -580,5 +580,6 @@
     "fetchingLocationDetails":"Fetching Location Details",
     "checkingRemoteWorkDetails":"Checking remote work details",
     "locationErrorText":"Please enable location to submit attendance",
-    "noDeleteInvoices":"There is no invoices to delete"
+    "noDeleteInvoices":"There is no invoices to delete",
+    "totalWorkTime":"Total Work time"
 }

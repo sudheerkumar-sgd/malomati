@@ -40,6 +40,7 @@ class DashboardEntity extends BaseEntity {
   var tHANKYOUINYEAR;
   var sUGGESTOVERALLRATING;
   var tHANKYOUCOUNT;
+  var cANCELINVOICEUSERS;
   List<EventsEntity>? eventsEntity;
 
   DashboardEntity();

@@ -173,6 +173,8 @@ class HomeScreen extends StatelessWidget {
                   } else if (state is OnDashboardSuccess) {
                     _dashboardEntity.value =
                         state.dashboardEntity.entity ?? DashboardEntity();
+                    ConstantConfig.cancelInvoiceUsers =
+                        state.dashboardEntity.entity?.cANCELINVOICEUSERS ?? '';
                   } else if (state is OnEventsSuccess) {
                     _eventsListEntity.value =
                         state.eventsListEntity.entity?.eventsList ?? [];

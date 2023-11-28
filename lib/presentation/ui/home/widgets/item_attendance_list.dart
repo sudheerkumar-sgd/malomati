@@ -402,7 +402,7 @@ class ItemAttendanceList extends StatelessWidget {
                               '00:00') ...[
                         RichText(
                           text: TextSpan(
-                              text: 'Work time: ',
+                              text: '${context.string.totalWorkTime}: ',
                               style: context.textFontWeight400
                                   .onColor(context.resources.color.textColor)
                                   .onFontSize(context.resources.fontSize.dp12),

@@ -647,7 +647,13 @@ class CancelInvoiceScreen extends StatelessWidget {
                   SizedBox(
                     height: resources.dimen.dp20,
                   ),
-                  SubmitCancelWidget(callBack: onSubmit),
+                  ValueListenableBuilder(
+                      valueListenable: _invoiceList,
+                      builder: (context, value, child) {
+                        return value.isNotEmpty
+                            ? SubmitCancelWidget(callBack: onSubmit)
+                            : const SizedBox();
+                      }),
                   SizedBox(
                     height: resources.dimen.dp10,
                   ),

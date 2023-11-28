@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/log.dart';
+import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/enum.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
@@ -33,6 +35,10 @@ class ServicesList extends StatelessWidget {
         _isScrollable.value = true;
       }
     });
+    if (!ConstantConfig.cancelInvoiceUsers
+        .contains(context.userDB.get(userNameKey, defaultValue: ''))) {
+      services.removeWhere((element) => element.id == 21);
+    }
     return Expanded(
       child: Stack(
         children: [

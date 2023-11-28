@@ -88,16 +88,18 @@ class UserAppBarWidget extends StatelessWidget {
                                 decoration: ShapeDecoration(
                                     shape: const CircleBorder(),
                                     color: context.resources.color.viewBgColor),
-                                child: Text(
-                                    '${ConstantConfig.notificationsCount}',
-                                    textAlign: TextAlign.center,
-                                    style: context.textFontWeight600
-                                        .onColor(
-                                            context.resources.color.colorWhite)
-                                        .onFontFamily(fontFamily: fontFamilyEN)
-                                        .onFontSize(
-                                            context.resources.fontSize.dp8)
-                                        .copyWith(height: 1.5)),
+                                child: Center(
+                                  child: Text(
+                                      '${ConstantConfig.notificationsCount}',
+                                      textAlign: TextAlign.center,
+                                      style: context.textFontWeight600
+                                          .onColor(context
+                                              .resources.color.colorWhite)
+                                          .onFontFamily(
+                                              fontFamily: fontFamilyEN)
+                                          .onFontSize(
+                                              context.resources.fontSize.dp8)),
+                                ),
                               ),
                             ),
                           );
