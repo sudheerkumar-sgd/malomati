@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/presentation/ui/widgets/image_widget.dart';
-import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../res/drawables/background_box_decoration.dart';
 
@@ -20,18 +18,18 @@ class UpdateDialogWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 10.0, top: 15.0, right: 15.0),
-              child: Align(
-                  alignment: Alignment.topRight,
-                  child: ImageWidget(path: DrawableAssets.icCross).loadImage),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     //Navigator.pop(context);
+          //   },
+          //   child: Padding(
+          //     padding:
+          //         const EdgeInsets.only(left: 10.0, top: 15.0, right: 15.0),
+          //     child: Align(
+          //         alignment: Alignment.topRight,
+          //         child: ImageWidget(path: DrawableAssets.icCross).loadImage),
+          //   ),
+          // ),
           Padding(
             padding:
                 EdgeInsets.symmetric(horizontal: context.resources.dimen.dp20),

@@ -248,8 +248,10 @@ class AttendanceScreen extends StatelessWidget {
     Map<String, dynamic> requestParams = {
       "userid": context.userDB.get(oracleLoginIdKey),
       "date": getCurrentDateByformat('ddMMyyyyHHmmss'),
-      "latitude": department?['latitude'] ?? position?.latitude ?? 0.0,
-      "longitude": department?['longitude'] ?? position?.longitude ?? 0.0,
+      "latitude": department?['latitude'] ??
+          '+${(position?.latitude ?? 0.0).toStringAsFixed(4)}',
+      "longitude": department?['longitude'] ??
+          '+${(position?.longitude ?? 0.0).toStringAsFixed(4)}',
       "method": selectedOption?['id'],
       "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
     };
@@ -296,7 +298,7 @@ class AttendanceScreen extends StatelessWidget {
                     Navigator.of(context, rootNavigator: true).pop();
                     if (state.attendanceUserDetailsEntity.entity
                             ?.locationMandatory ==
-                        1) {
+                        "1") {
                       _submitAttendanceToServer(context);
                     } else {
                       Dialogs.showInfoDialog(context, PopupType.fail,
