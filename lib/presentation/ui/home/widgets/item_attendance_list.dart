@@ -423,7 +423,8 @@ class ItemAttendanceList extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                        left: context.resources.dimen.dp15,
+                        left: isLocalEn ? context.resources.dimen.dp15 : 0,
+                        right: isLocalEn ? 0 : context.resources.dimen.dp15,
                         top: context.resources.dimen.dp8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

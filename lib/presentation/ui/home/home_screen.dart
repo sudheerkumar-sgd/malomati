@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
@@ -198,6 +199,12 @@ class HomeScreen extends StatelessWidget {
                         state.requestsCountEntity.requestsPendingCount ?? 0;
                     ConstantConfig.isApprovalCountChange.value =
                         !(ConstantConfig.isApprovalCountChange.value);
+                    FlutterAppBadger.isAppBadgeSupported().then((value) =>
+                        FlutterAppBadger.updateBadgeCount(
+                            ConstantConfig.hrApprovalCount +
+                                ConstantConfig.financePOApprovalCount +
+                                ConstantConfig.financePRApprovalCount +
+                                ConstantConfig.financeINVApprovalCount));
                   } else if (state is OnNotificationsListSuccess) {
                     String openedNotifications = context.userDB
                         .get(openedNotificationsKey, defaultValue: '');
