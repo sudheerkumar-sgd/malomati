@@ -34,6 +34,7 @@ class RequestsScreen extends StatelessWidget {
   ScrollController controller = ScrollController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  DateTime _endDateTime = DateTime.now();
   final dateFormat = 'yyyy-MM-dd';
   String userName = '';
   bool isRequestsLoading = false;
@@ -45,6 +46,9 @@ class RequestsScreen extends StatelessWidget {
         initialDate: initialDate,
         firstDate: firstDate,
         lastDate: lastDate, callBack: (dateTime) {
+      if (controller == _endDateController) {
+        _endDateTime = dateTime.add(const Duration(days: 1));
+      }
       controller.text = getDateByformat(dateFormat, dateTime);
     });
   }
@@ -55,7 +59,7 @@ class RequestsScreen extends StatelessWidget {
     _requestsBloc.getRequestsList(requestParams: {
       'USER_NAME': userName,
       'START_DATE': _startDateController.text,
-      'END_DATE': _endDateController.text,
+      'END_DATE': DateFormat(dateFormat).format(_endDateTime),
     });
   }
 
@@ -74,6 +78,7 @@ class RequestsScreen extends StatelessWidget {
         dateRange: '${dateStart}000000-${dateCurrent}235959');
     _startDateController.text =
         DateFormat(dateFormat).format(DateTime(date.year, date.month, 1));
+    _endDateTime = DateTime.now().add(const Duration(days: 1));
     _endDateController.text = DateFormat(dateFormat).format(DateTime.now());
     Future.delayed(const Duration(seconds: 1), () {
       getRequests();
@@ -284,6 +289,7 @@ class RequestsScreen extends StatelessWidget {
                                                       CircularProgressIndicator()),
                                             )
                                           : ListView.separated(
+                                              controller: controller,
                                               itemCount:
                                                   snapshot.data?.length ?? 0,
                                               itemBuilder: (context, index) {
@@ -310,6 +316,7 @@ class RequestsScreen extends StatelessWidget {
                                     valueListenable: _requestsList,
                                     builder: (context, list, child) {
                                       return ListView.separated(
+                                          controller: controller,
                                           itemCount: list.length + 1,
                                           itemBuilder: (context, index) {
                                             return index == 0

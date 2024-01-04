@@ -19,7 +19,7 @@ Future<void> selectDate(BuildContext context,
       context: context,
       initialDate: initialDate ?? firstDate ?? currentDate,
       firstDate: firstDate ?? DateTime(currentDate.year - 1, currentDate.month),
-      lastDate: lastDate ?? DateTime(2024),
+      lastDate: lastDate ?? DateTime(currentDate.year + 1, currentDate.month),
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
           colorScheme: ColorScheme.light(
@@ -47,7 +47,8 @@ Future<void> selectDate(BuildContext context,
               initialDateTime: initialDate ?? currentDate,
               minimumDate: firstDate ??
                   DateTime(currentDate.year - 1, currentDate.month),
-              maximumDate: lastDate ?? DateTime(2024),
+              maximumDate:
+                  lastDate ?? DateTime(currentDate.year + 1, currentDate.month),
               mode: CupertinoDatePickerMode.date,
               use24hFormat: true,
               // This is called when the user changes the time.

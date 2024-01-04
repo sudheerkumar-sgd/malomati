@@ -31,8 +31,9 @@ class UpdateDialogWidget extends StatelessWidget {
           //   ),
           // ),
           Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: context.resources.dimen.dp20),
+            padding: EdgeInsets.symmetric(
+                horizontal: context.resources.dimen.dp20,
+                vertical: context.resources.dimen.dp15),
             child: Column(
               children: [
                 Text(
@@ -76,9 +77,6 @@ class UpdateDialogWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: context.resources.dimen.dp15,
                 ),
               ],
             ),
