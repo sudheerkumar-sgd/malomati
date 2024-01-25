@@ -129,8 +129,10 @@ class AttendanceScreen extends StatelessWidget {
   }
 
   bool canUserRegularIn() {
-    var time = DateTime.now().hour;
-    return (time < 8 && (attendanceEntity?.punch1Time ?? '').isEmpty);
+    var hour = DateTime.now().hour;
+    var minute = DateTime.now().minute;
+    return ((hour < 8 || (hour == 8 && minute < 1)) &&
+        (attendanceEntity?.punch1Time ?? '').isEmpty);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {
