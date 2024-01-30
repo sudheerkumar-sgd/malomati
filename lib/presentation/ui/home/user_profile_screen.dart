@@ -19,8 +19,7 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     _loginBloc.getProfile(requestParams: {
-      'USER_NAME':
-          context.userDB.get(userNameKey, defaultValue: 'MOOZA.BINYEEM')
+      'USER_NAME': context.userDB.get(userNameKey, defaultValue: '')
     });
     return SafeArea(
       child: Scaffold(
