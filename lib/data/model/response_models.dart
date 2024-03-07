@@ -3,6 +3,7 @@
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/delegation_user_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 
 import '../../domain/entities/hr_approval_entity.dart';
@@ -235,6 +236,13 @@ class NameValueModel extends BaseModel {
     return nameValueModel;
   }
 
+  factory NameValueModel.fromVactionTypesJson(Map<String, dynamic> json) {
+    var nameValueModel = NameValueModel();
+    nameValueModel.name = json['DISPLAY_NAME'];
+    nameValueModel.id = json['NAME'];
+    return nameValueModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "ID": id,
@@ -248,12 +256,58 @@ class NameValueModel extends BaseModel {
 
   @override
   BaseEntity toEntity<T>() {
-    return LeaveTypeEntity();
+    return NameIdEntity(id, name);
   }
 }
 
 extension NameValueModelExtension on NameValueModel {
   NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+}
+
+class ListModel extends BaseModel {
+  List<dynamic> list = [];
+
+  ListModel();
+
+  factory ListModel.fromVactionTypesJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['DelegationTypes'] != null) {
+      final list = (json['DelegationTypes'] as List)
+          .map((delegationTypeJson) =>
+              NameValueModel.fromVactionTypesJson(delegationTypeJson)
+                  .toNameIdEntity())
+          .toList();
+      nameValueListModel.list = list;
+    }
+    return nameValueListModel;
+  }
+
+  factory ListModel.fromDelegationUsersJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['DelegationUsers'] != null) {
+      final list = (json['DelegationUsers'] as List)
+          .map((delegationUserJson) =>
+              DelegationUsersModel.fromJson(delegationUserJson).toEntity())
+          .toList();
+      nameValueListModel.list = list;
+    }
+    return nameValueListModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "leaveType_daily": list,
+      };
+
+  @override
+  List<Object?> get props => [list];
+
+  @override
+  BaseEntity toEntity<T>() {
+    ListEntity nameIdListEntity = ListEntity();
+    nameIdListEntity.list = list;
+    return nameIdListEntity;
+  }
 }
 
 class InvoiceListModel extends BaseModel {
@@ -316,5 +370,49 @@ extension InvoiceListExtension on InvoiceListModel {
     invoiceListEntity.invoiceType = invoiceType;
     invoiceListEntity.description = description;
     return invoiceListEntity;
+  }
+}
+
+class DelegationUsersModel extends BaseModel {
+  String? username;
+  String? displayName;
+  String? orgiSystem;
+  String? emailAddress;
+  int? origSystemId;
+  int? partitionId;
+
+  DelegationUsersModel();
+
+  factory DelegationUsersModel.fromJson(Map<String, dynamic> json) {
+    var delegationUsersModel = DelegationUsersModel();
+    delegationUsersModel.username = json['USER_NAME'];
+    delegationUsersModel.displayName = json['DISPLAY_NAME'];
+    delegationUsersModel.orgiSystem = json['ORIG_SYSTEM'];
+    delegationUsersModel.emailAddress = json['EMAIL_ADDRESS'];
+    delegationUsersModel.origSystemId = json['ORIG_SYSTEM_ID'];
+    delegationUsersModel.partitionId = json['PARTITION_ID'];
+    return delegationUsersModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "USER_NAME": username,
+      };
+
+  @override
+  List<Object?> get props => [
+        username,
+      ];
+
+  @override
+  DelegationUserEntity toEntity<T>() {
+    final delegationUserEntity = DelegationUserEntity();
+    delegationUserEntity.username = username;
+    delegationUserEntity.displayName = displayName;
+    delegationUserEntity.orgiSystem = orgiSystem;
+    delegationUserEntity.emailAddress = emailAddress;
+    delegationUserEntity.origSystemId = origSystemId;
+    delegationUserEntity.partitionId = partitionId;
+    return delegationUserEntity;
   }
 }

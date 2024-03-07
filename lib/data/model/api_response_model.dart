@@ -50,4 +50,13 @@ extension SourceModelExtension on ApiResponse {
     apiEntity.messageAR = messageAR;
     return apiEntity;
   }
+
+  ApiEntity<T> toEntity2<T extends BaseEntity>() {
+    final apiEntity = ApiEntity<T>();
+    apiEntity.isSuccess = isSuccess;
+    apiEntity.message = message;
+    apiEntity.messageAR = messageAR;
+    apiEntity.entity = data?.toEntity();
+    return apiEntity;
+  }
 }

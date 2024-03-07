@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/delegation_user_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
@@ -213,6 +215,45 @@ class ServicesBloc extends Cubit<ServicesState> {
         await servicesUseCase.getInvoicesList(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnInvoicesListSuccess(invoiceList: r)));
+  }
+
+  Future<void> getDelegationTypes(
+      {required Map<String, dynamic> requestParams,
+      bool showLoading = true}) async {
+    if (showLoading) {
+      emit(OnServicesLoading());
+    }
+
+    final result =
+        await servicesUseCase.getDelegationTypes(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnDelegationTypes(delegationTypes: r)));
+  }
+
+  Future<void> getDelegationUsers(
+      {required Map<String, dynamic> requestParams,
+      bool showLoading = true}) async {
+    if (showLoading) {
+      emit(OnServicesLoading());
+    }
+
+    final result =
+        await servicesUseCase.getDelegationUsers(requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnDelegationUsers(delegationUsers: r)));
+  }
+
+  Future<void> getDelegationCategories(
+      {required Map<String, dynamic> requestParams,
+      bool showLoading = true}) async {
+    if (showLoading) {
+      emit(OnServicesLoading());
+    }
+
+    final result = await servicesUseCase.getDelegationCategories(
+        requestParams: requestParams);
+    emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
+        (r) => OnDelegationCategories(delegationCategories: r)));
   }
 
   String _getErrorMessage(Failure failure) {

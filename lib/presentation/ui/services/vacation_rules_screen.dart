@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/core/constants/data_constants.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/model/leave_request_model.dart';
-import 'package:malomati/data/model/response_models.dart';
+import 'package:malomati/domain/entities/delegation_user_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/dropdown_search_widget.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -28,12 +28,16 @@ class VacationRulesScreen extends StatelessWidget {
   VacationRulesScreen({super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<EmployeeEntity>> _employeesList = ValueNotifier([]);
-  EmployeeEntity? selectedEmployee;
+  final ValueNotifier<List<DelegationUserEntity>> _delegationUsers =
+      ValueNotifier([]);
+  final ValueNotifier<List<NameIdEntity>> _delegationTypes = ValueNotifier([]);
+  final ValueNotifier<List<NameIdEntity>> _delegationCategories =
+      ValueNotifier([]);
+  DelegationUserEntity? selectedEmployee;
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
-  final dateFormat = 'dd-MMM-yyyy';
+  final dateFormat = 'yyyy-MM-dd';
   final timeFormat = 'hh:mm a';
   String userName = '';
   String selectedEmpUserName = '';
@@ -41,7 +45,6 @@ class VacationRulesScreen extends StatelessWidget {
   bool isLoading = false;
   final ValueNotifier<int> _ruleAccess = ValueNotifier(0);
   final ValueNotifier<int> _subRuleType = ValueNotifier(0);
-  List<NameIdEntity> _vnTypes = [];
   final ValueNotifier<NameIdEntity?> selectedVNType = ValueNotifier(null);
   String selectedVNSubType = '';
 
@@ -54,19 +57,6 @@ class VacationRulesScreen extends StatelessWidget {
         lastDate: lastDate, callBack: (dateTime) {
       controller.text = getDateByformat(dateFormat, dateTime);
     });
-  }
-
-  Future<void> _selectTime(
-      BuildContext context, TextEditingController controller,
-      {DateTime? startTime}) async {
-    selectTime(context, startTime: startTime, callBack: (dateTime) {
-      controller.text = getDateByformat(timeFormat, dateTime);
-    });
-  }
-
-  onEmployeeSelected(EmployeeEntity? employeeEntity) {
-    selectedEmployee = employeeEntity;
-    selectedEmpUserName = selectedEmployee?.uSERNAME ?? '';
   }
 
   onVNTypeSelected(NameIdEntity? vnType) {
@@ -84,15 +74,20 @@ class VacationRulesScreen extends StatelessWidget {
   }
 
   _submitVacationRequest() {
-    final vrRequestModel = LeaveRequestModel();
-    vrRequestModel.uSERNAME = selectedEmpUserName;
-    vrRequestModel.cREATORUSERNAME = '';
-    vrRequestModel.sTARTDATE = _startDateController.text;
-    vrRequestModel.eNDDATE = _endDateController.text;
-    vrRequestModel.uSERCOMMENTS = _commentController.text;
+    final vrRequestModel = {
+      'ruleId': '104024',
+      'userName': userName,
+      'action': 'FORWARD',
+      'beginDate': _startDateController.text,
+      'endDate': _endDateController.text,
+      'messageType': '',
+      'messageName': '',
+      'delagatedUser': 'TAREK.MAGDY',
+      'ruleComment': _commentController.text,
+      'securityGroupId': ''
+    };
     _servicesBloc.submitServicesRequest(
-        apiUrl: delegationRequestApiUrl,
-        requestParams: vrRequestModel.toJson());
+        apiUrl: delegationRequestApiUrl, requestParams: vrRequestModel);
   }
 
   @override
@@ -104,15 +99,12 @@ class VacationRulesScreen extends StatelessWidget {
         _endDateController.text = '';
       },
     );
-    _vnTypes = vactionNotificationType
-        .map(
-            (json) => NameValueModel.fromVactionTypeJson(json).toNameIdEntity())
-        .toList();
     Future.delayed(const Duration(milliseconds: 500), () {
-      _servicesBloc.getEmployeesByDepartment(requestParams: {
-        'DEPARTMENT_NUMBER':
-            context.userDB.get(departmentIdKey, defaultValue: ''),
+      _servicesBloc.getDelegationTypes(requestParams: {
+        'USER_NAME': userName,
+        'USER_ID': context.userDB.get(userPersonIdKey, defaultValue: ''),
       }, showLoading: false);
+      _servicesBloc.getDelegationUsers(requestParams: {}, showLoading: false);
     });
     return SafeArea(
       child: Scaffold(
@@ -124,23 +116,28 @@ class VacationRulesScreen extends StatelessWidget {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
                 isLoading = true;
-              } else if (state is OnEmployeesSuccess) {
-                _employeesList.value = state.employeesList;
-              } else if (state is OnLeaveSubmittedSuccess) {
+              } else if (state is OnDelegationUsers) {
+                _delegationUsers.value = state.delegationUsers;
+              } else if (state is OnDelegationTypes) {
+                _delegationTypes.value = state.delegationTypes;
+              } else if (state is OnServicesRequestSubmitSuccess) {
                 if (isLoading) {
                   Navigator.of(context, rootNavigator: true).pop();
                   isLoading = false;
                 }
-                if (state.leaveSubmitResponse.isSuccess ?? false) {
+                if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
                           PopupType.success,
-                          state.leaveSubmitResponse
+                          state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
                 } else {
-                  Dialogs.showInfoDialog(context, PopupType.fail,
-                      state.leaveSubmitResponse.getDisplayMessage(resources));
+                  Dialogs.showInfoDialog(
+                      context,
+                      PopupType.fail,
+                      state.servicesRequestSuccessResponse
+                          .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
                 if (isLoading) {
@@ -170,14 +167,21 @@ class VacationRulesScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            DropDownWidget<NameIdEntity>(
-                              list: _vnTypes,
-                              height: resources.dimen.dp27,
-                              labelText: context.string.vactionTypeSelectTitle,
-                              hintText: context.string.vactionTypeSelectTitle,
-                              suffixIconPath: DrawableAssets.icChevronDown,
-                              callback: onVNTypeSelected,
-                            ),
+                            ValueListenableBuilder(
+                                valueListenable: _delegationTypes,
+                                builder: (context, types, child) {
+                                  return DropDownWidget<NameIdEntity>(
+                                    list: types,
+                                    height: resources.dimen.dp27,
+                                    labelText:
+                                        context.string.vactionTypeSelectTitle,
+                                    hintText:
+                                        context.string.vactionTypeSelectTitle,
+                                    suffixIconPath:
+                                        DrawableAssets.icChevronDown,
+                                    callback: onVNTypeSelected,
+                                  );
+                                }),
                             ValueListenableBuilder(
                                 valueListenable: selectedVNType,
                                 builder: (context, vnType, child) {
@@ -189,7 +193,7 @@ class VacationRulesScreen extends StatelessWidget {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                _subRuleType.value = 1;
+                                                _subRuleType.value = 0;
                                               },
                                               child: Row(
                                                 crossAxisAlignment:
@@ -309,7 +313,9 @@ class VacationRulesScreen extends StatelessWidget {
                                                   Expanded(
                                                     child: DropDownWidget<
                                                         NameIdEntity>(
-                                                      list: _vnTypes,
+                                                      list:
+                                                          _delegationCategories
+                                                              .value,
                                                       height:
                                                           resources.dimen.dp27,
                                                       callback:
@@ -378,19 +384,17 @@ class VacationRulesScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             ValueListenableBuilder(
-                                valueListenable: _employeesList,
+                                valueListenable: _delegationUsers,
                                 builder: (context, employeesList, widget) {
-                                  return DropDownWidget<EmployeeEntity>(
+                                  return DropDownSearchWidget<
+                                      DelegationUserEntity>(
                                     list: employeesList,
-                                    height: resources.dimen.dp27,
                                     labelText:
                                         context.string.reassignEmployeeName,
-                                    hintText:
-                                        context.string.reassignEmployeeName,
-                                    suffixIconPath:
-                                        DrawableAssets.icChevronDown,
-                                    selectedValue: selectedEmployee,
-                                    callback: onEmployeeSelected,
+                                    hintText: 'Select employee',
+                                    callback: (employee) {
+                                      selectedEmployee = employee;
+                                    },
                                   );
                                 }),
                             SizedBox(

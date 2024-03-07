@@ -1,9 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:malomati/domain/entities/base_entity.dart';
 
-class NameIdEntity extends Equatable {
+// ignore: must_be_immutable
+class NameIdEntity extends BaseEntity {
   final String? id;
   final String? name;
-  const NameIdEntity(this.id, this.name);
+  NameIdEntity(this.id, this.name);
   @override
   String toString() {
     return name ?? '';
@@ -11,4 +12,13 @@ class NameIdEntity extends Equatable {
 
   @override
   List<Object?> get props => [id, name];
+}
+
+// ignore: must_be_immutable
+class ListEntity extends BaseEntity {
+  List<dynamic> list = [];
+
+  ListEntity();
+  @override
+  List<Object?> get props => [list];
 }

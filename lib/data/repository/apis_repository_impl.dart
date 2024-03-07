@@ -1,16 +1,19 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:malomati/core/error/failures.dart';
+import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/data_sources/remote_data_source.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_List_model.dart';
 import 'package:malomati/data/model/attendance_user_details_model.dart';
+import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/data/model/dashboard_model.dart';
 import 'package:malomati/data/model/event_list_model.dart';
 import 'package:malomati/data/model/leave_submit_response_model.dart';
 import 'package:malomati/data/model/leave_type_list_model.dart';
 import 'package:malomati/data/model/login_model.dart';
 import 'package:malomati/data/model/profile_model.dart';
+import 'package:malomati/data/model/response_models.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
@@ -24,6 +27,7 @@ import 'package:malomati/domain/entities/leave_submit_response_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
 import 'package:malomati/domain/entities/login_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/domain/entities/request_details_entity.dart';
@@ -662,6 +666,87 @@ class ApisRepositoryImpl extends ApisRepository {
         final apiResponse =
             await dataSource.getInvoicesList(requestParams: requestParams);
         return Right(apiResponse);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<NameIdEntity>>> getDelegationTypes(
+      {required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.get(
+            apiUrl: delegationTypesApiUrl, requestParams: requestParams);
+        if (apiResponse?['DelegationTypes'] != null) {
+          var delegationTypesJson = apiResponse?['DelegationTypes'] as List;
+          var delegationTypes = delegationTypesJson
+              .map((invoiceJson) =>
+                  NameValueModel.fromVactionTypesJson(invoiceJson)
+                      .toNameIdEntity())
+              .toList();
+          return Right(delegationTypes);
+        } else {
+          return const Right([]);
+        }
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse>> get<T extends BaseModel>({
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    Function(Map<String, dynamic>)? responseModel,
+  }) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.get(
+          apiUrl: apiUrl,
+          requestParams: requestParams,
+        );
+        var apiResponseModel =
+            ApiResponse<T>.fromJson(apiResponse, responseModel);
+        return Right(apiResponseModel);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse>> post<T extends BaseModel>({
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    Function(Map<String, dynamic>)? responseModel,
+  }) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.post(
+          apiUrl: apiUrl,
+          requestParams: requestParams,
+        );
+        var apiResponseModel =
+            ApiResponse<T>.fromJson(apiResponse, responseModel);
+        return Right(apiResponseModel);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       } catch (error) {

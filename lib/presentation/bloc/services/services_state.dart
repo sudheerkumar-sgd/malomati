@@ -121,6 +121,24 @@ class OnRequestsCountSuccess extends ServicesState {
   OnRequestsCountSuccess({required this.requestsCountEntity});
 }
 
+class OnDelegationTypes extends ServicesState {
+  final List<NameIdEntity> delegationTypes;
+
+  OnDelegationTypes({required this.delegationTypes});
+}
+
+class OnDelegationUsers extends ServicesState {
+  final List<DelegationUserEntity> delegationUsers;
+
+  OnDelegationUsers({required this.delegationUsers});
+}
+
+class OnDelegationCategories extends ServicesState {
+  final List<NameIdEntity> delegationCategories;
+
+  OnDelegationCategories({required this.delegationCategories});
+}
+
 class OnServicesError extends ServicesState {
   final String message;
 

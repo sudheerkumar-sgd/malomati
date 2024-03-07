@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
@@ -9,6 +11,7 @@ import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/domain/entities/invoice_list_entity.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/domain/entities/leave_type_list_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/profile_entity.dart';
 
@@ -92,4 +95,16 @@ abstract class ApisRepository {
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<InvoiceListEntity>>> getInvoicesList(
       {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, List<NameIdEntity>>> getDelegationTypes(
+      {required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiResponse>> get<T extends BaseModel>({
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    Function(Map<String, dynamic>)? responseModel,
+  });
+  Future<Either<Failure, ApiResponse>> post<T extends BaseModel>({
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    Function(Map<String, dynamic>)? responseModel,
+  });
 }

@@ -106,6 +106,10 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<List<InvoiceListEntity>> getInvoicesList(
       {required Map<String, dynamic> requestParams});
+  Future<dynamic> get(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
+  Future<dynamic> post(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -906,6 +910,35 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       var apiResponse =
           RequestsDetailsModel.fromJson(response.data).toRequestDetailsEntity();
       return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future get(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        apiUrl,
+        queryParameters: requestParams,
+      );
+      return response.data;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future post(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.post(apiUrl, data: jsonEncode(requestParams));
+      return response.data;
     } on DioException catch (e) {
       printLog(message: e.toString());
       rethrow;
