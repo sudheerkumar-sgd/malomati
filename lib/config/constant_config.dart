@@ -91,11 +91,11 @@ class ConstantConfig {
         name: 'View Warning',
         nameAR: 'عرض الإنذارات',
         iconPath: DrawableAssets.icViewWarning),
-    FavoriteEntity(
-        id: 20,
-        name: 'Vacation Rules',
-        nameAR: 'قاعدة الإجازة',
-        iconPath: DrawableAssets.icVacationRules),
+    // FavoriteEntity(
+    //     id: 20,
+    //     name: 'Vacation Rules',
+    //     nameAR: 'قاعدة الإجازة',
+    //     iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,
         name: 'Cancel Invoice',
@@ -133,11 +133,11 @@ class ConstantConfig {
         name: 'Warning',
         nameAR: 'التحذير',
         iconPath: DrawableAssets.icWarning),
-    FavoriteEntity(
-        id: 20,
-        name: 'Vacation Rules',
-        nameAR: 'قاعدة الإجازة',
-        iconPath: DrawableAssets.icVacationRules),
+    // FavoriteEntity(
+    //     id: 20,
+    //     name: 'Vacation Rules',
+    //     nameAR: 'قاعدة الإجازة',
+    //     iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,
         name: 'Cancel Invoice',

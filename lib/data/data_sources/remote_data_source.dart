@@ -180,13 +180,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
-      var response = await dio2.get(
-        '${attendanceApiUrl}date-range=${requestParams['date-range']}$attendanceRequestedParams',
-        options: Options(headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-          HttpHeaders.authorizationHeader: requestParams['oracle_id'],
-        }),
-      );
+      var response = await dio2
+          .get(
+            '${attendanceApiUrl}date-range=${requestParams['date-range']}$attendanceRequestedParams',
+            options: Options(headers: {
+              HttpHeaders.contentTypeHeader: "application/json",
+              HttpHeaders.authorizationHeader: requestParams['oracle_id'],
+            }),
+          )
+          .timeout(const Duration(seconds: 5));
 
       switch (response.statusCode) {
         case 200:
@@ -210,12 +212,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
-      var response = await dio2.get(
-        '${attendanceDetailsApiUrl}date-range=${requestParams['date-range']}$attendanceDetailsRequestedParams',
-        options: Options(headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-        }),
-      );
+      var response = await dio2
+          .get(
+            '${attendanceDetailsApiUrl}date-range=${requestParams['date-range']}$attendanceDetailsRequestedParams',
+            options: Options(headers: {
+              HttpHeaders.contentTypeHeader: "application/json",
+            }),
+          )
+          .timeout(const Duration(seconds: 5));
 
       switch (response.statusCode) {
         case 200:
@@ -239,12 +243,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
-      var response = await dio2.get(
-        attendanceUserDetailsApiUrl,
-        options: Options(headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-        }),
-      );
+      var response = await dio2
+          .get(
+            attendanceUserDetailsApiUrl,
+            options: Options(headers: {
+              HttpHeaders.contentTypeHeader: "application/json",
+            }),
+          )
+          .timeout(const Duration(seconds: 5));
 
       switch (response.statusCode) {
         case 200:
@@ -270,12 +276,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       var query =
           'userid=${requestParams['userid']};event-datetime=${requestParams['date']};in-out=${requestParams['isInOut']};dtype=12;did=1;gps_latitude=${requestParams['latitude']};gps_longitude=${requestParams['longitude']};spfid=${requestParams['method']}';
-      var response = await dio2.get(
-        '$attendanceSubmitApiUrl$query',
-        options: Options(headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-        }),
-      );
+      var response = await dio2
+          .get(
+            '$attendanceSubmitApiUrl$query',
+            options: Options(headers: {
+              HttpHeaders.contentTypeHeader: "application/json",
+            }),
+          )
+          .timeout(const Duration(seconds: 10));
 
       switch (response.statusCode) {
         case 200:
