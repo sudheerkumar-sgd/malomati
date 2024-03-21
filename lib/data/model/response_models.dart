@@ -3,6 +3,7 @@
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/delegation_category_entity.dart';
 import 'package:malomati/domain/entities/delegation_user_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 
@@ -294,6 +295,18 @@ class ListModel extends BaseModel {
     return nameValueListModel;
   }
 
+  factory ListModel.fromDelegationCategoriesJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['DelegationCategories'] != null) {
+      final list = (json['DelegationCategories'] as List)
+          .map((delegationTypeJson) =>
+              DelegationCategoriesModel.fromJson(delegationTypeJson).toEntity())
+          .toList();
+      nameValueListModel.list = list;
+    }
+    return nameValueListModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "leaveType_daily": list,
@@ -414,5 +427,62 @@ class DelegationUsersModel extends BaseModel {
     delegationUserEntity.origSystemId = origSystemId;
     delegationUserEntity.partitionId = partitionId;
     return delegationUserEntity;
+  }
+}
+
+class DelegationCategoriesModel extends BaseModel {
+  String? name;
+  String? displayName;
+  String? description;
+  String? valueType;
+  String? textValue;
+  String? numberValue;
+  String? dateValue;
+  String? type;
+  String? format;
+  String? messageType;
+  String? messageName;
+
+  DelegationCategoriesModel();
+
+  factory DelegationCategoriesModel.fromJson(Map<String, dynamic> json) {
+    var delegationCategoriesModel = DelegationCategoriesModel();
+    delegationCategoriesModel.name = json['USER_NAME'];
+    delegationCategoriesModel.displayName = json['DISPLAY_NAME'];
+    delegationCategoriesModel.description = json['DESCRIPTION'];
+    delegationCategoriesModel.valueType = json['VALUE_TYPE'];
+    delegationCategoriesModel.textValue = json['TEXT_VALUE'];
+    delegationCategoriesModel.numberValue = json['NUMBER_VALUE'];
+    delegationCategoriesModel.dateValue = json['DATE_VALUE'];
+    delegationCategoriesModel.type = json['TYPE'];
+    delegationCategoriesModel.format = json['FORMAT'];
+    delegationCategoriesModel.messageType = json['MESSAGE_TYPE'];
+    delegationCategoriesModel.messageName = json['MESSAGE_NAME'];
+    return delegationCategoriesModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "DISPLAY_NAME": displayName,
+      };
+
+  @override
+  List<Object?> get props => [messageType, messageName, name];
+
+  @override
+  DelegationCategoryEntity toEntity<T>() {
+    final delegationCategoryEntity = DelegationCategoryEntity();
+    delegationCategoryEntity.name = name;
+    delegationCategoryEntity.displayName = displayName;
+    delegationCategoryEntity.description = description;
+    delegationCategoryEntity.valueType = valueType;
+    delegationCategoryEntity.textValue = textValue;
+    delegationCategoryEntity.numberValue = numberValue;
+    delegationCategoryEntity.dateValue = dateValue;
+    delegationCategoryEntity.type = type;
+    delegationCategoryEntity.format = format;
+    delegationCategoryEntity.messageType = messageType;
+    delegationCategoryEntity.messageName = messageName;
+    return delegationCategoryEntity;
   }
 }

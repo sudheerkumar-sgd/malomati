@@ -24,7 +24,7 @@ class ApiResponse<T extends BaseModel> extends Equatable {
 
   Map<String, dynamic> toJson() => {
         "IsSuccess": this.isSuccess,
-        "Message": this.message,
+        "Message": this.message, 
         "MessageAR": this.messageAR,
         "data": this.data?.toJson(),
       };

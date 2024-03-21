@@ -18,6 +18,7 @@ import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
+import '../entities/delegation_category_entity.dart';
 import '../entities/hrapproval_details_entity.dart';
 import '../entities/leave_details_entity.dart';
 import '../entities/leave_submit_response_entity.dart';
@@ -171,18 +172,19 @@ class ServicesUseCase extends BaseUseCase {
     });
   }
 
-  Future<Either<Failure, List<NameIdEntity>>> getDelegationCategories(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, List<DelegationCategoryEntity>>>
+      getDelegationCategories(
+          {required Map<String, dynamic> requestParams}) async {
     var apiResponse = await apisRepository.get<ListModel>(
       apiUrl: delegationCategoriesApiUrl,
       requestParams: requestParams,
-      responseModel: ListModel.fromDelegationUsersJson,
+      responseModel: ListModel.fromDelegationCategoriesJson,
     );
     return apiResponse.fold((l) {
       return Left(l);
     }, (r) {
-      return Right(
-          (r.toEntity2<ListEntity>().entity?.list ?? []) as List<NameIdEntity>);
+      return Right((r.toEntity2<ListEntity>().entity?.list ?? [])
+          as List<DelegationCategoryEntity>);
     });
   }
 }

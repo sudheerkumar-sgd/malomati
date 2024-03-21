@@ -134,7 +134,7 @@ class OnDelegationUsers extends ServicesState {
 }
 
 class OnDelegationCategories extends ServicesState {
-  final List<NameIdEntity> delegationCategories;
+  final List<DelegationCategoryEntity> delegationCategories;
 
   OnDelegationCategories({required this.delegationCategories});
 }

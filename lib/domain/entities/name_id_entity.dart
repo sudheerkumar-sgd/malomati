@@ -11,7 +11,7 @@ class NameIdEntity extends BaseEntity {
   }
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [id];
 }
 
 // ignore: must_be_immutable

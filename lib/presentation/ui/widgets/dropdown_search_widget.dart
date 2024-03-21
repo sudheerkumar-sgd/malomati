@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:math';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';

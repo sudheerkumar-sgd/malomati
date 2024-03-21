@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/leave_request_model.dart';
+import 'package:malomati/domain/entities/delegation_category_entity.dart';
 import 'package:malomati/domain/entities/delegation_user_entity.dart';
-import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
@@ -31,7 +30,7 @@ class VacationRulesScreen extends StatelessWidget {
   final ValueNotifier<List<DelegationUserEntity>> _delegationUsers =
       ValueNotifier([]);
   final ValueNotifier<List<NameIdEntity>> _delegationTypes = ValueNotifier([]);
-  final ValueNotifier<List<NameIdEntity>> _delegationCategories =
+  final ValueNotifier<List<DelegationCategoryEntity>> _delegationCategories =
       ValueNotifier([]);
   DelegationUserEntity? selectedEmployee;
   final TextEditingController _startDateController = TextEditingController();
@@ -46,7 +45,7 @@ class VacationRulesScreen extends StatelessWidget {
   final ValueNotifier<int> _ruleAccess = ValueNotifier(0);
   final ValueNotifier<int> _subRuleType = ValueNotifier(0);
   final ValueNotifier<NameIdEntity?> selectedVNType = ValueNotifier(null);
-  String selectedVNSubType = '';
+  DelegationCategoryEntity? selectedVNSubType;
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -63,8 +62,8 @@ class VacationRulesScreen extends StatelessWidget {
     selectedVNType.value = vnType;
   }
 
-  onVNSubTypeSelected(NameIdEntity? vnType) {
-    selectedVNSubType = '';
+  onVNCategorySelected(DelegationCategoryEntity? vnCategory) {
+    selectedVNSubType = vnCategory;
   }
 
   onSubmit(String clickedButton) {
@@ -75,16 +74,16 @@ class VacationRulesScreen extends StatelessWidget {
 
   _submitVacationRequest() {
     final vrRequestModel = {
-      'ruleId': '104024',
       'userName': userName,
       'action': 'FORWARD',
       'beginDate': _startDateController.text,
       'endDate': _endDateController.text,
-      'messageType': '',
-      'messageName': '',
-      'delagatedUser': 'TAREK.MAGDY',
+      'messageType': selectedVNType.value?.id,
+      'messageName':
+          _subRuleType.value == 0 ? '' : selectedVNSubType?.messageName,
+      'delagatedUser': selectedEmployee?.username,
       'ruleComment': _commentController.text,
-      'securityGroupId': ''
+      'securityGroupId': _ruleAccess.value
     };
     _servicesBloc.submitServicesRequest(
         apiUrl: delegationRequestApiUrl, requestParams: vrRequestModel);
@@ -99,11 +98,11 @@ class VacationRulesScreen extends StatelessWidget {
         _endDateController.text = '';
       },
     );
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(Duration.zero, () {
       _servicesBloc.getDelegationTypes(requestParams: {
         'USER_NAME': userName,
         'USER_ID': context.userDB.get(userPersonIdKey, defaultValue: ''),
-      }, showLoading: false);
+      });
       _servicesBloc.getDelegationUsers(requestParams: {}, showLoading: false);
     });
     return SafeArea(
@@ -113,6 +112,10 @@ class VacationRulesScreen extends StatelessWidget {
           create: (context) => _servicesBloc,
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
+              if (isLoading) {
+                Navigator.of(context, rootNavigator: true).pop();
+                isLoading = false;
+              }
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
                 isLoading = true;
@@ -120,11 +123,9 @@ class VacationRulesScreen extends StatelessWidget {
                 _delegationUsers.value = state.delegationUsers;
               } else if (state is OnDelegationTypes) {
                 _delegationTypes.value = state.delegationTypes;
+              } else if (state is OnDelegationCategories) {
+                _delegationCategories.value = state.delegationCategories;
               } else if (state is OnServicesRequestSubmitSuccess) {
-                if (isLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  isLoading = false;
-                }
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -185,6 +186,12 @@ class VacationRulesScreen extends StatelessWidget {
                             ValueListenableBuilder(
                                 valueListenable: selectedVNType,
                                 builder: (context, vnType, child) {
+                                  if ((vnType?.id ?? 'ALL') != 'ALL') {
+                                    _servicesBloc.getDelegationCategories(
+                                        requestParams: {
+                                          "MESSAGE_TYPE": vnType?.id ?? ''
+                                        });
+                                  }
                                   return (vnType?.id ?? 'ALL') != 'ALL'
                                       ? Column(
                                           children: [
@@ -254,77 +261,99 @@ class VacationRulesScreen extends StatelessWidget {
                                             SizedBox(
                                               height: resources.dimen.dp10,
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                _subRuleType.value = 1;
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: resources.dimen.dp5,
-                                                  ),
-                                                  ValueListenableBuilder(
-                                                      valueListenable:
-                                                          _subRuleType,
-                                                      builder: (context,
-                                                          subRule, child) {
-                                                        return Transform.scale(
-                                                          scale: 0.7,
-                                                          child: SizedBox(
-                                                            width: 6,
-                                                            height: 6,
-                                                            child: Radio<int>(
-                                                                materialTapTargetSize:
-                                                                    MaterialTapTargetSize
-                                                                        .shrinkWrap,
-                                                                value: 1,
-                                                                groupValue:
-                                                                    subRule,
-                                                                onChanged: (int?
-                                                                    value) {
-                                                                  _subRuleType
-                                                                          .value =
-                                                                      value ??
-                                                                          0;
-                                                                }),
+                                            ValueListenableBuilder(
+                                                valueListenable: _subRuleType,
+                                                builder:
+                                                    (context, subRule, child) {
+                                                  return Row(
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          _subRuleType.value =
+                                                              1;
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 5,
+                                                                  right: 7),
+                                                          child:
+                                                              Transform.scale(
+                                                            scale: 0.7,
+                                                            child: SizedBox(
+                                                              width: 6,
+                                                              height: 6,
+                                                              child: Radio<int>(
+                                                                  materialTapTargetSize:
+                                                                      MaterialTapTargetSize
+                                                                          .shrinkWrap,
+                                                                  value: 1,
+                                                                  groupValue:
+                                                                      subRule,
+                                                                  onChanged: (int?
+                                                                      value) {
+                                                                    _subRuleType
+                                                                            .value =
+                                                                        value ??
+                                                                            0;
+                                                                  }),
+                                                            ),
                                                           ),
-                                                        );
-                                                      }),
-                                                  SizedBox(
-                                                    width: resources.dimen.dp7,
-                                                  ),
-                                                  Text(
-                                                    'Select by',
-                                                    style: context
-                                                        .textFontWeight600
-                                                        .onColor(context
-                                                            .resources
-                                                            .color
-                                                            .textColor)
-                                                        .onFontSize(context
-                                                            .resources
-                                                            .fontSize
-                                                            .dp10)
-                                                        .copyWith(height: 1),
-                                                  ),
-                                                  SizedBox(
-                                                    width: resources.dimen.dp7,
-                                                  ),
-                                                  Expanded(
-                                                    child: DropDownWidget<
-                                                        NameIdEntity>(
-                                                      list:
-                                                          _delegationCategories
-                                                              .value,
-                                                      height:
-                                                          resources.dimen.dp27,
-                                                      callback:
-                                                          onVNSubTypeSelected,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          _subRuleType.value =
+                                                              1;
+                                                        },
+                                                        child: Text(
+                                                          'Select by',
+                                                          style: context
+                                                              .textFontWeight600
+                                                              .onColor(context
+                                                                  .resources
+                                                                  .color
+                                                                  .textColor)
+                                                              .onFontSize(
+                                                                  context
+                                                                      .resources
+                                                                      .fontSize
+                                                                      .dp10)
+                                                              .copyWith(
+                                                                  height: 1),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            resources.dimen.dp7,
+                                                      ),
+                                                      Expanded(
+                                                        child:
+                                                            ValueListenableBuilder(
+                                                                valueListenable:
+                                                                    _delegationCategories,
+                                                                builder: (context,
+                                                                    delegationCategories,
+                                                                    child) {
+                                                                  return DropDownWidget<
+                                                                      DelegationCategoryEntity>(
+                                                                    isEnabled:
+                                                                        _subRuleType.value ==
+                                                                            1,
+                                                                    list:
+                                                                        delegationCategories,
+                                                                    height: resources
+                                                                        .dimen
+                                                                        .dp27,
+                                                                    callback:
+                                                                        onVNCategorySelected,
+                                                                  );
+                                                                }),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }),
                                           ],
                                         )
                                       : const SizedBox();

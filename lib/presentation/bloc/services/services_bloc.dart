@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/delegation_category_entity.dart';
 import 'package:malomati/domain/entities/delegation_user_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
