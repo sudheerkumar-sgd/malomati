@@ -186,13 +186,13 @@ class VacationRulesScreen extends StatelessWidget {
                             ValueListenableBuilder(
                                 valueListenable: selectedVNType,
                                 builder: (context, vnType, child) {
-                                  if ((vnType?.id ?? 'ALL') != 'ALL') {
+                                  if ((vnType?.id ?? '*') != '*') {
                                     _servicesBloc.getDelegationCategories(
                                         requestParams: {
                                           "MESSAGE_TYPE": vnType?.id ?? ''
                                         });
                                   }
-                                  return (vnType?.id ?? 'ALL') != 'ALL'
+                                  return (vnType?.id ?? '*') != '*'
                                       ? Column(
                                           children: [
                                             SizedBox(
