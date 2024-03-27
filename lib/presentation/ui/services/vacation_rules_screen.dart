@@ -17,6 +17,10 @@ import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 
+import '../../../core/constants/data_constants.dart';
+import '../../../data/model/department_model.dart';
+import '../../../domain/entities/department_entity.dart';
+import '../../../domain/entities/employee_entity.dart';
 import '../../../domain/entities/name_id_entity.dart';
 import '../utils/date_time_util.dart';
 import '../widgets/alert_dialog_widget.dart';
@@ -46,6 +50,10 @@ class VacationRulesScreen extends StatelessWidget {
   final ValueNotifier<int> _subRuleType = ValueNotifier(0);
   final ValueNotifier<NameIdEntity?> selectedVNType = ValueNotifier(null);
   DelegationCategoryEntity? selectedVNSubType;
+  List<DepartmentEntity> _departments = [];
+  final ValueNotifier _employees = ValueNotifier<List<EmployeeEntity>>([]);
+  DepartmentEntity? department;
+  EmployeeEntity? employee;
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -66,6 +74,17 @@ class VacationRulesScreen extends StatelessWidget {
     selectedVNSubType = vnCategory;
   }
 
+  onDepartmentSelected(DepartmentEntity? value) {
+    employee = null;
+    department = value;
+    _servicesBloc.getEmployeesByDepartment(
+        requestParams: {'DEPARTMENT_NUMBER': department?.pAYROLLID ?? ''});
+  }
+
+  onEmployeeSelected(EmployeeEntity? value) {
+    employee = value;
+  }
+
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
       _submitVacationRequest();
@@ -81,7 +100,7 @@ class VacationRulesScreen extends StatelessWidget {
       'messageType': selectedVNType.value?.id,
       'messageName':
           _subRuleType.value == 0 ? '' : selectedVNSubType?.messageName,
-      'delagatedUser': selectedEmployee?.username,
+      'delagatedUser': employee?.uSERNAME,
       'ruleComment': _commentController.text,
       'securityGroupId': _ruleAccess.value
     };
@@ -98,6 +117,10 @@ class VacationRulesScreen extends StatelessWidget {
         _endDateController.text = '';
       },
     );
+    _departments = departments
+        .map((departmentJson) =>
+            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+        .toList();
     Future.delayed(Duration.zero, () {
       _servicesBloc.getDelegationTypes(requestParams: {
         'USER_NAME': userName,
@@ -125,6 +148,8 @@ class VacationRulesScreen extends StatelessWidget {
                 _delegationTypes.value = state.delegationTypes;
               } else if (state is OnDelegationCategories) {
                 _delegationCategories.value = state.delegationCategories;
+              } else if (state is OnEmployeesSuccess) {
+                _employees.value = state.employeesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
@@ -412,23 +437,49 @@ class VacationRulesScreen extends StatelessWidget {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
+                            DropDownWidget<DepartmentEntity>(
+                              list: _departments,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.department,
+                              errorMessage: context.string.department,
+                              selectedValue: department,
+                              callback: onDepartmentSelected,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
                             ValueListenableBuilder(
-                                valueListenable: _delegationUsers,
-                                builder: (context, employeesList, widget) {
-                                  return DropDownSearchWidget<
-                                      DelegationUserEntity>(
-                                    list: employeesList,
-                                    labelText:
-                                        context.string.reassignEmployeeName,
-                                    hintText: 'Select employee',
-                                    callback: (employee) {
-                                      selectedEmployee = employee;
-                                    },
+                                valueListenable: _employees,
+                                builder: (context, employees, widget) {
+                                  return DropDownWidget<EmployeeEntity>(
+                                    list: employees,
+                                    height: resources.dimen.dp27,
+                                    labelText: context.string.employee,
+                                    errorMessage: context.string.employee,
+                                    selectedValue: employee,
+                                    callback: onEmployeeSelected,
                                   );
                                 }),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
+                            // ValueListenableBuilder(
+                            //     valueListenable: _delegationUsers,
+                            //     builder: (context, employeesList, widget) {
+                            //       return DropDownSearchWidget<
+                            //           DelegationUserEntity>(
+                            //         list: employeesList,
+                            //         labelText:
+                            //             context.string.reassignEmployeeName,
+                            //         hintText: 'Select employee',
+                            //         callback: (employee) {
+                            //           selectedEmployee = employee;
+                            //         },
+                            //       );
+                            //     }),
+                            // SizedBox(
+                            //   height: resources.dimen.dp20,
+                            // ),
                             ValueListenableBuilder(
                                 valueListenable: _ruleAccess,
                                 builder: (context, ruleAccess, widget) {
