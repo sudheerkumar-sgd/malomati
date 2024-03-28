@@ -107,7 +107,7 @@
     "type": "النوع",
     "absenceType": "نوع الغياب",
     "chooseAbsenceType": "اختر نوع الغياب",
-    "startDate": "تاريخ البدء",
+    "startDate": "تاريخ البداية",
     "chooseStartDate": "اختر تاريخ البدء",
     "endDate": "تاريخ الإنتهاء",
     "chooseEndDate": "اختر تاريخ الانتهاء",
@@ -235,7 +235,7 @@
     "loginAsGuest":"الدخول كزائر",
     "jobs":"وظائف",
     "events":"الفعاليات",
-    "vacationRules":"قاعدة الإجازة",
+    "vacationRules":"تفويض الاجازة",
     "holidays":"العطلات",
     "uaqApps":"تطبيقات",
     "firstName":"الاسم الأول",
@@ -286,5 +286,6 @@
     "checkingRemoteWorkDetails":"فحص تفاصيل العمل عن بُعد",
     "locationErrorText":"يرجى تمكين الموقع لتقديم بصمة الحضور",
     "noDeleteInvoices":"لا توجد فواتير لحذفها",
-    "totalWorkTime":"إجمالي ساعات العمل"
+    "totalWorkTime":"إجمالي ساعات العمل",
+    "delegateMessageCaption":"سوف تظهر ملاحظات مع كل تبليغ قد تم توجيهه"
 }

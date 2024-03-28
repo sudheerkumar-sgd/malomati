@@ -98,9 +98,8 @@ class VacationRulesScreen extends StatelessWidget {
       'beginDate': _startDateController.text,
       'endDate': _endDateController.text,
       'messageType': selectedVNType.value?.id,
-      'messageName':
-          _subRuleType.value == 0 ? '' : selectedVNSubType?.messageName,
-      'delagatedUser': employee?.uSERNAME,
+      'messageName': '',
+      'delegatedUser': employee?.uSERNAME,
       'ruleComment': _commentController.text,
       'securityGroupId': _ruleAccess.value
     };
@@ -158,6 +157,15 @@ class VacationRulesScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
+                  _servicesBloc.sendPushNotifications(
+                      requestParams: getFCMMessageData(
+                    to: employee?.uSERNAME ?? '',
+                    title:
+                        '${context.userDB.get(userFullNameUsKey, defaultValue: '').toString()} has delegated.',
+                    body: _commentController.text.isNotEmpty
+                        ? 'the notification with comment: ${_commentController.text}'
+                        : '',
+                  ));
                 } else {
                   Dialogs.showInfoDialog(
                       context,
@@ -208,181 +216,181 @@ class VacationRulesScreen extends StatelessWidget {
                                     callback: onVNTypeSelected,
                                   );
                                 }),
-                            ValueListenableBuilder(
-                                valueListenable: selectedVNType,
-                                builder: (context, vnType, child) {
-                                  if ((vnType?.id ?? '*') != '*') {
-                                    _servicesBloc.getDelegationCategories(
-                                        requestParams: {
-                                          "MESSAGE_TYPE": vnType?.id ?? ''
-                                        });
-                                  }
-                                  return (vnType?.id ?? '*') != '*'
-                                      ? Column(
-                                          children: [
-                                            SizedBox(
-                                              height: resources.dimen.dp20,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                _subRuleType.value = 0;
-                                              },
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    width: resources.dimen.dp5,
-                                                  ),
-                                                  ValueListenableBuilder(
-                                                      valueListenable:
-                                                          _subRuleType,
-                                                      builder: (context,
-                                                          subRule, child) {
-                                                        return Transform.scale(
-                                                          scale: 0.7,
-                                                          child: SizedBox(
-                                                            width: 6,
-                                                            height: 6,
-                                                            child: Radio<int>(
-                                                                materialTapTargetSize:
-                                                                    MaterialTapTargetSize
-                                                                        .shrinkWrap,
-                                                                value: 0,
-                                                                groupValue:
-                                                                    subRule,
-                                                                onChanged: (int?
-                                                                    value) {
-                                                                  _subRuleType
-                                                                          .value =
-                                                                      value ??
-                                                                          0;
-                                                                }),
-                                                          ),
-                                                        );
-                                                      }),
-                                                  SizedBox(
-                                                    width: resources.dimen.dp7,
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                      'All',
-                                                      style: context
-                                                          .textFontWeight600
-                                                          .onColor(context
-                                                              .resources
-                                                              .color
-                                                              .textColor)
-                                                          .onFontSize(context
-                                                              .resources
-                                                              .fontSize
-                                                              .dp10)
-                                                          .copyWith(height: 1),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: resources.dimen.dp10,
-                                            ),
-                                            ValueListenableBuilder(
-                                                valueListenable: _subRuleType,
-                                                builder:
-                                                    (context, subRule, child) {
-                                                  return Row(
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () {
-                                                          _subRuleType.value =
-                                                              1;
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 5,
-                                                                  right: 7),
-                                                          child:
-                                                              Transform.scale(
-                                                            scale: 0.7,
-                                                            child: SizedBox(
-                                                              width: 6,
-                                                              height: 6,
-                                                              child: Radio<int>(
-                                                                  materialTapTargetSize:
-                                                                      MaterialTapTargetSize
-                                                                          .shrinkWrap,
-                                                                  value: 1,
-                                                                  groupValue:
-                                                                      subRule,
-                                                                  onChanged: (int?
-                                                                      value) {
-                                                                    _subRuleType
-                                                                            .value =
-                                                                        value ??
-                                                                            0;
-                                                                  }),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          _subRuleType.value =
-                                                              1;
-                                                        },
-                                                        child: Text(
-                                                          'Select by',
-                                                          style: context
-                                                              .textFontWeight600
-                                                              .onColor(context
-                                                                  .resources
-                                                                  .color
-                                                                  .textColor)
-                                                              .onFontSize(
-                                                                  context
-                                                                      .resources
-                                                                      .fontSize
-                                                                      .dp10)
-                                                              .copyWith(
-                                                                  height: 1),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width:
-                                                            resources.dimen.dp7,
-                                                      ),
-                                                      Expanded(
-                                                        child:
-                                                            ValueListenableBuilder(
-                                                                valueListenable:
-                                                                    _delegationCategories,
-                                                                builder: (context,
-                                                                    delegationCategories,
-                                                                    child) {
-                                                                  return DropDownWidget<
-                                                                      DelegationCategoryEntity>(
-                                                                    isEnabled:
-                                                                        _subRuleType.value ==
-                                                                            1,
-                                                                    list:
-                                                                        delegationCategories,
-                                                                    height: resources
-                                                                        .dimen
-                                                                        .dp27,
-                                                                    callback:
-                                                                        onVNCategorySelected,
-                                                                  );
-                                                                }),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }),
-                                          ],
-                                        )
-                                      : const SizedBox();
-                                }),
+                            // ValueListenableBuilder(
+                            //     valueListenable: selectedVNType,
+                            //     builder: (context, vnType, child) {
+                            //       if ((vnType?.id ?? '*') != '*') {
+                            //         _servicesBloc.getDelegationCategories(
+                            //             requestParams: {
+                            //               "MESSAGE_TYPE": vnType?.id ?? ''
+                            //             });
+                            //       }
+                            //       return (vnType?.id ?? '*') != '*'
+                            //           ? Column(
+                            //               children: [
+                            //                 SizedBox(
+                            //                   height: resources.dimen.dp20,
+                            //                 ),
+                            //                 InkWell(
+                            //                   onTap: () {
+                            //                     _subRuleType.value = 0;
+                            //                   },
+                            //                   child: Row(
+                            //                     crossAxisAlignment:
+                            //                         CrossAxisAlignment.start,
+                            //                     children: [
+                            //                       SizedBox(
+                            //                         width: resources.dimen.dp5,
+                            //                       ),
+                            //                       ValueListenableBuilder(
+                            //                           valueListenable:
+                            //                               _subRuleType,
+                            //                           builder: (context,
+                            //                               subRule, child) {
+                            //                             return Transform.scale(
+                            //                               scale: 0.7,
+                            //                               child: SizedBox(
+                            //                                 width: 6,
+                            //                                 height: 6,
+                            //                                 child: Radio<int>(
+                            //                                     materialTapTargetSize:
+                            //                                         MaterialTapTargetSize
+                            //                                             .shrinkWrap,
+                            //                                     value: 0,
+                            //                                     groupValue:
+                            //                                         subRule,
+                            //                                     onChanged: (int?
+                            //                                         value) {
+                            //                                       _subRuleType
+                            //                                               .value =
+                            //                                           value ??
+                            //                                               0;
+                            //                                     }),
+                            //                               ),
+                            //                             );
+                            //                           }),
+                            //                       SizedBox(
+                            //                         width: resources.dimen.dp7,
+                            //                       ),
+                            //                       Expanded(
+                            //                         child: Text(
+                            //                           'All',
+                            //                           style: context
+                            //                               .textFontWeight600
+                            //                               .onColor(context
+                            //                                   .resources
+                            //                                   .color
+                            //                                   .textColor)
+                            //                               .onFontSize(context
+                            //                                   .resources
+                            //                                   .fontSize
+                            //                                   .dp10)
+                            //                               .copyWith(height: 1),
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 ),
+                            //                 SizedBox(
+                            //                   height: resources.dimen.dp10,
+                            //                 ),
+                            //                 ValueListenableBuilder(
+                            //                     valueListenable: _subRuleType,
+                            //                     builder:
+                            //                         (context, subRule, child) {
+                            //                       return Row(
+                            //                         children: [
+                            //                           InkWell(
+                            //                             onTap: () {
+                            //                               _subRuleType.value =
+                            //                                   1;
+                            //                             },
+                            //                             child: Padding(
+                            //                               padding:
+                            //                                   const EdgeInsets
+                            //                                           .only(
+                            //                                       left: 5,
+                            //                                       right: 7),
+                            //                               child:
+                            //                                   Transform.scale(
+                            //                                 scale: 0.7,
+                            //                                 child: SizedBox(
+                            //                                   width: 6,
+                            //                                   height: 6,
+                            //                                   child: Radio<int>(
+                            //                                       materialTapTargetSize:
+                            //                                           MaterialTapTargetSize
+                            //                                               .shrinkWrap,
+                            //                                       value: 1,
+                            //                                       groupValue:
+                            //                                           subRule,
+                            //                                       onChanged: (int?
+                            //                                           value) {
+                            //                                         _subRuleType
+                            //                                                 .value =
+                            //                                             value ??
+                            //                                                 0;
+                            //                                       }),
+                            //                                 ),
+                            //                               ),
+                            //                             ),
+                            //                           ),
+                            //                           InkWell(
+                            //                             onTap: () {
+                            //                               _subRuleType.value =
+                            //                                   1;
+                            //                             },
+                            //                             child: Text(
+                            //                               'Select by',
+                            //                               style: context
+                            //                                   .textFontWeight600
+                            //                                   .onColor(context
+                            //                                       .resources
+                            //                                       .color
+                            //                                       .textColor)
+                            //                                   .onFontSize(
+                            //                                       context
+                            //                                           .resources
+                            //                                           .fontSize
+                            //                                           .dp10)
+                            //                                   .copyWith(
+                            //                                       height: 1),
+                            //                             ),
+                            //                           ),
+                            //                           SizedBox(
+                            //                             width:
+                            //                                 resources.dimen.dp7,
+                            //                           ),
+                            //                           Expanded(
+                            //                             child:
+                            //                                 ValueListenableBuilder(
+                            //                                     valueListenable:
+                            //                                         _delegationCategories,
+                            //                                     builder: (context,
+                            //                                         delegationCategories,
+                            //                                         child) {
+                            //                                       return DropDownWidget<
+                            //                                           DelegationCategoryEntity>(
+                            //                                         isEnabled:
+                            //                                             _subRuleType.value ==
+                            //                                                 1,
+                            //                                         list:
+                            //                                             delegationCategories,
+                            //                                         height: resources
+                            //                                             .dimen
+                            //                                             .dp27,
+                            //                                         callback:
+                            //                                             onVNCategorySelected,
+                            //                                       );
+                            //                                     }),
+                            //                           ),
+                            //                         ],
+                            //                       );
+                            //                     }),
+                            //               ],
+                            //             )
+                            //           : const SizedBox();
+                            //     }),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
@@ -433,6 +441,14 @@ class VacationRulesScreen extends StatelessWidget {
                               maxLines: 8,
                               labelText: context.string.message,
                               textController: _commentController,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp5,
+                            ),
+                            Text(
+                              context.string.delegateMessageCaption,
+                              style: context.textFontWeight400
+                                  .onFontSize(resources.fontSize.dp10),
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,

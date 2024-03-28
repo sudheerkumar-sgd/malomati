@@ -581,5 +581,6 @@
     "checkingRemoteWorkDetails":"Checking remote work details",
     "locationErrorText":"Please enable location to submit attendance",
     "noDeleteInvoices":"There is no invoices to delete",
-    "totalWorkTime":"Total Work time"
+    "totalWorkTime":"Total Work time",
+    "delegateMessageCaption":"Comments will display with each routed notification"
 }
