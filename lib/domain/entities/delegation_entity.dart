@@ -18,3 +18,18 @@ class DelegationUserEntity extends BaseEntity {
   @override
   List<Object?> get props => [username];
 }
+
+class DelegationItemEntity extends BaseEntity {
+  int? rULEID;
+  String? mESSAGETYPE;
+  String? bEGINDATE;
+  String? eNDDATE;
+  String? delegateTO;
+  String? tYPEDISPLAY;
+  String? aCTIONDISPLAY;
+  String? nAME;
+  DelegationItemEntity();
+
+  @override
+  List<Object?> get props => [rULEID];
+}

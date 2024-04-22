@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/delegation_category_entity.dart';
-import 'package:malomati/domain/entities/delegation_user_entity.dart';
+import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
@@ -255,6 +255,18 @@ class ServicesBloc extends Cubit<ServicesState> {
         requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
         (r) => OnDelegationCategories(delegationCategories: r)));
+  }
+
+  Future<List<DelegationItemEntity>> getDelegationList(
+      {required Map<String, dynamic> requestParams,
+      bool showLoading = true}) async {
+    if (showLoading) {
+      emit(OnServicesLoading());
+    }
+
+    final result =
+        await servicesUseCase.getDelegationList(requestParams: requestParams);
+    return result.fold((l) => [], (r) => r);
   }
 
   String _getErrorMessage(Failure failure) {

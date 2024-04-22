@@ -3,7 +3,7 @@ import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/response_models.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
-import 'package:malomati/domain/entities/delegation_user_entity.dart';
+import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/events_entity.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
@@ -185,6 +185,21 @@ class ServicesUseCase extends BaseUseCase {
     }, (r) {
       return Right((r.toEntity2<ListEntity>().entity?.list ?? [])
           as List<DelegationCategoryEntity>);
+    });
+  }
+
+  Future<Either<Failure, List<DelegationItemEntity>>> getDelegationList(
+      {required Map<String, dynamic> requestParams}) async {
+    var apiResponse = await apisRepository.get<ListModel>(
+      apiUrl: delegationListApiUrl,
+      requestParams: requestParams,
+      responseModel: ListModel.fromDelegationListJson,
+    );
+    return apiResponse.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right((r.toEntity2<ListEntity>().entity?.list ?? [])
+          as List<DelegationItemEntity>);
     });
   }
 }

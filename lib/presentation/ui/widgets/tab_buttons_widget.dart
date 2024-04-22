@@ -4,16 +4,16 @@ import 'package:malomati/core/common/common.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 
 class TabsButtonsWidget extends StatelessWidget {
-  final ValueNotifier<int> selectedIndex;
+  final ValueNotifier<int> onTabSelected;
   final List<Map> buttons;
   const TabsButtonsWidget(
-      {required this.buttons, required this.selectedIndex, super.key});
+      {required this.buttons, required this.onTabSelected, super.key});
 
   @override
   Widget build(BuildContext context) {
     final resources = context.resources;
     return ValueListenableBuilder(
-        valueListenable: selectedIndex,
+        valueListenable: onTabSelected,
         builder: (context, value, widget) {
           return Row(
             children: List.generate(
@@ -28,7 +28,7 @@ class TabsButtonsWidget extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        selectedIndex.value = index;
+                        onTabSelected.value = index;
                       },
                       child: Stack(
                         fit: StackFit.passthrough,

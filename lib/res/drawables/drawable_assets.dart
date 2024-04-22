@@ -125,6 +125,9 @@ class DrawableAssets {
   static const icClosePeach = '${drawablePath}ic_close_peach.svg';
   static const icVacationRules = '${drawablePath}ic_vacation_rules.svg';
   static const icCancelInvoice = '${drawablePath}ic_cancel_invoice.svg';
+  static const icDelegateUser = '${drawablePath}ic_delegate_user.svg';
+  static const icDelegateEdit = '${drawablePath}ic_delegate_edit.svg';
+  static const icDelegateDelete = '${drawablePath}ic_delegate_delete.svg';
 
   static String getCloseDrawable(BuildContext context) {
     return context.resources.getTheme() == ThemeEnum.red

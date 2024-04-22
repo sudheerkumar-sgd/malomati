@@ -123,7 +123,7 @@ class FinanceApprovalsScreen extends StatelessWidget {
                       builder: (context, buttons, child) {
                         return TabsButtonsWidget(
                           buttons: buttons,
-                          selectedIndex: selectedButtonIndex,
+                          onTabSelected: selectedButtonIndex,
                         );
                       }),
                   SizedBox(

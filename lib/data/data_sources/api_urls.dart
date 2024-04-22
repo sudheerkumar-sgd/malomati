@@ -85,3 +85,5 @@ const String delegationUsersApiUrl =
     'UAQSGD_MOB_ERP_CreateDelegationRequest/DelegationRequest/DelegationUsers';
 const String delegationCategoriesApiUrl =
     'UAQSGD_MOB_ERP_CreateDelegationRequest/DelegationRequest/DelegationCategories';
+const String delegationListApiUrl =
+    'UAQSGD_MOB_ERP_DelegationList/Delegation';

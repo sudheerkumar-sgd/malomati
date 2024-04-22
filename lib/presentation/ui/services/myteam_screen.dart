@@ -38,7 +38,7 @@ class MyTeamScreen extends StatelessWidget {
               ),
               TabsButtonsWidget(
                 buttons: buttons,
-                selectedIndex: selectedButtonIndex,
+                onTabSelected: selectedButtonIndex,
               ),
               SizedBox(
                 height: context.resources.dimen.dp30,

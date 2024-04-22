@@ -4,7 +4,7 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/delegation_category_entity.dart';
-import 'package:malomati/domain/entities/delegation_user_entity.dart';
+import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
 
 import '../../domain/entities/hr_approval_entity.dart';
@@ -307,6 +307,17 @@ class ListModel extends BaseModel {
     return nameValueListModel;
   }
 
+  factory ListModel.fromDelegationListJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['Delegation_List'] != null) {
+      nameValueListModel.list = <DelegationItemEntity>[];
+      json['Delegation_List'].forEach((v) {
+        nameValueListModel.list.add(DelegationItemModel.fromJson(v).toEntity());
+      });
+    }
+    return nameValueListModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "leaveType_daily": list,
@@ -484,5 +495,83 @@ class DelegationCategoriesModel extends BaseModel {
     delegationCategoryEntity.messageType = messageType;
     delegationCategoryEntity.messageName = messageName;
     return delegationCategoryEntity;
+  }
+}
+
+class DelegationItemModel extends BaseModel {
+  int? rULEID;
+  String? mESSAGETYPE;
+  String? bEGINDATE;
+  String? eNDDATE;
+  String? delegateTO;
+  String? tYPEDISPLAY;
+  String? aCTIONDISPLAY;
+  String? nAME;
+
+  DelegationItemModel();
+
+  DelegationItemModel.fromJson(Map<String, dynamic> json) {
+    rULEID = json['RULE_ID'];
+    mESSAGETYPE = json['MESSAGE_TYPE'];
+    bEGINDATE = json['BEGIN_DATE'];
+    eNDDATE = json['END_DATE'];
+    delegateTO = json['Delegate_TO'];
+    tYPEDISPLAY = json['TYPE_DISPLAY'];
+    aCTIONDISPLAY = json['ACTION_DISPLAY'];
+    nAME = json['NAME'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "RULE_ID": rULEID,
+      };
+
+  @override
+  List<Object?> get props => [
+        rULEID,
+      ];
+
+  @override
+  DelegationItemEntity toEntity<T>() {
+    final delegationItemEntity = DelegationItemEntity();
+    delegationItemEntity.rULEID = rULEID;
+    delegationItemEntity.mESSAGETYPE = mESSAGETYPE;
+    delegationItemEntity.bEGINDATE = bEGINDATE;
+    delegationItemEntity.eNDDATE = eNDDATE;
+    delegationItemEntity.delegateTO = delegateTO;
+    delegationItemEntity.tYPEDISPLAY = tYPEDISPLAY;
+    delegationItemEntity.aCTIONDISPLAY = aCTIONDISPLAY;
+    delegationItemEntity.nAME = nAME;
+    return delegationItemEntity;
+  }
+}
+
+class DelegationlistModel extends BaseModel {
+  List<DelegationItemEntity> delegationList = [];
+
+  DelegationlistModel();
+
+  DelegationlistModel.fromJson(Map<String, dynamic> json) {
+    if (json['Delegation_List'] != null) {
+      delegationList = <DelegationItemEntity>[];
+      json['Delegation_List'].forEach((v) {
+        delegationList.add(DelegationItemModel.fromJson(v).toEntity());
+      });
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "Delegation_List": delegationList,
+      };
+
+  @override
+  List<Object?> get props => [
+        delegationList,
+      ];
+
+  @override
+  List<DelegationItemEntity> toEntity<T>() {
+    return delegationList;
   }
 }
