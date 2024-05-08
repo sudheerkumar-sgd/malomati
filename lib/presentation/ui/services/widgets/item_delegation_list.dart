@@ -1,14 +1,36 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/delegation_entity.dart';
+import 'package:malomati/presentation/ui/services/update_delegation__screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 
 class ItemDelegationList extends StatelessWidget {
   final DelegationItemEntity delegationItem;
-  const ItemDelegationList({required this.delegationItem, super.key});
+  final Function(DelegationItemEntity)? callBack;
+  const ItemDelegationList(
+      {required this.delegationItem, this.callBack, super.key});
+
+  bool _isActive() {
+    final startDays = getDays(
+        DateTime.now(),
+        getDateTimeByString(
+            'yyyy-MM-ddThh:mm:ss', delegationItem.bEGINDATE ?? ''));
+    final endDays = getDays(
+        DateTime.now(),
+        getDateTimeByString(
+            'yyyy-MM-ddThh:mm:ss', delegationItem.eNDDATE ?? ''));
+    return startDays <= 0 && endDays >= 0;
+  }
+
+  bool _isExpaired() {
+    final days = getDays(
+        DateTime.now(),
+        getDateTimeByString(
+            'yyyy-MM-ddThh:mm:ss', delegationItem.bEGINDATE ?? ''));
+    return days < 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +46,28 @@ class ItemDelegationList extends StatelessWidget {
           children: [
             ImageWidget(
                     path: DrawableAssets.icDelegateUser,
+                    backgroundTint: _isActive() ? null : Colors.grey,
                     padding: EdgeInsets.all(resources.dimen.dp5))
                 .loadImageWithMoreTapArea,
-            ImageWidget(
-                    path: DrawableAssets.icDelegateEdit,
-                    padding: EdgeInsets.all(resources.dimen.dp5))
-                .loadImageWithMoreTapArea,
-            ImageWidget(
-                    path: DrawableAssets.icDelegateDelete,
-                    padding: EdgeInsets.all(resources.dimen.dp5))
-                .loadImageWithMoreTapArea,
+            InkWell(
+              onTap: () {
+                UpdateDelegationScreen.start(context, delegationItem);
+              },
+              child: ImageWidget(
+                      path: DrawableAssets.icDelegateEdit,
+                      backgroundTint: _isExpaired() ? Colors.grey : null,
+                      padding: EdgeInsets.all(resources.dimen.dp5))
+                  .loadImageWithMoreTapArea,
+            ),
+            InkWell(
+              onTap: () {
+                callBack?.call(delegationItem);
+              },
+              child: ImageWidget(
+                      path: DrawableAssets.icDelegateDelete,
+                      padding: EdgeInsets.all(resources.dimen.dp5))
+                  .loadImageWithMoreTapArea,
+            ),
           ],
         ),
         SizedBox(

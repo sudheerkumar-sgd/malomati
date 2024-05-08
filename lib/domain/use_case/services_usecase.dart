@@ -202,4 +202,19 @@ class ServicesUseCase extends BaseUseCase {
           as List<DelegationItemEntity>);
     });
   }
+
+  Future<Either<Failure, List<DelegationItemEntity>>> deleteDelegation(
+      {required Map<String, dynamic> requestParams}) async {
+    var apiResponse = await apisRepository.post<ListModel>(
+      apiUrl: delegationDeleteApiUrl,
+      requestParams: requestParams,
+      responseModel: ListModel.fromDelegationListJson,
+    );
+    return apiResponse.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right((r.toEntity2<ListEntity>().entity?.list ?? [])
+          as List<DelegationItemEntity>);
+    });
+  }
 }

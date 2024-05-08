@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/utils.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
@@ -24,7 +25,8 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 
 class DelegationCreateWidget extends StatelessWidget {
-  DelegationCreateWidget({super.key});
+  DelegationItemEntity? delegationItem;
+  DelegationCreateWidget({this.delegationItem, super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<List<DelegationUserEntity>> _delegationUsers =
@@ -107,6 +109,14 @@ class DelegationCreateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     userName = context.userDB.get(userNameKey, defaultValue: '');
     resources = context.resources;
+    _startDateController.text = getDateByformat(
+        dateFormat,
+        getDateTimeByString(
+            'yyyy-MM-ddThh:mm:ss', delegationItem?.bEGINDATE ?? ''));
+    _endDateController.text = getDateByformat(
+        dateFormat,
+        getDateTimeByString(
+            'yyyy-MM-ddThh:mm:ss', delegationItem?.eNDDATE ?? ''));
     _startDateController.addListener(
       () {
         _endDateController.text = '';
@@ -137,6 +147,8 @@ class DelegationCreateWidget extends StatelessWidget {
           } else if (state is OnDelegationUsers) {
             _delegationUsers.value = state.delegationUsers;
           } else if (state is OnDelegationTypes) {
+            selectedVNType.value = state.delegationTypes.firstWhereOrNull(
+                (element) => element.id == delegationItem?.nAME);
             _delegationTypes.value = state.delegationTypes;
           } else if (state is OnDelegationCategories) {
             _delegationCategories.value = state.delegationCategories;
@@ -192,6 +204,7 @@ class DelegationCreateWidget extends StatelessWidget {
                               labelText: context.string.vactionTypeSelectTitle,
                               hintText: context.string.vactionTypeSelectTitle,
                               suffixIconPath: DrawableAssets.icChevronDown,
+                              selectedValue: selectedVNType.value,
                               callback: onVNTypeSelected,
                             );
                           }),

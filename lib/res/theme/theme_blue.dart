@@ -31,6 +31,7 @@ class ThemeBlue extends ApplicationTheme {
           800: Color(0xff0a285c),
           900: Color(0xff05142e)
         }),
+        useMaterial3: false,
         brightness: Brightness.light,
         primaryColor: const Color(0xff175cd2),
         primaryColorLight: const Color(0xffd1e0fa),

@@ -257,15 +257,19 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnDelegationCategories(delegationCategories: r)));
   }
 
-  Future<List<DelegationItemEntity>> getDelegationList(
-      {required Map<String, dynamic> requestParams,
-      bool showLoading = true}) async {
-    if (showLoading) {
-      emit(OnServicesLoading());
-    }
-
+  Future<List<DelegationItemEntity>> getDelegationList({
+    required Map<String, dynamic> requestParams,
+  }) async {
     final result =
         await servicesUseCase.getDelegationList(requestParams: requestParams);
+    return result.fold((l) => [], (r) => r);
+  }
+
+  Future<List<DelegationItemEntity>> deleteDelegation({
+    required Map<String, dynamic> requestParams,
+  }) async {
+    final result =
+        await servicesUseCase.deleteDelegation(requestParams: requestParams);
     return result.fold((l) => [], (r) => r);
   }
 

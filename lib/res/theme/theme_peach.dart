@@ -32,6 +32,7 @@ class ThemePeach extends ApplicationTheme {
           800: Color.fromRGBO(135, 39, 38, 0.9),
           900: Color.fromRGBO(135, 39, 38, 1.0),
         }),
+        useMaterial3: false,
         brightness: Brightness.light,
         primaryColor: const Color(0xff872725),
         primaryColorLight: const Color(0xfff4d8d7),

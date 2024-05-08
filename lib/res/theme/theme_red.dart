@@ -32,6 +32,7 @@ class ThemeRed extends ApplicationTheme {
           800: Color(0xff5e0812),
           900: Color(0xff2f0409)
         }),
+        useMaterial3: false,
         brightness: Brightness.light,
         primaryColor: const Color(0xffec293f),
         primaryColorLight: const Color(0xfffbd0d5),

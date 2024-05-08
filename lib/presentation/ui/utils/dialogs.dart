@@ -27,6 +27,10 @@ class Dialogs {
     );
   }
 
+  static void dismiss(BuildContext context, {dynamic value}) {
+    Navigator.of(context, rootNavigator: true).pop(value);
+  }
+
   static Future<T?> showGenericErrorPopup<T>(
     BuildContext context,
     String title,
