@@ -33,12 +33,12 @@ class VacationRulesScreen extends StatelessWidget {
               SizedBox(
                 height: resources.dimen.dp20,
               ),
-              TabsButtonsWidget(buttons: const [
+              TabsButtonsWidget(buttons: [
                 {
-                  'name': 'Create',
+                  'name': context.string.create,
                 },
                 {
-                  'name': 'View',
+                  'name': context.string.view,
                 },
               ], onTabSelected: onTabSelected),
               SizedBox(

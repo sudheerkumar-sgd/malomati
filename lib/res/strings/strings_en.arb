@@ -473,7 +473,7 @@
     "question": "Question",
     "ok": "Ok",
     "noInternet": "No Internet Connection",
-    "noHrRequests": "there is not any requests",
+    "noHrRequests": "There is no requests",
     "fontsSize": "Fonts size",
     "call": "Call",
     "usernameOrPasswordIsWrong": "username or password is wrong",
@@ -582,5 +582,9 @@
     "locationErrorText":"Please enable location to submit attendance",
     "noDeleteInvoices":"There is no invoices to delete",
     "totalWorkTime":"Total Work time",
-    "delegateMessageCaption":"Comments will display with each routed notification"
+    "delegateMessageCaption":"Comments will display with each routed notification",
+    "delegateFor":"Delegation For",
+    "delegateTo":"Delegation To",
+    "from":"From",
+    "to":"To"
 }

@@ -262,7 +262,7 @@ class ServicesBloc extends Cubit<ServicesState> {
   }) async {
     final result =
         await servicesUseCase.getDelegationList(requestParams: requestParams);
-    return result.fold((l) => [], (r) => r);
+    return result.fold((l) => List<DelegationItemEntity>.empty(), (r) => r);
   }
 
   Future<List<DelegationItemEntity>> deleteDelegation({

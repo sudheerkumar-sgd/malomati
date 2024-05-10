@@ -17,6 +17,8 @@ class DelegationListWidget extends StatelessWidget {
   DelegationListWidget({this.onChange, super.key});
   final _servicesBloc = sl<ServicesBloc>();
   String? deletedUserName;
+  bool showLoading = true;
+  final ValueNotifier<bool> _doRefresh = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -51,55 +53,70 @@ class DelegationListWidget extends StatelessWidget {
                       .getDisplayMessage(context.resources));
             }
             deletedUserName = '';
+            _doRefresh.value = !_doRefresh.value;
           } else if (state is OnServicesError) {
             deletedUserName = '';
             Dialogs.dismiss(context);
             Dialogs.showInfoDialog(context, PopupType.fail, state.message);
           }
         },
-        child: FutureBuilder(
-            future: _servicesBloc
-                .getDelegationList(requestParams: {'UserName': userName}),
-            builder: (context, snapShot) {
-              if (snapShot.data == null) {
-                return const Center(
-                  child: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: CircularProgressIndicator()),
-                );
-              }
-              List<DelegationItemEntity> list = snapShot.data ?? [];
-              return ListView.separated(
-                  itemBuilder: (context, index) {
-                    return ItemDelegationList(
-                      delegationItem: list[index],
-                      callBack: (item) async {
-                        deletedUserName = item.delegateTO;
-                        final requestParams = {
-                          "ruleId": item.rULEID,
-                          "userName": userName,
-                          "action": "FORWARD",
-                          "beginDate": item.bEGINDATE,
-                          "endDate": item.eNDDATE,
-                          "messageType": item.mESSAGETYPE,
-                          "messageName": "",
-                          "delegatedUser": item.delegateTO,
-                          "ruleComment": item.message,
-                          "securityGroupId": ""
-                        };
-                        _servicesBloc.submitServicesRequest(
-                            apiUrl: delegationDeleteApiUrl,
-                            requestParams: requestParams);
-                      },
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      color: context.resources.color.colorD6D6D6,
-                    );
-                  },
-                  itemCount: list.length);
+        child: ValueListenableBuilder(
+            valueListenable: _doRefresh,
+            builder: (context, doRefresh, child) {
+              return FutureBuilder(
+                  future: _servicesBloc
+                      .getDelegationList(requestParams: {'UserName': userName}),
+                  builder: (context, snapShot) {
+                    if (snapShot.data == null) {
+                      if (showLoading) {
+                        showLoading = false;
+                        return const Center(
+                          child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: CircularProgressIndicator()),
+                        );
+                      } else {
+                        return Center(
+                          child: Text(
+                            context.string.noHrRequests,
+                            style: context.textFontWeight600,
+                          ),
+                        );
+                      }
+                    }
+                    List<DelegationItemEntity> list = snapShot.data ?? [];
+                    return ListView.separated(
+                        itemBuilder: (context, index) {
+                          return ItemDelegationList(
+                            delegationItem: list[index],
+                            callBack: (item) async {
+                              deletedUserName = item.delegateTO;
+                              final requestParams = {
+                                "ruleId": item.rULEID,
+                                "userName": userName,
+                                "action": "FORWARD",
+                                "beginDate": item.bEGINDATE,
+                                "endDate": item.eNDDATE,
+                                "messageType": item.mESSAGETYPE,
+                                "messageName": "",
+                                "delegatedUser": item.delegateTO,
+                                "ruleComment": item.message,
+                                "securityGroupId": ""
+                              };
+                              _servicesBloc.submitServicesRequest(
+                                  apiUrl: delegationDeleteApiUrl,
+                                  requestParams: requestParams);
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            color: context.resources.color.colorD6D6D6,
+                          );
+                        },
+                        itemCount: list.length);
+                  });
             }),
       ),
     );

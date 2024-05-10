@@ -287,5 +287,9 @@
     "locationErrorText":"يرجى تمكين الموقع لتقديم بصمة الحضور",
     "noDeleteInvoices":"لا توجد فواتير لحذفها",
     "totalWorkTime":"إجمالي ساعات العمل",
-    "delegateMessageCaption":"سوف تظهر ملاحظات مع كل تبليغ قد تم توجيهه"
+    "delegateMessageCaption":"سوف تظهر ملاحظات مع كل تبليغ قد تم توجيهه",
+    "delegateFor":"تفويض ل",
+    "delegateTo":"تفويض ل",
+    "from":"من",
+    "to":"ل"
 }

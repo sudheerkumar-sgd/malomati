@@ -198,8 +198,8 @@ class ServicesUseCase extends BaseUseCase {
     return apiResponse.fold((l) {
       return Left(l);
     }, (r) {
-      return Right((r.toEntity2<ListEntity>().entity?.list ?? [])
-          as List<DelegationItemEntity>);
+      return Right((r.toEntity2<ListEntity>().entity?.list ??
+          List<DelegationItemEntity>.empty()) as List<DelegationItemEntity>);
     });
   }
 

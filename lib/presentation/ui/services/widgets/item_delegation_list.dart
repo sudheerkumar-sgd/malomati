@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/delegation_entity.dart';
-import 'package:malomati/presentation/ui/services/update_delegation__screen.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
@@ -49,16 +48,16 @@ class ItemDelegationList extends StatelessWidget {
                     backgroundTint: _isActive() ? null : Colors.grey,
                     padding: EdgeInsets.all(resources.dimen.dp5))
                 .loadImageWithMoreTapArea,
-            InkWell(
-              onTap: () {
-                UpdateDelegationScreen.start(context, delegationItem);
-              },
-              child: ImageWidget(
-                      path: DrawableAssets.icDelegateEdit,
-                      backgroundTint: _isExpaired() ? Colors.grey : null,
-                      padding: EdgeInsets.all(resources.dimen.dp5))
-                  .loadImageWithMoreTapArea,
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     UpdateDelegationScreen.start(context, delegationItem);
+            //   },
+            //   child: ImageWidget(
+            //           path: DrawableAssets.icDelegateEdit,
+            //           backgroundTint: _isExpaired() ? Colors.grey : null,
+            //           padding: EdgeInsets.all(resources.dimen.dp5))
+            //       .loadImageWithMoreTapArea,
+            // ),
             InkWell(
               onTap: () {
                 callBack?.call(delegationItem);
@@ -75,11 +74,12 @@ class ItemDelegationList extends StatelessWidget {
         ),
         Text.rich(
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp12),
-          TextSpan(text: 'Delegation for : ', children: [
+          TextSpan(text: '${context.string.delegateFor} : ', children: [
             TextSpan(
                 text: delegationItem.tYPEDISPLAY ?? '',
                 style: context.textFontWeight700
-                    .onFontSize(resources.fontSize.dp12))
+                    .onFontSize(resources.fontSize.dp12)
+                    .onFontFamily(fontFamily: fontFamilyEN))
           ]),
         ),
         SizedBox(
@@ -87,11 +87,12 @@ class ItemDelegationList extends StatelessWidget {
         ),
         Text.rich(
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp12),
-          TextSpan(text: 'Delegated to : ', children: [
+          TextSpan(text: '${context.string.delegateTo} : ', children: [
             TextSpan(
                 text: delegationItem.delegateTO ?? '',
                 style: context.textFontWeight700
-                    .onFontSize(resources.fontSize.dp12))
+                    .onFontSize(resources.fontSize.dp12)
+                    .onFontFamily(fontFamily: fontFamilyEN))
           ]),
         ),
         SizedBox(
