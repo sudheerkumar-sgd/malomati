@@ -29,7 +29,6 @@ class PayslipsScreen extends StatelessWidget {
   final ValueNotifier<List<String>> _months = ValueNotifier<List<String>>([]);
   final TextEditingController _commentsController = TextEditingController();
   String? leave;
-  final years = ['2022', '2023'];
   String selectedMonth = '';
   String selectedYear = '';
   final playslipFontSize = 8.0;
@@ -85,7 +84,9 @@ class PayslipsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    selectedYear = '${DateTime.now().year}';
+    final currentYear = DateTime.now().year;
+    selectedYear = '$currentYear';
+    final years = ['${currentYear - 2}', '${currentYear - 1}', '$currentYear'];
     getMonthsList(selectedYear);
     final fullName = context.userDB.get(userFullNameUsKey, defaultValue: '');
     final jobTitle = context.userDB.get(userJobNameEnKey, defaultValue: '');
@@ -643,7 +644,7 @@ class PayslipsScreen extends StatelessWidget {
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         vertical: 5.0,
                                                         horizontal: 8.0),
                                                     child: Text(

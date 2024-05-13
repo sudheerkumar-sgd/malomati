@@ -94,7 +94,7 @@ class ConstantConfig {
     FavoriteEntity(
         id: 20,
         name: 'Vacation Rules',
-        nameAR: 'قاعدة الإجازة',
+        nameAR: 'تفويض الإجازة',
         iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,
@@ -136,7 +136,7 @@ class ConstantConfig {
     FavoriteEntity(
         id: 20,
         name: 'Vacation Rules',
-        nameAR: 'قاعدة الإجازة',
+        nameAR: 'تفويض الإجازة',
         iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,
