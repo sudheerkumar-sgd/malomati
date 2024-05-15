@@ -93,8 +93,8 @@ class ConstantConfig {
         iconPath: DrawableAssets.icViewWarning),
     FavoriteEntity(
         id: 20,
-        name: 'Vacation Rules',
-        nameAR: 'تفويض الإجازة',
+        name: 'Delegation',
+        nameAR: 'تفويض الصلاحيات',
         iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,
@@ -135,8 +135,8 @@ class ConstantConfig {
         iconPath: DrawableAssets.icWarning),
     FavoriteEntity(
         id: 20,
-        name: 'Vacation Rules',
-        nameAR: 'تفويض الإجازة',
+        name: 'Delegation of authorities',
+        nameAR: 'تفويض الصلاحيات',
         iconPath: DrawableAssets.icVacationRules),
     FavoriteEntity(
         id: 21,

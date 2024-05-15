@@ -13,22 +13,14 @@ class ItemDelegationList extends StatelessWidget {
 
   bool _isActive() {
     final startDays = getDays(
-        DateTime.now(),
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
         getDateTimeByString(
             'yyyy-MM-ddThh:mm:ss', delegationItem.bEGINDATE ?? ''));
     final endDays = getDays(
-        DateTime.now(),
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
         getDateTimeByString(
             'yyyy-MM-ddThh:mm:ss', delegationItem.eNDDATE ?? ''));
     return startDays <= 0 && endDays >= 0;
-  }
-
-  bool _isExpaired() {
-    final days = getDays(
-        DateTime.now(),
-        getDateTimeByString(
-            'yyyy-MM-ddThh:mm:ss', delegationItem.bEGINDATE ?? ''));
-    return days < 0;
   }
 
   @override
