@@ -133,10 +133,10 @@ class _MainScreenState extends State<MainScreen> {
     if (message != null) {
       if (message['data']['type'] == fcmTypeHRApprovals) {
         ServicesScreen.onServiceClick(
-            context, FavoriteEntity(name: 'HR APPROVALS'));
+            context, FavoriteEntity(name: 'HR APPROVALS', id: 1));
       } else if (message['data']['type'] == fcmTypeFinanceApprovals) {
         ServicesScreen.onServiceClick(
-            context, FavoriteEntity(name: 'Finance Approvals'));
+            context, FavoriteEntity(name: 'Finance Approvals', id: 2));
       } else if (message['data']['type'] == 'POPUP') {
         if (message['data']['audio_url'].isNotEmpty) {
           initAudio(message['data']['audio_url']);

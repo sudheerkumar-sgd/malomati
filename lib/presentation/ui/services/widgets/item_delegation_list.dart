@@ -20,7 +20,7 @@ class ItemDelegationList extends StatelessWidget {
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
         getDateTimeByString(
             'yyyy-MM-ddThh:mm:ss', delegationItem.eNDDATE ?? ''));
-    return startDays <= 0 && endDays >= 0;
+    return startDays <= 0 && endDays > 0;
   }
 
   @override
@@ -68,7 +68,9 @@ class ItemDelegationList extends StatelessWidget {
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp12),
           TextSpan(text: '${context.string.delegateFor} : ', children: [
             TextSpan(
-                text: delegationItem.tYPEDISPLAY ?? '',
+                text: delegationItem.mESSAGETYPE == '*'
+                    ? 'ALL'
+                    : delegationItem.tYPEDISPLAY ?? '',
                 style: context.textFontWeight700
                     .onFontSize(resources.fontSize.dp12)
                     .onFontFamily(fontFamily: fontFamilyEN))
@@ -101,25 +103,28 @@ class ItemDelegationList extends StatelessWidget {
         // ),
         Text.rich(
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp12),
-          TextSpan(text: 'From ', children: [
+          TextSpan(text: '${context.string.from} ', children: [
             TextSpan(
                 text: getDateByformat(
                     'dd/MM/yyyy',
                     getDateTimeByString(
                         'yyyy-MM-ddThh:mm:ss', delegationItem.bEGINDATE ?? '')),
                 style: context.textFontWeight700
-                    .onFontSize(resources.fontSize.dp12)),
+                    .onFontSize(resources.fontSize.dp12)
+                    .onFontFamily(fontFamily: fontFamilyEN)),
             TextSpan(
-                text: ' to ',
+                text: ' ${context.string.to} ',
                 style: context.textFontWeight400
                     .onFontSize(resources.fontSize.dp12)),
             TextSpan(
                 text: getDateByformat(
                     'dd/MM/yyyy',
                     getDateTimeByString(
-                        'yyyy-MM-ddThh:mm:ss', delegationItem.eNDDATE ?? '')),
+                            'yyyy-MM-ddThh:mm:ss', delegationItem.eNDDATE ?? '')
+                        .add(const Duration(days: -1))),
                 style: context.textFontWeight700
-                    .onFontSize(resources.fontSize.dp12))
+                    .onFontSize(resources.fontSize.dp12)
+                    .onFontFamily(fontFamily: fontFamilyEN))
           ]),
         ),
       ],

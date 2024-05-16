@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/utils.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
@@ -94,7 +93,10 @@ class DelegationCreateWidget extends StatelessWidget {
       'userName': userName,
       'action': 'FORWARD',
       'beginDate': _startDateController.text,
-      'endDate': _endDateController.text,
+      'endDate': getDateByformat(
+          dateFormat,
+          getDateTimeByString(dateFormat, _endDateController.text)
+              .add(const Duration(days: 1))),
       'messageType': selectedVNType.value?.id,
       'messageName': '',
       'delegatedUser': employee?.uSERNAME,
@@ -109,14 +111,14 @@ class DelegationCreateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     userName = context.userDB.get(userNameKey, defaultValue: '');
     resources = context.resources;
-    _startDateController.text = getDateByformat(
-        dateFormat,
-        getDateTimeByString(
-            'yyyy-MM-ddThh:mm:ss', delegationItem?.bEGINDATE ?? ''));
-    _endDateController.text = getDateByformat(
-        dateFormat,
-        getDateTimeByString(
-            'yyyy-MM-ddThh:mm:ss', delegationItem?.eNDDATE ?? ''));
+    // _startDateController.text = getDateByformat(
+    //     dateFormat,
+    //     getDateTimeByString(
+    //         'yyyy-MM-ddThh:mm:ss', delegationItem?.bEGINDATE ?? ''));
+    // _endDateController.text = getDateByformat(
+    //     dateFormat,
+    //     getDateTimeByString(
+    //         'yyyy-MM-ddThh:mm:ss', delegationItem?.eNDDATE ?? ''));
     _startDateController.addListener(
       () {
         _endDateController.text = '';
@@ -147,8 +149,8 @@ class DelegationCreateWidget extends StatelessWidget {
           } else if (state is OnDelegationUsers) {
             _delegationUsers.value = state.delegationUsers;
           } else if (state is OnDelegationTypes) {
-            selectedVNType.value = state.delegationTypes.firstWhereOrNull(
-                (element) => element.id == delegationItem?.nAME);
+            // selectedVNType.value = state.delegationTypes.firstWhereOrNull(
+            //     (element) => element.id == delegationItem?.nAME);
             _delegationTypes.value = state.delegationTypes;
           } else if (state is OnDelegationCategories) {
             _delegationCategories.value = state.delegationCategories;
@@ -166,7 +168,7 @@ class DelegationCreateWidget extends StatelessWidget {
                   requestParams: getFCMMessageData(
                 to: employee?.uSERNAME ?? '',
                 title:
-                    '${context.userDB.get(userFullNameUsKey, defaultValue: '').toString()} has delegated.',
+                    '${context.userDB.get(userFullNameUsKey, defaultValue: '').toString()} has delegated to you.',
                 body: _commentController.text.isNotEmpty
                     ? 'the notification with comment: ${_commentController.text}'
                     : '',
