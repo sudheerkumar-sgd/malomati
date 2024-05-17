@@ -97,7 +97,8 @@ class DelegationCreateWidget extends StatelessWidget {
           dateFormat,
           getDateTimeByString(dateFormat, _endDateController.text)
               .add(const Duration(days: 1))),
-      'messageType': selectedVNType.value?.id,
+      'messageType':
+          selectedVNType.value?.id == '*' ? null : selectedVNType.value?.id,
       'messageName': '',
       'delegatedUser': employee?.uSERNAME,
       'ruleComment': _commentController.text,

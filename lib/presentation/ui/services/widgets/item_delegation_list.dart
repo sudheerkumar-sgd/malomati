@@ -68,7 +68,7 @@ class ItemDelegationList extends StatelessWidget {
           style: context.textFontWeight400.onFontSize(resources.fontSize.dp12),
           TextSpan(text: '${context.string.delegateFor} : ', children: [
             TextSpan(
-                text: delegationItem.mESSAGETYPE == '*'
+                text: delegationItem.mESSAGETYPE == null
                     ? 'ALL'
                     : delegationItem.tYPEDISPLAY ?? '',
                 style: context.textFontWeight700
