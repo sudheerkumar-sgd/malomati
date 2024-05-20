@@ -429,24 +429,6 @@ class DelegationCreateWidget extends StatelessWidget {
                       SizedBox(
                         height: resources.dimen.dp20,
                       ),
-                      RightIconTextWidget(
-                        height: resources.dimen.dp100,
-                        isEnabled: true,
-                        maxLines: 8,
-                        labelText: context.string.message,
-                        textController: _commentController,
-                      ),
-                      SizedBox(
-                        height: resources.dimen.dp5,
-                      ),
-                      Text(
-                        context.string.delegateMessageCaption,
-                        style: context.textFontWeight400
-                            .onFontSize(resources.fontSize.dp10),
-                      ),
-                      SizedBox(
-                        height: resources.dimen.dp20,
-                      ),
                       DropDownWidget<DepartmentEntity>(
                         list: _departments,
                         height: resources.dimen.dp27,
@@ -473,6 +455,24 @@ class DelegationCreateWidget extends StatelessWidget {
                       SizedBox(
                         height: resources.dimen.dp20,
                       ),
+                      RightIconTextWidget(
+                        height: resources.dimen.dp100,
+                        isEnabled: true,
+                        maxLines: 8,
+                        labelText: context.string.message,
+                        textController: _commentController,
+                      ),
+                      SizedBox(
+                        height: resources.dimen.dp5,
+                      ),
+                      Text(
+                        context.string.delegateMessageCaption,
+                        style: context.textFontWeight400
+                            .onFontSize(resources.fontSize.dp10),
+                      ),
+                      SizedBox(
+                        height: resources.dimen.dp20,
+                      ),
                       // ValueListenableBuilder(
                       //     valueListenable: _delegationUsers,
                       //     builder: (context, employeesList, widget) {
@@ -490,142 +490,142 @@ class DelegationCreateWidget extends StatelessWidget {
                       // SizedBox(
                       //   height: resources.dimen.dp20,
                       // ),
-                      ValueListenableBuilder(
-                          valueListenable: _ruleAccess,
-                          builder: (context, ruleAccess, widget) {
-                            return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        _ruleAccess.value = 0;
-                                      },
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: resources.dimen.dp5,
-                                          ),
-                                          Transform.scale(
-                                            scale: 0.7,
-                                            child: SizedBox(
-                                              width: 6,
-                                              height: 6,
-                                              child: Radio<int>(
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  value: 0,
-                                                  groupValue: ruleAccess,
-                                                  onChanged: (int? value) {
-                                                    _ruleAccess.value =
-                                                        value ?? 0;
-                                                  }),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: resources.dimen.dp7,
-                                          ),
-                                          Expanded(
-                                            child: RichText(
-                                                text: TextSpan(
-                                              text:
-                                                  '${context.string.delegateYourResponse}\n',
-                                              style: context.textFontWeight600
-                                                  .onColor(context.resources
-                                                      .color.textColor)
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp10)
-                                                  .copyWith(height: 1),
-                                              children: [
-                                                TextSpan(
-                                                  text: context.string
-                                                      .delegateYourResponseDes,
-                                                  style: context
-                                                      .textFontWeight600
-                                                      .onColor(context.resources
-                                                          .color.textColor)
-                                                      .onFontSize(context
-                                                          .resources
-                                                          .fontSize
-                                                          .dp10),
-                                                )
-                                              ],
-                                            )),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: resources.dimen.dp20,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        _ruleAccess.value = 1;
-                                      },
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Transform.scale(
-                                            scale: 0.7,
-                                            child: SizedBox(
-                                              width: 6,
-                                              height: 6,
-                                              child: Radio<int>(
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  value: 1,
-                                                  groupValue: ruleAccess,
-                                                  onChanged: (int? value) {
-                                                    _ruleAccess.value =
-                                                        value ?? 0;
-                                                  }),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: resources.dimen.dp7,
-                                          ),
-                                          Expanded(
-                                            child: RichText(
-                                                text: TextSpan(
-                                              text:
-                                                  '${context.string.transferNotificationOwnership}\n',
-                                              style: context.textFontWeight600
-                                                  .onColor(context.resources
-                                                      .color.textColor)
-                                                  .onFontSize(context
-                                                      .resources.fontSize.dp10)
-                                                  .copyWith(height: 1),
-                                              children: [
-                                                TextSpan(
-                                                  text: context.string
-                                                      .transferNotificationOwnershipDes,
-                                                  style: context
-                                                      .textFontWeight600
-                                                      .onColor(context.resources
-                                                          .color.textColor)
-                                                      .onFontSize(context
-                                                          .resources
-                                                          .fontSize
-                                                          .dp10),
-                                                )
-                                              ],
-                                            )),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ]);
-                          }),
+                      // ValueListenableBuilder(
+                      //     valueListenable: _ruleAccess,
+                      //     builder: (context, ruleAccess, widget) {
+                      //       return Row(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceEvenly,
+                      //           crossAxisAlignment: CrossAxisAlignment.start,
+                      //           children: [
+                      //             Expanded(
+                      //               child: InkWell(
+                      //                 onTap: () {
+                      //                   _ruleAccess.value = 0;
+                      //                 },
+                      //                 child: Row(
+                      //                   crossAxisAlignment:
+                      //                       CrossAxisAlignment.start,
+                      //                   children: [
+                      //                     SizedBox(
+                      //                       width: resources.dimen.dp5,
+                      //                     ),
+                      //                     Transform.scale(
+                      //                       scale: 0.7,
+                      //                       child: SizedBox(
+                      //                         width: 6,
+                      //                         height: 6,
+                      //                         child: Radio<int>(
+                      //                             materialTapTargetSize:
+                      //                                 MaterialTapTargetSize
+                      //                                     .shrinkWrap,
+                      //                             value: 0,
+                      //                             groupValue: ruleAccess,
+                      //                             onChanged: (int? value) {
+                      //                               _ruleAccess.value =
+                      //                                   value ?? 0;
+                      //                             }),
+                      //                       ),
+                      //                     ),
+                      //                     SizedBox(
+                      //                       width: resources.dimen.dp7,
+                      //                     ),
+                      //                     Expanded(
+                      //                       child: RichText(
+                      //                           text: TextSpan(
+                      //                         text:
+                      //                             '${context.string.delegateYourResponse}\n',
+                      //                         style: context.textFontWeight600
+                      //                             .onColor(context.resources
+                      //                                 .color.textColor)
+                      //                             .onFontSize(context
+                      //                                 .resources.fontSize.dp10)
+                      //                             .copyWith(height: 1),
+                      //                         children: [
+                      //                           TextSpan(
+                      //                             text: context.string
+                      //                                 .delegateYourResponseDes,
+                      //                             style: context
+                      //                                 .textFontWeight600
+                      //                                 .onColor(context.resources
+                      //                                     .color.textColor)
+                      //                                 .onFontSize(context
+                      //                                     .resources
+                      //                                     .fontSize
+                      //                                     .dp10),
+                      //                           )
+                      //                         ],
+                      //                       )),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //             SizedBox(
+                      //               width: resources.dimen.dp20,
+                      //             ),
+                      //             Expanded(
+                      //               child: InkWell(
+                      //                 onTap: () {
+                      //                   _ruleAccess.value = 1;
+                      //                 },
+                      //                 child: Row(
+                      //                   crossAxisAlignment:
+                      //                       CrossAxisAlignment.start,
+                      //                   children: [
+                      //                     Transform.scale(
+                      //                       scale: 0.7,
+                      //                       child: SizedBox(
+                      //                         width: 6,
+                      //                         height: 6,
+                      //                         child: Radio<int>(
+                      //                             materialTapTargetSize:
+                      //                                 MaterialTapTargetSize
+                      //                                     .shrinkWrap,
+                      //                             value: 1,
+                      //                             groupValue: ruleAccess,
+                      //                             onChanged: (int? value) {
+                      //                               _ruleAccess.value =
+                      //                                   value ?? 0;
+                      //                             }),
+                      //                       ),
+                      //                     ),
+                      //                     SizedBox(
+                      //                       width: resources.dimen.dp7,
+                      //                     ),
+                      //                     Expanded(
+                      //                       child: RichText(
+                      //                           text: TextSpan(
+                      //                         text:
+                      //                             '${context.string.transferNotificationOwnership}\n',
+                      //                         style: context.textFontWeight600
+                      //                             .onColor(context.resources
+                      //                                 .color.textColor)
+                      //                             .onFontSize(context
+                      //                                 .resources.fontSize.dp10)
+                      //                             .copyWith(height: 1),
+                      //                         children: [
+                      //                           TextSpan(
+                      //                             text: context.string
+                      //                                 .transferNotificationOwnershipDes,
+                      //                             style: context
+                      //                                 .textFontWeight600
+                      //                                 .onColor(context.resources
+                      //                                     .color.textColor)
+                      //                                 .onFontSize(context
+                      //                                     .resources
+                      //                                     .fontSize
+                      //                                     .dp10),
+                      //                           )
+                      //                         ],
+                      //                       )),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ]);
+                      //     }),
                     ],
                   ),
                 ),
