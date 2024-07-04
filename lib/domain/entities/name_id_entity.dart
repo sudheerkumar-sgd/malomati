@@ -1,13 +1,15 @@
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 
 // ignore: must_be_immutable
 class NameIdEntity extends BaseEntity {
   final String? id;
   final String? name;
-  NameIdEntity(this.id, this.name);
+  final String? nameAR;
+  NameIdEntity(this.id, this.name, {this.nameAR});
   @override
   String toString() {
-    return name ?? '';
+    return isLocalEn ? name ?? '' : (nameAR ?? name ?? '');
   }
 
   @override

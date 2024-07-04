@@ -205,7 +205,6 @@ class InitiativesScreen extends StatelessWidget {
                             ),
                             DropDownWidget<String>(
                               list: const [
-                                '2023',
                                 '2024',
                                 '2025',
                                 '2026',

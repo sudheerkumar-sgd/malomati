@@ -226,6 +226,7 @@ extension RequestsDetailsExtension on RequestsDetailsModel {
 
 class NameValueModel extends BaseModel {
   String? name;
+  String? nameAr;
   String? id;
 
   NameValueModel();
@@ -240,6 +241,20 @@ class NameValueModel extends BaseModel {
   factory NameValueModel.fromVactionTypesJson(Map<String, dynamic> json) {
     var nameValueModel = NameValueModel();
     nameValueModel.name = json['DISPLAY_NAME'];
+    switch (nameValueModel.name?.toLowerCase()) {
+      case '--all--':
+        nameValueModel.nameAr = 'تفويض جميع الصلاحيات';
+      case 'ap invoice approval':
+        nameValueModel.nameAr = 'فقط موافقات الفواتير';
+      case 'hr':
+        nameValueModel.nameAr = 'فقط موافقات الموارد البشرية';
+      case 'po approval':
+        nameValueModel.nameAr = 'فقط موافقات اوامر الشراء';
+      case 'requisition':
+        nameValueModel.nameAr = 'فقط طلبات الشراء';
+      default:
+        nameValueModel.nameAr = nameValueModel.name;
+    }
     nameValueModel.id = json['NAME'];
     return nameValueModel;
   }
@@ -257,12 +272,13 @@ class NameValueModel extends BaseModel {
 
   @override
   BaseEntity toEntity<T>() {
-    return NameIdEntity(id, name);
+    return NameIdEntity(id, name, nameAR: nameAr ?? name);
   }
 }
 
 extension NameValueModelExtension on NameValueModel {
-  NameIdEntity toNameIdEntity() => NameIdEntity(id, name);
+  NameIdEntity toNameIdEntity() =>
+      NameIdEntity(id, name, nameAR: nameAr ?? name);
 }
 
 class ListModel extends BaseModel {
