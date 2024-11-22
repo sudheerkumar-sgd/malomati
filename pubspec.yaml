@@ -68,6 +68,8 @@ dependencies:
   update_available: ^3.0.0
   geocoding: ^3.0.0
   dropdown_search: ^5.0.6
+  googleapis: ^13.2.0
+  googleapis_auth: ^1.6.0
 
 dev_dependencies:
   build_runner: ^2.4.6

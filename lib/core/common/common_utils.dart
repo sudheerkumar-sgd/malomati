@@ -251,27 +251,24 @@ Map<String, dynamic> getFCMMessageData(
     String audioUrl = '',
     String notificationId = ''}) {
   return {
-    "to": '/topics/$to',
-    "notification": {
-      "id": notificationId,
-      "title": title,
-      "body": body,
-      "image_url": imageUrl,
-      "audio_url": audioUrl,
-      "click_action": "FLUTTER_NOTIFICATION_CLICK",
-      "sound": "default",
+    "message": {
+      "topic": to,
+      "notification": {"title": title, "body": body, "image": imageUrl},
+      "android": {
+        "notification": {
+          "sound": "default",
+          "click_action": "FLUTTER_NOTIFICATION_CLICK"
+        }
+      },
+      "data": {
+        "type": type,
+        "title": title,
+        "body": body,
+        "image": imageUrl,
+        "audio_url": audioUrl,
+        "click_action": "FLUTTER_NOTIFICATION_CLICK"
+      }
     },
-    "data": {
-      "id": notificationId,
-      "title": title,
-      "body": body,
-      "image_url": imageUrl,
-      "audio_url": audioUrl,
-      "type": type,
-      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-      "notification_id": notificationId
-    },
-    "priority": "high"
   };
 }
 

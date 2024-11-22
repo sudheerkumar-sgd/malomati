@@ -151,9 +151,11 @@ class _MainScreenState extends State<MainScreen> {
                     message['notification']?.body ?? message['data']['body'],
                 imageUrl: Platform.isAndroid
                     ? message['notification']?.android?.imageUrl ??
-                        message['data']['image_url']
+                        message['data']['image_url'] ??
+                        ''
                     : message['notification']?.apple?.imageUrl ??
-                        message['data']['image_url'],
+                        message['data']['image_url'] ??
+                        '',
               );
             });
       }
@@ -163,14 +165,16 @@ class _MainScreenState extends State<MainScreen> {
   _checkIsUpdateAvailabe() {
     getUpdateAvailability().then((availability) {
       if (availability == const UpdateAvailable()) {
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) {
-              return WillPopScope(
-                  onWillPop: () async => false,
-                  child: const UpdateDialogWidget());
-            });
+        if (context.mounted) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return WillPopScope(
+                    onWillPop: () async => false,
+                    child: const UpdateDialogWidget());
+              });
+        }
       }
     });
   }

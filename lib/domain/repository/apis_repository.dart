@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
@@ -107,4 +108,5 @@ abstract class ApisRepository {
     required Map<String, dynamic> requestParams,
     Function(Map<String, dynamic>)? responseModel,
   });
+  Future<Either<Failure, AccessToken>> getFCMAccessToken();
 }

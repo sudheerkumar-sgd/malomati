@@ -61,7 +61,7 @@ const String requestsCountApiUrl =
     'UAQSGD_MOB_ERP_GetNotificationCount/GetCount';
 const String notificationsListApiUrl =
     'UAQSGD_MOB_ERP_GenericNotificationRequest/GetNotifications';
-const String firebaseApiUrl = 'fcm/send';
+const String firebaseApiUrl = '/v1/projects/malomati-bf7ab/messages:send';
 const String holidayEventsApiUrl =
     'UAQSGD_MOB_ERP_GetEvents/GetEvents/getNextHolidays';
 const String submitJobEmailApiUrl =

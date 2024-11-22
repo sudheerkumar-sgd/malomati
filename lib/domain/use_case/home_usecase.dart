@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
@@ -116,6 +120,30 @@ class HomeUseCase extends BaseUseCase {
               FavoriteEntity.fromJson(eventJson).toFavoriteEntity)
           .toList();
       return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, AccessToken>> getFCMAccessToken(
+      {required Box userDB}) async {
+    try {
+      var accessTokenData = userDB.get(accessTokenDataKey, defaultValue: '');
+      if (accessTokenData.isNotEmpty) {
+        final json = jsonDecode(accessTokenData);
+        final accessToken = AccessToken(
+            json['type'], json['data'], DateTime.parse(json['expiry']));
+        if (!accessToken.hasExpired) {
+          ConstantConfig.fcmAccessTokenJson = accessToken;
+          return Right(accessToken);
+        }
+      }
+      final result = await apisRepository.getFCMAccessToken();
+      return result.fold((l) => Left(ServerFailure(l.toString())), (r) {
+        ConstantConfig.fcmAccessTokenJson = r;
+        userDB.put(accessTokenDataKey, jsonEncode(r.toJson()));
+        return Right(r);
+      });
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

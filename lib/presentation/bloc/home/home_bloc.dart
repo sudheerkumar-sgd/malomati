@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
 import 'package:malomati/domain/entities/events_list_entity.dart';
@@ -83,6 +84,12 @@ class HomeBloc extends Cubit<HomeState> {
         await homeUseCase.getWeatherReport(requestParams: requestParams);
     emit(result.fold((l) => OnApiError(message: _getErrorMessage(l)),
         (r) => OnWeatherReportSuccess(weatherEntity: r)));
+  }
+
+  Future<HomeState> getFCMAccessToken({required Box userDB}) async {
+    final result = await homeUseCase.getFCMAccessToken(userDB: userDB);
+    return (result.fold((l) => OnApiError(message: _getErrorMessage(l)),
+        (r) => OnFCMAccessTokenSuccess(accessToken: r)));
   }
 
   String _getErrorMessage(Failure failure) {

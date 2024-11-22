@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:malomati/core/error/failures.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/data_sources/remote_data_source.dart';
@@ -544,8 +545,9 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
-  Future<Either<Failure, String>> sendPushNotifications(
-      {required Map<String, dynamic> requestParams}) async {
+  Future<Either<Failure, String>> sendPushNotifications({
+    required Map<String, dynamic> requestParams,
+  }) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
@@ -747,6 +749,23 @@ class ApisRepositoryImpl extends ApisRepository {
         var apiResponseModel =
             ApiResponse<T>.fromJson(apiResponse, responseModel);
         return Right(apiResponseModel);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccessToken>> getFCMAccessToken() async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final accessToken = await dataSource.getFCMAccessToken();
+        return Right(accessToken);
       } on DioException catch (error) {
         return Left(ServerFailure(error.message ?? ''));
       } catch (error) {

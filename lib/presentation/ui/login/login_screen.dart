@@ -45,8 +45,9 @@ class LoginScreen extends StatelessWidget {
     if (_isRememberd.value) {
       _nameTextController.text =
           context.userDB.get(userNameKey, defaultValue: '');
+      _pwdTextController.text =
+          context.userDB.get(passwordKey, defaultValue: '');
     }
-    _pwdTextController.text = context.userDB.get(passwordKey, defaultValue: '');
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocProvider<LoginBloc>(

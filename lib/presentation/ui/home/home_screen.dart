@@ -115,6 +115,9 @@ class HomeScreen extends StatelessWidget {
         departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
     Future.delayed(const Duration(milliseconds: 100), () {
+      if (!context.mounted) {
+        return;
+      }
       _homeBloc.getNotificationsList(requestParams: {
         'USER_NAME': userName,
         'START_DATE': getDateByformat(
@@ -127,6 +130,7 @@ class HomeScreen extends StatelessWidget {
               120) {
         _getWeatherDetails();
       }
+      _homeBloc.getFCMAccessToken(userDB: context.userDB);
     });
     _onAttendanceRespose.addListener(
       () {

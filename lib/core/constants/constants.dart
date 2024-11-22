@@ -35,6 +35,7 @@ const String isAnniversaryShowedKey = "is_anniversary_showed";
 const String lastTemperature = "temperature";
 const String lastWeathercode = "weathercode";
 const String lastWeatherCheckDate = "weather_check_date";
+const String accessTokenDataKey = "access_token_data";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";

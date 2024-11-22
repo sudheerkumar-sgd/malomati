@@ -69,6 +69,14 @@ class OnWeatherReportSuccess extends HomeState {
   List<Object?> get props => [weatherEntity];
 }
 
+class OnFCMAccessTokenSuccess extends HomeState {
+  final AccessToken accessToken;
+
+  OnFCMAccessTokenSuccess({required this.accessToken});
+  @override
+  List<Object?> get props => [accessToken];
+}
+
 class OnApiError extends HomeState {
   final String message;
 
