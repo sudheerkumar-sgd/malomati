@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/config/constant_config.dart';
@@ -76,7 +75,7 @@ Future<void> launchMapUrl(
 }
 
 callNumber(BuildContext context, String number) async {
-  final result = await FlutterPhoneDirectCaller.callNumber(number);
+  final result = await launchUrl(Uri.parse("tel://$number"));
   if (result == false && context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Center(child: Text('could_not_launch_this_app')),
