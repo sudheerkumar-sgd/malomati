@@ -131,6 +131,11 @@ class AttendanceScreen extends StatelessWidget {
   bool canUserRegularIn() {
     var hour = DateTime.now().hour;
     var minute = DateTime.now().minute;
+    if (_isRamdanMonth()) {
+      return (((hour == 7 && minute > 30) |
+              ((hour > 7 && hour < 10) || (hour == 10 && minute < 1))) &&
+          (attendanceEntity?.punch1Time ?? '').isEmpty);
+    }
     return ((hour < 8 || (hour == 8 && minute < 1)) &&
         (attendanceEntity?.punch1Time ?? '').isEmpty);
   }
@@ -138,7 +143,7 @@ class AttendanceScreen extends StatelessWidget {
   bool _isRamdanMonth() {
     var date = DateTime.now().day;
     var month = DateTime.now().month;
-    return (date > 10 && month == 3) || (date < 12 && month == 4);
+    return (date > 2 && month == 3) || (date < 31 && month == 3);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {

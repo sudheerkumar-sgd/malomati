@@ -13,6 +13,7 @@ import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
+import '../../../core/common/security_check.dart';
 import '../../../injection_container.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';
@@ -48,6 +49,9 @@ class LoginScreen extends StatelessWidget {
       _pwdTextController.text =
           context.userDB.get(passwordKey, defaultValue: '');
     }
+    Future.delayed(Duration.zero, () async {
+      SecurityCheck().checkSecurity(context);
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocProvider<LoginBloc>(

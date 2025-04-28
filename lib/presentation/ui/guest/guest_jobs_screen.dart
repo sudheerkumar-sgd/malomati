@@ -19,6 +19,8 @@ import '../services/widgets/dialog_upload_attachment.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/image_widget.dart';
 import '../widgets/item_attachment.dart';
+import 'package:mime/mime.dart';
+
 import 'guest_back_app_bar.dart';
 
 class GuestJobsScreen extends StatelessWidget {
@@ -39,13 +41,15 @@ class GuestJobsScreen extends StatelessWidget {
   _getFile(BuildContext context) async {
     String filePath = '';
     String fileName = '';
+    String? mimeType;
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
     if (result != null) {
       fileName = result.files.single.name;
       filePath = result.files.single.path ?? '';
+      mimeType = lookupMimeType(filePath);
     }
-    if (filePath.isNotEmpty) {
+    if (filePath.isNotEmpty && mimeType == 'application/pdf') {
       File file = File(filePath);
       printLog(message: '${file.lengthSync()}');
       if (file.lengthSync() <= maxUploadFilesize * 2) {
@@ -61,7 +65,7 @@ class GuestJobsScreen extends StatelessWidget {
             context, PopupType.fail, "Upload file should not be more then 2mb");
       }
     } else {
-      printLog(message: 'message');
+      printLog(message: 'Please select valid file');
     }
   }
 
@@ -101,14 +105,18 @@ class GuestJobsScreen extends StatelessWidget {
   }
 
   _submitJobRequest() {
+    final firstName = const HtmlEscape().convert(firstNameController.text);
+    final lastName = const HtmlEscape().convert(lastNameController.text);
+    final emailId = const HtmlEscape().convert(emailIdController.text);
+    final mobileNumber =
+        const HtmlEscape().convert(mobileNumberController.text);
     Map<String, dynamic> jobRequest = {
       "sendToEmail": "career@uaqgov.ae",
-      "ccEmail": emailIdController.text,
+      "ccEmail": emailId,
       "languageCode": "en",
-      "subject":
-          "New CV ${firstNameController.text} ${lastNameController.text}",
+      "subject": "New CV $firstName $lastName",
       "messageContent":
-          "<b>Dear HR</b>,<br/><br/>Kindly be informed that there is a new CV Submitted. Please find below details and attachment of the candidate.<br/><br/>Name: ${firstNameController.text} ${lastNameController.text}<br/><br/>Email: ${emailIdController.text}<br/><br/>Mobile Number: ${mobileNumberController.text}<br/><br/><br/><b>Thanks,<br/><br/>Malomati</b>",
+          "<b>Dear HR</b>,<br/><br/>Kindly be informed that there is a new CV Submitted. Please find below details and attachment of the candidate.<br/><br/>Name: $firstName $lastName <br/><br/>Email: $emailId <br/><br/>Mobile Number: $mobileNumber <br/><br/><br/><b>Thanks,<br/><br/>Malomati</b>",
       "attachments": {
         "documentName": _uploadFiles[0]['fileName'],
         "document": _uploadFiles[0]['fileNamebase64data']

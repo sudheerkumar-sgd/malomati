@@ -9,6 +9,7 @@ import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../../../core/common/common_utils.dart';
+import '../../../core/common/security_check.dart';
 import '../utils/NavbarNotifier.dart';
 
 class GuestMainScreen extends StatefulWidget {
@@ -49,6 +50,9 @@ class _GuestMainScreenState extends State<GuestMainScreen> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(seconds: 1), () async {
+      SecurityCheck().checkSecurity(context);
+    });
   }
 
   @override

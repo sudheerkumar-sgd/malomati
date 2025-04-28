@@ -9,14 +9,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../../../config/constant_config.dart';
+import '../../../core/common/security_check.dart';
 import '../../../core/constants/data_constants.dart';
 import '../requests/requests_navigator_screen.dart';
 import '../utils/NavbarNotifier.dart';
@@ -182,10 +185,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     ConstantConfig.badgeCount = 0;
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () async {
       setupFirebaseNotificationMessage();
       FlutterAppBadger.isAppBadgeSupported()
           .then((value) => FlutterAppBadger.removeBadge());
+      SecurityCheck().checkSecurity(context);
     });
     super.initState();
   }

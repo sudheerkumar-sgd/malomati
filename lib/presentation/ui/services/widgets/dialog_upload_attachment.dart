@@ -9,6 +9,7 @@ import '../../../../core/common/log.dart';
 import '../../../../res/drawables/background_box_decoration.dart';
 import '../../utils/dialogs.dart';
 import '../../widgets/alert_dialog_widget.dart';
+import 'package:mime/mime.dart';
 
 enum UploadOptions { takephoto, image, file }
 
@@ -18,12 +19,14 @@ class DialogUploadAttachmentWidget extends StatelessWidget {
   _getFile(BuildContext context, UploadOptions selectedOption) async {
     String filePath = '';
     String fileName = '';
+    String? mimeType;
     if (selectedOption == UploadOptions.file) {
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.any);
+      FilePickerResult? result = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
       if (result != null) {
         fileName = result.files.single.name;
         filePath = result.files.single.path ?? '';
+        mimeType = lookupMimeType(filePath);
       }
     } else {
       try {
@@ -41,7 +44,9 @@ class DialogUploadAttachmentWidget extends StatelessWidget {
         printLog(message: e.toString());
       }
     }
-    if (filePath.isNotEmpty) {
+    if (filePath.isNotEmpty &&
+        (selectedOption != UploadOptions.file ||
+            mimeType == 'application/pdf')) {
       File file = File(filePath);
       printLog(message: '${file.lengthSync()}');
       if (file.lengthSync() <= maxUploadFilesize) {

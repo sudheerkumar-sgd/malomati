@@ -69,6 +69,8 @@ dependencies:
   dropdown_search: ^5.0.6
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
+  html_unescape: ^2.0.0
+  root_checker_plus: ^0.0.4
 
 dev_dependencies:
   build_runner: ^2.4.6
