@@ -37,38 +37,38 @@ dependencies:
   cupertino_icons: ^1.0.2
   hive_flutter: ^1.1.0
   get_it: ^7.6.0
-  dio: ^5.3.0
-  equatable: ^2.0.5
+  dio: ^5.8.0+1
+  equatable: ^2.0.7
   flutter_localizations:
     sdk: flutter
   intl: any
-  provider: ^6.0.5
+  provider: ^6.1.5
   dartz: ^0.10.1
-  flutter_svg: ^2.0.10+1
-  page_transition: ^2.0.9
-  flutter_bloc: ^8.1.3
+  flutter_svg: ^2.1.0
+  page_transition: ^2.2.1
+  flutter_bloc: ^9.1.0
   flutter_phoenix: 1.1.1
-  get: ^4.6.5
-  map_launcher: ^3.3.1
-  url_launcher: ^6.1.12
-  rxdart: ^0.27.7
-  geolocator: ^12.0.0
-  just_audio: ^0.9.34
-  file_picker: ^8.0.6
-  syncfusion_flutter_pdfviewer: ^26.1.40
-  connectivity_plus: ^6.0.3
+  get: ^4.7.2
+  map_launcher: ^3.5.0
+  url_launcher: ^6.3.1
+  rxdart: ^0.28.0
+  geolocator: ^14.0.0
+  just_audio: ^0.10.1
+  file_picker: ^10.1.2
+  syncfusion_flutter_pdfviewer: ^29.1.40
+  connectivity_plus: ^6.1.4
   flutter_native_splash: ^2.3.2
-  image_picker: ^1.0.4
-  firebase_core: ^3.1.1
-  firebase_messaging: ^15.0.2
-  flutter_local_notifications: ^17.2.1
-  package_info_plus: ^8.0.0
-  flutter_app_badger: ^1.5.0
+  image_picker: ^1.1.2
+  firebase_core: ^3.13.0
+  firebase_messaging: ^15.2.5
+  flutter_local_notifications: ^19.1.0
+  package_info_plus: ^8.3.0
+  flutter_app_badge_control: ^0.0.2
   update_available: ^3.2.0
   geocoding: ^3.0.0
   dropdown_search: ^5.0.6
-  googleapis: ^13.2.0
-  googleapis_auth: ^1.6.0
+  googleapis: ^14.0.0
+  googleapis_auth: ^2.0.0
   html_unescape: ^2.0.0
   root_checker_plus: ^0.0.4
 

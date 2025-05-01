@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
@@ -203,8 +203,8 @@ class HomeScreen extends StatelessWidget {
                         state.requestsCountEntity.requestsPendingCount ?? 0;
                     ConstantConfig.isApprovalCountChange.value =
                         !(ConstantConfig.isApprovalCountChange.value);
-                    FlutterAppBadger.isAppBadgeSupported().then((value) =>
-                        FlutterAppBadger.updateBadgeCount(
+                    FlutterAppBadgeControl.isAppBadgeSupported().then((value) =>
+                        FlutterAppBadgeControl.updateBadgeCount(
                             ConstantConfig.hrApprovalCount +
                                 ConstantConfig.financePOApprovalCount +
                                 ConstantConfig.financePRApprovalCount +

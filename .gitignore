@@ -28,3 +28,4 @@ doc/api/
 android/.idea
 .DS_Store
 android/app/production/release/
+/android/app/.cxx

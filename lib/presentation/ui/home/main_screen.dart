@@ -26,7 +26,7 @@ import '../utils/NavbarNotifier.dart';
 import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:update_available/update_available.dart';
 
 class MainScreen extends StatefulWidget {
@@ -187,8 +187,8 @@ class _MainScreenState extends State<MainScreen> {
     ConstantConfig.badgeCount = 0;
     Future.delayed(const Duration(seconds: 1), () async {
       setupFirebaseNotificationMessage();
-      FlutterAppBadger.isAppBadgeSupported()
-          .then((value) => FlutterAppBadger.removeBadge());
+      FlutterAppBadgeControl.isAppBadgeSupported()
+          .then((value) => FlutterAppBadgeControl.removeBadge());
       SecurityCheck().checkSecurity(context);
     });
     super.initState();

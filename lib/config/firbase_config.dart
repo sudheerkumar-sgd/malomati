@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../firebase_options.dart';
@@ -22,11 +22,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print('Message notification: ${message.notification?.body}');
   }
   if (Platform.isIOS) {
-    FlutterAppBadger.isAppBadgeSupported().then((value) {
+    FlutterAppBadgeControl.isAppBadgeSupported().then((value) {
       if (value) {
         FlutterLocalNotificationsPlugin().getActiveNotifications().then(
           (value) {
-            FlutterAppBadger.updateBadgeCount(value.length);
+            FlutterAppBadgeControl.updateBadgeCount(value.length);
           },
         );
       }
@@ -100,11 +100,11 @@ class FirbaseConfig {
         showNotification(message);
       }
       if (Platform.isIOS) {
-        FlutterAppBadger.isAppBadgeSupported().then((value) {
+        FlutterAppBadgeControl.isAppBadgeSupported().then((value) {
           if (value) {
             flutterLocalNotificationsPlugin?.getActiveNotifications().then(
               (value) {
-                FlutterAppBadger.updateBadgeCount(value.length);
+                FlutterAppBadgeControl.updateBadgeCount(value.length);
               },
             );
           }
