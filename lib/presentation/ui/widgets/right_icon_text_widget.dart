@@ -17,6 +17,9 @@ class RightIconTextWidget extends StatelessWidget {
   final int? maxLength;
   final String fontFamily;
   final FocusNode? focusNode;
+  final Function(String)? onChanged;
+  final Function? isValid;
+  final Color? fillColor;
   const RightIconTextWidget(
       {this.height = defaultHeight,
       this.isEnabled = false,
@@ -30,6 +33,9 @@ class RightIconTextWidget extends StatelessWidget {
       this.maxLength,
       this.fontFamily = '',
       this.focusNode,
+      this.onChanged,
+      this.isValid,
+      this.fillColor,
       super.key});
 
   @override
@@ -68,7 +74,11 @@ class RightIconTextWidget extends StatelessWidget {
               if (errorMessage.isNotEmpty && (value == null || value.isEmpty)) {
                 return errorMessage.isNotEmpty ? errorMessage : null;
               }
-              return null;
+
+              return isValid?.call();
+            },
+            onChanged: (value) {
+              onChanged?.call(value);
             },
             decoration: InputDecoration(
               filled: true,
@@ -98,7 +108,7 @@ class RightIconTextWidget extends StatelessWidget {
                           .loadImage,
                     )
                   : null,
-              fillColor: context.resources.color.colorWhite,
+              fillColor: fillColor ?? context.resources.color.colorWhite,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(

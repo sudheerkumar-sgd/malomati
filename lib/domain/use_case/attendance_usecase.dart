@@ -1,6 +1,14 @@
 import 'package:dartz/dartz.dart';
+import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/response_model.dart';
+import 'package:malomati/data/model/response_models.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
+import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/delegation_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/domain/entities/response_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
@@ -31,5 +39,19 @@ class AttendanceUseCase extends BaseUseCase {
       getUserDetails({required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getAttendanceUserDetails(
         requestParams: requestParams);
+  }
+
+  Future<Either<Failure, ApiEntity<BaseEntity>>> submitOfficialInReason(
+      {required Map<String, dynamic> requestParams}) async {
+    var apiResponse = await apisRepository.post<ResponseModel>(
+      apiUrl: officialInApiUrl,
+      requestParams: requestParams,
+      responseModel: ResponseModel.fromJson,
+    );
+    return apiResponse.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right(r.toApiEntity());
+    });
   }
 }

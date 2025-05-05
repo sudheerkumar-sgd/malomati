@@ -31,6 +31,13 @@ class OnUserDetailsSuccess extends AttendanceState {
   List<Object?> get props => [attendanceUserDetailsEntity];
 }
 
+class OnApiResponse extends AttendanceState {
+  final ApiEntity<BaseEntity> apiEntity;
+
+  OnApiResponse({required this.apiEntity});
+  List<Object?> get props => [apiEntity];
+}
+
 class OnAttendanceApiError extends AttendanceState {
   final String message;
 

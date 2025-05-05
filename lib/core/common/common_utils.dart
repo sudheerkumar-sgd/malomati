@@ -11,10 +11,12 @@ import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
+import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
+import 'package:app_version_update/app_version_update.dart';
 
 import '../../data/model/leave_type_list_model.dart';
 
@@ -384,4 +386,17 @@ bool isStringArabic(String text) {
 
 String getFontNameByString(String text) {
   return isStringArabic(text) ? fontFamilyAR : fontFamilyEN;
+}
+
+checkIsUpdateAvailabe(BuildContext context) {
+  AppVersionUpdate.checkForUpdates().then((data) {
+    if (data.canUpdate == true && context.mounted) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return const UpdateDialogWidget();
+          });
+    }
+  });
 }

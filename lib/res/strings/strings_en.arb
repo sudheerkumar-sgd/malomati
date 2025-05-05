@@ -586,5 +586,13 @@
     "delegateFor":"Delegation For",
     "delegateTo":"Delegation To",
     "from":"From",
-    "to":"To"
+    "to":"To",
+    "selectReason":"Select Reason",
+    "specifyTheReason":"Please specify the reason",
+    "visitingDepartment":"Visiting Department",
+    "university":"University",
+    "training":"Training",
+    "other":"Other",
+    "string":"",
+    "dummy":"dummy"
 }

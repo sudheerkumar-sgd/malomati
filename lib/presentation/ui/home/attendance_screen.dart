@@ -2,10 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
+import 'package:malomati/presentation/ui/home/widgets/official_in_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/utils/location.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
@@ -268,8 +270,39 @@ class AttendanceScreen extends StatelessWidget {
       "method": selectedOption?['id'],
       "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
     };
-    //printLog(message: requestParams.toString());
-    _attendanceBloc.submitAttendance(requestParams: requestParams);
+    if (selectedOption?['id'] == "1") {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            final datetime = DateTime.now();
+            requestParams['date'] =
+                DateFormat('ddMMyyyyHHmmss').format(datetime);
+            return OfficialInWidgetWidget(
+              callBack: (value) {
+                _attendanceBloc.submitOfficialInReason(requestParams: {
+                  "punchTime": DateFormat('HH:mm:ss').format(datetime),
+                  "punshDate": DateFormat('dd-MMM-yy').format(datetime),
+                  "punchType": "1",
+                  "ioType": "0",
+                  "userRefCode": context.userDB.get(userPersonIdKey),
+                  "userName": context.userDB.get(userFullNameUsKey),
+                  "creationDate": DateFormat('dd/MM/yyyy').format(datetime),
+                  "flag": "",
+                  "errorMsg": "",
+                  "info1": context.userDB.get(oracleLoginIdKey),
+                  "info2": "",
+                  "requestId": "",
+                  "reason": value
+                });
+                _submitAttendanceToServer(context, department: department);
+              },
+            );
+          });
+    } else {
+      //printLog(message: requestParams.toString());
+      _attendanceBloc.submitAttendance(requestParams: requestParams);
+    }
   }
 
   Future<String> _getPunchlocation() async {

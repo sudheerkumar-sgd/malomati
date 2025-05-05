@@ -291,5 +291,13 @@
     "delegateFor":"تفويض ل",
     "delegateTo":"تفويض ل",
     "from":"من",
-    "to":"ل"
+    "to":"ل",
+    "selectReason":"اختر السبب",
+    "specifyTheReason":"يرجى تحديد السبب",
+    "visitingDepartment":"زيارة الدائرة",
+    "university":"الجامعة",
+    "training":"تدريب",
+    "other":"أخرى",
+    "string":"",
+    "dummy":"dummy"
 }

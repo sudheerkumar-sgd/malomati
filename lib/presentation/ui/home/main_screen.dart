@@ -9,14 +9,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/favorite_entity.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
 import 'package:malomati/presentation/ui/more/more_navigator_screen.dart';
 import 'package:malomati/presentation/ui/services/services_navigator_screen.dart';
-import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/notification_dialog_widget.dart';
-import 'package:malomati/presentation/ui/widgets/update_dialog_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../../../config/constant_config.dart';
 import '../../../core/common/security_check.dart';
@@ -27,7 +24,6 @@ import '../widgets/image_widget.dart';
 import 'home_navigator_screen.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
-import 'package:update_available/update_available.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -165,23 +161,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  _checkIsUpdateAvailabe() {
-    getUpdateAvailability().then((availability) {
-      if (availability == const UpdateAvailable()) {
-        if (context.mounted) {
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) {
-                return WillPopScope(
-                    onWillPop: () async => false,
-                    child: const UpdateDialogWidget());
-              });
-        }
-      }
-    });
-  }
-
   @override
   void initState() {
     ConstantConfig.badgeCount = 0;
@@ -200,6 +179,7 @@ class _MainScreenState extends State<MainScreen> {
         statusBarColor: context.resources.color.appScaffoldBg,
         statusBarIconBrightness: Brightness.dark));
     Future.delayed(const Duration(milliseconds: 500), () {
+      if (!context.mounted) return;
       _showBirthday(context);
       ConstantConfig.onFCMMessageReceived.addListener(() {
         if (!notificationUser.contains(context.userDB
@@ -210,7 +190,7 @@ class _MainScreenState extends State<MainScreen> {
           ConstantConfig.onFCMMessageReceived.value = null;
         }
       });
-      _checkIsUpdateAvailabe();
+      checkIsUpdateAvailabe(context);
     });
     return WillPopScope(
       onWillPop: () async {

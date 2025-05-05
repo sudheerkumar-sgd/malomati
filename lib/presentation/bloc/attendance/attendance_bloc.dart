@@ -3,6 +3,8 @@ import 'package:get/utils.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
+import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/use_case/attendance_usecase.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';
@@ -106,6 +108,15 @@ class AttendanceBloc extends Cubit<AttendanceState> {
         await attendanceUseCase.getUserDetails(requestParams: requestParams);
     emit(result.fold((l) => OnAttendanceApiError(message: _getErrorMessage(l)),
         (r) => OnUserDetailsSuccess(attendanceUserDetailsEntity: r)));
+  }
+
+  Future<AttendanceState> submitOfficialInReason(
+      {required Map<String, dynamic> requestParams}) async {
+    final result = await attendanceUseCase.submitOfficialInReason(
+        requestParams: requestParams);
+    return (result.fold(
+        (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+        (r) => OnApiResponse(apiEntity: r)));
   }
 
   String _getErrorMessage(Failure failure) {
