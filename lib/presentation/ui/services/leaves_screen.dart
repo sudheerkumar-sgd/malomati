@@ -134,6 +134,13 @@ class LeavesScreen extends StatelessWidget {
 
   onLeaveTypeSelected(LeaveTypeEntity? leaveTypeEntity) {
     selectedLeaveType = leaveTypeEntity;
+    if ('${leaveTypeEntity?.id}' == LeaveType.permission.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if ('${leaveTypeEntity?.id}' == LeaveType.missionLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if ('${leaveTypeEntity?.id}' == LeaveType.sickLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    }
     _isleaveTypeChanged.value = !_isleaveTypeChanged.value;
   }
 
@@ -217,6 +224,13 @@ class LeavesScreen extends StatelessWidget {
         }
       },
     );
+    if (leaveType.id == LeaveType.permission.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if (leaveType.id == LeaveType.missionLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if (leaveType.id == LeaveType.sickLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    }
     if (leaveType.id == LeaveType.permission.id) {
       leaveSubType = LeaveSubType.confirmed;
       _endTimeController.addListener(
@@ -431,33 +445,39 @@ class LeavesScreen extends StatelessWidget {
                             .onFontSize(context.resources.fontSize.dp12)
                             .copyWith(height: 1),
                       ),
-                      SizedBox(
-                        width: 190,
-                        child: AnimatedToggle(
-                          width: 190,
-                          height: 28,
-                          values: [
-                            context.string.planned,
-                            context.string.confirmed
-                          ],
-                          selectedPossition:
-                              leaveType == LeaveType.permission ? 1 : 0,
-                          onToggleCallback: (value) {
-                            if (value == 0) {
-                              leaveSubType = LeaveSubType.planned;
-                            } else {
-                              leaveSubType = LeaveSubType.confirmed;
-                            }
-                            printLog(message: leaveSubType.name);
-                          },
-                          buttonColor: resources.color.viewBgColor,
-                          backgroundColor:
-                              resources.color.bottomSheetIconUnSelected,
-                          boxRadious: resources.dimen.dp5,
-                          textColor: const Color(0xFFFFFFFF),
-                          textFontSize: resources.fontSize.dp13,
-                        ),
-                      ),
+                      ValueListenableBuilder(
+                          valueListenable: _isleaveTypeChanged,
+                          builder: (context, value, child) {
+                            return SizedBox(
+                              width: 190,
+                              child: AnimatedToggle(
+                                width: 190,
+                                height: 28,
+                                values: [
+                                  context.string.planned,
+                                  context.string.confirmed
+                                ],
+                                selectedPossition:
+                                    leaveSubType == LeaveSubType.confirmed
+                                        ? 1
+                                        : 0,
+                                onToggleCallback: (value) {
+                                  if (value == 0) {
+                                    leaveSubType = LeaveSubType.planned;
+                                  } else {
+                                    leaveSubType = LeaveSubType.confirmed;
+                                  }
+                                  printLog(message: leaveSubType.name);
+                                },
+                                buttonColor: resources.color.viewBgColor,
+                                backgroundColor:
+                                    resources.color.bottomSheetIconUnSelected,
+                                boxRadious: resources.dimen.dp5,
+                                textColor: const Color(0xFFFFFFFF),
+                                textFontSize: resources.fontSize.dp13,
+                              ),
+                            );
+                          }),
                     ],
                   ),
                   SizedBox(
