@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
@@ -270,7 +271,7 @@ class AttendanceScreen extends StatelessWidget {
       "method": selectedOption?['id'],
       "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
     };
-    if (selectedOption?['id'] == "1") {
+    if (selectedOption?['id'] == "1" || selectedOption?['id'] == "2") {
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -279,6 +280,9 @@ class AttendanceScreen extends StatelessWidget {
             requestParams['date'] =
                 DateFormat('ddMMyyyyHHmmss').format(datetime);
             return OfficialInWidgetWidget(
+              title: selectedOption?['id'] == "1"
+                  ? context.string.officialWorkIn
+                  : context.string.officialWorkOut,
               callBack: (value) {
                 _attendanceBloc.submitOfficialInReason(requestParams: {
                   "punchTime": DateFormat('HH:mm:ss').format(datetime),
@@ -295,13 +299,18 @@ class AttendanceScreen extends StatelessWidget {
                   "requestId": "",
                   "reason": value
                 });
-                _submitAttendanceToServer(context, department: department);
+                if (FlavorConfig.isProduction()) {
+                  _attendanceBloc.submitAttendance(
+                      requestParams: requestParams);
+                }
               },
             );
           });
     } else {
       //printLog(message: requestParams.toString());
-      _attendanceBloc.submitAttendance(requestParams: requestParams);
+      if (FlavorConfig.isProduction()) {
+        _attendanceBloc.submitAttendance(requestParams: requestParams);
+      }
     }
   }
 

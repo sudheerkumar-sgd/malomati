@@ -15,6 +15,7 @@ class RightIconTextWidget extends StatelessWidget {
   final String? suffixIconPath;
   final int? maxLines;
   final int? maxLength;
+  final int? minLength;
   final String fontFamily;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
@@ -31,6 +32,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.textInputType,
       this.maxLines,
       this.maxLength,
+      this.minLength,
       this.fontFamily = '',
       this.focusNode,
       this.onChanged,
@@ -73,6 +75,12 @@ class RightIconTextWidget extends StatelessWidget {
             validator: (value) {
               if (errorMessage.isNotEmpty && (value == null || value.isEmpty)) {
                 return errorMessage.isNotEmpty ? errorMessage : null;
+              }
+              if (minLength != null && value != null) {
+                if (value.length < minLength!) {
+                  return context.string.validationMinimum
+                      .replaceAll('0', '$minLength');
+                }
               }
 
               return isValid?.call();

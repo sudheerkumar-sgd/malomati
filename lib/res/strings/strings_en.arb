@@ -593,6 +593,7 @@
     "university":"University",
     "training":"Training",
     "other":"Other",
+    "validationMinimum":"Minimum length should be 0 letters",
     "string":"",
     "dummy":"dummy"
 }

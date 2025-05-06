@@ -298,6 +298,7 @@
     "university":"الجامعة",
     "training":"تدريب",
     "other":"أخرى",
+    "validationMinimum":"يجب أن لا يقل الطول عن 0 أحرف",
     "string":"",
     "dummy":"dummy"
 }
