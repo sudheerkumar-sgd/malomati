@@ -287,7 +287,7 @@ class AttendanceScreen extends StatelessWidget {
                 _attendanceBloc.submitOfficialInReason(requestParams: {
                   "punchTime": DateFormat('HH:mm:ss').format(datetime),
                   "punshDate": DateFormat('dd-MMM-yy').format(datetime),
-                  "punchType": "1",
+                  "punchType": selectedOption?['id'],
                   "ioType": "0",
                   "userRefCode": context.userDB.get(userPersonIdKey),
                   "userName": context.userDB.get(userFullNameUsKey),
