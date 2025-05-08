@@ -22,10 +22,9 @@ class SecurityCheck {
         message = "⚠️ Security tool detected!";
       } else if (await isDeviceRooted()) {
         message = "⚠️ Device root detected!";
+      } else if (await isdeveloperMode()) {
+        message = "⚠️ Device DeveloperMode detected!";
       }
-      //  else if (await isdeveloperMode()) {
-      //   message = "⚠️ Device DeveloperMode detected!";
-      // }
     } else if (Platform.isIOS && await isJailbreak()) {
       message = "⚠️ Device Jailbreak detected!";
     }
