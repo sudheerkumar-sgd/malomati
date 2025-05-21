@@ -28,10 +28,11 @@ class HrApprovalsScreen extends StatelessWidget {
     // list.removeAt(index);
     // _notificationList.value = [];
     // _notificationList.value = list;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HrApprovalsScreen()),
-    );
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => HrApprovalsScreen()),
+    // );
+    _servicesBloc.getHrApprovalsList(requestParams: {'USER_NAME': userName});
   }
 
   @override

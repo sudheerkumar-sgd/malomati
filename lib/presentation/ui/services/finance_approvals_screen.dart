@@ -31,7 +31,7 @@ class FinanceApprovalsScreen extends StatelessWidget {
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
   final ValueNotifier<List<FinanceApprovalEntity>> _financeNotificationList =
       ValueNotifier([]);
-  ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
+  final ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
   String userName = '';
   _onActionClicked(String id, BuildContext context) {
     // final list = _notificationList.value;
@@ -39,13 +39,21 @@ class FinanceApprovalsScreen extends StatelessWidget {
     // list.removeAt(index);
     // _notificationList.value = [];
     // _notificationList.value = list;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => FinanceApprovalsScreen(
-                index: selectedButtonIndex.value,
-              )),
-    );
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) => FinanceApprovalsScreen(
+    //             index: selectedButtonIndex.value,
+    //           )),
+    // );
+    int value = selectedButtonIndex.value;
+    _servicesBloc.getFinanceApprovalList(
+        apiUrl: value == 0
+            ? financePOApiUrl
+            : value == 1
+                ? financePRApiUrl
+                : financeInvoiceApiUrl,
+        requestParams: {'USER_NAME': userName});
   }
 
   @override
