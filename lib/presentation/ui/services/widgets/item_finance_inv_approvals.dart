@@ -52,6 +52,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
       "FROM_USER": "",
       "COMMENTS": comments ?? action
     };
+    Dialogs.loader(context);
     _servicesBloc.submitHrApproval(requestParams: requestParams);
     // Navigator.pop(context);
   }
@@ -98,9 +99,10 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
             .roundedCornerBox,
         child: BlocListener<ServicesBloc, ServicesState>(
           listener: (context, state) {
-            if (state is OnServicesLoading) {
-              Dialogs.loader(context);
-            } else if (state is OnHrApprovalsDetailsSuccess) {
+            // if (state is OnServicesLoading) {
+            //   Dialogs.loader(context);
+            // } else 
+            if (state is OnHrApprovalsDetailsSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
               financeDetailsItems = state.hrApprovalDetails;
               _showItemsOrAttachements(context);

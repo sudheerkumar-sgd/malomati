@@ -29,8 +29,9 @@ class FinanceApprovalsScreen extends StatelessWidget {
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
-  final ValueNotifier<List<FinanceApprovalEntity>> _financeNotificationList =
-      ValueNotifier([]);
+      final List<FinanceApprovalEntity> _financeNotificationList = List.empty(growable: true);
+  final ValueNotifier<bool> _onRefreshList =
+      ValueNotifier(false);
   final ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
   String userName = '';
   _onActionClicked(String id, BuildContext context) {
@@ -107,7 +108,9 @@ class FinanceApprovalsScreen extends StatelessWidget {
               } else if (state is OnFinanceApprovalsListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 noNotificationText = context.string.noHrRequests;
-                _financeNotificationList.value = state.financeApprovalsList;
+                _financeNotificationList.clear();
+                _financeNotificationList.addAll(state.financeApprovalsList);
+                _onRefreshList.value = !_onRefreshList.value;
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
@@ -141,7 +144,6 @@ class FinanceApprovalsScreen extends StatelessWidget {
                       valueListenable: selectedButtonIndex,
                       builder: (context, value, widget) {
                         noNotificationText = '';
-                        _financeNotificationList.value = [];
                         _servicesBloc.getFinanceApprovalList(
                             apiUrl: value == 0
                                 ? financePOApiUrl
@@ -151,9 +153,9 @@ class FinanceApprovalsScreen extends StatelessWidget {
                             requestParams: {'USER_NAME': userName});
                         return Expanded(
                           child: ValueListenableBuilder(
-                              valueListenable: _financeNotificationList,
-                              builder: (context, notificationList, child) {
-                                return (notificationList.isEmpty &&
+                              valueListenable: _onRefreshList,
+                              builder: (context, onRefreshList, child) {
+                                return (_financeNotificationList.isEmpty &&
                                         noNotificationText.isNotEmpty)
                                     ? Center(
                                         child: Text(
@@ -168,18 +170,18 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                             value == 0
                                                 ? ItemFinancePOApprovals(
                                                     data:
-                                                        notificationList[index],
+                                                        _financeNotificationList[index],
                                                     callBack: _onActionClicked,
                                                   )
                                                 : value == 1
                                                     ? ItemFinancePRApprovals(
-                                                        data: notificationList[
+                                                        data: _financeNotificationList[
                                                             index],
                                                         callBack:
                                                             _onActionClicked,
                                                       )
                                                     : ItemFinanceInvApprovals(
-                                                        data: notificationList[
+                                                        data: _financeNotificationList[
                                                             index],
                                                         callBack:
                                                             _onActionClicked,
@@ -188,7 +190,7 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                             SizedBox(
                                               height: resources.dimen.dp20,
                                             ),
-                                        itemCount: notificationList.length);
+                                        itemCount: _financeNotificationList.length);
                               }),
                         );
                       }),

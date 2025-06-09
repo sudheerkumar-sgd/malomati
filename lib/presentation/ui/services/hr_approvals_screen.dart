@@ -16,8 +16,9 @@ import '../widgets/back_app_bar.dart';
 
 class HrApprovalsScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<HrApprovalEntity>> _notificationList =
-      ValueNotifier([]);
+  final List<HrApprovalEntity> _notificationList = List.empty(growable: true);
+  final ValueNotifier<bool> _onRefreshList =
+      ValueNotifier(false);
 
   String userName = '';
 
@@ -55,7 +56,9 @@ class HrApprovalsScreen extends StatelessWidget {
               } else if (state is OnHrApprovalsListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 noNotificationText = context.string.noHrRequests;
-                _notificationList.value = state.hrApprovalsList;
+                _notificationList.clear();
+                _notificationList.addAll(state.hrApprovalsList);
+                _onRefreshList.value = !_onRefreshList.value;
               } else if (state is OnServicesError) {
                 Navigator.of(context, rootNavigator: true).pop();
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
@@ -76,9 +79,9 @@ class HrApprovalsScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: ValueListenableBuilder(
-                        valueListenable: _notificationList,
-                        builder: (context, notificationList, child) {
-                          return (notificationList.isEmpty &&
+                        valueListenable: _onRefreshList,
+                        builder: (context, onRefreshList, child) {
+                          return (_notificationList.isEmpty &&
                                   noNotificationText.isNotEmpty)
                               ? Center(
                                   child: Text(
@@ -91,14 +94,14 @@ class HrApprovalsScreen extends StatelessWidget {
                                   scrollDirection: Axis.vertical,
                                   itemBuilder: (context, index) =>
                                       ItemHRApprovals(
-                                        data: notificationList[index],
+                                        data: _notificationList[index],
                                         callBack: _onActionClicked,
                                       ),
                                   separatorBuilder: (context, index) =>
                                       SizedBox(
                                         height: resources.dimen.dp20,
                                       ),
-                                  itemCount: notificationList.length);
+                                  itemCount: _notificationList.length);
                         }),
                   ),
                 ],

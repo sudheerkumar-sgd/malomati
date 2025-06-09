@@ -52,8 +52,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
       "FROM_USER": context.userDB.get(userNameKey, defaultValue: ''),
       "COMMENTS": comments ?? action
     };
+    Dialogs.loader(context);
     _servicesBloc.submitHrApproval(requestParams: requestParams);
-    // Navigator.pop(context);
   }
 
   String _getFontFamily(String name) {
@@ -88,9 +88,10 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
             .roundedCornerBox,
         child: BlocListener<ServicesBloc, ServicesState>(
           listener: (context, state) {
-            if (state is OnServicesLoading) {
-              Dialogs.loader(context);
-            } else if (state is OnHrApprovalsDetailsSuccess) {
+            // if (state is OnServicesLoading) {
+            //   Dialogs.loader(context);
+            // } else 
+            if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
             } else if (state is OnsubmitHrApprovalSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
