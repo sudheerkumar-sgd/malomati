@@ -58,6 +58,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
 
   _showItemsOrAttachements(BuildContext context) {
     if (financeDetailsItems == null) {
+      Dialogs.loader(context);
       _servicesBloc.getFinanceItemDetailsList(
           apiUrl: financePOItemsApiUrl,
           requestParams: {'NOTIFICATION_ID': widget.data.nOTIFICATIONID});
@@ -99,7 +100,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
           listener: (context, state) {
             // if (state is OnServicesLoading) {
             //   Dialogs.loader(context);
-            // } else 
+            // } else
             if (state is OnHrApprovalsDetailsSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
               financeDetailsItems = state.hrApprovalDetails;
@@ -148,8 +149,6 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
             } else if (state is OnServicesError) {
               Navigator.of(context, rootNavigator: true).pop();
               Dialogs.showInfoDialog(context, PopupType.fail, state.message);
-            } else {
-              Navigator.of(context, rootNavigator: true).pop();
             }
           },
           child: Column(
@@ -321,7 +320,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                           .copyWith(height: 1.5),
                                     ),
                                     Text(
-                                      approvalDetails.tOTALAMOUNT ?? '',
+                                      '${approvalDetails.tOTALAMOUNT ?? ''}',
                                       style: context.textFontWeight600
                                           .onFontSize(resources.fontSize.dp13)
                                           .onFontFamily(
@@ -348,7 +347,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                           .copyWith(height: 1.5),
                                     ),
                                     Text(
-                                      approvalDetails.tAXAMOUNT ?? '',
+                                      '${approvalDetails.tAXAMOUNT ?? ''}',
                                       style: context.textFontWeight600
                                           .onFontSize(resources.fontSize.dp13)
                                           .onFontFamily(

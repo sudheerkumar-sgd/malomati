@@ -65,6 +65,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
 
   _showItemsOrAttachements(BuildContext context) {
     if (financeDetailsItems == null) {
+      Dialogs.loader(context);
       _servicesBloc.getFinanceItemDetailsList(
           apiUrl: financePRItemsApiUrl,
           requestParams: {'NOTIFICATION_ID': widget.data.nOTIFICATIONID});
@@ -100,7 +101,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
           listener: (context, state) {
             // if (state is OnServicesLoading) {
             //   Dialogs.loader(context);
-            // } else 
+            // } else
             if (state is OnHrApprovalsDetailsSuccess) {
               Navigator.of(context, rootNavigator: true).pop();
               financeDetailsItems = state.hrApprovalDetails;
@@ -149,8 +150,6 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
             } else if (state is OnServicesError) {
               Navigator.of(context, rootNavigator: true).pop();
               Dialogs.showInfoDialog(context, PopupType.fail, state.message);
-            } else {
-              Navigator.of(context, rootNavigator: true).pop();
             }
           },
           child: Column(

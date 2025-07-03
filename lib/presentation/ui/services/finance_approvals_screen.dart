@@ -29,9 +29,9 @@ class FinanceApprovalsScreen extends StatelessWidget {
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
-      final List<FinanceApprovalEntity> _financeNotificationList = List.empty(growable: true);
-  final ValueNotifier<bool> _onRefreshList =
-      ValueNotifier(false);
+  final List<FinanceApprovalEntity> _financeNotificationList =
+      List.empty(growable: true);
+  final ValueNotifier<bool> _onRefreshList = ValueNotifier(false);
   final ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
   String userName = '';
   _onActionClicked(String id, BuildContext context) {
@@ -170,19 +170,22 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                             value == 0
                                                 ? ItemFinancePOApprovals(
                                                     data:
-                                                        _financeNotificationList[index],
+                                                        _financeNotificationList[
+                                                            index],
                                                     callBack: _onActionClicked,
                                                   )
                                                 : value == 1
                                                     ? ItemFinancePRApprovals(
-                                                        data: _financeNotificationList[
-                                                            index],
+                                                        data:
+                                                            _financeNotificationList[
+                                                                index],
                                                         callBack:
                                                             _onActionClicked,
                                                       )
                                                     : ItemFinanceInvApprovals(
-                                                        data: _financeNotificationList[
-                                                            index],
+                                                        data:
+                                                            _financeNotificationList[
+                                                                index],
                                                         callBack:
                                                             _onActionClicked,
                                                       ),
@@ -190,7 +193,8 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                             SizedBox(
                                               height: resources.dimen.dp20,
                                             ),
-                                        itemCount: _financeNotificationList.length);
+                                        itemCount:
+                                            _financeNotificationList.length);
                               }),
                         );
                       }),

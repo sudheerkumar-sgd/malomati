@@ -145,7 +145,7 @@ class ServicesBloc extends Cubit<ServicesState> {
 
   Future<void> submitHrApproval(
       {required Map<String, dynamic> requestParams}) async {
-    emit(OnServicesLoading());
+    //emit(OnServicesLoading());
     final result =
         await servicesUseCase.submitHrApproval(requestParams: requestParams);
     emit(result.fold((l) => OnServicesError(message: _getErrorMessage(l)),
