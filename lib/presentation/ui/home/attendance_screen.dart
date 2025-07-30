@@ -108,6 +108,52 @@ class AttendanceScreen extends StatelessWidget {
     }
   }
 
+  bool canOvertimeInEnable() {
+    final dateTime = DateTime.now();
+    switch (dateTime.weekday) {
+      case 5:
+        {
+          return (dateTime.hour < 6 ||
+                  (dateTime.hour == 6 && dateTime.minute <= 30)) ||
+              (dateTime.hour > 12 ||
+                  (dateTime.hour == 12 && dateTime.minute >= 30));
+        }
+      case 6 || 7:
+        {
+          return true;
+        }
+      default:
+        {
+          return (dateTime.hour < 6 ||
+                  (dateTime.hour == 6 && dateTime.minute <= 30)) ||
+              dateTime.hour >= 16;
+        }
+    }
+  }
+
+  bool canOvertimeOutEnable() {
+    final dateTime = DateTime.now();
+    switch (dateTime.weekday) {
+      case 5:
+        {
+          return (dateTime.hour < 6 ||
+                  (dateTime.hour == 6 && dateTime.minute <= 59)) ||
+              dateTime.hour >= 13;
+        }
+      case 6 || 7:
+        {
+          return true;
+        }
+      default:
+        {
+          return (dateTime.hour < 6 ||
+                  (dateTime.hour == 6 && dateTime.minute <= 59)) ||
+              (dateTime.hour > 16 ||
+                  (dateTime.hour == 16 && dateTime.minute >= 30));
+        }
+    }
+  }
+
   bool canPunchInEnable() {
     return true;
     // return ((attendanceEntity?.punch2Time?.isNotEmpty ?? true) ||
@@ -135,12 +181,11 @@ class AttendanceScreen extends StatelessWidget {
     var hour = DateTime.now().hour;
     var minute = DateTime.now().minute;
     if (_isRamdanMonth()) {
-      return (((hour == 7 && minute > 30) |
+      return (((hour == 7 && minute > 30) ||
               ((hour > 7 && hour < 10) || (hour == 10 && minute < 1))) &&
           (attendanceEntity?.punch1Time ?? '').isEmpty);
     }
-    return ((hour < 8 || (hour == 8 && minute < 1)) &&
-        (attendanceEntity?.punch1Time ?? '').isEmpty);
+    return ((hour < 8) && (attendanceEntity?.punch1Time ?? '').isEmpty);
   }
 
   bool _isRamdanMonth() {
@@ -170,7 +215,7 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.overtimeIn,
           'id': '9',
-          'isEnabled': canPunchInEnable()
+          'isEnabled': canOvertimeInEnable()
         },
       ];
     } else {
@@ -193,7 +238,7 @@ class AttendanceScreen extends StatelessWidget {
         {
           'name': context.string.overtimeOut,
           'id': '10',
-          'isEnabled': canPunchOutEnable()
+          'isEnabled': canOvertimeOutEnable()
         },
       ];
     }

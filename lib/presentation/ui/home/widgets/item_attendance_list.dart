@@ -87,7 +87,7 @@ class ItemAttendanceList extends StatelessWidget {
       case '10':
         return context.string.overtimeOut;
       default:
-        return context.string.regularIn;
+        return context.string.officialInOrOut;
     }
   }
 
@@ -103,7 +103,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid1 ?? '5')}:',
+                '${_getPunchType(context, attendanceEntity.spfid1 ?? '1')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -128,7 +128,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, (attendanceEntity.spfid2 ?? '').isNotEmpty ? attendanceEntity.spfid2 ?? '' : '6')}:',
+                '${_getPunchType(context, (attendanceEntity.spfid2 ?? '2'))}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -153,7 +153,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid3 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid3 ?? '1')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -178,7 +178,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid4 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid4 ?? '2')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -203,7 +203,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid5 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid5 ?? '1')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -228,7 +228,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid6 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid6 ?? '2')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -253,7 +253,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid7 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid7 ?? '1')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -278,7 +278,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid8 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid8 ?? '2')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -303,7 +303,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid9 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid9 ?? '1')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)
@@ -328,7 +328,7 @@ class ItemAttendanceList extends StatelessWidget {
           TableRow(children: [
             TableCell(
               child: Text(
-                '${_getPunchType(context, attendanceEntity.spfid10 ?? '')}:',
+                '${_getPunchType(context, attendanceEntity.spfid10 ?? '2')}:',
                 textAlign: TextAlign.right,
                 style: context.textFontWeight400
                     .onColor(context.resources.color.textColor212B4B)

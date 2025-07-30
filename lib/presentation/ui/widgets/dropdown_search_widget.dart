@@ -56,7 +56,7 @@ class DropDownSearchWidget<T> extends StatelessWidget {
         SizedBox(
           height: context.resources.dimen.dp40,
           child: DropdownSearch<T>(
-            items: list,
+            items: (filter, loadProps) => list,
             popupProps: PopupProps.menu(
               constraints: list.isNotEmpty
                   ? BoxConstraints(maxHeight: (30.0 * list.length) + 45)
@@ -100,7 +100,7 @@ class DropDownSearchWidget<T> extends StatelessWidget {
                       color: Theme.of(context).colorScheme.error,
                     ),
                   )),
-              itemBuilder: (context, item, isSelected) {
+              itemBuilder: (context, item, isSelected,s) {
                 return Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: context.resources.dimen.dp15,
@@ -113,8 +113,8 @@ class DropDownSearchWidget<T> extends StatelessWidget {
                 );
               },
             ),
-            dropdownDecoratorProps: DropDownDecoratorProps(
-              dropdownSearchDecoration: InputDecoration(
+            decoratorProps: DropDownDecoratorProps(
+              decoration: InputDecoration(
                   filled: true,
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(

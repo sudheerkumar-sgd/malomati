@@ -4,7 +4,6 @@ import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
-import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/use_case/attendance_usecase.dart';
 import '../../../core/error/failures.dart';
 import '../../../domain/entities/api_entity.dart';

@@ -359,6 +359,10 @@
     "@officialOut": {
         "type": "text"
     },
+    "officialInOrOut": "Official In/Out",
+    "@officialInOrOut": {
+        "type": "text"
+    },
     "lunchIn": "Lunch In",
     "@lunchIn": {
         "type": "text"

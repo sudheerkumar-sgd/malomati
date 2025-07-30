@@ -93,6 +93,7 @@
     "shortLeaveOut": "إذن خروج",
     "officialIn": "مهمة رسمية - دخول",
     "officialOut": "مهمة رسمية - خروج",
+    "officialInOrOut": "رسمي داخل/خارج",
     "lunchIn": "lunch In",
     "lunchOut": "Lunch Out",
     "cancel": "إلغاء",
