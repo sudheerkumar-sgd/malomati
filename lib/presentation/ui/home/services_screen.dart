@@ -8,6 +8,7 @@ import 'package:malomati/presentation/ui/services/advance_salary_screen.dart';
 import 'package:malomati/presentation/ui/services/badge_screen.dart';
 import 'package:malomati/presentation/ui/services/cancel_invoice_screen.dart';
 import 'package:malomati/presentation/ui/services/certificates_screen.dart';
+import 'package:malomati/presentation/ui/services/contract_renew_screen.dart';
 import 'package:malomati/presentation/ui/services/create_warning_screen.dart';
 import 'package:malomati/presentation/ui/services/delete_leave_screen.dart';
 import 'package:malomati/presentation/ui/services/holidays_screen.dart';
@@ -16,6 +17,7 @@ import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
 import 'package:malomati/presentation/ui/services/payslips_screen.dart';
+import 'package:malomati/presentation/ui/services/resignation_screen.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import 'package:malomati/presentation/ui/services/vacation_rules_screen.dart';
 import 'package:malomati/presentation/ui/services/view_warnings_screen.dart';
@@ -103,6 +105,14 @@ class ServicesScreen extends StatelessWidget {
       case 21:
         {
           screenWidget = CancelInvoiceScreen();
+        }
+      case 22:
+        {
+          screenWidget = ContractRenewScreen();
+        }
+      case 23:
+        {
+          screenWidget = ResignationScreen();
         }
       case 31:
         {

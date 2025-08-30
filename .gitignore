@@ -30,3 +30,5 @@ android/.idea
 android/app/production/release/
 /android/app/.cxx
 .DS_Store
+ios/Podfile.lock
+ios/Runner.xcodeproj/xcshareddata/xcschemes/production.xcscheme
