@@ -23,8 +23,6 @@ class ResignationScreen extends StatelessWidget {
   String userName = '';
   final TextEditingController empNumberController = TextEditingController();
   final TextEditingController nationalityController = TextEditingController();
-  final TextEditingController hiringDateController = TextEditingController();
-  final TextEditingController jobTitleController = TextEditingController();
 
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
@@ -36,7 +34,7 @@ class ResignationScreen extends StatelessWidget {
     final certificateRequestModel = ApiRequestModel();
     certificateRequestModel.uSERNAME = userName;
     certificateRequestModel.hIRINGDATE = getDateByformat('dd-MM-yyyy',
-        getDateTimeByString('dd-MMM-yyyy', hiringDateController.text));
+        getDateTimeByString('dd-MMM-yyyy', ''));
     _servicesBloc.submitServicesRequest(
         apiUrl: badgeApiUrl,
         requestParams: certificateRequestModel.toBadgeRequest());
@@ -46,19 +44,6 @@ class ResignationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    empNumberController.text =
-        context.userDB.get(userJobIdEnKey, defaultValue: '');
-    nationalityController.text = context.userDB.get(
-        isLocalEn ? userNationalityEnKey : userNationalityArKey,
-        defaultValue: '');
-    if (nationalityController.text.isEmpty) {
-      nationalityController.text =
-          context.userDB.get(userNationalityEnKey, defaultValue: '');
-    }
-    hiringDateController.text =
-        context.userDB.get(userJoiningDateEnKey, defaultValue: '');
-    jobTitleController.text = context.userDB
-        .get(isLocalEn ? userJobNameEnKey : userJobNameArKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
