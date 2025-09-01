@@ -925,6 +925,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationMinimum => 'Minimum length should be 0 letters';
 
   @override
+  String get sectionName => 'Section Name';
+
+  @override
+  String get hireDate => 'Hire Date';
+
+  @override
+  String get lastContractStartDate => 'Last Contract Date';
+
+  @override
+  String get newContractStartDate => 'New Contract Start Date';
+
+  @override
+  String get resignationDate => 'Resignation Date';
+
+  @override
+  String get resignationReason => 'Resignation Reason';
+
+  @override
   String get string => '';
 
   @override

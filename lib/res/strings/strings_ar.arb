@@ -300,6 +300,12 @@
     "training":"تدريب",
     "other":"أخرى",
     "validationMinimum":"يجب أن لا يقل الطول عن 0 أحرف",
+    "sectionName": "اسم القسم",
+    "hireDate": "تاريخ التعيين",
+    "lastContractStartDate": "تاريخ بدء العقد الأخير",
+    "newContractStartDate": "تاريخ بدء العقد الجديد",
+    "resignationDate": "تاريخ الاستقالة",
+    "resignationReason": "سبب الاستقالة",
     "string":"",
     "dummy":"dummy"
 }

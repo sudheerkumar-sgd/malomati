@@ -90,3 +90,7 @@ const String delegationDeleteApiUrl =
     'UAQSGD_MOB_ERP_CreateDelegationRequest/DelegationRequest/DelegationDelete';
 const String officialInApiUrl =
     'UAQSGD_MOB_ERP_OfficialInRequest/OfficialInRequest';
+const String renewContractApiUrl =
+    'UAQSGD_MOB_ERP_ContractRenewal/RenewContract';
+const String resignationApiUrl =
+    'UAQSGD_MOB_ERP_ResignationRequest/Resignation';

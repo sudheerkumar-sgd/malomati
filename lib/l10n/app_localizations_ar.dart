@@ -924,6 +924,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get validationMinimum => 'يجب أن لا يقل الطول عن 0 أحرف';
 
   @override
+  String get sectionName => 'اسم القسم';
+
+  @override
+  String get hireDate => 'تاريخ التعيين';
+
+  @override
+  String get lastContractStartDate => 'تاريخ بدء العقد الأخير';
+
+  @override
+  String get newContractStartDate => 'تاريخ بدء العقد الجديد';
+
+  @override
+  String get resignationDate => 'تاريخ الاستقالة';
+
+  @override
+  String get resignationReason => 'سبب الاستقالة';
+
+  @override
   String get string => '';
 
   @override

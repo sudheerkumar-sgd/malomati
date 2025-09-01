@@ -1904,6 +1904,42 @@ abstract class AppLocalizations {
   /// **'Minimum length should be 0 letters'**
   String get validationMinimum;
 
+  /// No description provided for @sectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Section Name'**
+  String get sectionName;
+
+  /// No description provided for @hireDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Hire Date'**
+  String get hireDate;
+
+  /// No description provided for @lastContractStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Contract Date'**
+  String get lastContractStartDate;
+
+  /// No description provided for @newContractStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'New Contract Start Date'**
+  String get newContractStartDate;
+
+  /// No description provided for @resignationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Resignation Date'**
+  String get resignationDate;
+
+  /// No description provided for @resignationReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Resignation Reason'**
+  String get resignationReason;
+
   /// No description provided for @string.
   ///
   /// In en, this message translates to:

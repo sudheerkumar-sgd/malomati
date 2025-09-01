@@ -598,6 +598,12 @@
     "training":"Training",
     "other":"Other",
     "validationMinimum":"Minimum length should be 0 letters",
+    "sectionName":"Section Name",
+    "hireDate":"Hire Date",
+    "lastContractStartDate":"Last Contract Date",
+    "newContractStartDate":"New Contract Start Date",
+    "resignationDate":"Resignation Date",
+    "resignationReason":"Resignation Reason",
     "string":"",
     "dummy":"dummy"
 }

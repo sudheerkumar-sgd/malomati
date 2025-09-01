@@ -7,8 +7,10 @@ import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
+import 'package:malomati/presentation/ui/utils/date_time_util.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../data/model/api_request_model.dart';
 import '../widgets/alert_dialog_widget.dart';
@@ -21,9 +23,9 @@ class ResignationScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  final TextEditingController empNumberController = TextEditingController();
-  final TextEditingController nationalityController = TextEditingController();
-
+  final TextEditingController _resignationController = TextEditingController();
+  final TextEditingController _reasonController = TextEditingController();
+  final dateFormat = 'dd-MMM-yyyy';
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
       _submitAdvanceSalaryRequest();
@@ -33,11 +35,22 @@ class ResignationScreen extends StatelessWidget {
   _submitAdvanceSalaryRequest() {
     final certificateRequestModel = ApiRequestModel();
     certificateRequestModel.uSERNAME = userName;
-    certificateRequestModel.hIRINGDATE = getDateByformat('dd-MM-yyyy',
-        getDateTimeByString('dd-MMM-yyyy', ''));
+    certificateRequestModel.hIRINGDATE =
+        getDateByformat('dd-MM-yyyy', getDateTimeByString('dd-MMM-yyyy', ''));
     _servicesBloc.submitServicesRequest(
         apiUrl: badgeApiUrl,
         requestParams: certificateRequestModel.toBadgeRequest());
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller,
+      {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+    selectDate(context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate, callBack: (dateTime) {
+      controller.text = getDateByformat(dateFormat, dateTime);
+    });
   }
 
   @override
@@ -113,11 +126,24 @@ class ResignationScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              labelText: context.string.employeeNumber,
-                              textController: empNumberController,
-                              fontFamily: fontFamilyEN,
+                            InkWell(
+                              onTap: () {
+                                _selectDate(context, _resignationController,
+                                    initialDate:
+                                        _resignationController.text.isNotEmpty
+                                            ? getDateTimeByString(dateFormat,
+                                                _resignationController.text)
+                                            : DateTime.now());
+                              },
+                              child: RightIconTextWidget(
+                                height: resources.dimen.dp27,
+                                labelText: context.string.resignationDate,
+                                hintText: context.string.resignationDate,
+                                fontFamily: fontFamilyEN,
+                                errorMessage: context.string.resignationDate,
+                                suffixIconPath: DrawableAssets.icCalendar,
+                                textController: _resignationController,
+                              ),
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
@@ -125,8 +151,10 @@ class ResignationScreen extends StatelessWidget {
                             RightIconTextWidget(
                               height: resources.dimen.dp27,
                               maxLines: 4,
-                              labelText: context.string.nationality,
-                              textController: nationalityController,
+                              labelText: context.string.resignationReason,
+                              hintText: context.string.resignationReason,
+                              errorMessage: context.string.resignationReason,
+                              textController: _reasonController,
                             ),
                           ],
                         ),

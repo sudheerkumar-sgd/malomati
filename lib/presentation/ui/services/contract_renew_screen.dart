@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/constants/data_constants.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/data/model/department_model.dart';
+import 'package:malomati/domain/entities/department_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
+import 'package:malomati/presentation/ui/utils/date_time_util.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../data/model/api_request_model.dart';
 import '../widgets/alert_dialog_widget.dart';
@@ -23,29 +30,70 @@ class ContractRenewScreen extends StatelessWidget {
   String userName = '';
   final TextEditingController empNumberController = TextEditingController();
   final TextEditingController nationalityController = TextEditingController();
-  final TextEditingController hiringDateController = TextEditingController();
-  final TextEditingController jobTitleController = TextEditingController();
+  final TextEditingController _hireDateController = TextEditingController();
+  final TextEditingController _lastContractDateController =
+      TextEditingController();
+  final TextEditingController _newContractDateController =
+      TextEditingController();
+  List<DepartmentEntity> _departments = [];
+  final ValueNotifier _employees = ValueNotifier<List<EmployeeEntity>>([]);
+  DepartmentEntity? department;
+  EmployeeEntity? employee;
+  final dateFormat = 'yyyy-MM-dd';
 
-  onSubmit(String clickedButton) {
+  void _onDepartmentSelected(DepartmentEntity? value) {
+    employee = null;
+    department = value;
+    _servicesBloc.getEmployeesByDepartment(
+        requestParams: {'DEPARTMENT_NUMBER': department?.pAYROLLID ?? ''});
+  }
+
+  void _onEmployeeSelected(EmployeeEntity? value) {
+    employee = value;
+  }
+
+  void _onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
-      _submitAdvanceSalaryRequest();
+      _submitRequest();
     }
   }
 
-  _submitAdvanceSalaryRequest() {
-    final certificateRequestModel = ApiRequestModel();
-    certificateRequestModel.uSERNAME = userName;
-    certificateRequestModel.hIRINGDATE = getDateByformat('dd-MM-yyyy',
-        getDateTimeByString('dd-MMM-yyyy', hiringDateController.text));
+  void _submitRequest() {
+    final requestParams = {
+      "employeeNumber": employee?.pERSONID,
+      "hireDate": _hireDateController.text,
+      "oldContractStartDate": _lastContractDateController.text,
+      "newContractStartDate": _newContractDateController.text,
+      "organization": "",
+      "userName": userName,
+      "status": "",
+      "errorMsg": "",
+      "requestId": "",
+      "requestDate": ""
+    };
     _servicesBloc.submitServicesRequest(
-        apiUrl: badgeApiUrl,
-        requestParams: certificateRequestModel.toBadgeRequest());
+        apiUrl: renewContractApiUrl, requestParams: requestParams);
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller,
+      {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+    selectDate(context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate, callBack: (dateTime) {
+      controller.text = getDateByformat(dateFormat, dateTime);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
+    _departments = departments
+        .map((departmentJson) =>
+            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+        .toList();
     empNumberController.text =
         context.userDB.get(userJobIdEnKey, defaultValue: '');
     nationalityController.text = context.userDB.get(
@@ -55,10 +103,6 @@ class ContractRenewScreen extends StatelessWidget {
       nationalityController.text =
           context.userDB.get(userNationalityEnKey, defaultValue: '');
     }
-    hiringDateController.text =
-        context.userDB.get(userJoiningDateEnKey, defaultValue: '');
-    jobTitleController.text = context.userDB
-        .get(isLocalEn ? userJobNameEnKey : userJobNameArKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -68,6 +112,9 @@ class ContractRenewScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is OnServicesLoading) {
                 Dialogs.loader(context);
+              } else if (state is OnEmployeesSuccess) {
+                Navigator.of(context, rootNavigator: true).pop();
+                _employees.value = state.employeesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
@@ -88,9 +135,9 @@ class ContractRenewScreen extends StatelessWidget {
                             to: state.servicesRequestSuccessResponse.entity
                                     ?.aPPROVERSLIST[i] ??
                                 '',
-                            title: 'Badge',
+                            title: 'Renew Contract',
                             body:
-                                '${context.userDB.get(userFullNameUsKey)} has applied for Badge ID',
+                                '${context.userDB.get(userFullNameUsKey)} has Renewed Contract',
                             type: '',
                             notificationId: state.servicesRequestSuccessResponse
                                     .entity?.nTFID ??
@@ -128,36 +175,122 @@ class ContractRenewScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            DropDownWidget<DepartmentEntity>(
+                              list: _departments,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.department,
+                              errorMessage: context.string.department,
+                              selectedValue: department,
+                              callback: _onDepartmentSelected,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            ValueListenableBuilder(
+                                valueListenable: _employees,
+                                builder: (context, employees, widget) {
+                                  return DropDownWidget<EmployeeEntity>(
+                                    list: employees,
+                                    height: resources.dimen.dp27,
+                                    labelText: context.string.employee,
+                                    errorMessage: context.string.employee,
+                                    selectedValue: employee,
+                                    callback: _onEmployeeSelected,
+                                  );
+                                }),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
                             RightIconTextWidget(
                               height: resources.dimen.dp27,
-                              labelText: context.string.employeeNumber,
+                              labelText: context.string.sectionName,
+                              hintText: context.string.sectionName,
+                              errorMessage: context.string.sectionName,
                               textController: empNumberController,
                               fontFamily: fontFamilyEN,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              labelText: context.string.nationality,
-                              textController: nationalityController,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _selectDate(context, _hireDateController,
+                                          initialDate: _hireDateController
+                                                  .text.isNotEmpty
+                                              ? getDateTimeByString(dateFormat,
+                                                  _hireDateController.text)
+                                              : DateTime.now());
+                                    },
+                                    child: RightIconTextWidget(
+                                      height: resources.dimen.dp27,
+                                      labelText: context.string.hireDate,
+                                      hintText: context.string.hireDate,
+                                      fontFamily: fontFamilyEN,
+                                      errorMessage: context.string.hireDate,
+                                      suffixIconPath: DrawableAssets.icCalendar,
+                                      textController: _hireDateController,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: context.resources.dimen.dp10,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _selectDate(
+                                          context, _lastContractDateController,
+                                          initialDate:
+                                              _lastContractDateController
+                                                      .text.isNotEmpty
+                                                  ? getDateTimeByString(
+                                                      dateFormat,
+                                                      _lastContractDateController
+                                                          .text)
+                                                  : DateTime.now());
+                                    },
+                                    child: RightIconTextWidget(
+                                      height: resources.dimen.dp27,
+                                      labelText:
+                                          context.string.lastContractStartDate,
+                                      hintText:
+                                          context.string.lastContractStartDate,
+                                      fontFamily: fontFamilyEN,
+                                      errorMessage:
+                                          context.string.lastContractStartDate,
+                                      suffixIconPath: DrawableAssets.icCalendar,
+                                      textController:
+                                          _lastContractDateController,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              labelText: context.string.hiringDate,
-                              textController: hiringDateController,
-                              fontFamily: fontFamilyEN,
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              labelText: context.string.jobTitle,
-                              textController: jobTitleController,
+                            InkWell(
+                              onTap: () {
+                                _selectDate(context, _newContractDateController,
+                                    initialDate: _newContractDateController
+                                            .text.isNotEmpty
+                                        ? getDateTimeByString(dateFormat,
+                                            _newContractDateController.text)
+                                        : DateTime.now());
+                              },
+                              child: RightIconTextWidget(
+                                height: resources.dimen.dp27,
+                                labelText: context.string.newContractStartDate,
+                                hintText: context.string.newContractStartDate,
+                                fontFamily: fontFamilyEN,
+                                errorMessage:
+                                    context.string.newContractStartDate,
+                                suffixIconPath: DrawableAssets.icCalendar,
+                                textController: _newContractDateController,
+                              ),
                             ),
                           ],
                         ),
@@ -167,7 +300,7 @@ class ContractRenewScreen extends StatelessWidget {
                   SizedBox(
                     height: resources.dimen.dp20,
                   ),
-                  SubmitCancelWidget(callBack: onSubmit),
+                  SubmitCancelWidget(callBack: _onSubmit),
                   SizedBox(
                     height: resources.dimen.dp10,
                   ),
