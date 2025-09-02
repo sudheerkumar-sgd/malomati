@@ -273,6 +273,14 @@ class ServicesBloc extends Cubit<ServicesState> {
     return result.fold((l) => [], (r) => r);
   }
 
+  Future<List<String>> getResignationReasons({
+    required Map<String, dynamic> requestParams,
+  }) async {
+    final result = await servicesUseCase.getResignationReasons(
+        requestParams: requestParams);
+    return result.fold((l) => List<String>.empty(), (r) => r);
+  }
+
   String _getErrorMessage(Failure failure) {
     return failure.errorMessage;
   }

@@ -334,6 +334,17 @@ class ListModel extends BaseModel {
     return nameValueListModel;
   }
 
+  factory ListModel.fromResignationReasonsJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['Reasons'] != null) {
+      nameValueListModel.list = <String>[];
+      json['Reasons'].forEach((v) {
+        nameValueListModel.list.add(v['meaning'] ?? '');
+      });
+    }
+    return nameValueListModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "leaveType_daily": list,

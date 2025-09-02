@@ -4,11 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/domain/entities/base_entity.dart';
+import 'package:malomati/domain/entities/employee_entity.dart';
+import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/date_time_util.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
@@ -28,18 +32,20 @@ class ResignationScreen extends StatelessWidget {
   final dateFormat = 'dd-MMM-yyyy';
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
-      _submitAdvanceSalaryRequest();
+      _submitRequest();
     }
   }
 
-  _submitAdvanceSalaryRequest() {
-    final certificateRequestModel = ApiRequestModel();
-    certificateRequestModel.uSERNAME = userName;
-    certificateRequestModel.hIRINGDATE =
-        getDateByformat('dd-MM-yyyy', getDateTimeByString('dd-MMM-yyyy', ''));
-    _servicesBloc.submitServicesRequest(
-        apiUrl: badgeApiUrl,
-        requestParams: certificateRequestModel.toBadgeRequest());
+  _submitRequest() {
+    _servicesBloc
+        .submitServicesRequest(apiUrl: resignationApiUrl, requestParams: {
+      // "employeeNumber": context.userDB.get(userPersonIdKey, defaultValue: ''),
+      // "resignationDate": _resignationController.text,
+      // "reason": _reasonController.text,
+      // "userName": userName,
+      // "status": "",
+      // "requestDate": ""
+    });
   }
 
   Future<void> _selectDate(
@@ -86,9 +92,9 @@ class ResignationScreen extends StatelessWidget {
                             to: state.servicesRequestSuccessResponse.entity
                                     ?.aPPROVERSLIST[i] ??
                                 '',
-                            title: 'Badge',
+                            title: 'Resignation',
                             body:
-                                '${context.userDB.get(userFullNameUsKey)} has applied for Badge ID',
+                                '${context.userDB.get(userFullNameUsKey)} Submitted resignation request',
                             type: '',
                             notificationId: state.servicesRequestSuccessResponse
                                     .entity?.nTFID ??
@@ -148,14 +154,18 @@ class ResignationScreen extends StatelessWidget {
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              maxLines: 4,
-                              labelText: context.string.resignationReason,
-                              hintText: context.string.resignationReason,
-                              errorMessage: context.string.resignationReason,
-                              textController: _reasonController,
-                            ),
+                            FutureBuilder(
+                                future: _servicesBloc
+                                    .getResignationReasons(requestParams: {}),
+                                builder: (context, snapShot) {
+                                  return DropDownWidget<String>(
+                                    list: snapShot.data ?? [],
+                                    height: resources.dimen.dp27,
+                                    labelText: context.string.employee,
+                                    errorMessage: context.string.employee,
+                                    callback: (value) {},
+                                  );
+                                })
                           ],
                         ),
                       ),

@@ -217,4 +217,19 @@ class ServicesUseCase extends BaseUseCase {
           as List<DelegationItemEntity>);
     });
   }
+
+  Future<Either<Failure, List<String>>> getResignationReasons(
+      {required Map<String, dynamic> requestParams}) async {
+    var apiResponse = await apisRepository.get<ListModel>(
+      apiUrl: resignationReasonsApiUrl,
+      requestParams: requestParams,
+      responseModel: ListModel.fromResignationReasonsJson,
+    );
+    return apiResponse.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right((r.toEntity2<ListEntity>().entity?.list ??
+          List<String>.empty()) as List<String>);
+    });
+  }
 }

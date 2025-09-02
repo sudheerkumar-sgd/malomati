@@ -94,3 +94,5 @@ const String renewContractApiUrl =
     'UAQSGD_MOB_ERP_ContractRenewal/RenewContract';
 const String resignationApiUrl =
     'UAQSGD_MOB_ERP_ResignationRequest/Resignation';
+const String resignationReasonsApiUrl =
+    'UAQSGD_MOB_ERP_ResignationRequest/Resignation/getReasons';
