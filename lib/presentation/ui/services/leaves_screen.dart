@@ -30,6 +30,7 @@ enum LeaveType {
   permission('Permission', '75'),
   sickLeave('Sick Leaves', '76'),
   missionLeave('Mission Leaves', '68'),
+  workFromHome('Work From Home', '4061'),
   otherLeave('Other Leaves', '0');
 
   final String name;
@@ -139,6 +140,8 @@ class LeavesScreen extends StatelessWidget {
     } else if ('${leaveTypeEntity?.id}' == LeaveType.missionLeave.id) {
       leaveSubType = LeaveSubType.confirmed;
     } else if ('${leaveTypeEntity?.id}' == LeaveType.sickLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if ('${leaveTypeEntity?.id}' == LeaveType.workFromHome.id) {
       leaveSubType = LeaveSubType.confirmed;
     }
     _isleaveTypeChanged.value = !_isleaveTypeChanged.value;

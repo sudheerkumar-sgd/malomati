@@ -128,6 +128,8 @@ class DrawableAssets {
   static const icDelegateUser = '${drawablePath}ic_delegate_user.svg';
   static const icDelegateEdit = '${drawablePath}ic_delegate_edit.svg';
   static const icDelegateDelete = '${drawablePath}ic_delegate_delete.svg';
+  static const icResignation = '${drawablePath}ic_resignation.svg';
+  static const icContractRenew = '${drawablePath}ic_contract_renew.svg';
 
   static String getCloseDrawable(BuildContext context) {
     return context.resources.getTheme() == ThemeEnum.red

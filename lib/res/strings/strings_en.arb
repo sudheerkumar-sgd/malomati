@@ -604,6 +604,11 @@
     "newContractStartDate":"New Contract Start Date",
     "resignationDate":"Resignation Date",
     "resignationReason":"Resignation Reason",
+    "contractRenewal":"Contract Renewal",
+    "resignation":"Resignation",
+    "addTrainingCertificate":"Add Training certificate",
+    "approvalOfSalaries":"Approval of Salaries",
+    "remoteWork":"Remote work",
     "string":"",
     "dummy":"dummy"
 }

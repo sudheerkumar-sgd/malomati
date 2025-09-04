@@ -1940,6 +1940,36 @@ abstract class AppLocalizations {
   /// **'Resignation Reason'**
   String get resignationReason;
 
+  /// No description provided for @contractRenewal.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Renewal'**
+  String get contractRenewal;
+
+  /// No description provided for @resignation.
+  ///
+  /// In en, this message translates to:
+  /// **'Resignation'**
+  String get resignation;
+
+  /// No description provided for @addTrainingCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Training certificate'**
+  String get addTrainingCertificate;
+
+  /// No description provided for @approvalOfSalaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval of Salaries'**
+  String get approvalOfSalaries;
+
+  /// No description provided for @remoteWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote work'**
+  String get remoteWork;
+
   /// No description provided for @string.
   ///
   /// In en, this message translates to:

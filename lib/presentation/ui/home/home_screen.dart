@@ -154,16 +154,18 @@ class HomeScreen extends StatelessWidget {
     startTimer(
         duration: const Duration(seconds: 4),
         callback: () {
-          int nextIndex =
-              _eventBannerChange.value == _eventsListEntity.value.length - 1
-                  ? 0
-                  : (_eventBannerChange.value + 1);
-          if (nextIndex > 0) {
-            pageController.animateToPage(nextIndex,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.linear);
-          } else {
-            pageController.jumpTo(nextIndex.toDouble());
+          if (_eventsListEntity.value.length > 1) {
+            int nextIndex =
+                _eventBannerChange.value == _eventsListEntity.value.length - 1
+                    ? 0
+                    : (_eventBannerChange.value + 1);
+            if (nextIndex > 0) {
+              pageController.animateToPage(nextIndex,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.linear);
+            } else {
+              pageController.jumpTo(nextIndex.toDouble());
+            }
           }
         });
     return SafeArea(

@@ -31,8 +31,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.gov.uaq.hrms"
-    compileSdk 35
-    ndkVersion "26.1.10909125"
+    compileSdk  flutter.compileSdkVersion
+    ndkVersion "27.0.12077973"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -54,7 +54,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 26
-        targetSdkVersion 36
+        targetSdkVersion flutter.targetSdkVersion
         versionCode 56
         versionName '3.0.8'
     }

@@ -29,7 +29,6 @@ class ContractRenewScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String userName = '';
   final TextEditingController empNumberController = TextEditingController();
-  final TextEditingController nationalityController = TextEditingController();
   final TextEditingController _hireDateController = TextEditingController();
   final TextEditingController _lastContractDateController =
       TextEditingController();
@@ -96,13 +95,17 @@ class ContractRenewScreen extends StatelessWidget {
         .toList();
     empNumberController.text =
         context.userDB.get(userJobIdEnKey, defaultValue: '');
-    nationalityController.text = context.userDB.get(
-        isLocalEn ? userNationalityEnKey : userNationalityArKey,
-        defaultValue: '');
-    if (nationalityController.text.isEmpty) {
-      nationalityController.text =
-          context.userDB.get(userNationalityEnKey, defaultValue: '');
+    _hireDateController.text = getDateByformat(
+        dateFormat,
+        getDateTimeByString('dd/MM/yyyy',
+            context.userDB.get(userJoiningDateEnKey, defaultValue: '')));
+    final lastContractDate =
+        context.userDB.get(userContractDateKey, defaultValue: '');
+    if (lastContractDate.isNotEmpty) {
+      _lastContractDateController.text = getDateByformat(
+          dateFormat, getDateTimeByString('dd/MM/yyyy', lastContractDate));
     }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -164,7 +167,7 @@ class ContractRenewScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.badge),
+                  BackAppBarWidget(title: context.string.contractRenewal),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
@@ -175,61 +178,62 @@ class ContractRenewScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            DropDownWidget<DepartmentEntity>(
-                              list: _departments,
-                              height: resources.dimen.dp27,
-                              labelText: context.string.department,
-                              errorMessage: context.string.department,
-                              selectedValue: department,
-                              callback: _onDepartmentSelected,
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            ValueListenableBuilder(
-                                valueListenable: _employees,
-                                builder: (context, employees, widget) {
-                                  return DropDownWidget<EmployeeEntity>(
-                                    list: employees,
-                                    height: resources.dimen.dp27,
-                                    labelText: context.string.employee,
-                                    errorMessage: context.string.employee,
-                                    selectedValue: employee,
-                                    callback: _onEmployeeSelected,
-                                  );
-                                }),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
-                            RightIconTextWidget(
-                              height: resources.dimen.dp27,
-                              labelText: context.string.sectionName,
-                              hintText: context.string.sectionName,
-                              errorMessage: context.string.sectionName,
-                              textController: empNumberController,
-                              fontFamily: fontFamilyEN,
-                            ),
-                            SizedBox(
-                              height: resources.dimen.dp20,
-                            ),
+                            // DropDownWidget<DepartmentEntity>(
+                            //   list: _departments,
+                            //   height: resources.dimen.dp27,
+                            //   labelText: context.string.department,
+                            //   errorMessage: context.string.department,
+                            //   selectedValue: department,
+                            //   callback: _onDepartmentSelected,
+                            // ),
+                            // SizedBox(
+                            //   height: resources.dimen.dp20,
+                            // ),
+                            // ValueListenableBuilder(
+                            //     valueListenable: _employees,
+                            //     builder: (context, employees, widget) {
+                            //       return DropDownWidget<EmployeeEntity>(
+                            //         list: employees,
+                            //         height: resources.dimen.dp27,
+                            //         labelText: context.string.employee,
+                            //         errorMessage: context.string.employee,
+                            //         selectedValue: employee,
+                            //         callback: _onEmployeeSelected,
+                            //       );
+                            //     }),
+                            // SizedBox(
+                            //   height: resources.dimen.dp20,
+                            // ),
+                            // RightIconTextWidget(
+                            //   height: resources.dimen.dp27,
+                            //   isEnabled: false,
+                            //   labelText: context.string.employeeNumber,
+                            //   hintText: context.string.employeeNumber,
+                            //   errorMessage: context.string.employeeNumber,
+                            //   textController: empNumberController,
+                            //   fontFamily: fontFamilyEN,
+                            // ),
+                            // SizedBox(
+                            //   height: resources.dimen.dp20,
+                            // ),
                             Row(
                               children: [
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      _selectDate(context, _hireDateController,
-                                          initialDate: _hireDateController
-                                                  .text.isNotEmpty
-                                              ? getDateTimeByString(dateFormat,
-                                                  _hireDateController.text)
-                                              : DateTime.now());
+                                      // _selectDate(context, _hireDateController,
+                                      //     initialDate: _hireDateController
+                                      //             .text.isNotEmpty
+                                      //         ? getDateTimeByString(dateFormat,
+                                      //             _hireDateController.text)
+                                      //         : DateTime.now());
                                     },
                                     child: RightIconTextWidget(
                                       height: resources.dimen.dp27,
+                                      isEnabled: false,
                                       labelText: context.string.hireDate,
                                       hintText: context.string.hireDate,
                                       fontFamily: fontFamilyEN,
-                                      errorMessage: context.string.hireDate,
                                       suffixIconPath: DrawableAssets.icCalendar,
                                       textController: _hireDateController,
                                     ),
@@ -241,26 +245,25 @@ class ContractRenewScreen extends StatelessWidget {
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      _selectDate(
-                                          context, _lastContractDateController,
-                                          initialDate:
-                                              _lastContractDateController
-                                                      .text.isNotEmpty
-                                                  ? getDateTimeByString(
-                                                      dateFormat,
-                                                      _lastContractDateController
-                                                          .text)
-                                                  : DateTime.now());
+                                      // _selectDate(
+                                      //     context, _lastContractDateController,
+                                      //     initialDate:
+                                      //         _lastContractDateController
+                                      //                 .text.isNotEmpty
+                                      //             ? getDateTimeByString(
+                                      //                 dateFormat,
+                                      //                 _lastContractDateController
+                                      //                     .text)
+                                      //             : DateTime.now());
                                     },
                                     child: RightIconTextWidget(
                                       height: resources.dimen.dp27,
+                                      isEnabled: false,
                                       labelText:
                                           context.string.lastContractStartDate,
                                       hintText:
                                           context.string.lastContractStartDate,
                                       fontFamily: fontFamilyEN,
-                                      errorMessage:
-                                          context.string.lastContractStartDate,
                                       suffixIconPath: DrawableAssets.icCalendar,
                                       textController:
                                           _lastContractDateController,

@@ -95,6 +95,8 @@ class LoginScreen extends StatelessWidget {
                           state.loginEntity.entity?.jobNameAr ?? '');
                       context.userDB.put(userJoiningDateEnKey,
                           state.loginEntity.entity?.hireDate ?? '');
+                      context.userDB.put(userContractDateKey,
+                          (state.loginEntity.entity?.contractStartDate ?? ''));
                       context.userDB.put(userDateOfBirthKey,
                           state.loginEntity.entity?.dateOfBirth ?? '');
                       context.userDB.put(userJobIdEnKey,

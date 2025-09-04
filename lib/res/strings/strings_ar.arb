@@ -306,6 +306,11 @@
     "newContractStartDate": "تاريخ بدء العقد الجديد",
     "resignationDate": "تاريخ الاستقالة",
     "resignationReason": "سبب الاستقالة",
+    "contractRenewal": "تجديد العقد",
+    "resignation": "استقالة",
+    "addTrainingCertificate": "إضافة شهادة تدريب",
+    "approvalOfSalaries": "الموافقة على الرواتب",
+    "remoteWork": "العمل عن بُعد",
     "string":"",
     "dummy":"dummy"
 }

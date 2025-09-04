@@ -18,6 +18,7 @@ const String userJobIdEnKey = "user_job_id_en";
 const String userJobIdArKey = "user_jon_id_ar";
 const String userJoiningDateEnKey = "user_joining_date_en";
 const String userJoiningDateArKey = "user_joining_date_ar";
+const String userContractDateKey = "user_contract_date";
 const String userNationalityEnKey = "user_nationality_en";
 const String userNationalityArKey = "user_nationality_ar";
 const String userPersonIdKey = "user_person_id";

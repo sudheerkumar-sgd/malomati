@@ -943,6 +943,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resignationReason => 'Resignation Reason';
 
   @override
+  String get contractRenewal => 'Contract Renewal';
+
+  @override
+  String get resignation => 'Resignation';
+
+  @override
+  String get addTrainingCertificate => 'Add Training certificate';
+
+  @override
+  String get approvalOfSalaries => 'Approval of Salaries';
+
+  @override
+  String get remoteWork => 'Remote work';
+
+  @override
   String get string => '';
 
   @override

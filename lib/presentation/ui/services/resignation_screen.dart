@@ -27,9 +27,10 @@ class ResignationScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
+  String employeeId = '';
+  String selectedReason = '';
   final TextEditingController _resignationController = TextEditingController();
-  final TextEditingController _reasonController = TextEditingController();
-  final dateFormat = 'dd-MMM-yyyy';
+  final dateFormat = 'yyyy-MM-dd';
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
       _submitRequest();
@@ -39,12 +40,19 @@ class ResignationScreen extends StatelessWidget {
   _submitRequest() {
     _servicesBloc
         .submitServicesRequest(apiUrl: resignationApiUrl, requestParams: {
-      // "employeeNumber": context.userDB.get(userPersonIdKey, defaultValue: ''),
-      // "resignationDate": _resignationController.text,
-      // "reason": _reasonController.text,
-      // "userName": userName,
-      // "status": "",
-      // "requestDate": ""
+      "employeeNumber": employeeId,
+      "terminationNumber": "",
+      "teminationDate": _resignationController.text,
+      "resignationReason": selectedReason,
+      "PersonId": "",
+      "note": "Test Note",
+      "attachmentId": "",
+      "fileName": "",
+      "attachment": "",
+      "status": "",
+      "errorMessage": "",
+      "requestId": "",
+      "requestDate": ""
     });
   }
 
@@ -63,6 +71,7 @@ class ResignationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
+    employeeId = context.userDB.get(userJobIdEnKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -121,7 +130,7 @@ class ResignationScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.badge),
+                  BackAppBarWidget(title: context.string.resignation),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
@@ -163,7 +172,9 @@ class ResignationScreen extends StatelessWidget {
                                     height: resources.dimen.dp27,
                                     labelText: context.string.employee,
                                     errorMessage: context.string.employee,
-                                    callback: (value) {},
+                                    callback: (value) {
+                                      selectedReason = value ?? '';
+                                    },
                                   );
                                 })
                           ],

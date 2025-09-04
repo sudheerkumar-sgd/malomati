@@ -942,6 +942,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resignationReason => 'سبب الاستقالة';
 
   @override
+  String get contractRenewal => 'تجديد العقد';
+
+  @override
+  String get resignation => 'استقالة';
+
+  @override
+  String get addTrainingCertificate => 'إضافة شهادة تدريب';
+
+  @override
+  String get approvalOfSalaries => 'الموافقة على الرواتب';
+
+  @override
+  String get remoteWork => 'العمل عن بُعد';
+
+  @override
   String get string => '';
 
   @override

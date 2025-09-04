@@ -15,6 +15,7 @@ class LoginModel extends BaseModel {
   String? jobNameAr;
   String? employeeNumber;
   String? hireDate;
+  String? contractStartDate;
   String? dateOfBirth;
   String? nationality;
   String? persionID;
@@ -23,18 +24,19 @@ class LoginModel extends BaseModel {
 
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     var loginModel = LoginModel();
-    loginModel.oracleLoginId = json['ORACLE_LOGIN'];
-    loginModel.iSMANAGER = json['IS_MANAGER'];
-    loginModel.fullNameAR = json['FULL_NAME_AR'];
-    loginModel.fullNameUS = json['FULL_NAME_US'];
-    loginModel.departmentId = '${json['DEPARTMENT_ID']}';
-    loginModel.jobName = '${json['JOB_NAME']}';
-    loginModel.jobNameAr = '${json['JOB_NAME_AR']}';
-    loginModel.employeeNumber = '${json['EMPLOYEE_NUMBER']}';
-    loginModel.hireDate = '${json['HIRE_DATE']}';
-    loginModel.dateOfBirth = '${json['DATE_OF_BIRTH']}';
-    loginModel.nationality = '${json['NATIONALITY']}';
-    loginModel.persionID = '${json['PERSON_ID']}';
+    loginModel.oracleLoginId = json['ORACLE_LOGIN'] ?? '';
+    loginModel.iSMANAGER = json['IS_MANAGER'] ?? '';
+    loginModel.fullNameAR = json['FULL_NAME_AR'] ?? '';
+    loginModel.fullNameUS = json['FULL_NAME_US'] ?? '';
+    loginModel.departmentId = '${json['DEPARTMENT_ID'] ?? ''}';
+    loginModel.jobName = '${json['JOB_NAME'] ?? ''}';
+    loginModel.jobNameAr = '${json['JOB_NAME_AR'] ?? ''}';
+    loginModel.employeeNumber = '${json['EMPLOYEE_NUMBER'] ?? ''}';
+    loginModel.hireDate = '${json['HIRE_DATE'] ?? ''}';
+    loginModel.contractStartDate = '${json['CONTRACT_START_DATE'] ?? ''}';
+    loginModel.dateOfBirth = '${json['DATE_OF_BIRTH'] ?? ''}';
+    loginModel.nationality = '${json['NATIONALITY'] ?? ''}';
+    loginModel.persionID = '${json['PERSON_ID'] ?? ''}';
     return loginModel;
   }
 
@@ -65,6 +67,7 @@ extension SourceModelExtension on LoginModel {
     loginEntity.employeeNumber = employeeNumber;
     loginEntity.hireDate = hireDate;
     loginEntity.dateOfBirth = dateOfBirth;
+    loginEntity.contractStartDate = contractStartDate;
     loginEntity.nationality = nationality;
     loginEntity.persionID = persionID;
     return loginEntity;

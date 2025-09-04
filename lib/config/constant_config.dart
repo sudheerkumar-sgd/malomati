@@ -106,12 +106,12 @@ class ConstantConfig {
         id: 22,
         name: 'Contract Renewal',
         nameAR: 'تجديد العقد',
-        iconPath: DrawableAssets.icCancelInvoice),
-    FavoriteEntity(
-        id: 23,
-        name: 'Resignation',
-        nameAR: 'استقالة',
-        iconPath: DrawableAssets.icCancelInvoice),
+        iconPath: DrawableAssets.icContractRenew),
+    // FavoriteEntity(
+    //     id: 23,
+    //     name: 'Resignation',
+    //     nameAR: 'استقالة',
+    //     iconPath: DrawableAssets.icResignation),
     FavoriteEntity(
         id: 17,
         name: 'Holidays',
@@ -360,7 +360,13 @@ class ConstantConfig {
         "NAME_AR": "إجازة غير مدفوعة الاجر",
         "ABSENCE_ATTENDANCE_TYPE_ID": 1065,
         "HOURS_OR_DAYS": "D"
-      }
+      },
+      // {
+      //   "NAME": "Work From Home",
+      //   "NAME_AR": "العمل من المنزل",
+      //   "ABSENCE_ATTENDANCE_TYPE_ID": 4061,
+      //   "HOURS_OR_DAYS": "D"
+      // }
     ]
   };
   static ValueNotifier<bool> isApprovalCountChange = ValueNotifier(false);

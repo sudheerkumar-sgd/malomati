@@ -292,6 +292,8 @@ flutter:
      - assets/images/ic_delegate_user.svg
      - assets/images/ic_delegate_edit.svg
      - assets/images/ic_delegate_delete.svg
+     - assets/images/ic_contract_renew.svg
+     - assets/images/ic_resignation.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
