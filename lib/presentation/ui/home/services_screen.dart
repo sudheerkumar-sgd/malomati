@@ -19,6 +19,7 @@ import 'package:malomati/presentation/ui/services/overtime_screen.dart';
 import 'package:malomati/presentation/ui/services/payslips_screen.dart';
 import 'package:malomati/presentation/ui/services/resignation_screen.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
+import 'package:malomati/presentation/ui/services/training_certificate_screen.dart';
 import 'package:malomati/presentation/ui/services/vacation_rules_screen.dart';
 import 'package:malomati/presentation/ui/services/view_warnings_screen.dart';
 import 'package:page_transition/page_transition.dart';
@@ -113,6 +114,10 @@ class ServicesScreen extends StatelessWidget {
       case 23:
         {
           screenWidget = ResignationScreen();
+        }
+      case 24:
+        {
+          screenWidget = TrainingCertificateScreen();
         }
       case 31:
         {

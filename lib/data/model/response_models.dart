@@ -345,6 +345,17 @@ class ListModel extends BaseModel {
     return nameValueListModel;
   }
 
+  factory ListModel.fromTrainingCertTypeJson(Map<String, dynamic> json) {
+    var nameValueListModel = ListModel();
+    if (json['CetificateTypes'] != null) {
+      nameValueListModel.list = <String>[];
+      json['CetificateTypes'].forEach((v) {
+        nameValueListModel.list.add(v['meaning'] ?? '');
+      });
+    }
+    return nameValueListModel;
+  }
+
   @override
   Map<String, dynamic> toJson() => {
         "leaveType_daily": list,

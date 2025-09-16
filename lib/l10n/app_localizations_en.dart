@@ -958,6 +958,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remoteWork => 'Remote work';
 
   @override
+  String get typeOfCertificate => 'Type of Certificate';
+
+  @override
+  String get trainingCertificateName => 'Training Certificate Name';
+
+  @override
   String get string => '';
 
   @override

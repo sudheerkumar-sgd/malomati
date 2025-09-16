@@ -17,20 +17,23 @@ import 'package:malomati/res/resources.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class ResignationScreen extends StatelessWidget {
+class TrainingCertificateScreen extends StatelessWidget {
   static const String route = '/BadgeScreen';
-  ResignationScreen({super.key});
+  TrainingCertificateScreen({super.key});
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  String employeeId = '';
-  String selectedReason = '';
-  final TextEditingController _resignationController = TextEditingController();
+  String empNumber = '';
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateDateController = TextEditingController();
+  final TextEditingController _certificateNameController =
+      TextEditingController();
+  String? trainingCerttype;
   final dateFormat = 'yyyy-MM-dd';
   final _uploadFiles = [];
 
-  void onSubmit(String clickedButton) {
+  void _onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
       if (_uploadFiles.isEmpty) {
         Dialogs.showInfoDialog(resources.context, PopupType.fail,
@@ -42,22 +45,24 @@ class ResignationScreen extends StatelessWidget {
   }
 
   void _submitRequest() {
-    _servicesBloc
-        .submitServicesRequest(apiUrl: resignationApiUrl, requestParams: {
-      "employeeNumber": employeeId,
-      "terminationNumber": "",
-      "teminationDate": _resignationController.text,
-      "resignationReason": selectedReason,
-      "PersonId": "",
-      "note": "Test Note",
-      "attachmentId": "",
-      "fileName": _uploadFiles[0]['fileName'],
-      "attachment": _uploadFiles[0]['fileNamebase64data'],
-      "status": "",
+    final requestParams = {
+      "employeeNumber": empNumber,
+      "trainingName": trainingCerttype ?? '',
+      "startDate": _startDateController.text,
+      "endDate": _endDateDateController.text,
+      "seq": "General Skill",
+      "trainingType": "Seshacharyulu Peddinti",
+      "userName": "05/05/2025",
+      "processFlag": "",
       "errorMessage": "",
-      "requestId": "",
-      "requestDate": ""
-    });
+      "requestId": "SG113",
+      "requestDate": "",
+      "attachmentId": "1",
+      "attachmentName": _uploadFiles[0]['fileName'],
+      "attachmentFileBlob": _uploadFiles[0]['fileNamebase64data']
+    };
+    _servicesBloc.submitServicesRequest(
+        apiUrl: addCertificateApiUrl, requestParams: requestParams);
   }
 
   Future<void> _selectDate(
@@ -75,7 +80,8 @@ class ResignationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
-    employeeId = context.userDB.get(userJobIdEnKey, defaultValue: '');
+    empNumber = context.userDB.get(userJobIdEnKey, defaultValue: '');
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -94,25 +100,6 @@ class ResignationScreen extends StatelessWidget {
                           state.servicesRequestSuccessResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
-                  for (int i = 0;
-                      i <
-                          (state.servicesRequestSuccessResponse.entity
-                                  ?.aPPROVERSLIST.length ??
-                              0);
-                      i++) {
-                    _servicesBloc.sendPushNotifications(
-                        requestParams: getFCMMessageData(
-                            to: state.servicesRequestSuccessResponse.entity
-                                    ?.aPPROVERSLIST[i] ??
-                                '',
-                            title: 'Resignation',
-                            body:
-                                '${context.userDB.get(userFullNameUsKey)} Submitted resignation request',
-                            type: '',
-                            notificationId: state.servicesRequestSuccessResponse
-                                    .entity?.nTFID ??
-                                ''));
-                  }
                 } else {
                   Dialogs.showInfoDialog(
                       context,
@@ -134,7 +121,7 @@ class ResignationScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.resignation),
+                  BackAppBarWidget(title: context.string.contractRenewal),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),
@@ -145,42 +132,92 @@ class ResignationScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                _selectDate(context, _resignationController,
-                                    initialDate:
-                                        _resignationController.text.isNotEmpty
-                                            ? getDateTimeByString(dateFormat,
-                                                _resignationController.text)
-                                            : DateTime.now());
-                              },
-                              child: RightIconTextWidget(
-                                height: resources.dimen.dp27,
-                                labelText: context.string.resignationDate,
-                                hintText: context.string.resignationDate,
-                                fontFamily: fontFamilyEN,
-                                errorMessage: context.string.resignationDate,
-                                suffixIconPath: DrawableAssets.icCalendar,
-                                textController: _resignationController,
-                              ),
+                            RightIconTextWidget(
+                              isEnabled: true,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.trainingCertificateName,
+                              hintText: context.string.trainingCertificateName,
+                              errorMessage:
+                                  context.string.trainingCertificateName,
+                              textController: _certificateNameController,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
                             FutureBuilder(
                                 future: _servicesBloc
-                                    .getResignationReasons(requestParams: {}),
+                                    .getTrainingCerttypeList(requestParams: {}),
                                 builder: (context, snapShot) {
                                   return DropDownWidget<String>(
                                     list: snapShot.data ?? [],
                                     height: resources.dimen.dp27,
-                                    labelText: context.string.reason,
-                                    errorMessage: context.string.reason,
+                                    labelText: context.string.typeOfCertificate,
+                                    errorMessage:
+                                        context.string.typeOfCertificate,
                                     callback: (value) {
-                                      selectedReason = value ?? '';
+                                      trainingCerttype = value ?? '';
+                                      _formKey.currentState!.validate();
                                     },
                                   );
                                 }),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _selectDate(context, _startDateController,
+                                          initialDate: _startDateController
+                                                  .text.isNotEmpty
+                                              ? getDateTimeByString(dateFormat,
+                                                  _startDateController.text)
+                                              : DateTime.now());
+                                      _formKey.currentState!.validate();
+                                    },
+                                    child: RightIconTextWidget(
+                                      height: resources.dimen.dp27,
+                                      isEnabled: false,
+                                      labelText: context.string.startDate,
+                                      hintText: context.string.startDate,
+                                      errorMessage: context.string.startDate,
+                                      fontFamily: fontFamilyEN,
+                                      suffixIconPath: DrawableAssets.icCalendar,
+                                      textController: _startDateController,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: context.resources.dimen.dp10,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _selectDate(
+                                          context, _endDateDateController,
+                                          initialDate: _endDateDateController
+                                                  .text.isNotEmpty
+                                              ? getDateTimeByString(dateFormat,
+                                                  _endDateDateController.text)
+                                              : DateTime.now());
+                                      _formKey.currentState!.validate();
+                                    },
+                                    child: RightIconTextWidget(
+                                      height: resources.dimen.dp27,
+                                      isEnabled: false,
+                                      labelText: context.string.endDate,
+                                      hintText: context.string.endDate,
+                                      errorMessage: context.string.endDate,
+                                      fontFamily: fontFamilyEN,
+                                      suffixIconPath: DrawableAssets.icCalendar,
+                                      textController: _endDateDateController,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: resources.dimen.dp20,
                             ),
@@ -199,7 +236,7 @@ class ResignationScreen extends StatelessWidget {
                   SizedBox(
                     height: resources.dimen.dp20,
                   ),
-                  SubmitCancelWidget(callBack: onSubmit),
+                  SubmitCancelWidget(callBack: _onSubmit),
                   SizedBox(
                     height: resources.dimen.dp10,
                   ),

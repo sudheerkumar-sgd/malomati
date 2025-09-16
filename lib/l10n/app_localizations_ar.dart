@@ -957,6 +957,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get remoteWork => 'العمل عن بُعد';
 
   @override
+  String get typeOfCertificate => 'نوع الشهادة';
+
+  @override
+  String get trainingCertificateName => 'اسم شهادة التدريب';
+
+  @override
   String get string => '';
 
   @override

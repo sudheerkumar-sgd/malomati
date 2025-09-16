@@ -1970,6 +1970,18 @@ abstract class AppLocalizations {
   /// **'Remote work'**
   String get remoteWork;
 
+  /// No description provided for @typeOfCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of Certificate'**
+  String get typeOfCertificate;
+
+  /// No description provided for @trainingCertificateName.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Certificate Name'**
+  String get trainingCertificateName;
+
   /// No description provided for @string.
   ///
   /// In en, this message translates to:

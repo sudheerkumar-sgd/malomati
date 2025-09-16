@@ -96,3 +96,7 @@ const String resignationApiUrl =
     'UAQSGD_MOB_ERP_ResignationRequest/Resignation';
 const String resignationReasonsApiUrl =
     'UAQSGD_MOB_ERP_ResignationRequest/Resignation/getReasons';
+const String trainingCertListApiUrl =
+    'UAQSGD_MOB_ERP_AddTrainingCertificate/TrainingCertRequest/getList';
+const String addCertificateApiUrl =
+    'UAQSGD_MOB_ERP_AddTrainingCertificate/TrainingCertRequest/AddCertificate';

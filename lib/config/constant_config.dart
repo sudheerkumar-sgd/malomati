@@ -107,11 +107,16 @@ class ConstantConfig {
         name: 'Contract Renewal',
         nameAR: 'تجديد العقد',
         iconPath: DrawableAssets.icContractRenew),
-    // FavoriteEntity(
-    //     id: 23,
-    //     name: 'Resignation',
-    //     nameAR: 'استقالة',
-    //     iconPath: DrawableAssets.icResignation),
+    FavoriteEntity(
+        id: 23,
+        name: 'Resignation',
+        nameAR: 'استقالة',
+        iconPath: DrawableAssets.icResignation),
+    FavoriteEntity(
+        id: 24,
+        name: 'Add Training Certificate',
+        nameAR: 'إضافة شهادة تدريب',
+        iconPath: DrawableAssets.icResignation),
     FavoriteEntity(
         id: 17,
         name: 'Holidays',

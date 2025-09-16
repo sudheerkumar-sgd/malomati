@@ -609,6 +609,8 @@
     "addTrainingCertificate":"Add Training certificate",
     "approvalOfSalaries":"Approval of Salaries",
     "remoteWork":"Remote work",
+    "typeOfCertificate":"Type of Certificate",
+    "trainingCertificateName":"Training Certificate Name",
     "string":"",
     "dummy":"dummy"
 }

@@ -311,6 +311,8 @@
     "addTrainingCertificate": "إضافة شهادة تدريب",
     "approvalOfSalaries": "الموافقة على الرواتب",
     "remoteWork": "العمل عن بُعد",
+    "typeOfCertificate":"نوع الشهادة",
+    "trainingCertificateName":"اسم شهادة التدريب",
     "string":"",
     "dummy":"dummy"
 }

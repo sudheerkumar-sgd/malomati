@@ -217,6 +217,7 @@ class ContractRenewScreen extends StatelessWidget {
                             //   height: resources.dimen.dp20,
                             // ),
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: InkWell(
