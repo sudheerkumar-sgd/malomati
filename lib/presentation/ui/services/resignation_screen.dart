@@ -45,18 +45,10 @@ class ResignationScreen extends StatelessWidget {
     _servicesBloc
         .submitServicesRequest(apiUrl: resignationApiUrl, requestParams: {
       "employeeNumber": employeeId,
-      "terminationNumber": "",
       "teminationDate": _resignationController.text,
       "resignationReason": selectedReason,
-      "PersonId": "",
-      "note": "Test Note",
-      "attachmentId": "",
       "fileName": _uploadFiles[0]['fileName'],
       "attachment": _uploadFiles[0]['fileNamebase64data'],
-      "status": "",
-      "errorMessage": "",
-      "requestId": "",
-      "requestDate": ""
     });
   }
 

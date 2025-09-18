@@ -47,17 +47,11 @@ class TrainingCertificateScreen extends StatelessWidget {
   void _submitRequest() {
     final requestParams = {
       "employeeNumber": empNumber,
-      "trainingName": trainingCerttype ?? '',
+      "trainingName": _certificateNameController.text,
       "startDate": _startDateController.text,
       "endDate": _endDateDateController.text,
-      "seq": "General Skill",
-      "trainingType": "Seshacharyulu Peddinti",
-      "userName": "05/05/2025",
-      "processFlag": "",
-      "errorMessage": "",
-      "requestId": "SG113",
-      "requestDate": "",
-      "attachmentId": "1",
+      "trainingType": trainingCerttype ?? '',
+      "userName": userName,
       "attachmentName": _uploadFiles[0]['fileName'],
       "attachmentFileBlob": _uploadFiles[0]['fileNamebase64data']
     };
