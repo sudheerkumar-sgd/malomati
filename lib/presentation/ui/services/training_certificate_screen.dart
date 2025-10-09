@@ -115,7 +115,8 @@ class TrainingCertificateScreen extends StatelessWidget {
                   SizedBox(
                     height: context.resources.dimen.dp10,
                   ),
-                  BackAppBarWidget(title: context.string.contractRenewal),
+                  BackAppBarWidget(
+                      title: context.string.addTrainingCertificate),
                   SizedBox(
                     height: context.resources.dimen.dp20,
                   ),

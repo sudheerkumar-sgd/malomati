@@ -10,8 +10,10 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 
 class OfficialInWidgetWidget extends StatelessWidget {
   final String title;
+  final String? type;
   final Function(String?)? callBack;
-  OfficialInWidgetWidget({required this.title, this.callBack, super.key});
+  OfficialInWidgetWidget(
+      {required this.title, this.type, this.callBack, super.key});
   final ValueNotifier<String?> _selectedLeaveType =
       ValueNotifier<String?>(null);
   bool isOther = false;
@@ -51,33 +53,35 @@ class OfficialInWidgetWidget extends StatelessWidget {
                     style: context.textFontWeight600
                         .onFontSize(context.resources.fontSize.dp17),
                   ),
-                  SizedBox(
-                    height: context.resources.dimen.dp20,
-                  ),
-                  DropDownWidget<String>(
-                    list: [
-                      context.string.visitingDepartment,
-                      context.string.university,
-                      context.string.training,
-                      context.string.other,
-                    ],
-                    height: context.resources.dimen.dp27,
-                    labelText: context.string.selectReason,
-                    hintText: context.string.selectReason,
-                    errorMessage: context.string.selectReason,
-                    suffixIconPath: DrawableAssets.icChevronDown,
-                    fillColor: context.resources.color.colorLightBg,
-                    selectedValue: _selectedLeaveType.value,
-                    callback: (value) {
-                      isOther = value == context.string.other;
-                      _selectedLeaveType.value = isOther ? '' : value;
-                      _formKey.currentState?.validate();
-                    },
-                  ),
+                  if (type == null || type == '1' || type == '2') ...{
+                    SizedBox(
+                      height: context.resources.dimen.dp20,
+                    ),
+                    DropDownWidget<String>(
+                      list: [
+                        context.string.visitingDepartment,
+                        context.string.university,
+                        context.string.training,
+                        context.string.other,
+                      ],
+                      height: context.resources.dimen.dp27,
+                      labelText: context.string.selectReason,
+                      hintText: context.string.selectReason,
+                      errorMessage: context.string.selectReason,
+                      suffixIconPath: DrawableAssets.icChevronDown,
+                      fillColor: context.resources.color.colorLightBg,
+                      selectedValue: _selectedLeaveType.value,
+                      callback: (value) {
+                        isOther = value == context.string.other;
+                        _selectedLeaveType.value = isOther ? '' : value;
+                        _formKey.currentState?.validate();
+                      },
+                    ),
+                  },
                   ValueListenableBuilder(
                       valueListenable: _selectedLeaveType,
                       builder: (context, value, child) {
-                        return isOther
+                        return (isOther || type == '9' || type == '10')
                             ? Padding(
                                 padding: EdgeInsets.only(
                                     top: context.resources.dimen.dp25),

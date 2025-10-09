@@ -39,6 +39,11 @@ class ServicesList extends StatelessWidget {
         .contains(context.userDB.get(userNameKey, defaultValue: ''))) {
       services.removeWhere((element) => element.id == 21);
     }
+    final lastContractDate =
+        context.userDB.get(userContractDateKey, defaultValue: '');
+    if (lastContractDate.isEmpty) {
+      services.removeWhere((element) => element.id == 22);
+    }
     return Expanded(
       child: Stack(
         children: [

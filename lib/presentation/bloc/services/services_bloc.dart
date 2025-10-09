@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/constant_config.dart';
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
 import 'package:malomati/domain/entities/delegation_category_entity.dart';
 import 'package:malomati/domain/entities/delegation_entity.dart';
@@ -276,17 +280,25 @@ class ServicesBloc extends Cubit<ServicesState> {
   Future<List<String>> getResignationReasons({
     required Map<String, dynamic> requestParams,
   }) async {
-    final result = await servicesUseCase.getResignationReasons(
-        requestParams: requestParams);
-    return result.fold((l) => List<String>.empty(), (r) => r);
+    return ConstantConfig()
+        .resignationReasons
+        .map((e) => e[isLocalEn ? 'reasonEn' : 'reasonAr'].toString())
+        .toList();
+    // final result = await servicesUseCase.getResignationReasons(
+    //     requestParams: requestParams);
+    // return result.fold((l) => List<String>.empty(), (r) => r);
   }
 
   Future<List<String>> getTrainingCerttypeList({
     required Map<String, dynamic> requestParams,
   }) async {
-    final result = await servicesUseCase.getTrainingCerttypeList(
-        requestParams: requestParams);
-    return result.fold((l) => List<String>.empty(), (r) => r);
+    return ConstantConfig()
+        .triningCertificateType
+        .map((e) => e[isLocalEn ? 'typeEn' : 'typeAr'].toString())
+        .toList();
+    // final result = await servicesUseCase.getTrainingCerttypeList(
+    //     requestParams: requestParams);
+    // return result.fold((l) => List<String>.empty(), (r) => r);
   }
 
   String _getErrorMessage(Failure failure) {

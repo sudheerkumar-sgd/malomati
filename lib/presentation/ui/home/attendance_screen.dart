@@ -316,7 +316,7 @@ class AttendanceScreen extends StatelessWidget {
       "method": selectedOption?['id'],
       "isInOut": attendanceType == AttendanceType.punchIn ? "0" : "1",
     };
-    if (selectedOption?['id'] == "1" || selectedOption?['id'] == "2") {
+    if (['1', '2', '9', '10'].contains(selectedOption?['id'])) {
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -325,9 +325,8 @@ class AttendanceScreen extends StatelessWidget {
             requestParams['date'] =
                 DateFormat('ddMMyyyyHHmmss').format(datetime);
             return OfficialInWidgetWidget(
-              title: selectedOption?['id'] == "1"
-                  ? context.string.officialWorkIn
-                  : context.string.officialWorkOut,
+              title: selectedOption?['name'],
+              type: selectedOption?['id'],
               callBack: (value) {
                 _attendanceBloc.submitOfficialInReason(requestParams: {
                   "punchTime": DateFormat('HH:mm:ss').format(datetime),

@@ -44,7 +44,7 @@ class ServicesScreen extends StatelessWidget {
         {
           screenWidget = FinanceApprovalsScreen();
         }
-      case 3 || 4 || 5 || 6 || 7:
+      case 3 || 4 || 5 || 6 || 7 || 25:
         {
           screenWidget = LeavesScreen(
             leaveType: LeaveType.values.firstWhere(

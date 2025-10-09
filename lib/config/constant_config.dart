@@ -102,6 +102,11 @@ class ConstantConfig {
         name: 'Cancel Invoice',
         nameAR: 'الغاء الفاتورة',
         iconPath: DrawableAssets.icCancelInvoice),
+    // FavoriteEntity(
+    //     id: 25,
+    //     name: 'Remote Work',
+    //     nameAR: 'العمل عن بعد',
+    //     iconPath: DrawableAssets.icWorkFromHome),
     FavoriteEntity(
         id: 22,
         name: 'Contract Renewal',
@@ -390,4 +395,168 @@ class ConstantConfig {
       'AAAAW47t3kQ:APA91bFuEWK4MWc7bVSf24RYAdcBuSPIeu4CLhOV2qOp_UctljSHas5BvNngpFNf_OQVAOWXtuNSjNOdbOqWpXRUscryDK8sPqTGUnVk2qrtwVs21eOVr8mK9sDhcotgxKslSm6vB3LW';
   static String cancelInvoiceUsers = '';
   static AccessToken? fcmAccessTokenJson;
+
+  final triningCertificateType = [
+    {"id": 1, "typeEn": "General Skill", "typeAr": "المهارات العامة"},
+    {"id": 2, "typeEn": " Specialized Skill", "typeAr": "المهارة المتخصصة"},
+  ];
+  final resignationReasons = [
+    {
+      "id": 1,
+      "reasonEn": "Termination by employer within probation period",
+      "reasonAr": "إنهاء الخدمة من قبل صاحب العمل خلال فترة الاختبار"
+    },
+    {"id": 2, "reasonEn": "By amiri decrae", "reasonAr": "بمرسوم اميرى"},
+    {
+      "id": 3,
+      "reasonEn":
+          "Termination by employer with approval UWV (Wage Report Only)",
+      "reasonAr":
+          "إنهاء الخدمة من قبل صاحب العمل بموافقة UWV (تقرير الأجور فقط)"
+    },
+    {"id": 4, "reasonEn": "Lack of fitness", "reasonAr": "عدم اللياقة الصحية"},
+    {
+      "id": 5,
+      "reasonEn": "Dissolution by the court at request of employer",
+      "reasonAr": "حل الشركة من قبل المحكمة بناء على طلب صاحب العمل"
+    },
+    {
+      "id": 6,
+      "reasonEn": "Functional incompetence",
+      "reasonAr": "عدم الكفاءة الوظيفية"
+    },
+    {
+      "id": 7,
+      "reasonEn": "Termination with mutual approval initiated by employer",
+      "reasonAr": "إنهاء الخدمة بموافقة متبادلة من قبل صاحب العمل"
+    },
+    {"id": 8, "reasonEn": "Discharge", "reasonAr": "الفصل من الخدمة"},
+    {
+      "id": 9,
+      "reasonEn":
+          "Non-Renewal or Termination of Contract before its completion",
+      "reasonAr": "عدم تجديد العقد أوأنهائه قبل انتهاء مدته"
+    },
+    {
+      "id": 10,
+      "reasonEn": "Interruption from work without justification",
+      "reasonAr": "إنقطاع عن العمل دون مبرر"
+    },
+    {"id": 11, "reasonEn": "Restructuring", "reasonAr": "اعادة الهيكلة"},
+    {
+      "id": 12,
+      "reasonEn":
+          "Replacement in accordance with the plans to settle the functions of non-citizens",
+      "reasonAr": "الإحلال وفقا لخطط توطين وظائف"
+    },
+    {
+      "id": 13,
+      "reasonEn": "End of contract by employee, caused, initiated by employee",
+      "reasonAr": "نهاية العقد من قبل الموظف، تسبب فيه، بدأه الموظف"
+    },
+    {
+      "id": 14,
+      "reasonEn": "Termination by employer without notice",
+      "reasonAr": "إنهاء الخدمة من قبل صاحب العمل دون إشعار"
+    },
+    {
+      "id": 15,
+      "reasonEn": "End of contract for exp of a fixed-term employment contract",
+      "reasonAr": "نهاية العقد لانتهاء عقد عمل محدد المدة"
+    },
+    {
+      "id": 16,
+      "reasonEn":
+          "End of contract due to other reason (Pension, deceased, etc.)",
+      "reasonAr": "نهاية العقد لأي سبب آخر (معاش، وفاة، الخ.)"
+    },
+    {
+      "id": 17,
+      "reasonEn":
+          "End of temp employment contract,due to illness of temp worker",
+      "reasonAr": "نهاية عقد العمل المؤقت بسبب مرض العامل المؤقت"
+    },
+    {
+      "id": 18,
+      "reasonEn": "End of temporary employment contract, due to other reason",
+      "reasonAr": "انتهاء عقد العمل المؤقت لأي سبب آخر"
+    },
+    {
+      "id": 19,
+      "reasonEn": "Labour disability with approval UWV (PGGM Only)",
+      "reasonAr": "إعاقة العمل مع موافقة UWV (PGGM فقط)"
+    },
+    {
+      "id": 20,
+      "reasonEn": "Business economical reason with approval UWV (PGGM Only)",
+      "reasonAr": "سبب اقتصادي تجاري مع موافقة UWV (PGGM فقط)"
+    },
+    {
+      "id": 21,
+      "reasonEn": "Active contract but administrative termination of contract",
+      "reasonAr": "عقد نشط ولكن إنهاء إداري للعقد"
+    },
+    {
+      "id": 22,
+      "reasonEn": "Other reason, not mentioned before",
+      "reasonAr": "سبب آخر لم يذكر من قبل"
+    },
+    {
+      "id": 23,
+      "reasonEn":
+          "Separation from service or administrative segregation violated a court order",
+      "reasonAr": "الفصل من الخدمة لمخالفة ادارية"
+    },
+    {
+      "id": 24,
+      "reasonEn": "Transfer to Other Enitiy",
+      "reasonAr": "النقل إلى جهة أخرى"
+    },
+    {"id": 25, "reasonEn": "The Resignation", "reasonAr": "استقاله"},
+    {
+      "id": 26,
+      "reasonEn": "Transfer to Diplomatic and Consulate Staff",
+      "reasonAr": "النقل إلى السلك الدبلوماسي"
+    },
+    {
+      "id": 27,
+      "reasonEn":
+          "Dismissal by virtue of resolution issued by the Council of Ministers",
+      "reasonAr": "إقالة بموجب ق ا رر صادر عن"
+    },
+    {
+      "id": 28,
+      "reasonEn": "Issuance of federal decree",
+      "reasonAr": "بمرسوم اتحادي"
+    },
+    {
+      "id": 29,
+      "reasonEn": "Not Transferred Visa",
+      "reasonAr": "عدم نقل الكفالة"
+    },
+    {"id": 30, "reasonEn": "No Show", "reasonAr": "عدم مباشرة العمل"},
+    {"id": 31, "reasonEn": "Early Retirement", "reasonAr": "تقاعد مبكر"},
+    {"id": 32, "reasonEn": "PHD Completion", "reasonAr": "اكمال الدكتوراه"},
+    {"id": 33, "reasonEn": "Act of God", "reasonAr": "قضاء و قدر"},
+    {
+      "id": 34,
+      "reasonEn": "Resignation due to Disability",
+      "reasonAr": "الاستقالة بسبب الإعاقة"
+    },
+    {"id": 35, "reasonEn": "By Contract", "reasonAr": "حسب العقد"},
+    {
+      "id": 36,
+      "reasonEn": "By employee's initiative",
+      "reasonAr": "بمبادرة من الموظف"
+    },
+    {"id": 37, "reasonEn": "Deceased", "reasonAr": "الوفاة"},
+    {
+      "id": 38,
+      "reasonEn": "Expiry of Determined Period",
+      "reasonAr": "انتهاء فترة محددة"
+    },
+    {"id": 39, "reasonEn": "Disciplinary", "reasonAr": "تأديبي"},
+    {"id": 40, "reasonEn": "Dismissed", "reasonAr": "مفصول"},
+    {"id": 41, "reasonEn": "Disability", "reasonAr": "إعاقة"}
+  ];
 }

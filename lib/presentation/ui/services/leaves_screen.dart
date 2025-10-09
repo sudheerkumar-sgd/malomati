@@ -26,16 +26,22 @@ import '../widgets/animated_toggle.dart';
 import '../widgets/back_app_bar.dart';
 
 enum LeaveType {
-  anualLeave('Annual Leaves', '61'),
-  permission('Permission', '75'),
-  sickLeave('Sick Leaves', '76'),
-  missionLeave('Mission Leaves', '68'),
-  workFromHome('Work From Home', '4061'),
-  otherLeave('Other Leaves', '0');
+  anualLeave('Annual Leaves', 'الإجازة الدورية', 61),
+  permission('Permission', 'إذن خروج', 75),
+  sickLeave('Sick Leaves', 'اجازة مرضية', 76),
+  missionLeave('Mission Leaves', 'اجازة مهمة رسمية', 68),
+  workFromHome('Remote Work', 'العمل عن بعد', 4061),
+  otherLeave('Other Leaves', 'الإجازات اخرى', 0);
 
   final String name;
-  final String id;
-  const LeaveType(this.name, this.id);
+  final String nameAr;
+  final int id;
+  const LeaveType(this.name, this.nameAr, this.id);
+
+  @override
+  toString() {
+    return isLocalEn ? name : nameAr;
+  }
 }
 
 enum LeaveSubType {
@@ -91,6 +97,10 @@ class LeavesScreen extends StatelessWidget {
       case LeaveType.missionLeave:
         {
           return context.string.missionLeaves;
+        }
+      case LeaveType.workFromHome:
+        {
+          return leaveType.toString();
         }
       default:
         {
@@ -161,7 +171,7 @@ class LeavesScreen extends StatelessWidget {
     if (leaveType == LeaveType.otherLeave) {
       leaveRequestModel.aBSENCETYPEID = '${selectedLeaveType?.id}';
     } else {
-      leaveRequestModel.aBSENCETYPEID = leaveType.id;
+      leaveRequestModel.aBSENCETYPEID = '${leaveType.id}';
     }
     leaveRequestModel.sTARTDATE = _startDateController.text;
     leaveRequestModel.eNDDATE = _endDateController.text;
