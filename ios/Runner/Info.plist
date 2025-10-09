@@ -32,6 +32,8 @@
 	<string>uploading documents for approve requests</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access location to check current user is punch-in or punch-out from within office location or not.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app uses your location to verify if you are within the office area when you punch in or punch out, even when running in the background.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To play birthday wishes </string>
 	<key>NSPhotoLibraryUsageDescription</key>
