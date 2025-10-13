@@ -208,7 +208,7 @@ class LeavesScreen extends StatelessWidget {
       }
     }
     leaveRequestModel.uSERCOMMENTS = _commentController.text;
-    // _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
+    _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
   }
 
   @override
