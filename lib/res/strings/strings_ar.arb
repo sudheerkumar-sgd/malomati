@@ -99,7 +99,7 @@
     "cancel": "إلغاء",
     "success": "تمت العملية بنجاح",
     "opps": "عفوا",
-    "remaining": "المتيقيه",
+    "remaining": "المتبقية",
     "location": "الموقع",
     "attendancelocationErrorMessage": "ليس في موقع المكتب",
     "currentBalance": "الرصيد الحالي",
@@ -313,6 +313,8 @@
     "remoteWork": "العمل عن بُعد",
     "typeOfCertificate":"نوع الشهادة",
     "trainingCertificateName":"اسم شهادة التدريب",
+    "leaveDates":"اختر تواريخ الإجازة",
+    "chooseLeaveDates":"Choose Leave Dates",
     "string":"",
     "dummy":"dummy"
 }

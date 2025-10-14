@@ -964,6 +964,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainingCertificateName => 'Training Certificate Name';
 
   @override
+  String get leaveDates => 'Leave Dates';
+
+  @override
+  String get chooseLeaveDates => 'Choose Leave Dates';
+
+  @override
   String get string => '';
 
   @override

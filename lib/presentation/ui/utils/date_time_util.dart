@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/presentation/ui/widgets/date_range_dialog_widget.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import 'dialogs.dart';
 
@@ -111,4 +113,24 @@ Future<void> selectTime(BuildContext context,
       callBack(selectedTime);
     });
   }
+}
+
+Future showDateRangePickerDialog(BuildContext context,
+    {String? title,
+    DateRangePickerSelectionMode selectionMode =
+        DateRangePickerSelectionMode.single,
+    DateTime? initialSelectedDate,
+    List<DateTime>? initialSelectedDates,
+    PickerDateRange? initialSelectedRange,
+    List<PickerDateRange>? initialSelectedRanges}) {
+  return showDialog(
+      context: context,
+      builder: (context) => DateRangeDialogWidget(
+            title: title,
+            selectionMode: selectionMode,
+            initialSelectedDate: initialSelectedDate,
+            initialSelectedDates: initialSelectedDates,
+            initialSelectedRange: initialSelectedRange,
+            initialSelectedRanges: initialSelectedRanges,
+          ));
 }

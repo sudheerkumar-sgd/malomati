@@ -14,6 +14,7 @@ import 'package:malomati/presentation/ui/services/widgets/dialog_upload_attachme
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/date_time_util.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/date_range_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/presentation/ui/widgets/item_attachment.dart';
@@ -21,6 +22,8 @@ import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart'
+    show SfDateRangePicker, DateRangePickerSelectionMode, PickerDateRange;
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/animated_toggle.dart';
 import '../widgets/back_app_bar.dart';
@@ -76,6 +79,8 @@ class LeavesScreen extends StatelessWidget {
   final ValueNotifier<String> _durationText = ValueNotifier('0');
   bool isLoaderShowing = false;
   String userName = '';
+  DateTime? startDate;
+  DateTime? endDate;
 
   String _getTitleByLeaveType(BuildContext context) {
     switch (leaveType) {
@@ -111,13 +116,43 @@ class LeavesScreen extends StatelessWidget {
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
-      {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
-    selectDate(context,
-        initialDate: initialDate,
-        firstDate: firstDate,
-        lastDate: lastDate, callBack: (dateTime) {
-      controller.text = getDateByformat(dateFormat, dateTime);
-    });
+      {DateTime? initialDate,
+      DateTime? firstDate,
+      DateTime? lastDate,
+      DateRangePickerSelectionMode selectionMode =
+          DateRangePickerSelectionMode.single}) async {
+    if (selectionMode == DateRangePickerSelectionMode.single) {
+      selectDate(context,
+          initialDate: initialDate,
+          firstDate: firstDate,
+          lastDate: lastDate, callBack: (dateTime) {
+        controller.text = getDateByformat(dateFormat, dateTime);
+        startDate = dateTime;
+      });
+    } else {
+      showDateRangePickerDialog(context,
+              selectionMode: selectionMode,
+              initialSelectedDate: initialDate,
+              initialSelectedRange: PickerDateRange(startDate, endDate))
+          .then((value) {
+        if (value != null &&
+            value is PickerDateRange &&
+            value.startDate != null) {
+          controller.text =
+              '${getDateByformat(dateFormat, value.startDate!)} - ${getDateByformat(dateFormat, value.endDate ?? value.startDate!)}';
+          startDate = value.startDate!;
+          endDate = value.endDate ?? value.startDate!;
+          if (leaveType != LeaveType.permission &&
+              leaveType != LeaveType.otherLeave) {
+            _servicesBloc.getWorkingDays(requestParams: {
+              'P_FROM_DATE': getDateByformat("yyyy-MM-dd", value.startDate!),
+              'P_TO_DATE': getDateByformat(
+                  "yyyy-MM-dd", value.endDate ?? value.startDate!)
+            });
+          }
+        }
+      });
+    }
   }
 
   Future<void> _selectTime(
@@ -173,10 +208,10 @@ class LeavesScreen extends StatelessWidget {
     } else {
       leaveRequestModel.aBSENCETYPEID = leaveType.id;
     }
-    leaveRequestModel.sTARTDATE = _startDateController.text;
-    leaveRequestModel.eNDDATE = _endDateController.text;
+    leaveRequestModel.sTARTDATE = getDateByformat(dateFormat, startDate!);
+    leaveRequestModel.eNDDATE = getDateByformat(dateFormat, endDate!);
     if (leaveRequestModel.aBSENCETYPEID == LeaveType.permission.id) {
-      leaveRequestModel.eNDDATE = _startDateController.text;
+      leaveRequestModel.eNDDATE = getDateByformat(dateFormat, startDate!);
       leaveRequestModel.sTARTTIME = getDateByformat(
           'HH:mm',
           getDateTimeByString('$dateFormat $timeFormat',
@@ -534,53 +569,57 @@ class LeavesScreen extends StatelessWidget {
                                         _startDateController.text.isNotEmpty
                                             ? getDateTimeByString(dateFormat,
                                                 _startDateController.text)
-                                            : DateTime.now());
+                                            : DateTime.now(),
+                                    selectionMode: leaveType.id ==
+                                            LeaveType.permission.id
+                                        ? DateRangePickerSelectionMode.single
+                                        : DateRangePickerSelectionMode.range);
                               },
                               child: RightIconTextWidget(
                                 height: resources.dimen.dp27,
                                 labelText:
                                     leaveType.id == LeaveType.permission.id
                                         ? context.string.date
-                                        : context.string.startDate,
-                                hintText:
-                                    leaveType.id == LeaveType.permission.id
-                                        ? context.string.chooseDate
-                                        : context.string.chooseStartDate,
+                                        : context.string.leaveDates,
+                                hintText: leaveType.id ==
+                                        LeaveType.permission.id
+                                    ? context.string.chooseDate
+                                    : '${context.string.startDate} - ${context.string.endDate}',
                                 fontFamily: fontFamilyEN,
                                 errorMessage:
                                     leaveType.id == LeaveType.permission.id
                                         ? context.string.chooseDate
-                                        : context.string.chooseStartDate,
+                                        : context.string.chooseLeaveDates,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _startDateController,
                               ),
                             ),
-                            if (leaveType.id != LeaveType.permission.id) ...[
-                              SizedBox(
-                                height: resources.dimen.dp20,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  if (leaveType != LeaveType.permission) {
-                                    _selectDate(context, _endDateController,
-                                        firstDate: getDateTimeByString(
-                                            dateFormat,
-                                            _endDateController.text.isEmpty
-                                                ? _startDateController.text
-                                                : _endDateController.text));
-                                  }
-                                },
-                                child: RightIconTextWidget(
-                                  height: resources.dimen.dp27,
-                                  labelText: context.string.endDate,
-                                  hintText: context.string.chooseEndDate,
-                                  fontFamily: fontFamilyEN,
-                                  errorMessage: context.string.chooseEndDate,
-                                  suffixIconPath: DrawableAssets.icCalendar,
-                                  textController: _endDateController,
-                                ),
-                              )
-                            ],
+                            // if (leaveType.id != LeaveType.permission.id) ...[
+                            //   SizedBox(
+                            //     height: resources.dimen.dp20,
+                            //   ),
+                            //   InkWell(
+                            //     onTap: () {
+                            //       if (leaveType != LeaveType.permission) {
+                            //         _selectDate(context, _endDateController,
+                            //             firstDate: getDateTimeByString(
+                            //                 dateFormat,
+                            //                 _endDateController.text.isEmpty
+                            //                     ? _startDateController.text
+                            //                     : _endDateController.text));
+                            //       }
+                            //     },
+                            //     child: RightIconTextWidget(
+                            //       height: resources.dimen.dp27,
+                            //       labelText: context.string.endDate,
+                            //       hintText: context.string.chooseEndDate,
+                            //       fontFamily: fontFamilyEN,
+                            //       errorMessage: context.string.chooseEndDate,
+                            //       suffixIconPath: DrawableAssets.icCalendar,
+                            //       textController: _endDateController,
+                            //     ),
+                            //   )
+                            // ],
                             ValueListenableBuilder(
                                 valueListenable: _isleaveTypeChanged,
                                 builder: (contex, value, widget) {

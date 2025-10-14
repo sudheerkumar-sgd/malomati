@@ -1982,6 +1982,18 @@ abstract class AppLocalizations {
   /// **'Training Certificate Name'**
   String get trainingCertificateName;
 
+  /// No description provided for @leaveDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Dates'**
+  String get leaveDates;
+
+  /// No description provided for @chooseLeaveDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Leave Dates'**
+  String get chooseLeaveDates;
+
   /// No description provided for @string.
   ///
   /// In en, this message translates to:

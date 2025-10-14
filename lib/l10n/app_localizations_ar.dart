@@ -312,7 +312,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get opps => 'عفوا';
 
   @override
-  String get remaining => 'المتيقيه';
+  String get remaining => 'المتبقية';
 
   @override
   String get location => 'الموقع';
@@ -961,6 +961,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trainingCertificateName => 'اسم شهادة التدريب';
+
+  @override
+  String get leaveDates => 'اختر تواريخ الإجازة';
+
+  @override
+  String get chooseLeaveDates => 'Choose Leave Dates';
 
   @override
   String get string => '';

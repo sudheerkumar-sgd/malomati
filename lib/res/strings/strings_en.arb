@@ -611,6 +611,8 @@
     "remoteWork":"Remote work",
     "typeOfCertificate":"Type of Certificate",
     "trainingCertificateName":"Training Certificate Name",
+    "leaveDates":"Leave Dates",
+    "chooseLeaveDates":"Choose Leave Dates",
     "string":"",
     "dummy":"dummy"
 }
