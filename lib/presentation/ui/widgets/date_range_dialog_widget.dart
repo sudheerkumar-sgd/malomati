@@ -55,6 +55,8 @@ class DateRangeDialogWidget extends StatelessWidget {
                     context, dateRangePickerSelectionChangedArgs.value);
               }
             },
+            cancelText: isLocalEn ? 'Cancel' : 'إلغاء',
+            confirmText: isLocalEn ? 'OK' : 'موافق',
             onCancel: () {
               Navigator.pop(context);
             },
@@ -65,6 +67,15 @@ class DateRangeDialogWidget extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
+            onViewChanged: (dateRangePickerViewChangedArgs) {},
+            monthViewSettings: DateRangePickerMonthViewSettings(
+                firstDayOfWeek: 1,
+                showTrailingAndLeadingDates: true,
+                viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                    textStyle: context.textFontWeight600.onFontSize(isLocalEn
+                        ? 14
+                        : (getScrrenSize(context).width * 0.022)
+                            .clamp(8, 12)))),
           ),
         ),
       ),
