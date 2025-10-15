@@ -183,6 +183,8 @@ class LeavesScreen extends StatelessWidget {
     selectedLeaveType = leaveTypeEntity;
     if ('${leaveTypeEntity?.id}' == LeaveType.permission.id) {
       leaveSubType = LeaveSubType.confirmed;
+    } else if ('${leaveTypeEntity?.id}' == LeaveType.anualLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
     } else if ('${leaveTypeEntity?.id}' == LeaveType.missionLeave.id) {
       leaveSubType = LeaveSubType.confirmed;
     } else if ('${leaveTypeEntity?.id}' == LeaveType.sickLeave.id) {
@@ -273,6 +275,8 @@ class LeavesScreen extends StatelessWidget {
     } else if (leaveType.id == LeaveType.missionLeave.id) {
       leaveSubType = LeaveSubType.confirmed;
     } else if (leaveType.id == LeaveType.sickLeave.id) {
+      leaveSubType = LeaveSubType.confirmed;
+    } else if (leaveType.id == LeaveType.anualLeave.id) {
       leaveSubType = LeaveSubType.confirmed;
     }
     if (leaveType.id == LeaveType.permission.id) {
@@ -581,6 +585,8 @@ class LeavesScreen extends StatelessWidget {
                               },
                               child: RightIconTextWidget(
                                 textDirection: TextDirection.ltr,
+                                textAlign:
+                                    isLocalEn ? TextAlign.start : TextAlign.end,
                                 height: resources.dimen.dp27,
                                 labelText:
                                     leaveType.id == LeaveType.permission.id
