@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
@@ -65,7 +66,7 @@ class LeavesScreen extends StatelessWidget {
   LeaveTypeEntity? selectedLeaveType;
   LeaveSubType leaveSubType = LeaveSubType.planned;
   final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
+  //final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
@@ -253,25 +254,20 @@ class LeavesScreen extends StatelessWidget {
       _servicesBloc.getLeaveTypes(requestParams: {});
     }
     resources = context.resources;
-    _startDateController.addListener(
-      () {
-        _endDateController.text = '';
-      },
-    );
-    _endDateController.addListener(
-      () {
-        if (leaveType != LeaveType.permission &&
-            leaveType != LeaveType.otherLeave &&
-            _endDateController.text.isNotEmpty) {
-          _servicesBloc.getWorkingDays(requestParams: {
-            'P_FROM_DATE': getDateByformat("yyyy-MM-dd",
-                getDateTimeByString(dateFormat, _startDateController.text)),
-            'P_TO_DATE': getDateByformat("yyyy-MM-dd",
-                getDateTimeByString(dateFormat, _endDateController.text))
-          });
-        }
-      },
-    );
+    // _endDateController.addListener(
+    //   () {
+    //     if (leaveType != LeaveType.permission &&
+    //         leaveType != LeaveType.otherLeave &&
+    //         _endDateController.text.isNotEmpty) {
+    //       _servicesBloc.getWorkingDays(requestParams: {
+    //         'P_FROM_DATE': getDateByformat("yyyy-MM-dd",
+    //             getDateTimeByString(dateFormat, _startDateController.text)),
+    //         'P_TO_DATE': getDateByformat("yyyy-MM-dd",
+    //             getDateTimeByString(dateFormat, _endDateController.text))
+    //       });
+    //     }
+    //   },
+    // );
     if (leaveType.id == LeaveType.permission.id) {
       leaveSubType = LeaveSubType.confirmed;
     } else if (leaveType.id == LeaveType.missionLeave.id) {
@@ -281,6 +277,11 @@ class LeavesScreen extends StatelessWidget {
     }
     if (leaveType.id == LeaveType.permission.id) {
       leaveSubType = LeaveSubType.confirmed;
+      _startTimeController.addListener(
+        () {
+          _endTimeController.text = '';
+        },
+      );
       _endTimeController.addListener(
         () {
           if (_endTimeController.text.isNotEmpty) {
@@ -331,30 +332,33 @@ class LeavesScreen extends StatelessWidget {
                           state.leaveSubmitResponse
                               .getDisplayMessage(resources))
                       .then((value) => Navigator.pop(context));
-                  for (int i = 0;
-                      i <
-                          (state.leaveSubmitResponse.entity?.aPPROVERSLIST
-                                  .length ??
-                              0);
-                      i++) {
-                    _servicesBloc.sendPushNotifications(
-                        requestParams: getFCMMessageData(
-                            to: state.leaveSubmitResponse.entity
-                                    ?.aPPROVERSLIST[i] ??
-                                '',
-                            title: (leaveType == LeaveType.otherLeave)
-                                ? '${selectedLeaveType?.name}'
-                                : leaveType.name,
-                            body: getLeavesApproverFCMBodyText(
-                                context.userDB.get(userFullNameUsKey),
-                                (leaveType == LeaveType.otherLeave)
-                                    ? '${selectedLeaveType?.name}'
-                                    : leaveType.name,
-                                '${_startDateController.text} ${_startTimeController.text}',
-                                '${leaveType.id == LeaveType.permission.id ? _startDateController.text : _endDateController.text} ${_endTimeController.text}'),
-                            type: fcmTypeHRApprovals,
-                            notificationId:
-                                state.leaveSubmitResponse.entity?.nTFID ?? ''));
+                  if (FlavorConfig.isProduction()) {
+                    for (int i = 0;
+                        i <
+                            (state.leaveSubmitResponse.entity?.aPPROVERSLIST
+                                    .length ??
+                                0);
+                        i++) {
+                      _servicesBloc.sendPushNotifications(
+                          requestParams: getFCMMessageData(
+                              to: state.leaveSubmitResponse.entity
+                                      ?.aPPROVERSLIST[i] ??
+                                  '',
+                              title: (leaveType == LeaveType.otherLeave)
+                                  ? '${selectedLeaveType?.name}'
+                                  : leaveType.name,
+                              body: getLeavesApproverFCMBodyText(
+                                  context.userDB.get(userFullNameUsKey),
+                                  (leaveType == LeaveType.otherLeave)
+                                      ? '${selectedLeaveType?.name}'
+                                      : leaveType.name,
+                                  '${startDate != null ? getDateByformat(dateFormat, startDate!) : ''} ${_startTimeController.text}',
+                                  '${leaveType.id == LeaveType.permission.id ? (startDate != null ? getDateByformat(dateFormat, startDate!) : '') : (endDate != null ? getDateByformat(dateFormat, endDate!) : '')} ${_endTimeController.text}'),
+                              type: fcmTypeHRApprovals,
+                              notificationId:
+                                  state.leaveSubmitResponse.entity?.nTFID ??
+                                      ''));
+                    }
                   }
                 } else {
                   Dialogs.showInfoDialog(context, PopupType.fail,
@@ -576,6 +580,7 @@ class LeavesScreen extends StatelessWidget {
                                         : DateRangePickerSelectionMode.range);
                               },
                               child: RightIconTextWidget(
+                                textDirection: TextDirection.ltr,
                                 height: resources.dimen.dp27,
                                 labelText:
                                     leaveType.id == LeaveType.permission.id
@@ -678,7 +683,7 @@ class LeavesScreen extends StatelessWidget {
                                                         _endTimeController
                                                                 .text.isEmpty
                                                             ? '${_startDateController.text} ${_startTimeController.text}'
-                                                            : '${_endDateController.text} ${_endTimeController.text}');
+                                                            : '${_startDateController.text} ${_endTimeController.text}');
                                                   } catch (err) {
                                                     printLog(
                                                         message:

@@ -11,6 +11,7 @@ class RightIconTextWidget extends StatelessWidget {
   final String hintText;
   final String errorMessage;
   final TextInputType? textInputType;
+  final TextDirection? textDirection;
   final TextEditingController? textController;
   final String? suffixIconPath;
   final int? maxLines;
@@ -30,6 +31,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.textController,
       this.suffixIconPath,
       this.textInputType,
+      this.textDirection,
       this.maxLines,
       this.maxLength,
       this.minLength,
@@ -65,6 +67,7 @@ class RightIconTextWidget extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: TextFormField(
+            textDirection: textDirection,
             enabled: isEnabled,
             maxLines: maxLines,
             maxLength: maxLength,
