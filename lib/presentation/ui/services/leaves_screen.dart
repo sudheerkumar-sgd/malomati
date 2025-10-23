@@ -129,6 +129,7 @@ class LeavesScreen extends StatelessWidget {
           lastDate: lastDate, callBack: (dateTime) {
         controller.text = getDateByformat(dateFormat, dateTime);
         startDate = dateTime;
+        endDate = dateTime;
       });
     } else {
       showDateRangePickerDialog(context,
@@ -212,7 +213,6 @@ class LeavesScreen extends StatelessWidget {
       leaveRequestModel.aBSENCETYPEID = leaveType.id;
     }
     leaveRequestModel.sTARTDATE = getDateByformat(dateFormat, startDate!);
-    leaveRequestModel.eNDDATE = getDateByformat(dateFormat, endDate!);
     if (leaveRequestModel.aBSENCETYPEID == LeaveType.permission.id) {
       leaveRequestModel.eNDDATE = getDateByformat(dateFormat, startDate!);
       leaveRequestModel.sTARTTIME = getDateByformat(
@@ -223,6 +223,8 @@ class LeavesScreen extends StatelessWidget {
           'HH:mm',
           getDateTimeByString('$dateFormat $timeFormat',
               '${_startDateController.text} ${_endTimeController.text}'));
+    } else {
+      leaveRequestModel.eNDDATE = getDateByformat(dateFormat, endDate!);
     }
     for (int i = 0; i < _uploadFiles.length; i++) {
       switch (i) {

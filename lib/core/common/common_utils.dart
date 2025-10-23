@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:app_version_update/app_version_update.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -16,7 +17,6 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
-import 'package:app_version_update/app_version_update.dart';
 
 import '../../data/model/leave_type_list_model.dart';
 
@@ -388,7 +388,7 @@ String getFontNameByString(String text) {
   return isStringArabic(text) ? fontFamilyAR : fontFamilyEN;
 }
 
-checkIsUpdateAvailabe(BuildContext context) {
+void checkIsUpdateAvailabe(BuildContext context) {
   AppVersionUpdate.checkForUpdates().then((data) {
     if (data.canUpdate == true && context.mounted) {
       showDialog(
