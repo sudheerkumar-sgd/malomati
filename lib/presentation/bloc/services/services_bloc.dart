@@ -73,17 +73,26 @@ class ServicesBloc extends Cubit<ServicesState> {
         (r) => OnEmployeesSuccess(employeesList: r)));
   }
 
-  Future<void> submitServicesRequest(
+  Future<ServicesState> submitServicesRequest(
       {required String apiUrl,
-      required Map<String, dynamic> requestParams}) async {
-    emit(OnServicesLoading());
+      required Map<String, dynamic> requestParams,
+      bool emitResult = true}) async {
+    if (emitResult) {
+      emit(OnServicesLoading());
+    }
 
     final result = await servicesUseCase.submitServicesRequest(
         apiUrl: apiUrl, requestParams: requestParams);
-    emit(result.fold(
+    if (emitResult) {
+      emit(result.fold(
+          (l) => OnServicesError(message: _getErrorMessage(l)),
+          (r) => OnServicesRequestSubmitSuccess(
+              servicesRequestSuccessResponse: r)));
+    }
+    return result.fold(
         (l) => OnServicesError(message: _getErrorMessage(l)),
         (r) =>
-            OnServicesRequestSubmitSuccess(servicesRequestSuccessResponse: r)));
+            OnServicesRequestSubmitSuccess(servicesRequestSuccessResponse: r));
   }
 
   Future<void> getLeaves(

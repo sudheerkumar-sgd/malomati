@@ -31,12 +31,18 @@ class LoginBloc extends Cubit<LoginState> {
         (r) => OnIsManagerSuccess(loginEntity: r)));
   }
 
-  Future<void> getProfile({required Map<String, dynamic> requestParams}) async {
+  Future<LoginState> getProfile(
+      {required Map<String, dynamic> requestParams,
+      bool emitResult = true}) async {
     //emit(OnLoading());
 
     final result = await loginUseCase.getProfile(requestParams: requestParams);
-    emit(result.fold((l) => OnLoginError(message: _getErrorMessage(l)),
-        (r) => OnProfileSuccess(profileEntity: r)));
+    if (emitResult) {
+      emit(result.fold((l) => OnLoginError(message: _getErrorMessage(l)),
+          (r) => OnProfileSuccess(profileEntity: r)));
+    }
+    return result.fold((l) => OnLoginError(message: _getErrorMessage(l)),
+        (r) => OnProfileSuccess(profileEntity: r));
   }
 
   String _getErrorMessage(Failure failure) {

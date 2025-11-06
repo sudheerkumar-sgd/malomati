@@ -5,6 +5,7 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_inv_approvals.dart';
+import 'package:malomati/presentation/ui/services/widgets/item_finance_payroll_approvals.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_po_approvals.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_pr_approvals.dart';
 import 'package:malomati/presentation/ui/widgets/tab_buttons_widget.dart';
@@ -63,7 +64,8 @@ class FinanceApprovalsScreen extends StatelessWidget {
     _buttons.value = [
       {'name': 'PO', 'count': ConstantConfig.financePOApprovalCount},
       {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
-      {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount}
+      {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount},
+      {'name': 'Payroll', 'count': ConstantConfig.financePayrollApprovalCount},
     ];
     selectedButtonIndex.value = index;
     var noNotificationText = '';
@@ -103,7 +105,11 @@ class FinanceApprovalsScreen extends StatelessWidget {
                   {
                     'name': 'Invoice',
                     'count': ConstantConfig.financeINVApprovalCount
-                  }
+                  },
+                  {
+                    'name': 'Payroll',
+                    'count': ConstantConfig.financePayrollApprovalCount
+                  },
                 ];
               } else if (state is OnFinanceApprovalsListSuccess) {
                 Navigator.of(context, rootNavigator: true).pop();
@@ -149,8 +155,10 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                 ? financePOApiUrl
                                 : value == 1
                                     ? financePRApiUrl
-                                    : financeInvoiceApiUrl,
-                            requestParams: {'USER_NAME': userName});
+                                    : value == 2
+                                        ? financeInvoiceApiUrl
+                                        : payrollApiUrl,
+                            requestParams: {'USER_NAME': 'KHALED.ALSHAMSI'});
                         return Expanded(
                           child: ValueListenableBuilder(
                               valueListenable: _onRefreshList,
@@ -166,23 +174,29 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                     : ListView.separated(
                                         controller: ScrollController(),
                                         scrollDirection: Axis.vertical,
-                                        itemBuilder: (context, index) =>
-                                            value == 0
-                                                ? ItemFinancePOApprovals(
+                                        itemBuilder: (context, index) => value ==
+                                                0
+                                            ? ItemFinancePOApprovals(
+                                                data: _financeNotificationList[
+                                                    index],
+                                                callBack: _onActionClicked,
+                                              )
+                                            : value == 1
+                                                ? ItemFinancePRApprovals(
                                                     data:
                                                         _financeNotificationList[
                                                             index],
                                                     callBack: _onActionClicked,
                                                   )
-                                                : value == 1
-                                                    ? ItemFinancePRApprovals(
+                                                : value == 2
+                                                    ? ItemFinanceInvApprovals(
                                                         data:
                                                             _financeNotificationList[
                                                                 index],
                                                         callBack:
                                                             _onActionClicked,
                                                       )
-                                                    : ItemFinanceInvApprovals(
+                                                    : ItemFinancePayrollApprovals(
                                                         data:
                                                             _financeNotificationList[
                                                                 index],

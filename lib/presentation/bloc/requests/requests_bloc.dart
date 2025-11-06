@@ -38,6 +38,24 @@ class RequestsBloc extends Cubit<RequestsState> {
         (r) => OnsubmitHrApprovalSuccess(apiEntity: r)));
   }
 
+  Future<RequestsState> submitGetRequest(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams,
+      bool emitResult = true}) async {
+    if (emitResult) {
+      emit(OnRequestsDataLoading());
+    }
+
+    final result = await requestsUseCase.submitGetRequest(
+        apiUrl: apiUrl, requestParams: requestParams);
+    if (emitResult) {
+      emit(result.fold((l) => OnRequestsApiError(message: _getErrorMessage(l)),
+          (r) => OnsubmitHrApprovalSuccess(apiEntity: r)));
+    }
+    return result.fold((l) => OnRequestsApiError(message: _getErrorMessage(l)),
+        (r) => OnsubmitHrApprovalSuccess(apiEntity: r));
+  }
+
   String _getErrorMessage(Failure failure) {
     return failure.errorMessage;
   }

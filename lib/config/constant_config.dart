@@ -384,6 +384,7 @@ class ConstantConfig {
   static int financePOApprovalCount = 0;
   static int financePRApprovalCount = 0;
   static int financeINVApprovalCount = 0;
+  static int financePayrollApprovalCount = 0;
   static int requestsApprovalCount = 0;
   static int requestsRejectCount = 0;
   static int requestsPendingCount = 0;

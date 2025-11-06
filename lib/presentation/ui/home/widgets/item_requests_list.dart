@@ -3,9 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/request_details_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
+import 'package:malomati/presentation/bloc/services/services_bloc.dart'
+    hide OnsubmitHrApprovalSuccess;
+import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/action_button_widget.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
@@ -21,9 +27,10 @@ class ItemRequestsList extends StatelessWidget {
   final FinanceApprovalEntity data;
   final ValueNotifier<RequestDetailsEntity?> _requestDetails =
       ValueNotifier(null);
+  final Function(bool)? onDataChange;
   late BuildContext context;
 
-  ItemRequestsList({required this.data, super.key});
+  ItemRequestsList({required this.data, this.onDataChange, super.key});
 
   Color getColorByAction(String action) {
     switch (action.toUpperCase()) {
@@ -158,6 +165,13 @@ class ItemRequestsList extends StatelessWidget {
                             child: ValueListenableBuilder(
                                 valueListenable: _requestDetails,
                                 builder: (context, details, child) {
+                                  String absenceStatus = details
+                                          ?.notificationDetails
+                                          .where((element) =>
+                                              element.fNAME == 'Absence Status')
+                                          .firstOrNull
+                                          ?.fVALUE ??
+                                      'Planned';
                                   return details == null
                                       ? Center(
                                           child: Container(
@@ -281,6 +295,7 @@ class ItemRequestsList extends StatelessWidget {
                                                 },
                                               ),
                                             ),
+
                                             SizedBox(
                                               height:
                                                   context.resources.dimen.dp15,
@@ -407,7 +422,80 @@ class ItemRequestsList extends StatelessWidget {
                                                   ),
                                                 ),
                                               )
-                                            ]
+                                            ],
+                                            if (absenceStatus.toLowerCase() ==
+                                                'planned') ...[
+                                              SizedBox(
+                                                height: context
+                                                    .resources.dimen.dp10,
+                                              ),
+                                              InkWell(
+                                                onTap: () async {
+                                                  Dialogs.loader(context);
+                                                  final response =
+                                                      await _requestsBloc
+                                                          .submitGetRequest(
+                                                              apiUrl:
+                                                                  changeLeaveTypeApiUrl,
+                                                              requestParams: {
+                                                        'absenceAttendanceId':
+                                                            data.nOTIFICATIONID,
+                                                        'personId':
+                                                            context.userDB.get(
+                                                                userPersonIdKey,
+                                                                defaultValue:
+                                                                    ''),
+                                                        'changeMalomathi': 'R'
+                                                      });
+                                                  if (!context.mounted) return;
+                                                  Dialogs.dismiss(context);
+                                                  if (response
+                                                      is OnsubmitHrApprovalSuccess) {
+                                                    // Close loader
+                                                    if (response.apiEntity
+                                                            .isSuccess ==
+                                                        true) {
+                                                      Dialogs.showInfoDialog(
+                                                              context,
+                                                              PopupType.success,
+                                                              isLocalEn
+                                                                  ? 'Your request to change leave type to Confirmed has been submitted successfully.'
+                                                                  : 'تم تقديم طلبك لتغيير نوع الإجازة إلى مؤكد بنجاح.')
+                                                          .then((value) {
+                                                        onDataChange
+                                                            ?.call(true);
+                                                      });
+                                                    } else {
+                                                      Dialogs.showInfoDialog(
+                                                          context,
+                                                          PopupType.fail,
+                                                          isLocalEn
+                                                              ? 'Failed to submit your request. Please try again later.'
+                                                              : 'فشل في تقديم طلبك. يرجى المحاولة مرة أخرى لاحقًا.');
+                                                    }
+                                                  } else if (response
+                                                      is OnRequestsApiError) {
+                                                    Dialogs.showInfoDialog(
+                                                        context,
+                                                        PopupType.fail,
+                                                        isLocalEn
+                                                            ? 'Failed to submit your request. Please try again later.'
+                                                            : 'فشل في تقديم طلبك. يرجى المحاولة مرة أخرى لاحقًا.');
+                                                  }
+                                                },
+                                                child: ActionButtonWidget(
+                                                  text: isLocalEn
+                                                      ? 'Change type to Confirmed'
+                                                      : 'تغيير النوع إلى مؤكد',
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.only(
+                                                      top: context
+                                                          .resources.dimen.dp7,
+                                                      bottom: context
+                                                          .resources.dimen.dp7),
+                                                ),
+                                              )
+                                            ],
                                           ],
                                         );
                                 }),

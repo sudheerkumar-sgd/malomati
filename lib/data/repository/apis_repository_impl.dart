@@ -277,6 +277,29 @@ class ApisRepositoryImpl extends ApisRepository {
   }
 
   @override
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitGetRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams}) async {
+    var isConnected = await networkInfo.isConnected();
+    if (isConnected) {
+      try {
+        final apiResponse = await dataSource.submitGetRequest(
+            apiUrl: apiUrl, requestParams: requestParams);
+        final apiEntity = apiResponse.toEntity<LeaveSubmitResponseEntity>(
+            apiResponse.data!.toLeaveSubmitResponseEntity());
+        return Right(apiEntity);
+      } on DioException catch (error) {
+        return Left(ServerFailure(error.message ?? ''));
+      } catch (error) {
+        return Left(Exception(error.toString()));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();

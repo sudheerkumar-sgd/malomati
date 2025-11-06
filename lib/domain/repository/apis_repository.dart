@@ -54,6 +54,10 @@ abstract class ApisRepository {
       submitServicesRequest(
           {required String apiUrl,
           required Map<String, dynamic> requestParams});
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitGetRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByManager(

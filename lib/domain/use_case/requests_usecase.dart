@@ -26,4 +26,12 @@ class RequestsUseCase extends BaseUseCase {
       submitHrApproval({required Map<String, dynamic> requestParams}) async {
     return await apisRepository.submitHrApproval(requestParams: requestParams);
   }
+
+  Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
+      submitGetRequest(
+          {required String apiUrl,
+          required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.submitGetRequest(
+        apiUrl: apiUrl, requestParams: requestParams);
+  }
 }

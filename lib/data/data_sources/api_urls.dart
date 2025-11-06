@@ -57,6 +57,7 @@ const String financePRItemsApiUrl =
 const String financePOApiUrl = 'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/PO';
 const String financePOItemsApiUrl =
     'UAQSGD_MOB_ERP_FinPOApprovals/Approvals/POItems';
+const String payrollApiUrl = 'UAQSGD_MOB_ERP_PayrollApprovals/GetPayroll';
 const String requestsCountApiUrl =
     'UAQSGD_MOB_ERP_GetNotificationCount/GetCount';
 const String notificationsListApiUrl =
@@ -100,3 +101,5 @@ const String trainingCertListApiUrl =
     'UAQSGD_MOB_ERP_AddTrainingCertificate/TrainingCertRequest/getList';
 const String addCertificateApiUrl =
     'UAQSGD_MOB_ERP_AddTrainingCertificate/TrainingCertRequest/AddCertificate';
+const String changeLeaveTypeApiUrl =
+    'UAQSGD_MOB_ERP_LeavesAbsenseCofirmation/ConfirmeLeavesRequest';

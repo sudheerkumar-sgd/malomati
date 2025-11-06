@@ -32,6 +32,8 @@ class FinanceApprovalModel {
   String? cREATIONDATE;
   String? aCTION;
   String? sTATUS;
+  String? payPERIOD;
+  String? aTTACHMENT;
 
   FinanceApprovalModel();
 
@@ -69,6 +71,9 @@ class FinanceApprovalModel {
     cREATIONDATE = json['CREATION_DATE'];
     aCTION = json['ACTION'];
     sTATUS = json['STATUS'];
+    payPERIOD = json['ORIGINAL_RECIPIENT'];
+    payPERIOD = json['PAY_PERIOD'];
+    aTTACHMENT = json['ATTACHMENT'];
   }
 }
 
@@ -108,6 +113,8 @@ extension SourceModelExtension on FinanceApprovalModel {
     financeApprovalEntity.cREATIONDATE = cREATIONDATE;
     financeApprovalEntity.aCTION = aCTION;
     financeApprovalEntity.sTATUS = sTATUS;
+    financeApprovalEntity.payPERIOD = payPERIOD;
+    financeApprovalEntity.aTTACHMENT = aTTACHMENT;
     return financeApprovalEntity;
   }
 }

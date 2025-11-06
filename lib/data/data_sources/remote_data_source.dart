@@ -65,6 +65,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<LeaveSubmitResponseModel>> submitServicesRequest(
       {required String apiUrl, required Map<String, dynamic> requestParams});
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitGetRequest(
+      {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<List<EmployeeEntity>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams});
   Future<List<EmployeeEntity>> getEmployeesByManager(
@@ -385,6 +387,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<ApiResponse<LeaveSubmitResponseModel>> submitGetRequest(
+      {required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    try {
+      var response = await dio.get(
+        apiUrl,
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+        data: jsonEncode(requestParams),
+      );
+      var apiResponse = ApiResponse<LeaveSubmitResponseModel>.fromJson(
+          response.data,
+          (p0) => LeaveSubmitResponseModel.fromJson(response.data));
+      return apiResponse;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<EmployeeEntity>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams}) async {
     try {
@@ -637,7 +661,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           ? 'PODtls'
           : apiUrl == financePRApiUrl
               ? 'PRDtls'
-              : 'INVDtls';
+              : apiUrl == financeInvoiceApiUrl
+                  ? 'INVDtls'
+                  : 'Approvals';
       if (response.data?[jsonListname] != null) {
         var financeApprovalListJson = response.data[jsonListname] as List;
         var financeApprovalList = financeApprovalListJson

@@ -450,6 +450,11 @@ class RequestsScreen extends StatelessWidget {
                                                       )
                                                     : ItemRequestsList(
                                                         data: list[index - 1],
+                                                        onDataChange: (value) {
+                                                          if (value == true) {
+                                                            getRequests();
+                                                          }
+                                                        },
                                                       );
                                           },
                                           separatorBuilder: (context, index) =>

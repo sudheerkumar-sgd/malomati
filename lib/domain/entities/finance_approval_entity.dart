@@ -30,6 +30,8 @@ class FinanceApprovalEntity {
   String? cREATIONDATE;
   String? aCTION;
   String? sTATUS;
+  String? payPERIOD;
+  String? aTTACHMENT;
 
   FinanceApprovalEntity();
 }
