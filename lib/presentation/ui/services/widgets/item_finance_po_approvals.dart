@@ -526,7 +526,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                                               context,
                                               '${approvalDetails.nOTIFICATIONID ?? ''}',
                                               REQUESTMOREINFO,
-                                              comments: value);
+                                              comments: value['question']);
                                         }
                                       });
                                       // _submitHrApproval(

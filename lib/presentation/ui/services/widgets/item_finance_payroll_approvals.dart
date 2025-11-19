@@ -318,7 +318,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePayrollApprovals> {
                             InkWell(
                               onTap: () {
                                 try {
-                                  final fileDate = base64.decode(
+                                  final fileData = base64.decode(
                                       '${approvalDetails.aTTACHMENT}'
                                           .replaceAll(RegExp(r'\s+'), ''));
                                   showDialog(
@@ -326,10 +326,8 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePayrollApprovals> {
                                       builder: (context) {
                                         return ShowAttachmentDialog(
                                             data: AttachmentEntity()
-                                              ..fileName = isLocalEn
-                                                  ? 'Attachment'
-                                                  : 'المرفقات'
-                                              ..fileData = fileDate);
+                                              ..fileName = 'Attachment.pdf'
+                                              ..fileData = fileData);
                                       });
                                 } catch (e) {
                                   printLog(message: e.toString());
@@ -434,7 +432,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePayrollApprovals> {
                                               context,
                                               '${approvalDetails.nOTIFICATIONID ?? ''}',
                                               REQUESTMOREINFO,
-                                              comments: value);
+                                              comments: value['question']);
                                         }
                                       });
                                       // _submitHrApproval(

@@ -22,6 +22,7 @@ import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import 'package:malomati/presentation/ui/services/training_certificate_screen.dart';
 import 'package:malomati/presentation/ui/services/vacation_rules_screen.dart';
 import 'package:malomati/presentation/ui/services/view_warnings_screen.dart';
+import 'package:malomati/presentation/ui/services/widgets/remote_work_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../domain/entities/favorite_entity.dart';
@@ -33,7 +34,8 @@ import '../widgets/services_app_bar.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
-  static onServiceClick(BuildContext context, FavoriteEntity favoriteEntity) {
+  static void onServiceClick(
+      BuildContext context, FavoriteEntity favoriteEntity) {
     Widget? screenWidget;
     switch (favoriteEntity.id) {
       case 1:
@@ -44,12 +46,16 @@ class ServicesScreen extends StatelessWidget {
         {
           screenWidget = FinanceApprovalsScreen();
         }
-      case 3 || 4 || 5 || 6 || 7 || 25:
+      case 3 || 4 || 5 || 6 || 7:
         {
           screenWidget = LeavesScreen(
             leaveType: LeaveType.values.firstWhere(
                 ((element) => element.name == (favoriteEntity.name ?? ''))),
           );
+        }
+      case 25:
+        {
+          screenWidget = RemoteWorkScreen();
         }
       case 8:
         {

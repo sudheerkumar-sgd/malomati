@@ -459,7 +459,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                               context,
                                               '${approvalDetails.nOTIFICATIONID ?? ''}',
                                               REQUESTMOREINFO,
-                                              comments: value));
+                                              comments: value['question']));
                                     },
                                     child: Container(
                                       width: double.infinity,

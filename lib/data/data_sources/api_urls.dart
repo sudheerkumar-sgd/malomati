@@ -103,3 +103,4 @@ const String addCertificateApiUrl =
     'UAQSGD_MOB_ERP_AddTrainingCertificate/TrainingCertRequest/AddCertificate';
 const String changeLeaveTypeApiUrl =
     'UAQSGD_MOB_ERP_LeavesAbsenseCofirmation/ConfirmeLeavesRequest';
+const String workFromHomeApiUrl = 'UAQSGD_MOB_ERP_RequestForWFH/LeaveRequest';

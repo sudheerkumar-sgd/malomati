@@ -396,7 +396,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         options: Options(headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         }),
-        data: jsonEncode(requestParams),
+        queryParameters: requestParams,
       );
       var apiResponse = ApiResponse<LeaveSubmitResponseModel>.fromJson(
           response.data,

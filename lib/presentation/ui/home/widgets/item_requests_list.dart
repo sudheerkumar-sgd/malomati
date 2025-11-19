@@ -424,7 +424,9 @@ class ItemRequestsList extends StatelessWidget {
                                               )
                                             ],
                                             if (absenceStatus.toLowerCase() ==
-                                                'planned') ...[
+                                                    'planned' &&
+                                                details.action?.toLowerCase() ==
+                                                    'approved') ...[
                                               SizedBox(
                                                 height: context
                                                     .resources.dimen.dp10,
@@ -438,8 +440,7 @@ class ItemRequestsList extends StatelessWidget {
                                                               apiUrl:
                                                                   changeLeaveTypeApiUrl,
                                                               requestParams: {
-                                                        'absenceAttendanceId':
-                                                            data.nOTIFICATIONID,
+                                                        'itemKey': data.iTEMKEY,
                                                         'personId':
                                                             context.userDB.get(
                                                                 userPersonIdKey,

@@ -102,11 +102,11 @@ class ConstantConfig {
         name: 'Cancel Invoice',
         nameAR: 'الغاء الفاتورة',
         iconPath: DrawableAssets.icCancelInvoice),
-    // FavoriteEntity(
-    //     id: 25,
-    //     name: 'Remote Work',
-    //     nameAR: 'العمل عن بعد',
-    //     iconPath: DrawableAssets.icWorkFromHome),
+    FavoriteEntity(
+        id: 25,
+        name: 'Remote Work',
+        nameAR: 'العمل عن بعد',
+        iconPath: DrawableAssets.icWorkFromHome),
     FavoriteEntity(
         id: 22,
         name: 'Contract Renewal',
