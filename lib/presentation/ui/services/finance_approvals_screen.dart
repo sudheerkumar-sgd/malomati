@@ -158,7 +158,7 @@ class FinanceApprovalsScreen extends StatelessWidget {
                                     : value == 2
                                         ? financeInvoiceApiUrl
                                         : payrollApiUrl,
-                            requestParams: {'USER_NAME': 'KHALED.ALSHAMSI'});
+                            requestParams: {'USER_NAME': userName});
                         return Expanded(
                           child: ValueListenableBuilder(
                               valueListenable: _onRefreshList,
