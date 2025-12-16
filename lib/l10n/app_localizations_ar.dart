@@ -872,7 +872,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectEmployee => 'اختيار المرسل اليه';
 
   @override
-  String get moreInfo => 'معلومات اكث';
+  String get moreInfo => 'معلومات اكثر';
 
   @override
   String get fetchingLocationDetails => 'معرفة تفاصيل الموقع';

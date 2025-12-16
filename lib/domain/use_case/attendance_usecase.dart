@@ -20,9 +20,9 @@ class AttendanceUseCase extends BaseUseCase {
   }
 
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
-      {required Map<String, dynamic> requestParams}) async {
+      {String? apiUrl, required Map<String, dynamic> requestParams}) async {
     return await apisRepository.getAttendanceDetails(
-        requestParams: requestParams);
+        apiUrl: apiUrl, requestParams: requestParams);
   }
 
   Future<Either<Failure, String>> submitAttendanceDetails(
@@ -32,8 +32,9 @@ class AttendanceUseCase extends BaseUseCase {
   }
 
   Future<Either<Failure, ApiEntity<AttendanceUserDetailsEntity>>>
-      getUserDetails({required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getAttendanceUserDetails(
+      getUserDetails(String apiUrl,
+          {required Map<String, dynamic> requestParams}) async {
+    return await apisRepository.getAttendanceUserDetails(apiUrl,
         requestParams: requestParams);
   }
 

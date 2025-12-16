@@ -34,6 +34,14 @@ class AttendanceEntity extends BaseEntity {
   String? spfid10;
   String? worktime;
 
+  String? eventdatetime;
+  String? entryexittype;
+  String? taEventIn;
+  String? taeventOut;
+  String? acsEventIn;
+  String? acsEventOut;
+  int taToAcsInDiff = 0;
+
   AttendanceEntity();
   @override
   List<Object?> get props => [

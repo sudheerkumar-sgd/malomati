@@ -295,6 +295,7 @@ flutter:
      - assets/images/ic_contract_renew.svg
      - assets/images/ic_resignation.svg
      - assets/images/ic_workfromhome.svg
+     - assets/images/ic_delete.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

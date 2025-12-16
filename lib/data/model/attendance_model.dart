@@ -35,6 +35,9 @@ class AttendanceModel extends BaseModel {
   String? spfid10 = "";
   String? worktime = "";
 
+  String? eventdatetime;
+  String? entryexittype;
+
   AttendanceModel();
 
   factory AttendanceModel.fromJson(Map<String, dynamic> attendanceJson) {
@@ -74,6 +77,8 @@ class AttendanceModel extends BaseModel {
     attendanceModel.spfid9 = attendanceJson['spfid9'];
     attendanceModel.spfid10 = attendanceJson['spfid10'];
     attendanceModel.worktime = attendanceJson['worktime_hhmm'];
+    attendanceModel.eventdatetime = attendanceJson['eventdatetime'];
+    attendanceModel.entryexittype = attendanceJson['entryexittype'];
     return attendanceModel;
   }
 
@@ -123,6 +128,8 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.spfid9 = spfid9;
     attendanceEntity.spfid10 = spfid10;
     attendanceEntity.worktime = worktime;
+    attendanceEntity.eventdatetime = eventdatetime;
+    attendanceEntity.entryexittype = entryexittype;
     return attendanceEntity;
   }
 }

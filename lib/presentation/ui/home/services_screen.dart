@@ -17,6 +17,7 @@ import 'package:malomati/presentation/ui/services/hr_approvals_screen.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
 import 'package:malomati/presentation/ui/services/overtime_screen.dart';
 import 'package:malomati/presentation/ui/services/payslips_screen.dart';
+import 'package:malomati/presentation/ui/services/punch_in_access_screen.dart';
 import 'package:malomati/presentation/ui/services/resignation_screen.dart';
 import 'package:malomati/presentation/ui/services/thankyou_screen.dart';
 import 'package:malomati/presentation/ui/services/training_certificate_screen.dart';
@@ -132,6 +133,10 @@ class ServicesScreen extends StatelessWidget {
       case 32:
         {
           screenWidget = const UAQAppsScreen();
+        }
+      case 26:
+        {
+          screenWidget = PunchInAccessScreen();
         }
     }
     if (screenWidget != null) {

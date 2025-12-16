@@ -116,12 +116,12 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
-      {required Map<String, dynamic> requestParams}) async {
+      {String? apiUrl,required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
         final apiResponse =
-            await dataSource.getAttendanceDetails(requestParams: requestParams);
+            await dataSource.getAttendanceDetails(apiUrl: apiUrl, requestParams: requestParams);
         final apiEntity = apiResponse.toEntity<AttendanceListEntity>(
             apiResponse.data!.toAttendanceList());
         return Right(apiEntity);
@@ -137,12 +137,12 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiEntity<AttendanceUserDetailsEntity>>>
-      getAttendanceUserDetails(
+      getAttendanceUserDetails(String apiUrl,
           {required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
-        final apiResponse = await dataSource.getAttendanceUserDetails(
+        final apiResponse = await dataSource.getAttendanceUserDetails(apiUrl,
             requestParams: requestParams);
         final apiEntity = apiResponse.toEntity<AttendanceUserDetailsEntity>(
             apiResponse.data!.toAttendanceUserDetailsEntity());

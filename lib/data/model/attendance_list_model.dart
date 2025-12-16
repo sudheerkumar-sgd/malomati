@@ -16,6 +16,8 @@ class AttendanceListModel extends BaseModel {
       attendanceJsonList = json['attendance-daily'] as List;
     } else if (json['event-ta-date'] != null) {
       attendanceJsonList = json['event-ta-date'] as List;
+    } else if (json['event-acs-date'] != null) {
+      attendanceJsonList = json['event-acs-date'] as List;
     }
 
     final attendanceList = attendanceJsonList

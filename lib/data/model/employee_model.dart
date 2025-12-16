@@ -9,6 +9,7 @@ class EmployeeModel extends BaseModel {
   String? empNameAR;
   String? pERSONID;
   String? uSERNAME;
+  String? eMPLOYEENUMBER;
 
   EmployeeModel();
 
@@ -18,6 +19,7 @@ class EmployeeModel extends BaseModel {
     departmentModel.empNameAR = json['ARABIC'];
     departmentModel.pERSONID = '${json['PERSON_ID']}';
     departmentModel.uSERNAME = '${json['USER_NAME']}';
+    departmentModel.eMPLOYEENUMBER = '${json['EMPLOYEE_NUMBER']}';
     return departmentModel;
   }
 
@@ -59,6 +61,7 @@ extension SourceModelExtension on EmployeeModel {
     employeeEntity.empNameEN = empNameEN;
     employeeEntity.empNameAR = empNameAR;
     employeeEntity.uSERNAME = uSERNAME;
+    employeeEntity.eMPLOYEENUMBER = eMPLOYEENUMBER;
     return employeeEntity;
   }
 }

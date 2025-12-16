@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:malomati/config/base_url_config.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/data/data_sources/api_urls.dart';
 import '../../config/flavor_config.dart';
 
 class DioLoggingInterceptor extends InterceptorsWrapper {
@@ -21,7 +22,10 @@ class DioLoggingInterceptor extends InterceptorsWrapper {
           loginId = v;
         }
       });
-      authString = '$loginId:12345';
+      authString =
+          options.path.contains('userid=') || options.path.contains('id=')
+              ? 'sa:uaq@123'
+              : '$loginId:12345';
       // String basicAuth = 'Basic ${base64.encode(utf8.encode(authString))}';
 // print(basicAuth);
       // options.headers.addAll({

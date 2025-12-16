@@ -132,6 +132,11 @@ class ConstantConfig {
         name: 'My Team',
         nameAR: 'فريقي',
         iconPath: DrawableAssets.icMyteam),
+    FavoriteEntity(
+        id: 26,
+        name: 'Mobile Punch Access',
+        nameAR: 'صلاحية بصمة الموبايل',
+        iconPath: DrawableAssets.icCancelInvoice),
   ];
   final managerServices = [
     FavoriteEntity(
@@ -164,6 +169,11 @@ class ConstantConfig {
         name: 'Cancel Invoice',
         nameAR: 'الغاء الفاتورة',
         iconPath: DrawableAssets.icCancelInvoice),
+    // FavoriteEntity(
+    //     id: 26,
+    //     name: 'Mobile Punch Access',
+    //     nameAR: 'صلاحية بصمة الموبايل',
+    //     iconPath: DrawableAssets.icCancelInvoice),
   ];
   final guestServices = [
     FavoriteEntity(

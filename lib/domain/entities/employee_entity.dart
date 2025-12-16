@@ -8,6 +8,8 @@ class EmployeeEntity extends BaseEntity {
   String? empNameAR;
   String? pERSONID;
   String? uSERNAME;
+  String? eMPLOYEENUMBER;
+  String? punchApiAccess;
 
   EmployeeEntity();
 

@@ -37,11 +37,12 @@ abstract class ApisRepository {
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendance(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
-      {required Map<String, dynamic> requestParams});
+      {String? apiUrl,required Map<String, dynamic> requestParams});
   Future<Either<Failure, String>> submitAttendanceDetails(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<AttendanceUserDetailsEntity>>>
-      getAttendanceUserDetails({required Map<String, dynamic> requestParams});
+      getAttendanceUserDetails(String apiUrl,
+          {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<DashboardEntity>>> getDashboardData(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<EventsListEntity>>> getEventsData(

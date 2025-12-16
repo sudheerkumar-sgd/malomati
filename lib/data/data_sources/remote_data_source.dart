@@ -52,10 +52,11 @@ abstract class RemoteDataSource {
   Future<ApiResponse<AttendanceListModel>> getAttendance(
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
-      {required Map<String, dynamic> requestParams});
+      {String? apiUrl, required Map<String, dynamic> requestParams});
   Future<String> submitAttendanceDetails(
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceUserDetailsModel>> getAttendanceUserDetails(
+      String apiUrl,
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<DashboardModel>> getDashboardData(
       {required Map<String, dynamic> requestParams});
@@ -211,14 +212,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
-      {required Map<String, dynamic> requestParams}) async {
+      {String? apiUrl, required Map<String, dynamic> requestParams}) async {
     final dio2 = Dio();
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
     dio2.interceptors.add(DioLoggingInterceptor());
     try {
       var response = await dio2
           .get(
-            '${attendanceDetailsApiUrl}date-range=${requestParams['date-range']}$attendanceDetailsRequestedParams',
+            apiUrl ??
+                '${attendanceDetailsApiUrl}date-range=${requestParams['date-range']}$attendanceDetailsRequestedParams',
             options: Options(headers: {
               HttpHeaders.contentTypeHeader: "application/json",
             }),
@@ -242,6 +244,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<ApiResponse<AttendanceUserDetailsModel>> getAttendanceUserDetails(
+      String apiUrl,
       {required Map<String, dynamic> requestParams}) async {
     final dio2 = Dio();
     dio2.options.baseUrl = baseUrlAttendanceDevelopment;
@@ -249,7 +252,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     try {
       var response = await dio2
           .get(
-            attendanceUserDetailsApiUrl,
+            apiUrl,
             options: Options(headers: {
               HttpHeaders.contentTypeHeader: "application/json",
             }),
@@ -259,8 +262,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       switch (response.statusCode) {
         case 200:
           var apiResponse = ApiResponse<AttendanceUserDetailsModel>.fromJson(
-              response.data,
-              (p0) => AttendanceUserDetailsModel.fromJson(response.data));
+              response.data is Map ? response.data : {'data': response.data},
+              (p0) => AttendanceUserDetailsModel.fromJson(response.data is Map
+                  ? response.data
+                  : {'data': response.data}));
           return apiResponse;
         default:
           throw _getExceptionType(response);
