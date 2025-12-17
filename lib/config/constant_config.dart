@@ -6,6 +6,11 @@ import '../core/constants/constants.dart';
 import '../res/drawables/drawable_assets.dart';
 
 class ConstantConfig {
+  final punchAccessUsers = [
+    'mooza.binyeem',
+    'shaikha.bintook',
+    'sudheer.akula'
+  ];
   final services = [
     FavoriteEntity(
         id: 1,
@@ -132,11 +137,6 @@ class ConstantConfig {
         name: 'My Team',
         nameAR: 'فريقي',
         iconPath: DrawableAssets.icMyteam),
-    FavoriteEntity(
-        id: 26,
-        name: 'Mobile Punch Access',
-        nameAR: 'صلاحية بصمة الموبايل',
-        iconPath: DrawableAssets.icCancelInvoice),
   ];
   final managerServices = [
     FavoriteEntity(
@@ -169,11 +169,6 @@ class ConstantConfig {
         name: 'Cancel Invoice',
         nameAR: 'الغاء الفاتورة',
         iconPath: DrawableAssets.icCancelInvoice),
-    // FavoriteEntity(
-    //     id: 26,
-    //     name: 'Mobile Punch Access',
-    //     nameAR: 'صلاحية بصمة الموبايل',
-    //     iconPath: DrawableAssets.icCancelInvoice),
   ];
   final guestServices = [
     FavoriteEntity(
@@ -230,15 +225,25 @@ class ConstantConfig {
   ];
 
   List<FavoriteEntity> getServicesByManager(
-      {required bool isManager, bool isGuest = false}) {
+      {required bool isManager, bool isGuest = false, String userName = ''}) {
     if (isGuest) {
       return guestServices;
     }
-    return isManager
+    final finalServices = isManager
         ? services
         : services
             .where((element) => !managerServices.contains(element))
             .toList();
+    if (punchAccessUsers.contains(userName.toLowerCase())) {
+      finalServices.add(
+        FavoriteEntity(
+            id: 26,
+            name: 'Mobile Punch Access',
+            nameAR: 'صلاحية بصمة الموبايل',
+            iconPath: DrawableAssets.icCancelInvoice),
+      );
+    }
+    return finalServices;
   }
 
   final leaveTypes = {

@@ -222,6 +222,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
                   time.isBefore(getDateTimeByString(
                       'dd/MM/yyyy HH:mm:ss', record.eventdatetime ?? '')))) {
             record.taEventIn = e.eventdatetime;
+            record.specialfunctionid = e.specialfunctionid;
           }
         }
         // else if (type == '1') {
@@ -248,7 +249,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
   List<AttendanceEntity> filterTaVsAcsIn(
     List<AttendanceEntity> combinedList,
   ) {
-    return combinedList
+    final filteredList = combinedList
         .map((e) {
           final taIn = e.taEventIn;
           final acsIn = e.acsEventIn;
@@ -258,7 +259,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
           final taTime = getDateTimeByString('dd/MM/yyyy HH:mm:ss', taIn);
           final acsTime = getDateTimeByString('dd/MM/yyyy HH:mm:ss', acsIn);
 
-          final diffMinutes = acsTime.difference(taTime).inMinutes.abs();
+          final diffMinutes = acsTime.difference(taTime).inMinutes.round();
 
           e.taToAcsInDiff = diffMinutes;
 
@@ -266,6 +267,8 @@ class AttendanceBloc extends Cubit<AttendanceState> {
         })
         .where((e) => e.taToAcsInDiff > 10)
         .toList();
+    filteredList.sort((a, b) => b.taToAcsInDiff.compareTo(a.taToAcsInDiff));
+    return filteredList;
   }
 
   String _getErrorMessage(Failure failure) {

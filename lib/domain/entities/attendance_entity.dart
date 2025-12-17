@@ -40,6 +40,7 @@ class AttendanceEntity extends BaseEntity {
   String? taeventOut;
   String? acsEventIn;
   String? acsEventOut;
+  String? specialfunctionid;
   int taToAcsInDiff = 0;
 
   AttendanceEntity();

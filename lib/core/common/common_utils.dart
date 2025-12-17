@@ -400,3 +400,10 @@ void checkIsUpdateAvailabe(BuildContext context) {
     }
   });
 }
+
+String minutesToHHmm(int minutes) {
+  final hours = minutes ~/ 60;
+  final mins = minutes % 60;
+
+  return '${hours.toString().padLeft(2, '0')}:${mins.toString().padLeft(2, '0')}';
+}

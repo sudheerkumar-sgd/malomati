@@ -169,7 +169,8 @@ class ServicesScreen extends StatelessWidget {
               services: sl<ConstantConfig>().getServicesByManager(
                   isManager:
                       context.userDB.get(isMaangerKey, defaultValue: false),
-                  isGuest: context.userDB.get(isGuestKey, defaultValue: false)),
+                  isGuest: context.userDB.get(isGuestKey, defaultValue: false),
+                  userName: context.userDB.get(userNameKey, defaultValue: '')),
               callback: onServiceClick,
             ),
           ],

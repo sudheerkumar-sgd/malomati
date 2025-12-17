@@ -37,6 +37,7 @@ class AttendanceModel extends BaseModel {
 
   String? eventdatetime;
   String? entryexittype;
+  String? specialfunctionid;
 
   AttendanceModel();
 
@@ -79,6 +80,7 @@ class AttendanceModel extends BaseModel {
     attendanceModel.worktime = attendanceJson['worktime_hhmm'];
     attendanceModel.eventdatetime = attendanceJson['eventdatetime'];
     attendanceModel.entryexittype = attendanceJson['entryexittype'];
+    attendanceModel.specialfunctionid = attendanceJson['specialfunctionid'];
     return attendanceModel;
   }
 
@@ -130,6 +132,15 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.worktime = worktime;
     attendanceEntity.eventdatetime = eventdatetime;
     attendanceEntity.entryexittype = entryexittype;
+    attendanceEntity.specialfunctionid = specialfunctionid == null
+        ? ""
+        : specialfunctionid == "5"
+            ? 'Req In'
+            : specialfunctionid == "3"
+                ? 'Short Leave In'
+                : specialfunctionid == "9"
+                    ? 'Overtime In'
+                    : 'Official In';
     return attendanceEntity;
   }
 }
