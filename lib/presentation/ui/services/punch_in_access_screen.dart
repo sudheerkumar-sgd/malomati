@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +19,6 @@ import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 
-import '../../../data/model/api_request_model.dart';
-import '../../../domain/entities/leave_details_entity.dart';
 import '../widgets/back_app_bar.dart';
 
 class PunchInAccessScreen extends StatelessWidget {
@@ -31,7 +28,6 @@ class PunchInAccessScreen extends StatelessWidget {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  final TextEditingController _commentsController = TextEditingController();
   String? leave;
   bool isLoading = false;
   final List<EmployeeEntity> _employeesList = [];
@@ -44,7 +40,7 @@ class PunchInAccessScreen extends StatelessWidget {
   final ScrollController _monthScrollController = ScrollController();
   ValueNotifier<int> selectedMonth = ValueNotifier(0);
   List<Map> monthYearList = [];
-  _getYearMonth() {
+  void _getYearMonth() {
     int currentDate = DateTime.now().day;
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
@@ -64,7 +60,7 @@ class PunchInAccessScreen extends StatelessWidget {
     selectedMonth.value = currentDate - 1;
   }
 
-  _setScrollByDirection(double offset) {
+  void _setScrollByDirection(double offset) {
     _monthScrollController.animateTo(
       offset,
       duration: const Duration(milliseconds: 500),

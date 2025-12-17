@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:malomati/config/base_url_config.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+
 import '../../config/flavor_config.dart';
 
 class DioLoggingInterceptor extends InterceptorsWrapper {

@@ -2,7 +2,7 @@ import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
-import 'package:malomati/domain/entities/login_entity.dart';
+
 import '../../domain/entities/attendance_entity.dart';
 
 // ignore: must_be_immutable
