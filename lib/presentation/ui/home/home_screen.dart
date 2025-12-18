@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:googleapis/adsense/v2.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
@@ -19,11 +18,10 @@ import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/home/attendance_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
-import 'package:malomati/presentation/ui/home/widgets/rating_dialog_widget.dart';
-import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
+import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
@@ -35,8 +33,6 @@ import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
-import 'package:in_app_review/in_app_review.dart';
-
 import '../utils/location.dart';
 
 class HomeScreen extends StatelessWidget {
