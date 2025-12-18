@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:googleapis/adsense/v2.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
@@ -136,14 +137,20 @@ class HomeScreen extends StatelessWidget {
         _getWeatherDetails();
       }
       _homeBloc.getFCMAccessToken(userDB: context.userDB);
-      Dialogs.showDialogWithClose(context, RatingDialogWidget(),
-          maxWidth: MediaQuery.of(context).size.width * 0.8, showClose: false);
+      // Dialogs.showDialogWithClose(context, RatingDialogWidget(),
+      //     maxWidth: MediaQuery.of(context).size.width * 0.8, showClose: false);
     });
-    // Future.delayed(const Duration(milliseconds: 2000), () async {
-    //   if (await inAppReview.isAvailable()) {
-    //     inAppReview.requestReview();
-    //   }
-    // });
+    if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
+        DateTime.now().month) {
+      Future.delayed(const Duration(milliseconds: 2000), () async {
+        if (await inAppReview.isAvailable()) {
+          inAppReview.requestReview();
+          if (context.mounted) {
+            context.userDB.put(showRatingMonth, DateTime.now().month);
+          }
+        }
+      });
+    }
     _onAttendanceRespose.addListener(
       () {
         Timer(const Duration(milliseconds: 200), () {

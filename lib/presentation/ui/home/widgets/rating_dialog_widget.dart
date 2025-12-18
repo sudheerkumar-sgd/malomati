@@ -145,7 +145,7 @@ class RatingDialogWidget extends StatelessWidget {
               child: InkWell(
                 onTap: () async {
                   if (await inAppReview.isAvailable()) {
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                     inAppReview.requestReview();
                   } else if (context.mounted) {
                     Navigator.pop(context);
