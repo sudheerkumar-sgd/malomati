@@ -1,3 +1,4 @@
+import 'package:malomati/core/common/common.dart';
 import 'package:malomati/data/model/base_model.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 
@@ -135,12 +136,20 @@ extension SourceModelExtension on AttendanceModel {
     attendanceEntity.specialfunctionid = specialfunctionid == null
         ? ""
         : specialfunctionid == "5"
-            ? 'Req In'
+            ? isLocalEn
+                ? 'Req In'
+                : "دخول عادي"
             : specialfunctionid == "3"
-                ? 'Short Leave In'
+                ? isLocalEn
+                    ? 'Short Leave In'
+                    : "إذن دخول"
                 : specialfunctionid == "9"
-                    ? 'Overtime In'
-                    : 'Official In';
+                    ? isLocalEn
+                        ? 'Overtime In'
+                        : "وقت اضافي دخول"
+                    : isLocalEn
+                        ? 'Official In'
+                        : 'دخول عام';
     return attendanceEntity;
   }
 }

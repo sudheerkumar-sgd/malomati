@@ -222,7 +222,9 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                 .resources
                                                                 .dimen
                                                                 .dp20),
-                                                    text: 'Disable Access',
+                                                    text: isLocalEn
+                                                        ? 'Disable Access'
+                                                        : 'تعطيل الصلاحية',
                                                     textStyle: context
                                                         .textFontWeight600
                                                         .onFontSize(resources
@@ -243,7 +245,8 @@ class PunchInAccessScreen extends StatelessWidget {
                                     color: context.resources.color.viewBgColor
                                         .withAlpha(
                                             selectedTabIndex == 2 ? 100 : 255),
-                                    text: 'Add User',
+                                    text:
+                                        isLocalEn ? 'Add User' : 'اضافة مستخدم',
                                     textStyle: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp10),
                                   ),
@@ -272,7 +275,9 @@ class PunchInAccessScreen extends StatelessWidget {
                                         vertical: context.resources.dimen.dp5,
                                         horizontal:
                                             context.resources.dimen.dp15),
-                                    text: 'Late Door Report',
+                                    text: isLocalEn
+                                        ? 'Late Door Report'
+                                        : 'تقرير الباب المتاخر',
                                     color: context.resources.color.viewBgColor
                                         .withAlpha(
                                             selectedTabIndex == 1 ? 100 : 255),
@@ -566,24 +571,35 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                     ),
                                                                     Row(
                                                                       children: [
-                                                                        Text(
-                                                                          '${lateEmployee[index].specialfunctionid ?? ''}\n${(lateEmployee[index].taEventIn ?? '').substring(11, (lateEmployee[index].taEventIn ?? '').length)}',
-                                                                          style: context
-                                                                              .textFontWeight400
-                                                                              .onFontSize(10),
-                                                                        ),
+                                                                        Text.rich(TextSpan(
+                                                                            text: lateEmployee[index].specialfunctionid ??
+                                                                                '',
+                                                                            style:
+                                                                                context.textFontWeight400.onFontSize(10),
+                                                                            children: [
+                                                                              TextSpan(
+                                                                                text: '\n${(lateEmployee[index].taEventIn ?? '').substring(11, (lateEmployee[index].taEventIn ?? '').length)}',
+                                                                                style: context.textFontWeight400.onFontSize(10).onFontFamily(fontFamily: fontFamilyEN),
+                                                                              )
+                                                                            ])),
                                                                         SizedBox(
                                                                           width: context
                                                                               .resources
                                                                               .dimen
                                                                               .dp10,
                                                                         ),
-                                                                        Text(
-                                                                          'Door In\n${(lateEmployee[index].acsEventIn ?? '').substring(11, (lateEmployee[index].acsEventIn ?? '').length)}',
-                                                                          style: context
-                                                                              .textFontWeight400
-                                                                              .onFontSize(10),
-                                                                        ),
+                                                                        Text.rich(TextSpan(
+                                                                            text: isLocalEn
+                                                                                ? 'Door In'
+                                                                                : 'الدور ال',
+                                                                            style:
+                                                                                context.textFontWeight400.onFontSize(10),
+                                                                            children: [
+                                                                              TextSpan(
+                                                                                text: '\n${(lateEmployee[index].acsEventIn ?? '').substring(11, (lateEmployee[index].acsEventIn ?? '').length)}',
+                                                                                style: context.textFontWeight400.onFontSize(10).onFontFamily(fontFamily: fontFamilyEN),
+                                                                              )
+                                                                            ])),
                                                                         SizedBox(
                                                                           width: context
                                                                               .resources
@@ -591,14 +607,15 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                               .dp10,
                                                                         ),
                                                                         Expanded(
-                                                                          child:
-                                                                              Text(
-                                                                            textAlign:
-                                                                                TextAlign.right,
-                                                                            'Late Time\n${minutesToHHmm(lateEmployee[index].taToAcsInDiff)}',
-                                                                            style:
-                                                                                context.textFontWeight400.onFontSize(10),
-                                                                          ),
+                                                                          child: Text.rich(TextSpan(
+                                                                              text: isLocalEn ? 'Late Time' : 'الوقت ال',
+                                                                              style: context.textFontWeight400.onFontSize(10),
+                                                                              children: [
+                                                                                TextSpan(
+                                                                                  text: '\n${minutesToHHmm(lateEmployee[index].taToAcsInDiff)}',
+                                                                                  style: context.textFontWeight400.onFontSize(10).onFontFamily(fontFamily: fontFamilyEN),
+                                                                                )
+                                                                              ])),
                                                                         ),
                                                                       ],
                                                                     ),

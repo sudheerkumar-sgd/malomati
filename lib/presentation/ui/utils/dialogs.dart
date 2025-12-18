@@ -206,7 +206,7 @@ class Dialogs {
               surfaceTintColor: DialogTheme.of(context).surfaceTintColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
-                      Radius.circular(context.resources.dimen.dp5))),
+                      Radius.circular(context.resources.dimen.dp25))),
               clipBehavior: Clip.none,
               child: Padding(
                 padding:

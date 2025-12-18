@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
@@ -17,6 +18,7 @@ import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/ui/home/attendance_screen.dart';
 import 'package:malomati/presentation/ui/home/services_screen.dart';
+import 'package:malomati/presentation/ui/home/widgets/rating_dialog_widget.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_events.dart';
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart';
@@ -32,6 +34,7 @@ import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import '../utils/location.dart';
 
@@ -56,6 +59,7 @@ class HomeScreen extends StatelessWidget {
   //     ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
   final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
   final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(-1);
+  final InAppReview inAppReview = InAppReview.instance;
   // void _getTime() {
   //   _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
   // }
@@ -115,7 +119,7 @@ class HomeScreen extends StatelessWidget {
     _homeBloc.getEventsData(
         departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
     _homeBloc.getFavoritesdData(userDB: context.userDB);
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () async {
       if (!context.mounted) {
         return;
       }
@@ -132,7 +136,14 @@ class HomeScreen extends StatelessWidget {
         _getWeatherDetails();
       }
       _homeBloc.getFCMAccessToken(userDB: context.userDB);
+      Dialogs.showDialogWithClose(context, RatingDialogWidget(),
+          maxWidth: MediaQuery.of(context).size.width * 0.8, showClose: false);
     });
+    // Future.delayed(const Duration(milliseconds: 2000), () async {
+    //   if (await inAppReview.isAvailable()) {
+    //     inAppReview.requestReview();
+    //   }
+    // });
     _onAttendanceRespose.addListener(
       () {
         Timer(const Duration(milliseconds: 200), () {
