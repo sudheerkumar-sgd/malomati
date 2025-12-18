@@ -246,7 +246,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                         .withAlpha(
                                             selectedTabIndex == 2 ? 100 : 255),
                                     text:
-                                        isLocalEn ? 'Add User' : 'اضافة مستخدم',
+                                        isLocalEn ? 'Add User' : 'إضافة مستخدم',
                                     textStyle: context.textFontWeight600
                                         .onFontSize(resources.fontSize.dp10),
                                   ),
@@ -277,7 +277,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                             context.resources.dimen.dp15),
                                     text: isLocalEn
                                         ? 'Late Door Report'
-                                        : 'تقرير الباب المتاخر',
+                                        : 'تقرير تأخير',
                                     color: context.resources.color.viewBgColor
                                         .withAlpha(
                                             selectedTabIndex == 1 ? 100 : 255),
