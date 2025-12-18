@@ -369,7 +369,10 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                 .onFontSize(
                                                                     resources
                                                                         .fontSize
-                                                                        .dp12),
+                                                                        .dp12)
+                                                                .onFontFamily(
+                                                                    fontFamily:
+                                                                        fontFamilyEN),
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -561,7 +564,9 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                               .username ??
                                                                           '',
                                                                       style: context
-                                                                          .textFontWeight600,
+                                                                          .textFontWeight600
+                                                                          .onFontFamily(
+                                                                              fontFamily: fontFamilyEN),
                                                                     ),
                                                                     SizedBox(
                                                                       height: context
@@ -607,10 +612,9 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                               .dp10,
                                                                         ),
                                                                         Expanded(
-                                                                          child: Text.rich(TextSpan(
-                                                                              text: isLocalEn ? 'Late Time' : 'الوقت ال',
-                                                                              style: context.textFontWeight400.onFontSize(10),
-                                                                              children: [
+                                                                          child: Text.rich(
+                                                                              textAlign: isLocalEn ? TextAlign.end : TextAlign.start,
+                                                                              TextSpan(text: isLocalEn ? 'Late Time' : 'الوقت ال', style: context.textFontWeight400.onFontSize(10), children: [
                                                                                 TextSpan(
                                                                                   text: '\n${minutesToHHmm(lateEmployee[index].taToAcsInDiff)}',
                                                                                   style: context.textFontWeight400.onFontSize(10).onFontFamily(fontFamily: fontFamilyEN),

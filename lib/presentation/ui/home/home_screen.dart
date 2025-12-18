@@ -133,8 +133,6 @@ class HomeScreen extends StatelessWidget {
         _getWeatherDetails();
       }
       _homeBloc.getFCMAccessToken(userDB: context.userDB);
-      // Dialogs.showDialogWithClose(context, RatingDialogWidget(),
-      //     maxWidth: MediaQuery.of(context).size.width * 0.8, showClose: false);
     });
     if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
         DateTime.now().month) {
