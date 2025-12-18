@@ -613,7 +613,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                         ),
                                                                         Expanded(
                                                                           child: Text.rich(
-                                                                              textAlign: isLocalEn ? TextAlign.end : TextAlign.start,
+                                                                              textAlign: TextAlign.end,
                                                                               TextSpan(text: isLocalEn ? 'Late Time' : 'الوقت ال', style: context.textFontWeight400.onFontSize(10), children: [
                                                                                 TextSpan(
                                                                                   text: '\n${minutesToHHmm(lateEmployee[index].taToAcsInDiff)}',
