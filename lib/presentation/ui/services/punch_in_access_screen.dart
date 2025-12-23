@@ -596,7 +596,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                         Text.rich(TextSpan(
                                                                             text: isLocalEn
                                                                                 ? 'Door In'
-                                                                                : 'الدور ال',
+                                                                                : 'دخول الباب',
                                                                             style:
                                                                                 context.textFontWeight400.onFontSize(10),
                                                                             children: [
@@ -614,7 +614,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                                                         Expanded(
                                                                           child: Text.rich(
                                                                               textAlign: TextAlign.end,
-                                                                              TextSpan(text: isLocalEn ? 'Late Time' : 'الوقت ال', style: context.textFontWeight400.onFontSize(10), children: [
+                                                                              TextSpan(text: isLocalEn ? 'Late Time' : 'الوقت التأخير', style: context.textFontWeight400.onFontSize(10), children: [
                                                                                 TextSpan(
                                                                                   text: '\n${minutesToHHmm(lateEmployee[index].taToAcsInDiff)}',
                                                                                   style: context.textFontWeight400.onFontSize(10).onFontFamily(fontFamily: fontFamilyEN),

@@ -56,7 +56,6 @@ class HomeScreen extends StatelessWidget {
   //     ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
   final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
   final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(-1);
-  final InAppReview inAppReview = InAppReview.instance;
   // void _getTime() {
   //   _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
   // }
@@ -137,6 +136,7 @@ class HomeScreen extends StatelessWidget {
     if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
         DateTime.now().month) {
       Future.delayed(const Duration(milliseconds: 2000), () async {
+        final InAppReview inAppReview = InAppReview.instance;
         if (await inAppReview.isAvailable()) {
           inAppReview.requestReview();
           if (context.mounted) {
