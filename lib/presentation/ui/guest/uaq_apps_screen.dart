@@ -58,7 +58,7 @@ class UAQAppsScreen extends StatelessWidget {
                           height: context.resources.dimen.dp10,
                         ),
                         Text(
-                          'Smart UAQ',
+                          'Digital UAQ',
                           style: context.textFontWeight400,
                         )
                       ],
