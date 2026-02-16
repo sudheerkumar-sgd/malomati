@@ -145,7 +145,7 @@ const departmentsLocations = [
   },
   {
     "code": "01",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.5201",
     "longitude": "+55.5452",
     "radius": 900,
@@ -213,7 +213,7 @@ const departmentsLocations = [
   },
   {
     "code": "2",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.5026",
     "longitude": "+55.5927",
     "radius": 10,
@@ -332,7 +332,7 @@ const departmentsLocations = [
   },
   {
     "code": "99",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.3079",
     "longitude": "+55.3787",
     "radius": 10,

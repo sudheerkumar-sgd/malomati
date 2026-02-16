@@ -191,7 +191,7 @@ class AttendanceScreen extends StatelessWidget {
   bool _isRamdanMonth() {
     var date = DateTime.now().day;
     var month = DateTime.now().month;
-    return (date > 2 && month == 3) || (date < 31 && month == 3);
+    return (date > 18 && month == 2) || (date < 21 && month == 3);
   }
 
   List<Map> _getAttendanceOptions(BuildContext context) {

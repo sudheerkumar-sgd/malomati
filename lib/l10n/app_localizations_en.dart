@@ -582,7 +582,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastUpdateText => 'Last update was on';
 
   @override
-  String get developedBy => 'Developed by Smart Umm Al Quwain';
+  String get developedBy => 'Developed by Digital Umm Al Quwain';
 
   @override
   String get version => 'Version';

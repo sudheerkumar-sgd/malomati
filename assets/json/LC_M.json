@@ -81,7 +81,7 @@
   },
   {
     "code": "01",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.5201",
     "longitude": "+055.5452",
     "radius": 900,
@@ -145,7 +145,7 @@
   },
   {
     "code": "2",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.5026",
     "longitude": "+055.5927",
     "radius": 10,
@@ -257,7 +257,7 @@
   },
   {
     "code": "99",
-    "name": "SGD OFFC",
+    "name": "DGD OFFC",
     "latitude": "+25.3079",
     "longitude": "+055.3787",
     "radius": 10,

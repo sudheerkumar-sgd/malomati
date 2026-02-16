@@ -1241,7 +1241,7 @@ abstract class AppLocalizations {
   /// No description provided for @developedBy.
   ///
   /// In en, this message translates to:
-  /// **'Developed by Smart Umm Al Quwain'**
+  /// **'Developed by Digital Umm Al Quwain'**
   String get developedBy;
 
   /// No description provided for @version.

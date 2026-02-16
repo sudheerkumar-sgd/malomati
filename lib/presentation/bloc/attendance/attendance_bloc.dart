@@ -184,7 +184,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     ]);
     return combineAcsAndTa(acs: result[0], ta: result[1]);
   }
-
+    
   List<AttendanceEntity> combineAcsAndTa({
     required List<AttendanceEntity> acs,
     required List<AttendanceEntity> ta,
