@@ -613,6 +613,8 @@
     "trainingCertificateName":"Training Certificate Name",
     "leaveDates":"Leave Dates",
     "chooseLeaveDates":"Choose Leave Dates",
+    "remainingWorkTime": "Remaining Work Time",
+    "youDidntPunchYet": "You didn't punch yet",
     "string":"",
     "dummy":"dummy"
 }

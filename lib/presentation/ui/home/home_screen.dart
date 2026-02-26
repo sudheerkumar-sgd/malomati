@@ -5,6 +5,7 @@ import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:malomati/config/constant_config.dart';
+import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
@@ -35,11 +36,18 @@ import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
 import '../utils/location.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
   static String anualLeaveBalance = '';
   static String sickLeaveBalance = '';
   static String permissionBalance = '';
-  HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final _homeBloc = sl<HomeBloc>();
   final _attendanceBloc = sl<AttendanceBloc>();
   final ValueNotifier<DashboardEntity> _dashboardEntity =
@@ -52,13 +60,75 @@ class HomeScreen extends StatelessWidget {
       ValueNotifier<WeatherEntity>(WeatherEntity());
   final ValueNotifier _eventBannerChange = ValueNotifier<int>(0);
   final ValueNotifier _isFavoriteEdited = ValueNotifier<bool>(false);
-  // final ValueNotifier _timeString =
-  //     ValueNotifier<String>(DateFormat('hh:mm:ss aa').format(DateTime.now()));
+
   final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
   final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(-1);
-  // void _getTime() {
-  //   _timeString.value = DateFormat('hh:mm:ss aa').format(DateTime.now());
-  // }
+
+  final ValueNotifier<String> _remainingTimeValue =
+      ValueNotifier<String>('00:00:00');
+  Timer? _punchRemainingTimer;
+
+  @override
+  void dispose() {
+    _punchRemainingTimer?.cancel();
+    super.dispose();
+  }
+
+  _calculateRemainingTime(String? punch1Time, String? punch2Time) {
+    if (punch1Time == null ||
+        punch1Time.isEmpty ||
+        (punch2Time != null && punch2Time.isNotEmpty)) {
+      _remainingTimeValue.value = '00:00:00';
+      _punchRemainingTimer?.cancel();
+      _punchRemainingTimer = null;
+      return;
+    }
+
+    if (_punchRemainingTimer != null) return;
+
+    _punchRemainingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      final now = DateTime.now();
+      final punchInParts = punch1Time.split(':');
+      if (punchInParts.length < 3) return;
+
+      final punchInToday = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(punchInParts[0]),
+          int.parse(punchInParts[1]),
+          int.parse(punchInParts[2]));
+
+      var targetTime = punchInToday.add(isRamdanMonth()
+          ? const Duration(hours: 5, minutes: 30)
+          : const Duration(hours: 8));
+      final limitTime = isRamdanMonth()
+          ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+          : DateTime(now.year, now.month, now.day, 16, 0, 0);
+
+      if (targetTime.isAfter(limitTime)) {
+        targetTime = limitTime;
+      }
+
+      final diff = targetTime.difference(now);
+      if (diff.isNegative) {
+        _remainingTimeValue.value = '00:00:00';
+        timer.cancel();
+        _punchRemainingTimer = null;
+        FirbaseConfig.showLocalNotification('Punch In Time', 'Punch In Time');
+      } else {
+        String twoDigits(int n) => n.toString().padLeft(2, "0");
+        String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
+        String twoDigitSeconds = twoDigits(diff.inSeconds.remainder(60));
+        _remainingTimeValue.value =
+            "${twoDigits(diff.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+      }
+    });
+  }
 
   _refreshAttendance() {
     var date = getDateByformat('ddMMyyyy', DateTime.now());
@@ -85,7 +155,7 @@ class HomeScreen extends StatelessWidget {
     if (status == -1) {
       return '';
     } else if (status == 0) {
-      return context.string.morningPunch;
+      return context.string.youDidntPunchYet;
     } else if (status == 1) {
       return context.string.thankYouForPunchIn;
     } else {
@@ -433,41 +503,47 @@ class HomeScreen extends StatelessWidget {
                                 height: context.resources.dimen.dp10,
                               ),
                               StreamBuilder(
-                                  stream: _attendanceBloc.getAttendanceData,
-                                  builder: (context, attendanceData) {
-                                    var attendanceEntity =
-                                        attendanceData.data ??
-                                            AttendanceEntity();
-                                    if ((attendanceEntity.punch2Time ?? '')
-                                        .isNotEmpty) {
-                                      _onAttendanceRespose.value = 2;
-                                    } else if ((attendanceEntity.punch1Time ??
-                                            '')
-                                        .isNotEmpty) {
-                                      _onAttendanceRespose.value = 1;
-                                    } else {
-                                      _onAttendanceRespose.value = 0;
-                                    }
-                                    return FutureBuilder(
-                                        future: _attendanceBloc.getUserDetails(
-                                            apiUrl:
-                                                attendanceUserPunchDetailsApiUrl,
-                                            requestParams: {},
-                                            emitResult: false),
-                                        builder: (context, asyncSnapshot) {
-                                          final state = asyncSnapshot.data;
-                                          bool isPunchAccessDisabled = false;
-                                          if (state is OnUserDetailsSuccess) {
-                                            isPunchAccessDisabled =
-                                                (state.attendanceUserDetailsEntity
-                                                            .entity?.usersData ??
-                                                        [])
-                                                    .where((e) =>
-                                                        e.punchApiAccess == '0')
-                                                    .toList()
-                                                    .isNotEmpty;
-                                          }
-                                          return Row(
+                                stream: _attendanceBloc.getAttendanceData,
+                                builder: (context, attendanceData) {
+                                  final attendanceEntity =
+                                      attendanceData.data ?? AttendanceEntity();
+                                  if ((attendanceEntity.punch2Time ?? '')
+                                      .isNotEmpty) {
+                                    _onAttendanceRespose.value = 2;
+                                  } else if ((attendanceEntity.punch1Time ?? '')
+                                      .isNotEmpty) {
+                                    _onAttendanceRespose.value = 1;
+                                  } else {
+                                    _onAttendanceRespose.value = 0;
+                                  }
+
+                                  _calculateRemainingTime(
+                                      attendanceEntity.punch1Time,
+                                      attendanceEntity.punch2Time);
+
+                                  return FutureBuilder(
+                                    future: _attendanceBloc.getUserDetails(
+                                        apiUrl:
+                                            attendanceUserPunchDetailsApiUrl,
+                                        requestParams: {},
+                                        emitResult: false),
+                                    builder: (context, asyncSnapshot) {
+                                      final state = asyncSnapshot.data;
+                                      bool isPunchAccessDisabled = false;
+                                      if (state is OnUserDetailsSuccess) {
+                                        isPunchAccessDisabled = (state
+                                                    .attendanceUserDetailsEntity
+                                                    .entity
+                                                    ?.usersData ??
+                                                [])
+                                            .where(
+                                                (e) => e.punchApiAccess == '0')
+                                            .toList()
+                                            .isNotEmpty;
+                                      }
+                                      return Column(
+                                        children: [
+                                          Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
@@ -525,7 +601,7 @@ class HomeScreen extends StatelessWidget {
                                                                   boxColor: context
                                                                       .resources
                                                                       .color
-                                                                      .appScaffoldBg,
+                                                                      .colorWhite,
                                                                   radious: context
                                                                       .resources
                                                                       .dimen
@@ -549,7 +625,7 @@ class HomeScreen extends StatelessWidget {
                                                                 TextOverflow
                                                                     .ellipsis,
                                                             style: context
-                                                                .textFontWeight400
+                                                                .textFontWeight600
                                                                 .onColor(isPunchAccessDisabled
                                                                     ? Colors
                                                                         .grey
@@ -674,7 +750,7 @@ class HomeScreen extends StatelessWidget {
                                                                   boxColor: context
                                                                       .resources
                                                                       .color
-                                                                      .appScaffoldBg,
+                                                                      .colorWhite,
                                                                   radious: context
                                                                       .resources
                                                                       .dimen
@@ -698,7 +774,7 @@ class HomeScreen extends StatelessWidget {
                                                             context.string
                                                                 .punchOut,
                                                             style: context
-                                                                .textFontWeight400
+                                                                .textFontWeight600
                                                                 .onColor(isPunchAccessDisabled
                                                                     ? Colors
                                                                         .grey
@@ -776,14 +852,50 @@ class HomeScreen extends StatelessWidget {
                                                     .resources.dimen.dp15,
                                               ),
                                             ],
-                                          );
-                                        });
-                                  }),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
+                    ValueListenableBuilder(
+                        valueListenable: _remainingTimeValue,
+                        builder: (context, remainingTime, widget) {
+                          if (remainingTime == '00:00:00' &&
+                              (_onAttendanceRespose.value == 0 ||
+                                  _onAttendanceRespose.value == 2)) {
+                            return const SizedBox.shrink();
+                          }
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: context.resources.dimen.dp5,
+                                horizontal: context.resources.dimen.dp20),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: context.resources.dimen.dp50),
+                            decoration: BackgroundBoxDecoration(
+                              radious: context.resources.dimen.dp10,
+                              gradientBegin: Alignment.topLeft,
+                              gradientEnd: Alignment.topRight,
+                              gradientColors: [
+                                const Color.fromARGB(255, 195, 38, 38),
+                                const Color.fromARGB(255, 81, 12, 12),
+                              ],
+                            ).bottomCornerGradientBox,
+                            child: Text(
+                              '${context.string.remainingWorkTime} - $remainingTime',
+                              textAlign: TextAlign.center,
+                              style: context.textFontWeight600
+                                  .onColor(context.resources.color.colorWhite)
+                                  .onFontSize(context.resources.fontSize.dp10),
+                            ),
+                          );
+                        }),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -795,11 +907,11 @@ class HomeScreen extends StatelessWidget {
                             ValueListenableBuilder(
                                 valueListenable: _dashboardEntity,
                                 builder: (context, dashboardEntity, widget) {
-                                  anualLeaveBalance =
+                                  HomeScreen.anualLeaveBalance =
                                       '${dashboardEntity.aNNUALACCRUAL ?? '0'} ${context.string.days}';
-                                  sickLeaveBalance =
+                                  HomeScreen.sickLeaveBalance =
                                       '${dashboardEntity.sICKACCRUAL ?? '0'} ${context.string.days}';
-                                  permissionBalance =
+                                  HomeScreen.permissionBalance =
                                       '${dashboardEntity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}';
                                   return Container(
                                     margin: EdgeInsets.symmetric(

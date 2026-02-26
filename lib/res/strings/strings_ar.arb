@@ -315,6 +315,8 @@
     "trainingCertificateName":"اسم شهادة التدريب",
     "leaveDates":"اختر تواريخ الإجازة",
     "chooseLeaveDates":"Choose Leave Dates",
+    "remainingWorkTime": "وقت العمل المتبقي",
+    "youDidntPunchYet": "لم تقم بالبصمة بعد",
     "string":"",
     "dummy":"dummy"
 }

@@ -1994,6 +1994,18 @@ abstract class AppLocalizations {
   /// **'Choose Leave Dates'**
   String get chooseLeaveDates;
 
+  /// No description provided for @remainingWorkTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Work Time'**
+  String get remainingWorkTime;
+
+  /// No description provided for @youDidntPunchYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You didn\'t punch yet'**
+  String get youDidntPunchYet;
+
   /// No description provided for @string.
   ///
   /// In en, this message translates to:

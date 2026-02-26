@@ -77,7 +77,7 @@ class FirbaseConfig {
     initFlutterLocalNotifications();
   }
 
-  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
   initFlutterLocalNotifications() {
     // Set up background message handler
@@ -150,5 +150,26 @@ class FirbaseConfig {
     await flutterLocalNotificationsPlugin?.show(0, payload.notification!.title,
         payload.notification!.body, platformChannelSpecifics,
         payload: jsonEncode(payload.data));
+  }
+
+  static Future<void> showLocalNotification(String title, String body) async {
+    if (flutterLocalNotificationsPlugin == null) {
+      FirbaseConfig().initFlutterLocalNotifications();
+    }
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'local_notification_channel_id',
+      'Local Notification',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      icon: "@mipmap/ic_launcher",
+      playSound: true,
+    );
+    const iOSDetails = DarwinNotificationDetails();
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidDetails, iOS: iOSDetails);
+    await flutterLocalNotificationsPlugin?.show(
+        DateTime.now().millisecond, title, body, platformChannelSpecifics);
   }
 }

@@ -969,6 +969,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chooseLeaveDates => 'Choose Leave Dates';
 
   @override
+  String get remainingWorkTime => 'وقت العمل المتبقي';
+
+  @override
+  String get youDidntPunchYet => 'لم تقم بالبصمة بعد';
+
+  @override
   String get string => '';
 
   @override

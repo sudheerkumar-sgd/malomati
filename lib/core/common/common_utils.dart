@@ -407,3 +407,9 @@ String minutesToHHmm(int minutes) {
 
   return '${hours.toString().padLeft(2, '0')}:${mins.toString().padLeft(2, '0')}';
 }
+
+bool isRamdanMonth() {
+  var date = DateTime.now().day;
+  var month = DateTime.now().month;
+  return (date > 18 && month == 2) || (date < 21 && month == 3);
+}

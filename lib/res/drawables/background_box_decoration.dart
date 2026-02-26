@@ -8,6 +8,9 @@ class BackgroundBoxDecoration {
   Color? shadowColor;
   double? shadowBlurRadius;
   Offset? shadowOffset;
+  Alignment? gradientBegin;
+  Alignment? gradientEnd;
+  List<Color>? gradientColors;
   BackgroundBoxDecoration(
       {this.boxColor,
       this.boarderColor,
@@ -15,7 +18,10 @@ class BackgroundBoxDecoration {
       this.radious,
       this.shadowColor,
       this.shadowBlurRadius,
-      this.shadowOffset});
+      this.shadowOffset,
+      this.gradientBegin,
+      this.gradientEnd,
+      this.gradientColors});
   BoxDecoration get roundedCornerBox {
     return BoxDecoration(
         color: boxColor,
@@ -98,5 +104,34 @@ class BackgroundBoxDecoration {
             color: boarderColor ?? const Color(0x00000000),
             width: boarderWidth ?? 0),
         shape: BoxShape.circle);
+  }
+
+  BoxDecoration get gradientBox {
+    return BoxDecoration(gradient: gradientLinear);
+  }
+
+  BoxDecoration get roundedCornerGradientBox {
+    return roundedCornerBox.copyWith(gradient: gradientLinear);
+  }
+
+  BoxDecoration get topCornerGradientBox {
+    return topCornersBox.copyWith(gradient: gradientLinear);
+  }
+
+  BoxDecoration get bottomCornerGradientBox {
+    return bottomCornersBox.copyWith(gradient: gradientLinear);
+  }
+
+  LinearGradient get gradientLinear {
+    return LinearGradient(
+      begin:
+          gradientBegin ?? Alignment.topLeft, // starting point of the gradient
+      end: gradientEnd ?? Alignment.bottomRight, // ending point of the gradient
+      colors: gradientColors ??
+          [
+            Color(0xFF131A46), // first color
+            Color(0xFF065796), // second color
+          ],
+    );
   }
 }

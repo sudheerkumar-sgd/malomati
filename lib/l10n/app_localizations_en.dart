@@ -970,6 +970,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseLeaveDates => 'Choose Leave Dates';
 
   @override
+  String get remainingWorkTime => 'Remaining Work Time';
+
+  @override
+  String get youDidntPunchYet => 'You didn\'t punch yet';
+
+  @override
   String get string => '';
 
   @override
