@@ -218,12 +218,6 @@ class FirbaseConfig {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
 
-    if (scheduledDate.isBefore(DateTime.now())) {
-      await flutterLocalNotificationsPlugin?.show(
-          id, title, body, platformChannelSpecifics);
-      return;
-    }
-
     try {
       await flutterLocalNotificationsPlugin?.zonedSchedule(
         id,
@@ -249,19 +243,11 @@ class FirbaseConfig {
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
             matchDateTimeComponents: DateTimeComponents.dateAndTime,
           );
-        } catch (_) {
-          // Last resort: show immediately if scheduling fails.
-          await flutterLocalNotificationsPlugin?.show(
-              id, title, body, platformChannelSpecifics);
-        }
+        } catch (_) {}
       } else {
         rethrow;
       }
-    } catch (_) {
-      // Any other error: show immediately as a fallback.
-      await flutterLocalNotificationsPlugin?.show(
-          id, title, body, platformChannelSpecifics);
-    }
+    } catch (_) {}
   }
 
   static Future<void> cancelNotification(int id) async {
@@ -270,5 +256,22 @@ class FirbaseConfig {
 
   static Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin?.cancelAll();
+  }
+
+  /// Requests the exact alarm permission on Android 12+ (API 31+).
+  ///
+  /// If granted the plugin will be able to schedule notifications with
+  /// `AndroidScheduleMode.exactAllowWhileIdle`. On newer platforms the system
+  /// shows a runtime prompt and this method returns true when the user allows
+  /// it.  Returns null on non-Android platforms.
+  static Future<bool?> requestExactAlarmPermission() async {
+    try {
+      return await flutterLocalNotificationsPlugin
+          ?.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestExactAlarmsPermission();
+    } catch (_) {
+      return null;
+    }
   }
 }

@@ -66,5 +66,7 @@
 	<false/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>We use notifications to notify you when your daily work hours are completed and for important attendance updates.</string>
 </dict>
 </plist>

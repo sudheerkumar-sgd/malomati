@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
@@ -86,10 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
       _remainingTimeValue.value = '00:00:00';
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
-      if (_workNotificationScheduled) {
-        FirbaseConfig.cancelNotification(_workNotificationId);
-        _workNotificationScheduled = false;
-      }
+      //if (_workNotificationScheduled) {
+      FirbaseConfig.cancelNotification(_workNotificationId);
+      _workNotificationScheduled = false;
+      //}
       return;
     }
 
@@ -117,7 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
         targetTime = limitTime;
       }
 
-      if (!_workNotificationScheduled) {
+      if (!_workNotificationScheduled && Platform.isIOS) {
+        FirbaseConfig.cancelNotification(_workNotificationId);
         FirbaseConfig.scheduleLocalNotification(
           id: _workNotificationId,
           title: context.string.workNotificationTitle,
@@ -163,9 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _punchRemainingTimer = null;
         // direct show in case the scheduled notification failed or app is
         // foreground – scheduled notification may also fire around this time
-        // FirbaseConfig.showLocalNotification(
-        //     context.string.workNotificationTitle,
-        //     context.string.workNotificationBody);
+        if (Platform.isAndroid) {
+          FirbaseConfig.showLocalNotification(
+              context.string.workNotificationTitle,
+              context.string.workNotificationBody);
+        }
       } else {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
