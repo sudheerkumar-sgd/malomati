@@ -975,7 +975,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get youDidntPunchYet => 'لم تقم بالبصمة بعد';
 
   @override
-  String get string => '';
+  String get workNotificationTitle => 'اكتمال ساعات الدوام';
+
+  @override
+  String get workNotificationBody =>
+      'تم استكمال ساعات الدوام المحددة لهذا اليوم بنجاح.';
 
   @override
   String get dummy => 'dummy';

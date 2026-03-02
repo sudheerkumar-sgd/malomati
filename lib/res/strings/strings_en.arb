@@ -615,6 +615,7 @@
     "chooseLeaveDates":"Choose Leave Dates",
     "remainingWorkTime": "Remaining Work Time",
     "youDidntPunchYet": "You didn't punch yet",
-    "string":"",
+    "workNotificationTitle":"Working Hours Completed",
+    "workNotificationBody":"Your scheduled working hours for today have been completed successfully.",
     "dummy":"dummy"
 }

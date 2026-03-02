@@ -976,7 +976,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youDidntPunchYet => 'You didn\'t punch yet';
 
   @override
-  String get string => '';
+  String get workNotificationTitle => 'Working Hours Completed';
+
+  @override
+  String get workNotificationBody =>
+      'Your scheduled working hours for today have been completed successfully.';
 
   @override
   String get dummy => 'dummy';

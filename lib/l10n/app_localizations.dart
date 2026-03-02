@@ -2006,11 +2006,17 @@ abstract class AppLocalizations {
   /// **'You didn\'t punch yet'**
   String get youDidntPunchYet;
 
-  /// No description provided for @string.
+  /// No description provided for @workNotificationTitle.
   ///
   /// In en, this message translates to:
-  /// **''**
-  String get string;
+  /// **'Working Hours Completed'**
+  String get workNotificationTitle;
+
+  /// No description provided for @workNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your scheduled working hours for today have been completed successfully.'**
+  String get workNotificationBody;
 
   /// No description provided for @dummy.
   ///

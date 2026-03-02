@@ -317,6 +317,7 @@
     "chooseLeaveDates":"Choose Leave Dates",
     "remainingWorkTime": "وقت العمل المتبقي",
     "youDidntPunchYet": "لم تقم بالبصمة بعد",
-    "string":"",
+    "workNotificationTitle":"اكتمال ساعات الدوام",
+    "workNotificationBody":"تم استكمال ساعات الدوام المحددة لهذا اليوم بنجاح.",
     "dummy":"dummy"
 }

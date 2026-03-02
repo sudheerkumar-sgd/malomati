@@ -74,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  _calculateRemainingTime(String? punch1Time, String? punch2Time) {
+  _calculateRemainingTime(
+      BuildContext context, String? punch1Time, String? punch2Time) {
     if (punch1Time == null ||
         punch1Time.isEmpty ||
         (punch2Time != null && punch2Time.isNotEmpty)) {
@@ -119,7 +120,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _remainingTimeValue.value = '00:00:00';
         timer.cancel();
         _punchRemainingTimer = null;
-        FirbaseConfig.showLocalNotification('Punch In Time', 'Punch In Time');
+        FirbaseConfig.showLocalNotification(
+            context.string.workNotificationTitle,
+            context.string.workNotificationBody);
       } else {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
@@ -518,6 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }
 
                                   _calculateRemainingTime(
+                                      context,
                                       attendanceEntity.punch1Time,
                                       attendanceEntity.punch2Time);
 
@@ -887,12 +891,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const Color.fromARGB(255, 81, 12, 12),
                               ],
                             ).bottomCornerGradientBox,
-                            child: Text(
-                              '${context.string.remainingWorkTime} - $remainingTime',
+                            child: Text.rich(
                               textAlign: TextAlign.center,
-                              style: context.textFontWeight600
-                                  .onColor(context.resources.color.colorWhite)
-                                  .onFontSize(context.resources.fontSize.dp10),
+                              TextSpan(
+                                  text:
+                                      '${context.string.remainingWorkTime} - ',
+                                  style: context.textFontWeight600
+                                      .onColor(
+                                          context.resources.color.colorWhite)
+                                      .onFontSize(
+                                          context.resources.fontSize.dp10),
+                                  children: [
+                                    TextSpan(
+                                        text: remainingTime,
+                                        style: context.textFontWeight600
+                                            .onColor(context
+                                                .resources.color.colorWhite)
+                                            .onFontSize(
+                                                context.resources.fontSize.dp10)
+                                            .onFontFamily(
+                                                fontFamily: fontFamilyEN))
+                                  ]),
                             ),
                           );
                         }),
