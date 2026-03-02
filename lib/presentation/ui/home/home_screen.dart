@@ -68,6 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ValueNotifier<String>('00:00:00');
   Timer? _punchRemainingTimer;
 
+  // notification state for work‑hour completion
+  bool _workNotificationScheduled = false;
+  static const int _workNotificationId = 100;
+
   @override
   void dispose() {
     _punchRemainingTimer?.cancel();
@@ -82,10 +86,47 @@ class _HomeScreenState extends State<HomeScreen> {
       _remainingTimeValue.value = '00:00:00';
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
+      if (_workNotificationScheduled) {
+        FirbaseConfig.cancelNotification(_workNotificationId);
+        _workNotificationScheduled = false;
+      }
       return;
     }
 
     if (_punchRemainingTimer != null) return;
+
+    // compute target time once and schedule notification
+    final now = DateTime.now();
+    final punchInParts = punch1Time.split(':');
+    if (punchInParts.length >= 3) {
+      final punchInToday = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(punchInParts[0]),
+          int.parse(punchInParts[1]),
+          int.parse(punchInParts[2]));
+
+      var targetTime = punchInToday.add(isRamdanMonth()
+          ? const Duration(hours: 5, minutes: 30)
+          : const Duration(hours: 8));
+      final limitTime = isRamdanMonth()
+          ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+          : DateTime(now.year, now.month, now.day, 16, 0, 0);
+      if (targetTime.isAfter(limitTime)) {
+        targetTime = limitTime;
+      }
+
+      if (!_workNotificationScheduled) {
+        FirbaseConfig.scheduleLocalNotification(
+          id: _workNotificationId,
+          title: context.string.workNotificationTitle,
+          body: context.string.workNotificationBody,
+          scheduledDate: targetTime,
+        );
+        _workNotificationScheduled = true;
+      }
+    }
 
     _punchRemainingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
@@ -120,9 +161,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _remainingTimeValue.value = '00:00:00';
         timer.cancel();
         _punchRemainingTimer = null;
-        FirbaseConfig.showLocalNotification(
-            context.string.workNotificationTitle,
-            context.string.workNotificationBody);
+        // direct show in case the scheduled notification failed or app is
+        // foreground – scheduled notification may also fire around this time
+        // FirbaseConfig.showLocalNotification(
+        //     context.string.workNotificationTitle,
+        //     context.string.workNotificationBody);
       } else {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));

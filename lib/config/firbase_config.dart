@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -38,6 +41,21 @@ class FirbaseConfig {
   static String firbaseToken = '';
   static ValueNotifier<Map<String, dynamic>?> onFirbaseMessageOpened =
       ValueNotifier(null);
+
+  /// initialize timezone database used by flutter_local_notifications
+  ///
+  /// this must be called once before scheduling any notifications.
+  static void _configureLocalTimeZone() {
+    try {
+      tz.initializeTimeZones();
+      final String timeZoneName = tz.local.name;
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+    } catch (_) {
+      // ignore errors; if timezone package isn't available scheduling will
+      // still fall back to system default but might be off by an hour.
+    }
+  }
+
   Future<void> initFirbaseMessaging() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -79,7 +97,7 @@ class FirbaseConfig {
 
   static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-  initFlutterLocalNotifications() {
+  void initFlutterLocalNotifications() {
     // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -114,6 +132,9 @@ class FirbaseConfig {
         ConstantConfig.onFCMMessageReceived.value = {'data': message.data};
       }
     });
+
+    // make sure timezone database is initialised so scheduled notifications work
+    _configureLocalTimeZone();
 
     var android =
         const AndroidInitializationSettings('@mipmap/ic_app_notification');
@@ -171,5 +192,83 @@ class FirbaseConfig {
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
     await flutterLocalNotificationsPlugin?.show(
         DateTime.now().millisecond, title, body, platformChannelSpecifics);
+  }
+
+  /// schedule a notification at [scheduledDate]
+  static Future<void> scheduleLocalNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+  }) async {
+    if (flutterLocalNotificationsPlugin == null) {
+      FirbaseConfig().initFlutterLocalNotifications();
+    }
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'local_notification_channel_id',
+      'Local Notification',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      icon: "@mipmap/ic_launcher",
+      playSound: true,
+    );
+    const iOSDetails = DarwinNotificationDetails();
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidDetails, iOS: iOSDetails);
+
+    if (scheduledDate.isBefore(DateTime.now())) {
+      await flutterLocalNotificationsPlugin?.show(
+          id, title, body, platformChannelSpecifics);
+      return;
+    }
+
+    try {
+      await flutterLocalNotificationsPlugin?.zonedSchedule(
+        id,
+        title,
+        body,
+        tz.TZDateTime.from(scheduledDate, tz.local),
+        platformChannelSpecifics,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      );
+    } on PlatformException catch (e) {
+      // On Android 12+/13+ exact alarms may require permission. If the
+      // permission is not granted, fall back to an inexact schedule so the
+      // notification will still fire approximately at the requested time.
+      if (e.code == 'exact_alarms_not_permitted') {
+        try {
+          await flutterLocalNotificationsPlugin?.zonedSchedule(
+            id,
+            title,
+            body,
+            tz.TZDateTime.from(scheduledDate, tz.local),
+            platformChannelSpecifics,
+            androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+            matchDateTimeComponents: DateTimeComponents.dateAndTime,
+          );
+        } catch (_) {
+          // Last resort: show immediately if scheduling fails.
+          await flutterLocalNotificationsPlugin?.show(
+              id, title, body, platformChannelSpecifics);
+        }
+      } else {
+        rethrow;
+      }
+    } catch (_) {
+      // Any other error: show immediately as a fallback.
+      await flutterLocalNotificationsPlugin?.show(
+          id, title, body, platformChannelSpecifics);
+    }
+  }
+
+  static Future<void> cancelNotification(int id) async {
+    await flutterLocalNotificationsPlugin?.cancel(id);
+  }
+
+  static Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin?.cancelAll();
   }
 }

@@ -63,6 +63,7 @@ dependencies:
   firebase_core: ^4.1.1
   firebase_messaging: ^16.0.2
   flutter_local_notifications: ^19.4.2
+  timezone: ^0.10.0
   package_info_plus: ^8.3.0
   flutter_app_badge_control: ^0.0.2
   geocoding: ^4.0.0
