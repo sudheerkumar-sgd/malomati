@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
+import 'package:malomati/presentation/ui/faq/faq_screen.dart';
 import 'package:malomati/presentation/ui/home/widgets/call_confirmation.dart';
 import 'package:malomati/presentation/ui/more/about_malomati.dart';
 import 'package:malomati/presentation/ui/more/hr_government_law.dart';
@@ -565,6 +566,46 @@ class MoreScreen extends StatelessWidget {
                           ),
                           Text(
                             context.string.aboutMalomati,
+                            style: context.textFontWeight400
+                                .onColor(context.resources.color.textColor)
+                                .onFontSize(context.resources.fontSize.dp15),
+                          ),
+                          const Spacer(),
+                        ]),
+                      ),
+                      SizedBox(
+                        height: context.resources.dimen.dp15,
+                      ),
+                      Container(
+                        color: context.resources.color.colorD6D6D6,
+                        height: 0.5,
+                      ),
+                      SizedBox(
+                        height: context.resources.dimen.dp15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          // Navigator.of(context, rootNavigator: false).pushNamed(
+                          //   AboutMalomati.route,
+                          // );
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: FaqScreen(),
+                            ),
+                          );
+                        },
+                        child: Row(children: [
+                          ImageWidget(
+                                  path: DrawableAssets.icInfoCircle,
+                                  backgroundTint: resources.iconBgColor)
+                              .loadImage,
+                          SizedBox(
+                            width: resources.dimen.dp10,
+                          ),
+                          Text(
+                            'FAQ',
                             style: context.textFontWeight400
                                 .onColor(context.resources.color.textColor)
                                 .onFontSize(context.resources.fontSize.dp15),

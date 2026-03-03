@@ -14,6 +14,7 @@ void main() async {
   FirbaseConfig().initFirbaseMessaging();
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
+  await Hive.openBox('chatBox');
   FlavorConfig(
     flavor: Flavor.DEVELOPMENT,
     values: FlavorValues(baseUrl: baseUrlProduction),
