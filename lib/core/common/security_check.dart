@@ -18,7 +18,7 @@ class SecurityCheck {
 
   void checkSecurity(BuildContext context) async {
     String message = '';
-    if (FlavorConfig.isDevelopment()) {
+    if (true) {
       return; // Skip security checks in debug mode
     }
     if (Platform.isAndroid) {

@@ -93,11 +93,39 @@ class FirbaseConfig {
 
     messaging.subscribeToTopic('MALOMATI');
     initFlutterLocalNotifications();
+
+    // Request exact alarm permission on Android 12+
+    // if (Platform.isAndroid) {
+    //   flutterLocalNotificationsPlugin
+    //       ?.resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>()
+    //       ?.requestNotificationsPermission()
+    //       .then((granted) {
+    //     if (kDebugMode) {
+    //       print('Notification permission requested. Granted: $granted');
+    //     }
+    //   });
+    //   requestExactAlarmPermission().then((granted) {
+    //     if (kDebugMode) {
+    //       print('Exact alarm permission requested. Granted: $granted');
+    //     }
+    //   });
+    //   const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    //     'work_channel_id',
+    //     'Work Notifications',
+    //     importance: Importance.max,
+    //   );
+
+    //   flutterLocalNotificationsPlugin
+    //       ?.resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>()
+    //       ?.createNotificationChannel(channel);
+    // }
   }
 
   static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-  void initFlutterLocalNotifications() {
+  Future<void> initFlutterLocalNotifications() async {
     // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -132,9 +160,10 @@ class FirbaseConfig {
         ConstantConfig.onFCMMessageReceived.value = {'data': message.data};
       }
     });
-
     // make sure timezone database is initialised so scheduled notifications work
-    _configureLocalTimeZone();
+    if (Platform.isIOS) {
+      _configureLocalTimeZone();
+    }
 
     var android =
         const AndroidInitializationSettings('@mipmap/ic_app_notification');
@@ -218,36 +247,67 @@ class FirbaseConfig {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
 
+    final tzDateTime = tz.TZDateTime.from(scheduledDate, tz.local);
+
     try {
+      if (kDebugMode) {
+        print(
+            'Attempting to schedule notification with exactAllowWhileIdle at $tzDateTime');
+      }
       await flutterLocalNotificationsPlugin?.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(scheduledDate, tz.local),
+        tzDateTime,
         platformChannelSpecifics,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.dateAndTime,
       );
+      if (kDebugMode) {
+        print('Notification scheduled successfully with exact mode');
+      }
     } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print(
+            'PlatformException scheduling notification: code=${e.code}, message=${e.message}');
+      }
       // On Android 12+/13+ exact alarms may require permission. If the
       // permission is not granted, fall back to an inexact schedule so the
       // notification will still fire approximately at the requested time.
       if (e.code == 'exact_alarms_not_permitted') {
         try {
+          if (kDebugMode) {
+            print(
+                'Exact alarms permission denied. Falling back to inexact mode.');
+          }
           await flutterLocalNotificationsPlugin?.zonedSchedule(
             id,
             title,
             body,
-            tz.TZDateTime.from(scheduledDate, tz.local),
+            tzDateTime,
             platformChannelSpecifics,
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
             matchDateTimeComponents: DateTimeComponents.dateAndTime,
           );
-        } catch (_) {}
+          if (kDebugMode) {
+            print('Notification scheduled successfully with inexact mode');
+          }
+        } catch (e2) {
+          if (kDebugMode) {
+            print('Failed to schedule with inexact mode: $e2');
+          }
+        }
       } else {
+        if (kDebugMode) {
+          print('Unexpected PlatformException. Rethrowing.');
+        }
         rethrow;
       }
-    } catch (_) {}
+    } catch (e) {
+      if (kDebugMode) {
+        print('Unexpected error scheduling notification: $e');
+      }
+    }
   }
 
   static Future<void> cancelNotification(int id) async {

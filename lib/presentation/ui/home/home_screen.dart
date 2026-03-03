@@ -117,8 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (targetTime.isAfter(limitTime)) {
         targetTime = limitTime;
       }
-
-      if (!_workNotificationScheduled && Platform.isIOS) {
+      final diff = targetTime.difference(now);
+      if (!diff.isNegative && !_workNotificationScheduled && Platform.isIOS) {
         FirbaseConfig.cancelNotification(_workNotificationId);
         FirbaseConfig.scheduleLocalNotification(
           id: _workNotificationId,
