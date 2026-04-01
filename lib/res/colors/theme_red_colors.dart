@@ -96,4 +96,10 @@ class ThemeRedColors implements BaseColors {
 
   @override
   Color get colorLightBg => const Color(0xffF8F4F4);
+
+  @override
+  Color get colorTimerGradientEnd => Color.fromARGB(255, 81, 12, 12);
+
+  @override
+  Color get colorTimerGradientStart => Color.fromARGB(255, 195, 38, 38);
 }

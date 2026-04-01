@@ -58,4 +58,8 @@ abstract class BaseColors {
   Color get colorOrangeEB920C;
 
   Color get colorLightBg;
+
+  Color get colorTimerGradientStart;
+
+  Color get colorTimerGradientEnd;
 }

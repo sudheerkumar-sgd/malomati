@@ -946,8 +946,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               gradientBegin: Alignment.topLeft,
                               gradientEnd: Alignment.topRight,
                               gradientColors: [
-                                context.resources.color.viewBgColorLight,
-                                context.resources.color.viewBgColor,
+                                context.resources.color.colorTimerGradientStart,
+                                context.resources.color.colorTimerGradientEnd,
                               ],
                             ).bottomCornerGradientBox,
                             child: Text.rich(

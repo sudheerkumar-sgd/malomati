@@ -96,4 +96,10 @@ class ThemePeachColors implements BaseColors {
 
   @override
   Color get colorLightBg => const Color(0xffF8F4F4);
+
+  @override
+  Color get colorTimerGradientEnd => Color.fromRGBO(135, 39, 38, 0.3);
+
+  @override
+  Color get colorTimerGradientStart => Color.fromRGBO(135, 39, 38, 0.9);
 }

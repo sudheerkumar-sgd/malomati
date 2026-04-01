@@ -96,4 +96,10 @@ class ThemeBlueColors implements BaseColors {
 
   @override
   Color get colorLightBg => const Color.fromARGB(255, 235, 242, 248);
+
+  @override
+  Color get colorTimerGradientEnd => Color(0xff0a285c);
+
+  @override
+  Color get colorTimerGradientStart => Color(0xff1451b8);
 }
