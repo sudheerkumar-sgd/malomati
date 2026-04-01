@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
@@ -90,8 +91,8 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
     var resources = context.resources;
     final approvalDetails = widget.data;
 
-    return BlocProvider(
-      create: (context) => _servicesBloc,
+    return BlocProvider<ServicesBloc>.value(
+      value: _servicesBloc,
       child: Container(
         padding: EdgeInsets.all(resources.dimen.dp17),
         decoration: BackgroundBoxDecoration(
@@ -135,13 +136,15 @@ class _ItemFinanceApprovalsState extends State<ItemFinanceInvApprovals> {
                       noticationBody =
                           'Your request Approved by the ${context.userDB.get(userFullNameUsKey)}';
                   }
-                  _servicesBloc.sendPushNotifications(
-                      requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
-                          title: 'HR Approval',
-                          body: noticationBody,
-                          type: '',
-                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                  if (FlavorConfig.isProduction()) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
+                            title: 'HR Approval',
+                            body: noticationBody,
+                            type: '',
+                            notificationId: '${widget.data.nOTIFICATIONID}'));
+                  }
                 }
                 widget.callBack('${widget.data.nOTIFICATIONID ?? ''}', context);
               } else {

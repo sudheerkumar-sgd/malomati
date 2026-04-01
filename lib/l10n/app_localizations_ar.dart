@@ -582,7 +582,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lastUpdateText => 'آخر تحديث كان في';
 
   @override
-  String get developedBy => 'تم تطويره بواسطة أم القيوين الذكية';
+  String get developedBy => 'تم تطويره بواسطة أم القيوين الرقمية';
 
   @override
   String get version => 'الإصدار';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
@@ -88,8 +89,8 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
   Widget build(BuildContext context) {
     var resources = context.resources;
     final approvalDetails = widget.data;
-    return BlocProvider(
-      create: (context) => _servicesBloc,
+    return BlocProvider<ServicesBloc>.value(
+      value: _servicesBloc,
       child: Container(
         padding: EdgeInsets.all(resources.dimen.dp17),
         decoration: BackgroundBoxDecoration(
@@ -111,13 +112,15 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                 for (int i = 0;
                     i < (state.apiEntity.entity?.aPPROVERSLIST.length ?? 0);
                     i++) {
-                  _servicesBloc.sendPushNotifications(
-                      requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.aPPROVERSLIST[i] ?? '',
-                          title: 'Finance Approval',
-                          body: 'Finance Approval required your action!',
-                          type: fcmTypeFinanceApprovals,
-                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                  if (FlavorConfig.isProduction()) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.apiEntity.entity?.aPPROVERSLIST[i] ?? '',
+                            title: 'Finance Approval',
+                            body: 'Finance Approval required your action!',
+                            type: fcmTypeFinanceApprovals,
+                            notificationId: '${widget.data.nOTIFICATIONID}'));
+                  }
                 }
                 if ((state.apiEntity.entity?.cREATORUSERNAME ?? '')
                     .isNotEmpty) {
@@ -133,13 +136,15 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePOApprovals> {
                       noticationBody =
                           'Your request Approved by the ${context.userDB.get(userFullNameUsKey)}';
                   }
-                  _servicesBloc.sendPushNotifications(
-                      requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
-                          title: 'HR Approval',
-                          body: noticationBody,
-                          type: '',
-                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                  if (FlavorConfig.isProduction()) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
+                            title: 'HR Approval',
+                            body: noticationBody,
+                            type: '',
+                            notificationId: '${widget.data.nOTIFICATIONID}'));
+                  }
                 }
                 widget.callBack('${widget.data.nOTIFICATIONID ?? ''}', context);
               } else {

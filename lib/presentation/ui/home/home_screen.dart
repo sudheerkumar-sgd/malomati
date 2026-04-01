@@ -108,11 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      var targetTime = punchInToday.add(isRamdanMonth()
-          ? const Duration(hours: 5, minutes: 30)
+      // var targetTime = punchInToday.add(isRamdanMonth()
+      //     ? const Duration(hours: 5, minutes: 30)
+      //     : now.day == 6 ? const Duration(hours: 4, minutes: 30) : const Duration(hours: 8));
+      // final limitTime = isRamdanMonth()
+      //     ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+      //     : now.day == 6 ? DateTime(now.year, now.month, now.day, 12, 30, 0) : DateTime(now.year, now.month, now.day, 16, 0, 0);
+      var targetTime = punchInToday.add(now.weekday == DateTime.friday
+          ? const Duration(hours: 4, minutes: 30)
           : const Duration(hours: 8));
-      final limitTime = isRamdanMonth()
-          ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+      final limitTime = now.weekday == DateTime.friday
+          ? DateTime(now.year, now.month, now.day, 12, 30, 0)
           : DateTime(now.year, now.month, now.day, 16, 0, 0);
       if (targetTime.isAfter(limitTime)) {
         targetTime = limitTime;
@@ -147,11 +153,17 @@ class _HomeScreenState extends State<HomeScreen> {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      var targetTime = punchInToday.add(isRamdanMonth()
-          ? const Duration(hours: 5, minutes: 30)
+      // var targetTime = punchInToday.add(isRamdanMonth()
+      //     ? const Duration(hours: 5, minutes: 30)
+      //     : const Duration(hours: 8));
+      // final limitTime = isRamdanMonth()
+      //     ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+      //     : DateTime(now.year, now.month, now.day, 16, 0, 0);
+      var targetTime = punchInToday.add(now.weekday == DateTime.friday
+          ? const Duration(hours: 4, minutes: 30)
           : const Duration(hours: 8));
-      final limitTime = isRamdanMonth()
-          ? DateTime(now.year, now.month, now.day, 15, 30, 0)
+      final limitTime = now.weekday == DateTime.friday
+          ? DateTime(now.year, now.month, now.day, 12, 30, 0)
           : DateTime(now.year, now.month, now.day, 16, 0, 0);
 
       if (targetTime.isAfter(limitTime)) {

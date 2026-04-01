@@ -9,7 +9,6 @@ import 'package:malomati/presentation/ui/services/widgets/item_finance_payroll_a
 import 'package:malomati/presentation/ui/services/widgets/item_finance_po_approvals.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_pr_approvals.dart';
 import 'package:malomati/presentation/ui/widgets/tab_buttons_widget.dart';
-import 'package:malomati/res/resources.dart';
 import '../../../config/constant_config.dart';
 import '../../../injection_container.dart';
 import '../../bloc/services/services_bloc.dart';
@@ -23,65 +22,89 @@ enum FinanceApprovalType {
   invoice;
 }
 
-class FinanceApprovalsScreen extends StatelessWidget {
+class FinanceApprovalsScreen extends StatefulWidget {
   static const String route = '/FinanceApprovalsScreen';
   final int index;
-  FinanceApprovalsScreen({this.index = 0, super.key});
-  late Resources resources;
+  const FinanceApprovalsScreen({this.index = 0, super.key});
+
+  @override
+  State<FinanceApprovalsScreen> createState() => _FinanceApprovalsScreenState();
+}
+
+class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
   final _servicesBloc = sl<ServicesBloc>();
-  ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
-  final List<FinanceApprovalEntity> _financeNotificationList =
+  late ValueNotifier<int> selectedButtonIndex;
+  List<FinanceApprovalEntity> _financeNotificationList =
       List.empty(growable: true);
-  final ValueNotifier<bool> _onRefreshList = ValueNotifier(false);
   final ValueNotifier<List<Map>> _buttons = ValueNotifier([]);
   String userName = '';
-  _onActionClicked(String id, BuildContext context) {
-    // final list = _notificationList.value;
-    // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
-    // list.removeAt(index);
-    // _notificationList.value = [];
-    // _notificationList.value = list;
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) => FinanceApprovalsScreen(
-    //             index: selectedButtonIndex.value,
-    //           )),
-    // );
+  String noNotificationText = '';
+  bool _isSilentLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedButtonIndex = ValueNotifier<int>(widget.index);
+    selectedButtonIndex.addListener(_fetchData);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userName = context.userDB.get(userNameKey, defaultValue: '');
+      _fetchData();
+      _fetchCounts();
+    });
+  }
+
+  @override
+  void dispose() {
+    selectedButtonIndex.removeListener(_fetchData);
+    selectedButtonIndex.dispose();
+    _servicesBloc.close();
+    _buttons.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchData() async {
     int value = selectedButtonIndex.value;
-    _servicesBloc.getFinanceApprovalList(
+    setState(() {
+      noNotificationText = '';
+    });
+    await _servicesBloc.getFinanceApprovalList(
         apiUrl: value == 0
             ? financePOApiUrl
             : value == 1
                 ? financePRApiUrl
-                : financeInvoiceApiUrl,
+                : value == 2
+                    ? financeInvoiceApiUrl
+                    : payrollApiUrl,
         requestParams: {'USER_NAME': userName});
+  }
+
+  void _fetchCounts() {
+    _servicesBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
+  }
+
+  _onActionClicked(String id, BuildContext context) {
+    _fetchData();
+    _fetchCounts();
   }
 
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
+    var resources = context.resources;
     _buttons.value = [
       {'name': 'PO', 'count': ConstantConfig.financePOApprovalCount},
       {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
       {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount},
       {'name': 'Payroll', 'count': ConstantConfig.financePayrollApprovalCount},
     ];
-    selectedButtonIndex.value = index;
-    var noNotificationText = '';
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    Future.delayed(const Duration(milliseconds: 50), () {
-      _servicesBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
-    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
-        body: BlocProvider(
-          create: (context) => _servicesBloc,
+        body: BlocProvider<ServicesBloc>.value(
+          value: _servicesBloc,
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                if (!_isSilentLoading) Dialogs.loader(context);
               } else if (state is OnRequestsCountSuccess) {
                 ConstantConfig.hrApprovalCount =
                     state.requestsCountEntity.hRCOUNT ?? 0;
@@ -112,13 +135,18 @@ class FinanceApprovalsScreen extends StatelessWidget {
                   },
                 ];
               } else if (state is OnFinanceApprovalsListSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
-                noNotificationText = context.string.noHrRequests;
-                _financeNotificationList.clear();
-                _financeNotificationList.addAll(state.financeApprovalsList);
-                _onRefreshList.value = !_onRefreshList.value;
+                if (!_isSilentLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
+                setState(() {
+                  noNotificationText = context.string.noHrRequests;
+                  _financeNotificationList =
+                      List.from(state.financeApprovalsList);
+                });
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (!_isSilentLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -149,67 +177,80 @@ class FinanceApprovalsScreen extends StatelessWidget {
                   ValueListenableBuilder(
                       valueListenable: selectedButtonIndex,
                       builder: (context, value, widget) {
-                        noNotificationText = '';
-                        _servicesBloc.getFinanceApprovalList(
-                            apiUrl: value == 0
-                                ? financePOApiUrl
-                                : value == 1
-                                    ? financePRApiUrl
-                                    : value == 2
-                                        ? financeInvoiceApiUrl
-                                        : payrollApiUrl,
-                            requestParams: {'USER_NAME': userName});
                         return Expanded(
-                          child: ValueListenableBuilder(
-                              valueListenable: _onRefreshList,
-                              builder: (context, onRefreshList, child) {
-                                return (_financeNotificationList.isEmpty &&
-                                        noNotificationText.isNotEmpty)
-                                    ? Center(
-                                        child: Text(
-                                          noNotificationText,
-                                          style: context.textFontWeight600,
-                                        ),
-                                      )
-                                    : ListView.separated(
-                                        controller: ScrollController(),
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder: (context, index) => value ==
-                                                0
-                                            ? ItemFinancePOApprovals(
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              _isSilentLoading = true;
+                              _fetchCounts();
+                              await _fetchData();
+                              _isSilentLoading = false;
+                            },
+                            child: (_financeNotificationList.isEmpty &&
+                                    noNotificationText.isNotEmpty)
+                                ? SingleChildScrollView(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.5,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        noNotificationText,
+                                        style: context.textFontWeight600,
+                                      ),
+                                    ),
+                                  )
+                                : ListView.separated(
+                                    scrollDirection: Axis.vertical,
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) => value == 0
+                                        ? ItemFinancePOApprovals(
+                                            key: ValueKey(
+                                                _financeNotificationList[index]
+                                                    .nOTIFICATIONID),
+                                            data:
+                                                _financeNotificationList[index],
+                                            callBack: _onActionClicked,
+                                          )
+                                        : value == 1
+                                            ? ItemFinancePRApprovals(
+                                                key: ValueKey(
+                                                    _financeNotificationList[
+                                                            index]
+                                                        .nOTIFICATIONID),
                                                 data: _financeNotificationList[
                                                     index],
                                                 callBack: _onActionClicked,
                                               )
-                                            : value == 1
-                                                ? ItemFinancePRApprovals(
+                                            : value == 2
+                                                ? ItemFinanceInvApprovals(
+                                                    key: ValueKey(
+                                                        _financeNotificationList[
+                                                                index]
+                                                            .nOTIFICATIONID),
                                                     data:
                                                         _financeNotificationList[
                                                             index],
                                                     callBack: _onActionClicked,
                                                   )
-                                                : value == 2
-                                                    ? ItemFinanceInvApprovals(
-                                                        data:
-                                                            _financeNotificationList[
-                                                                index],
-                                                        callBack:
-                                                            _onActionClicked,
-                                                      )
-                                                    : ItemFinancePayrollApprovals(
-                                                        data:
-                                                            _financeNotificationList[
-                                                                index],
-                                                        callBack:
-                                                            _onActionClicked,
-                                                      ),
-                                        separatorBuilder: (context, index) =>
-                                            SizedBox(
-                                              height: resources.dimen.dp20,
-                                            ),
-                                        itemCount:
-                                            _financeNotificationList.length);
-                              }),
+                                                : ItemFinancePayrollApprovals(
+                                                    key: ValueKey(
+                                                        _financeNotificationList[
+                                                                index]
+                                                            .nOTIFICATIONID),
+                                                    data:
+                                                        _financeNotificationList[
+                                                            index],
+                                                    callBack: _onActionClicked,
+                                                  ),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                          height: resources.dimen.dp20,
+                                        ),
+                                    itemCount: _financeNotificationList.length),
+                          ),
                         );
                       }),
                 ],

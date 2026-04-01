@@ -24,7 +24,7 @@ const departments = [
     "IsSuccess": true,
     "Message": "Success",
     "Dept_Name_EN": "Digital Umm Al Quwain",
-    "Dept_Name_AR": "ام القيوين الذكية",
+    "Dept_Name_AR": "أم القيوين الرقمية",
     "PAYROLL_ID": 63
   },
   {

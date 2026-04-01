@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
@@ -68,8 +69,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
 
   @override
   void dispose() {
-    super.dispose();
     _servicesBloc.close();
+    super.dispose();
     _isExpanded.dispose();
     _notificationDetails.dispose();
   }
@@ -77,9 +78,8 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   @override
   Widget build(BuildContext context) {
     var resources = context.resources;
-    _servicesBloc.getLeaveTypes(requestParams: {});
-    return BlocProvider(
-      create: (context) => _servicesBloc,
+    return BlocProvider<ServicesBloc>.value(
+      value: _servicesBloc,
       child: Container(
         padding: EdgeInsets.all(resources.dimen.dp17),
         decoration: BackgroundBoxDecoration(
@@ -90,7 +90,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
           listener: (context, state) {
             // if (state is OnServicesLoading) {
             //   Dialogs.loader(context);
-            // } else 
+            // } else
             if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
             } else if (state is OnsubmitHrApprovalSuccess) {
@@ -121,13 +121,15 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                       noticationBody =
                           'Your request Approved by the ${context.userDB.get(userFullNameUsKey)}';
                   }
-                  _servicesBloc.sendPushNotifications(
-                      requestParams: getFCMMessageData(
-                          to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
-                          title: 'HR Approval',
-                          body: noticationBody,
-                          type: '',
-                          notificationId: '${widget.data.nOTIFICATIONID}'));
+                  if (FlavorConfig.isProduction()) {
+                    _servicesBloc.sendPushNotifications(
+                        requestParams: getFCMMessageData(
+                            to: state.apiEntity.entity?.cREATORUSERNAME ?? '',
+                            title: 'HR Approval',
+                            body: noticationBody,
+                            type: '',
+                            notificationId: '${widget.data.nOTIFICATIONID}'));
+                  }
                 }
                 widget.callBack(widget.data.nOTIFICATIONID ?? '', context);
               } else {

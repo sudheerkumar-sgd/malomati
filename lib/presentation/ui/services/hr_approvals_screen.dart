@@ -1,66 +1,93 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/domain/entities/hr_approval_entity.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_hr_approvals.dart';
 
+import '../../../config/constant_config.dart';
 import '../../../injection_container.dart';
 import '../../bloc/services/services_bloc.dart';
 import '../utils/dialogs.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class HrApprovalsScreen extends StatelessWidget {
+class HrApprovalsScreen extends StatefulWidget {
+  const HrApprovalsScreen({super.key});
+
+  @override
+  State<HrApprovalsScreen> createState() => _HrApprovalsScreenState();
+}
+
+class _HrApprovalsScreenState extends State<HrApprovalsScreen> {
   final _servicesBloc = sl<ServicesBloc>();
-  final List<HrApprovalEntity> _notificationList = List.empty(growable: true);
-  final ValueNotifier<bool> _onRefreshList =
-      ValueNotifier(false);
-
+  List<HrApprovalEntity> _notificationList = List.empty(growable: true);
+  String noNotificationText = '';
   String userName = '';
+  bool _isSilentLoading = false;
 
-  HrApprovalsScreen({super.key});
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userName = context.userDB.get(userNameKey, defaultValue: '');
+      _fetchData();
+    });
+  }
+
+  @override
+  void dispose() {
+    _servicesBloc.close();
+    super.dispose();
+  }
+
+  Future<void> _fetchData() async {
+    await _servicesBloc
+        .getHrApprovalsList(requestParams: {'USER_NAME': userName});
+  }
+
   _onActionClicked(String id, BuildContext context) {
-    // final list = _notificationList.value;
-    // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
-    // list.removeAt(index);
-    // _notificationList.value = [];
-    // _notificationList.value = list;
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => HrApprovalsScreen()),
-    // );
-    _servicesBloc.getHrApprovalsList(requestParams: {'USER_NAME': userName});
+    _fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    var noNotificationText = '';
     var resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    Timer(const Duration(milliseconds: 50), () {
-      _servicesBloc.getHrApprovalsList(requestParams: {'USER_NAME': userName});
-    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
-        body: BlocProvider<ServicesBloc>(
-          create: (context) => _servicesBloc,
+        body: BlocProvider<ServicesBloc>.value(
+          value: _servicesBloc,
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                if (!_isSilentLoading) Dialogs.loader(context);
               } else if (state is OnHrApprovalsListSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
-                noNotificationText = context.string.noHrRequests;
-                _notificationList.clear();
-                _notificationList.addAll(state.hrApprovalsList);
-                _onRefreshList.value = !_onRefreshList.value;
+                if (!_isSilentLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
+                setState(() {
+                  noNotificationText = context.string.noHrRequests;
+                  _notificationList = List.from(state.hrApprovalsList);
+                });
+                _servicesBloc
+                    .getRequestsCount(requestParams: {'USER_NAME': userName});
+              } else if (state is OnRequestsCountSuccess) {
+                ConstantConfig.hrApprovalCount =
+                    state.requestsCountEntity.hRCOUNT ?? 0;
+                ConstantConfig.financePOApprovalCount =
+                    state.requestsCountEntity.pOCOUNT ?? 0;
+                ConstantConfig.financePRApprovalCount =
+                    state.requestsCountEntity.pRCOUNT ?? 0;
+                ConstantConfig.financeINVApprovalCount =
+                    state.requestsCountEntity.iNVCOUNT ?? 0;
+                ConstantConfig.isApprovalCountChange.value =
+                    !(ConstantConfig.isApprovalCountChange.value);
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                if (!_isSilentLoading) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -78,31 +105,39 @@ class HrApprovalsScreen extends StatelessWidget {
                     height: context.resources.dimen.dp20,
                   ),
                   Expanded(
-                    child: ValueListenableBuilder(
-                        valueListenable: _onRefreshList,
-                        builder: (context, onRefreshList, child) {
-                          return (_notificationList.isEmpty &&
-                                  noNotificationText.isNotEmpty)
-                              ? Center(
-                                  child: Text(
-                                    noNotificationText,
-                                    style: context.textFontWeight600,
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        _isSilentLoading = true;
+                        await _fetchData();
+                        _isSilentLoading = false;
+                      },
+                      child: (_notificationList.isEmpty &&
+                              noNotificationText.isNotEmpty)
+                          ? SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  noNotificationText,
+                                  style: context.textFontWeight600,
+                                ),
+                              ),
+                            )
+                          : ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) => ItemHRApprovals(
+                                    key: ValueKey(_notificationList[index]
+                                        .nOTIFICATIONID),
+                                    data: _notificationList[index],
+                                    callBack: _onActionClicked,
                                   ),
-                                )
-                              : ListView.separated(
-                                  controller: ScrollController(),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) =>
-                                      ItemHRApprovals(
-                                        data: _notificationList[index],
-                                        callBack: _onActionClicked,
-                                      ),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                        height: resources.dimen.dp20,
-                                      ),
-                                  itemCount: _notificationList.length);
-                        }),
+                              separatorBuilder: (context, index) => SizedBox(
+                                    height: resources.dimen.dp20,
+                                  ),
+                              itemCount: _notificationList.length),
+                    ),
                   ),
                 ],
               ),
