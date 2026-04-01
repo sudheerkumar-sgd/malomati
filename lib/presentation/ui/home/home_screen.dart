@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
         targetTime = limitTime;
       }
       final diff = targetTime.difference(now);
-      if (!diff.isNegative && !_workNotificationScheduled && Platform.isIOS) {
+      if (!diff.isNegative && !_workNotificationScheduled) {
         FirbaseConfig.cancelNotification(_workNotificationId);
         FirbaseConfig.scheduleLocalNotification(
           id: _workNotificationId,
@@ -946,8 +946,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               gradientBegin: Alignment.topLeft,
                               gradientEnd: Alignment.topRight,
                               gradientColors: [
-                                const Color.fromARGB(255, 195, 38, 38),
-                                const Color.fromARGB(255, 81, 12, 12),
+                                context.resources.color.viewBgColorLight,
+                                context.resources.color.viewBgColor,
                               ],
                             ).bottomCornerGradientBox,
                             child: Text.rich(

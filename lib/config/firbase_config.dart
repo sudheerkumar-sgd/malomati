@@ -92,35 +92,41 @@ class FirbaseConfig {
     );
 
     messaging.subscribeToTopic('MALOMATI');
-    initFlutterLocalNotifications();
+    await initFlutterLocalNotifications();
 
     // Request exact alarm permission on Android 12+
-    // if (Platform.isAndroid) {
-    //   flutterLocalNotificationsPlugin
-    //       ?.resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>()
-    //       ?.requestNotificationsPermission()
-    //       .then((granted) {
-    //     if (kDebugMode) {
-    //       print('Notification permission requested. Granted: $granted');
-    //     }
-    //   });
-    //   requestExactAlarmPermission().then((granted) {
-    //     if (kDebugMode) {
-    //       print('Exact alarm permission requested. Granted: $granted');
-    //     }
-    //   });
-    //   const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    //     'work_channel_id',
-    //     'Work Notifications',
-    //     importance: Importance.max,
-    //   );
+    if (Platform.isAndroid) {
+      flutterLocalNotificationsPlugin
+          ?.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission()
+          .then((granted) {
+        if (kDebugMode) {
+          print('Notification permission requested. Granted: $granted');
+        }
+      });
+      requestExactAlarmPermission().then((granted) {
+        if (kDebugMode) {
+          print('Exact alarm permission requested. Granted: $granted');
+        }
+      });
+      const AndroidNotificationChannel workChannel = AndroidNotificationChannel(
+        'work_channel_id',
+        'Work Notifications',
+        importance: Importance.max,
+      );
+      const AndroidNotificationChannel localChannel = AndroidNotificationChannel(
+        'local_notification_channel_id',
+        'Local Notification',
+        importance: Importance.max,
+      );
 
-    //   flutterLocalNotificationsPlugin
-    //       ?.resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>()
-    //       ?.createNotificationChannel(channel);
-    // }
+      final androidPlugin = flutterLocalNotificationsPlugin
+          ?.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      await androidPlugin?.createNotificationChannel(workChannel);
+      await androidPlugin?.createNotificationChannel(localChannel);
+    }
   }
 
   static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
@@ -161,9 +167,7 @@ class FirbaseConfig {
       }
     });
     // make sure timezone database is initialised so scheduled notifications work
-    if (Platform.isIOS) {
-      _configureLocalTimeZone();
-    }
+    _configureLocalTimeZone();
 
     var android =
         const AndroidInitializationSettings('@mipmap/ic_app_notification');
@@ -213,7 +217,7 @@ class FirbaseConfig {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
-      icon: "@mipmap/ic_launcher",
+      icon: "@mipmap/ic_app_notification",
       playSound: true,
     );
     const iOSDetails = DarwinNotificationDetails();
@@ -240,7 +244,7 @@ class FirbaseConfig {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
-      icon: "@mipmap/ic_launcher",
+      icon: "@mipmap/ic_app_notification",
       playSound: true,
     );
     const iOSDetails = DarwinNotificationDetails();
