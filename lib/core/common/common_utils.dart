@@ -17,6 +17,7 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../../data/model/leave_type_list_model.dart';
 
@@ -412,4 +413,12 @@ bool isRamdanMonth() {
   var date = DateTime.now().day;
   var month = DateTime.now().month;
   return (date > 18 && month == 2) || (date < 21 && month == 3);
+}
+
+void initWorkmanagerTask(Duration duration) {
+  Workmanager().registerOneOffTask(
+    'workhours-notification-task',
+    'workhoursNotification',
+    initialDelay: duration,
+  );
 }

@@ -95,38 +95,39 @@ class FirbaseConfig {
     await initFlutterLocalNotifications();
 
     // Request exact alarm permission on Android 12+
-    if (Platform.isAndroid) {
-      flutterLocalNotificationsPlugin
-          ?.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.requestNotificationsPermission()
-          .then((granted) {
-        if (kDebugMode) {
-          print('Notification permission requested. Granted: $granted');
-        }
-      });
-      requestExactAlarmPermission().then((granted) {
-        if (kDebugMode) {
-          print('Exact alarm permission requested. Granted: $granted');
-        }
-      });
-      const AndroidNotificationChannel workChannel = AndroidNotificationChannel(
-        'work_channel_id',
-        'Work Notifications',
-        importance: Importance.max,
-      );
-      const AndroidNotificationChannel localChannel = AndroidNotificationChannel(
-        'local_notification_channel_id',
-        'Local Notification',
-        importance: Importance.max,
-      );
+    // if (Platform.isAndroid) {
+    //   flutterLocalNotificationsPlugin
+    //       ?.resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>()
+    //       ?.requestNotificationsPermission()
+    //       .then((granted) {
+    //     if (kDebugMode) {
+    //       print('Notification permission requested. Granted: $granted');
+    //     }
+    //   });
+    //   requestExactAlarmPermission().then((granted) {
+    //     if (kDebugMode) {
+    //       print('Exact alarm permission requested. Granted: $granted');
+    //     }
+    //   });
+    //   const AndroidNotificationChannel workChannel = AndroidNotificationChannel(
+    //     'work_channel_id',
+    //     'Work Notifications',
+    //     importance: Importance.max,
+    //   );
+    //   const AndroidNotificationChannel localChannel =
+    //       AndroidNotificationChannel(
+    //     'local_notification_channel_id',
+    //     'Local Notification',
+    //     importance: Importance.max,
+    //   );
 
-      final androidPlugin = flutterLocalNotificationsPlugin
-          ?.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
-      await androidPlugin?.createNotificationChannel(workChannel);
-      await androidPlugin?.createNotificationChannel(localChannel);
-    }
+    //   final androidPlugin = flutterLocalNotificationsPlugin
+    //       ?.resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>();
+    //   await androidPlugin?.createNotificationChannel(workChannel);
+    //   await androidPlugin?.createNotificationChannel(localChannel);
+    // }
   }
 
   static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
@@ -167,7 +168,7 @@ class FirbaseConfig {
       }
     });
     // make sure timezone database is initialised so scheduled notifications work
-    _configureLocalTimeZone();
+    //_configureLocalTimeZone();
 
     var android =
         const AndroidInitializationSettings('@mipmap/ic_app_notification');
@@ -195,7 +196,7 @@ class FirbaseConfig {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
-      icon: "@mipmap/ic_launcher",
+      icon: "@mipmap/ic_app_notification",
       playSound: true,
     );
     const iOSDetails = DarwinNotificationDetails();
@@ -208,7 +209,7 @@ class FirbaseConfig {
 
   static Future<void> showLocalNotification(String title, String body) async {
     if (flutterLocalNotificationsPlugin == null) {
-      FirbaseConfig().initFlutterLocalNotifications();
+      await FirbaseConfig().initFlutterLocalNotifications();
     }
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -259,17 +260,15 @@ class FirbaseConfig {
             'Attempting to schedule notification with exactAllowWhileIdle at $tzDateTime');
       }
       await flutterLocalNotificationsPlugin?.zonedSchedule(
-        id,
-        title,
-        body,
-        tzDateTime,
-        platformChannelSpecifics,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        matchDateTimeComponents: DateTimeComponents.dateAndTime,
-      );
+          id, title, body, tzDateTime, platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle);
       if (kDebugMode) {
         print('Notification scheduled successfully with exact mode');
       }
+      final pending =
+          await flutterLocalNotificationsPlugin?.pendingNotificationRequests();
+      print(
+          "Pending notifications count: ${pending?.first.body} $tzDateTime ${DateTime.now()}");
     } on PlatformException catch (e) {
       if (kDebugMode) {
         print(

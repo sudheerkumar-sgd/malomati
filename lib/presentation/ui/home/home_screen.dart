@@ -30,6 +30,7 @@ import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
 import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _calculateRemainingTime(
-      BuildContext context, String? punch1Time, String? punch2Time) {
+      BuildContext context, String? punch1Time, String? punch2Time) async {
     if (punch1Time == null ||
         punch1Time.isEmpty ||
         (punch2Time != null && punch2Time.isNotEmpty)) {
@@ -88,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
       //if (_workNotificationScheduled) {
+      await Workmanager().cancelAll();
       FirbaseConfig.cancelNotification(_workNotificationId);
       _workNotificationScheduled = false;
       //}
@@ -125,13 +127,18 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       final diff = targetTime.difference(now);
       if (!diff.isNegative && !_workNotificationScheduled) {
-        FirbaseConfig.cancelNotification(_workNotificationId);
-        FirbaseConfig.scheduleLocalNotification(
-          id: _workNotificationId,
-          title: context.string.workNotificationTitle,
-          body: context.string.workNotificationBody,
-          scheduledDate: targetTime,
-        );
+        if (Platform.isAndroid) {
+          await Workmanager().cancelAll();
+          initWorkmanagerTask(diff);
+        } else {
+          FirbaseConfig.cancelNotification(_workNotificationId);
+          FirbaseConfig.scheduleLocalNotification(
+            id: _workNotificationId,
+            title: context.string.workNotificationTitle,
+            body: context.string.workNotificationBody,
+            scheduledDate: targetTime,
+          );
+        }
         _workNotificationScheduled = true;
       }
     }
@@ -177,11 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _punchRemainingTimer = null;
         // direct show in case the scheduled notification failed or app is
         // foreground – scheduled notification may also fire around this time
-        if (Platform.isAndroid) {
-          FirbaseConfig.showLocalNotification(
-              context.string.workNotificationTitle,
-              context.string.workNotificationBody);
-        }
+        // if (Platform.isAndroid) {
+        //   FirbaseConfig.showLocalNotification(
+        //       context.string.workNotificationTitle,
+        //       context.string.workNotificationBody);
+        // }
       } else {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
