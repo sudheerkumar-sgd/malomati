@@ -24,12 +24,19 @@ class CertificatesScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _jobTitleController = TextEditingController();
-  final TextEditingController _toController = TextEditingController();
+  final TextEditingController _toControllerEn = TextEditingController();
+  final TextEditingController _toControllerAr = TextEditingController();
+  final TextEditingController _fromDateController = TextEditingController();
   String? showSalary;
+  String? showEID;
   String userName = '';
 
   onShowSalarySelected(NameIdEntity? value) {
     showSalary = value?.id ?? '';
+  }
+
+  onShowEIDSelected(NameIdEntity? value) {
+    showEID = value?.id ?? '';
   }
 
   onSubmit(String clickedButton) {
@@ -41,8 +48,11 @@ class CertificatesScreen extends StatelessWidget {
   _submitCertificateRequest() {
     final certificateRequestModel = ApiRequestModel();
     certificateRequestModel.uSERNAME = userName;
-    certificateRequestModel.eNTITYNAME = _toController.text;
+    certificateRequestModel.eNTITYNAMEEN = _toControllerEn.text;
+    certificateRequestModel.eNTITYNAMEAR = _toControllerAr.text;
     certificateRequestModel.sHOWSALARY = showSalary;
+    certificateRequestModel.sHOWEID = showEID;
+    certificateRequestModel.fROMDATE = _fromDateController.text;
     _servicesBloc.submitServicesRequest(
         apiUrl: certificateApiUrl,
         requestParams: certificateRequestModel.toCertificateRequest());
@@ -58,6 +68,7 @@ class CertificatesScreen extends StatelessWidget {
     _jobTitleController.text = context.userDB.get(
         resources.isLocalEn ? userJobNameEnKey : userJobNameArKey,
         defaultValue: '');
+    _fromDateController.text = getDateByformat('dd-MM-yyyy', DateTime.now());
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -146,11 +157,34 @@ class CertificatesScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             RightIconTextWidget(
+                              isEnabled: false,
+                              height: resources.dimen.dp27,
+                              labelText: context.string.fromDate,
+                              textController: _fromDateController,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            RightIconTextWidget(
                               isEnabled: true,
                               height: resources.dimen.dp27,
-                              labelText: context.string.entityName,
-                              errorMessage: context.string.entityName,
-                              textController: _toController,
+                              maxLines: 1,
+                              textInputAction: TextInputAction.next,
+                              labelText: context.string.entityNameEn,
+                              errorMessage: context.string.entityNameEn,
+                              textController: _toControllerEn,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            RightIconTextWidget(
+                              isEnabled: true,
+                              height: resources.dimen.dp27,
+                              maxLines: 1,
+                              textInputAction: TextInputAction.next,
+                              labelText: context.string.entityNameAr,
+                              errorMessage: context.string.entityNameAr,
+                              textController: _toControllerAr,
                             ),
                             SizedBox(
                               height: resources.dimen.dp20,
@@ -161,6 +195,16 @@ class CertificatesScreen extends StatelessWidget {
                               labelText: context.string.showSalary,
                               errorMessage: context.string.showSalary,
                               callback: onShowSalarySelected,
+                            ),
+                            SizedBox(
+                              height: resources.dimen.dp20,
+                            ),
+                            DropDownWidget<NameIdEntity>(
+                              list: getDropDownYesNo(context),
+                              height: resources.dimen.dp27,
+                              labelText: context.string.showEID,
+                              errorMessage: context.string.showEID,
+                              callback: onShowEIDSelected,
                             ),
                           ],
                         ),

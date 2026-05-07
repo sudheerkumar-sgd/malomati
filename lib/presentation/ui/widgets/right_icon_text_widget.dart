@@ -13,6 +13,7 @@ class RightIconTextWidget extends StatelessWidget {
   final TextInputType? textInputType;
   final TextDirection? textDirection;
   final TextAlign? textAlign;
+  final TextInputAction? textInputAction;
   final TextEditingController? textController;
   final String? suffixIconPath;
   final int? maxLines;
@@ -32,6 +33,7 @@ class RightIconTextWidget extends StatelessWidget {
       this.textController,
       this.suffixIconPath,
       this.textInputType,
+      this.textInputAction,
       this.textDirection,
       this.textAlign,
       this.maxLines,
@@ -75,6 +77,7 @@ class RightIconTextWidget extends StatelessWidget {
             maxLines: maxLines,
             maxLength: maxLength,
             keyboardType: textInputType,
+            textInputAction: textInputAction,
             controller: textController,
             textAlignVertical: TextAlignVertical.center,
             focusNode: focusNode,

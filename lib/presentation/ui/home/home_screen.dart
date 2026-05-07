@@ -9,6 +9,7 @@ import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
+import 'package:malomati/core/managers/location_access_manager.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/dashboard_entity.dart';
@@ -69,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ValueNotifier<String> _remainingTimeValue =
       ValueNotifier<String>('00:00:00');
   Timer? _punchRemainingTimer;
+  final _locationAccessManager = sl<LocationAccessManager>();
 
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
@@ -243,6 +245,14 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      _locationAccessManager.loadLocationAccessDepartments();
+    });
   }
 
   @override

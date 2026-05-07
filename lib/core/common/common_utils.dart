@@ -210,7 +210,7 @@ List<NameIdEntity> getSalaryTypes(BuildContext context) {
   ];
 }
 
-logout(BuildContext context) {
+void logout(BuildContext context) {
   FirebaseMessaging.instance
       .unsubscribeFromTopic(context.userDB.get(userNameKey, defaultValue: 'a'));
   context.userDB.delete(isGuestKey);
@@ -219,6 +219,7 @@ logout(BuildContext context) {
   context.userDB.delete(userFullNameArKey);
   context.userDB.delete(isMaangerKey);
   context.userDB.delete(favoriteKey);
+  context.userDB.delete(locationAccessDepartments);
   Phoenix.rebirth(context);
 }
 

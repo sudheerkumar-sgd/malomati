@@ -4,8 +4,11 @@ class ApiRequestModel {
   String? cREATORUSERNAME;
 
   //Certificate REQUEST PARAMS
-  String? eNTITYNAME;
+  String? eNTITYNAMEEN;
+  String? eNTITYNAMEAR;
   String? sHOWSALARY;
+  String? sHOWEID;
+  String? fROMDATE;
 
   //THANKYOU REQUEST PARAMS
   String? dEPARTMENTNAME;
@@ -43,7 +46,9 @@ extension SourceModelExtension on ApiRequestModel {
   Map<String, dynamic> toCertificateRequest() => {
         "USER_NAME": uSERNAME,
         "CREATOR_USER_NAME": cREATORUSERNAME,
-        "ENTITY_NAME": eNTITYNAME,
+        "ENTITY_NAME_EN": eNTITYNAMEEN,
+        "ENTITY_NAME_AR": eNTITYNAMEAR,
+        "SHOW_EMIRATES_ID": sHOWEID,
         "SHOW_SALARY": sHOWSALARY,
       };
   Map<String, dynamic> toThankyouRequest() => {

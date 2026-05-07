@@ -411,10 +411,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get entityName => 'To (Organization Name)';
 
   @override
+  String get entityNameEn => 'To (Organization Name) English';
+
+  @override
+  String get entityNameAr => 'To (Organization Name) Arabic';
+
+  @override
   String get organizationName => 'Organization Name';
 
   @override
   String get showSalary => 'Show Salary';
+
+  @override
+  String get showEID => 'Show EID';
+
+  @override
+  String get fromDate => 'From Date';
 
   @override
   String get yes => 'Yes';

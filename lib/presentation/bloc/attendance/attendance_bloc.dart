@@ -184,7 +184,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     ]);
     return combineAcsAndTa(acs: result[0], ta: result[1]);
   }
-    
+
   List<AttendanceEntity> combineAcsAndTa({
     required List<AttendanceEntity> acs,
     required List<AttendanceEntity> ta,
@@ -244,6 +244,11 @@ class AttendanceBloc extends Cubit<AttendanceState> {
     process(ta, 1);
 
     return filterTaVsAcsIn(result.values.toList());
+  }
+
+  Future<List<LocationAccessEntity>> getLocationMasterDepartments() async {
+    final result = await attendanceUseCase.getLocationMaster();
+    return result.fold((l) => [], (r) => r);
   }
 
   List<AttendanceEntity> filterTaVsAcsIn(

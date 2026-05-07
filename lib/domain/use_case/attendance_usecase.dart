@@ -1,8 +1,11 @@
 import 'package:dartz/dartz.dart';
+import 'package:malomati/config/base_url_config.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/model/api_response_model.dart';
+import 'package:malomati/data/model/attendance_model.dart';
 import 'package:malomati/data/model/response_model.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
+import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';
 import 'package:malomati/domain/entities/base_entity.dart';
 import 'package:malomati/domain/repository/apis_repository.dart';
@@ -50,5 +53,20 @@ class AttendanceUseCase extends BaseUseCase {
     }, (r) {
       return Right(r.toApiEntity());
     });
+  }
+
+  Future<Either<Failure, List<LocationAccessEntity>>> getLocationMaster({
+    String apiUrl = locationMasterApiUrl,
+  }) async {
+    final result = await apisRepository.get<LocationAccessListModel>(
+      baseUrl: baseUrlAttendanceDevelopment,
+      apiUrl: locationMasterApiUrl,
+      requestParams: {},
+      responseModel: LocationAccessListModel.fromJson,
+    );
+    return result.fold(
+      (l) => Left(l),
+      (r) => Right((r.data as LocationAccessListModel?)?.locations ?? []),
+    );
   }
 }

@@ -77,3 +77,32 @@ class AttendanceEntity extends BaseEntity {
         spfid10,
       ];
 }
+
+class LocationAccessEntity extends BaseEntity {
+  String? code;
+  String? name;
+  String? latitude;
+  String? longitude;
+  String? radius;
+  LocationAccessEntity();
+
+  @override
+  List<Object?> get props => [code, name, latitude, longitude, radius];
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "name": name,
+        "latitude": latitude,
+        "longitude": longitude,
+        "radius": radius,
+      };
+}
+
+class LocationAccessListEntity extends BaseEntity {
+  final List<LocationAccessEntity> locations;
+
+  LocationAccessListEntity({this.locations = const []});
+
+  @override
+  List<Object?> get props => [locations];
+}

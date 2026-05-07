@@ -153,3 +153,73 @@ extension SourceModelExtension on AttendanceModel {
     return attendanceEntity;
   }
 }
+
+class LocationAccessModel extends BaseModel {
+  String? code;
+  String? name;
+  String? latitude;
+  String? longitude;
+  String? radius;
+  LocationAccessModel();
+
+  factory LocationAccessModel.fromJson(Map<String, dynamic> attendanceJson) {
+    var locationModel = LocationAccessModel();
+    locationModel.code = attendanceJson['code'];
+    locationModel.name = attendanceJson['name'];
+    locationModel.latitude = attendanceJson['latitude'];
+    locationModel.longitude = attendanceJson['longitude'];
+    locationModel.radius = '${attendanceJson['radius']}';
+    return locationModel;
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+        "code": code,
+      };
+
+  @override
+  List<Object?> get props => [code, name, latitude, longitude, radius];
+
+  @override
+  LocationAccessEntity toEntity<T>() {
+    return LocationAccessEntity()
+      ..code = code
+      ..name = name
+      ..latitude = latitude
+      ..longitude = longitude
+      ..radius = radius;
+  }
+}
+
+class LocationAccessListModel extends BaseModel {
+  final List<LocationAccessEntity> locations;
+
+  LocationAccessListModel({this.locations = const []});
+
+  factory LocationAccessListModel.fromJson(Map<String, dynamic> json) {
+    final locationMaster = json['location-master'];
+    if (locationMaster is! List) {
+      return LocationAccessListModel();
+    }
+
+    return LocationAccessListModel(
+      locations: locationMaster
+          .map((e) =>
+              LocationAccessModel.fromJson(e).toEntity<LocationAccessEntity>())
+          .toList(),
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'location-master': locations,
+    };
+  }
+
+  @override
+  List<Object?> get props => [locations];
+
+  @override
+  List<LocationAccessEntity> toEntity<T>() => locations;
+}

@@ -49,41 +49,46 @@ class ServicesList extends StatelessWidget {
         children: [
           SingleChildScrollView(
             controller: _scrollController,
-            child: GridView.builder(
-              scrollDirection: Axis.vertical,
-              physics: const ScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                horizontal: context.resources.dimen.dp25,
-              ),
-              itemCount: services.length,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: context.resources.getUserSelcetedFontSize() ==
-                        FontSizeEnum.bigSize
-                    ? 1.0
-                    : context.resources.getUserSelcetedFontSize() ==
-                            FontSizeEnum.smallSize
-                        ? 1.2
-                        : 1.1,
-                mainAxisSpacing: context.resources.dimen.dp20,
-              ),
-              itemBuilder: (ctx, i) {
-                return InkWell(
-                  onTap: () {
-                    if (callback != null) {
-                      callback!(context, services[i]);
-                    }
-                  },
-                  child: ItemDashboardService(
-                    data: FavoriteEntity(
-                        name: services[i].name,
-                        nameAR: services[i].nameAR,
-                        iconPath: services[i].iconPath),
-                  ),
-                );
-              },
-            ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              final crossAxisCount =
+                  (constraints.maxWidth / 170).floor().clamp(3, 6);
+              return GridView.builder(
+                scrollDirection: Axis.vertical,
+                physics: const ScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.resources.dimen.dp25,
+                ),
+                itemCount: services.length,
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio:
+                      context.resources.getUserSelcetedFontSize() ==
+                              FontSizeEnum.bigSize
+                          ? 1.0
+                          : context.resources.getUserSelcetedFontSize() ==
+                                  FontSizeEnum.smallSize
+                              ? 1.2
+                              : 1.1,
+                  mainAxisSpacing: context.resources.dimen.dp20,
+                ),
+                itemBuilder: (ctx, i) {
+                  return InkWell(
+                    onTap: () {
+                      if (callback != null) {
+                        callback!(context, services[i]);
+                      }
+                    },
+                    child: ItemDashboardService(
+                      data: FavoriteEntity(
+                          name: services[i].name,
+                          nameAR: services[i].nameAR,
+                          iconPath: services[i].iconPath),
+                    ),
+                  );
+                },
+              );
+            }),
           ),
           ValueListenableBuilder(
               valueListenable: _isScrollable,

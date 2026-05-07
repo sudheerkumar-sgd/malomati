@@ -12,6 +12,7 @@ import 'package:malomati/presentation/bloc/home/home_bloc.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
+import 'package:malomati/core/managers/location_access_manager.dart';
 
 import 'config/constant_config.dart';
 import 'config/flavor_config.dart';
@@ -83,4 +84,5 @@ Future<void> init() async {
     return dio;
   });
   sl.registerFactory(() => ConstantConfig());
+  sl.registerLazySingleton(() => LocationAccessManager(attendanceBloc: sl()));
 }

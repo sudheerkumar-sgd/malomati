@@ -22,7 +22,7 @@ void main() async {
   await Hive.openBox(appSettingsDb);
   FlavorConfig(
     flavor: Flavor.DEVELOPMENT,
-    values: FlavorValues(baseUrl: baseUrlProduction),
+    values: FlavorValues(baseUrl: baseUrlDevelopment),
   );
   await di.init();
   await Workmanager().initialize(
@@ -41,8 +41,8 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     WidgetsFlutterBinding.ensureInitialized();
     if (Platform.isAndroid) {
-      FirbaseConfig.showLocalNotification(
-          'Working Hours Completed', 'Your scheduled working hours for today have been completed successfully.');
+      FirbaseConfig.showLocalNotification('Working Hours Completed',
+          'Your scheduled working hours for today have been completed successfully.');
     }
 
     return Future.value(true);

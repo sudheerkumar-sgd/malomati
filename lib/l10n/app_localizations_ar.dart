@@ -411,10 +411,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get entityName => 'إسم الجهة الموجه إليها';
 
   @override
+  String get entityNameEn => 'إلى (اسم الجهة) باللغة الإنجليزية';
+
+  @override
+  String get entityNameAr => 'إلى (اسم الجهة) باللغة العربية';
+
+  @override
   String get organizationName => 'Organization Name';
 
   @override
   String get showSalary => 'عرض الراتب';
+
+  @override
+  String get showEID => 'عرض الهوية الإماراتية';
+
+  @override
+  String get fromDate => 'من تاريخ';
 
   @override
   String get yes => 'نعم';

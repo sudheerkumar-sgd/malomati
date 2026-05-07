@@ -38,6 +38,7 @@ const String lastWeathercode = "weathercode";
 const String lastWeatherCheckDate = "weather_check_date";
 const String accessTokenDataKey = "access_token_data";
 const String showRatingMonth = "show_rating_month";
+const String locationAccessDepartments = "location_access_departments";
 
 const String fontFamilyEN = "Inter";
 const String fontFamilyAR = "AR_GE_SS";

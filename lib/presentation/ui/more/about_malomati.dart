@@ -81,15 +81,13 @@ class AboutMalomati extends StatelessWidget {
                                 .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
-                            text: '1st ',
+                            text: '8th ',
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),
                           ),
                           TextSpan(
-                            text: isLocalEn
-                                ? 'April'
-                                : getArabicMonthName('April'),
+                            text: isLocalEn ? 'May' : getArabicMonthName('May'),
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11),
                           ),

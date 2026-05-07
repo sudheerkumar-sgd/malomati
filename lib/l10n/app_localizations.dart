@@ -896,6 +896,18 @@ abstract class AppLocalizations {
   /// **'To (Organization Name)'**
   String get entityName;
 
+  /// No description provided for @entityNameEn.
+  ///
+  /// In en, this message translates to:
+  /// **'To (Organization Name) English'**
+  String get entityNameEn;
+
+  /// No description provided for @entityNameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'To (Organization Name) Arabic'**
+  String get entityNameAr;
+
   /// No description provided for @organizationName.
   ///
   /// In en, this message translates to:
@@ -907,6 +919,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show Salary'**
   String get showSalary;
+
+  /// No description provided for @showEID.
+  ///
+  /// In en, this message translates to:
+  /// **'Show EID'**
+  String get showEID;
+
+  /// No description provided for @fromDate.
+  ///
+  /// In en, this message translates to:
+  /// **'From Date'**
+  String get fromDate;
 
   /// No description provided for @yes.
   ///

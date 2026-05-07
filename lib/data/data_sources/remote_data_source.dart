@@ -115,6 +115,16 @@ abstract class RemoteDataSource {
       {required String apiUrl, required Map<String, dynamic> requestParams});
   Future<dynamic> post(
       {required String apiUrl, required Map<String, dynamic> requestParams});
+  Future<dynamic> getWithCustomBaseUrl(
+      {required String baseUrl,
+      required String apiUrl,
+      required Map<String, dynamic> requestParams});
+  Future<dynamic> postWithCustomBaseUrl({
+    required String baseUrl,
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    bool postAsArray = false,
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -1003,5 +1013,47 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
     final accessToken = client.credentials.accessToken;
     return accessToken;
+  }
+
+  @override
+  Future getWithCustomBaseUrl(
+      {required String baseUrl,
+      required String apiUrl,
+      required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrl;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var response = await dio2.get(
+        apiUrl,
+        queryParameters: requestParams,
+      );
+      return response.data;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future postWithCustomBaseUrl({
+    required String baseUrl,
+    required String apiUrl,
+    required Map<String, dynamic> requestParams,
+    bool postAsArray = false,
+  }) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrl;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var response = await dio2.post(apiUrl,
+          data: postAsArray
+              ? jsonEncode(<Map<String, dynamic>>[requestParams])
+              : jsonEncode(requestParams));
+      return response.data;
+    } on DioException catch (e) {
+      printLog(message: e.toString());
+      rethrow;
+    }
   }
 }

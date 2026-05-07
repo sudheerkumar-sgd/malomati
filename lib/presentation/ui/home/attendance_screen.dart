@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
+import 'package:malomati/core/managers/location_access_manager.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 import 'package:malomati/presentation/ui/home/widgets/official_in_widget.dart';
@@ -64,7 +65,7 @@ class AttendanceScreen extends StatelessWidget {
   final _attendanceBloc = sl<AttendanceBloc>();
   Map? selectedOption;
   Position? position;
-
+  final _locationAccessManager = sl<LocationAccessManager>();
   AttendanceScreen(
       {required this.attendanceType,
       required this.attendanceEntity,
@@ -274,11 +275,12 @@ class AttendanceScreen extends StatelessWidget {
     }
     var isLocationOn = await Location.checkGps();
     if (isLocationOn) {
-      Location.getLocation().then((value) {
+      Location.getLocation().then((value) async {
         Navigator.of(context, rootNavigator: true).pop();
         position = value;
-        var department = getDepartmentByLocation(
-            (position?.latitude ?? 0.0), position?.longitude ?? 0.0);
+        var department =
+            await _locationAccessManager.getAllowedDepartmentByLocation(
+                (position?.latitude ?? 0.0), position?.longitude ?? 0.0);
         if ((department['name'] ?? '').isEmpty) {
           if (context.mounted) {
             Dialogs.showInfoLoader(

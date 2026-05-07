@@ -116,12 +116,12 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(
-      {String? apiUrl,required Map<String, dynamic> requestParams}) async {
+      {String? apiUrl, required Map<String, dynamic> requestParams}) async {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
-        final apiResponse =
-            await dataSource.getAttendanceDetails(apiUrl: apiUrl, requestParams: requestParams);
+        final apiResponse = await dataSource.getAttendanceDetails(
+            apiUrl: apiUrl, requestParams: requestParams);
         final apiEntity = apiResponse.toEntity<AttendanceListEntity>(
             apiResponse.data!.toAttendanceList());
         return Right(apiEntity);
@@ -732,6 +732,7 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiResponse>> get<T extends BaseModel>({
+    String? baseUrl,
     required String apiUrl,
     required Map<String, dynamic> requestParams,
     Function(Map<String, dynamic>)? responseModel,
@@ -739,10 +740,16 @@ class ApisRepositoryImpl extends ApisRepository {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
-        final apiResponse = await dataSource.get(
-          apiUrl: apiUrl,
-          requestParams: requestParams,
-        );
+        final apiResponse = baseUrl != null
+            ? await dataSource.getWithCustomBaseUrl(
+                baseUrl: baseUrl,
+                apiUrl: apiUrl,
+                requestParams: requestParams,
+              )
+            : await dataSource.get(
+                apiUrl: apiUrl,
+                requestParams: requestParams,
+              );
         var apiResponseModel =
             ApiResponse<T>.fromJson(apiResponse, responseModel);
         return Right(apiResponseModel);
@@ -758,6 +765,7 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, ApiResponse>> post<T extends BaseModel>({
+    String? baseUrl,
     required String apiUrl,
     required Map<String, dynamic> requestParams,
     Function(Map<String, dynamic>)? responseModel,
@@ -765,10 +773,16 @@ class ApisRepositoryImpl extends ApisRepository {
     var isConnected = await networkInfo.isConnected();
     if (isConnected) {
       try {
-        final apiResponse = await dataSource.post(
-          apiUrl: apiUrl,
-          requestParams: requestParams,
-        );
+        final apiResponse = baseUrl != null
+            ? await dataSource.postWithCustomBaseUrl(
+                baseUrl: baseUrl,
+                apiUrl: apiUrl,
+                requestParams: requestParams,
+              )
+            : await dataSource.post(
+                apiUrl: apiUrl,
+                requestParams: requestParams,
+              );
         var apiResponseModel =
             ApiResponse<T>.fromJson(apiResponse, responseModel);
         return Right(apiResponseModel);
