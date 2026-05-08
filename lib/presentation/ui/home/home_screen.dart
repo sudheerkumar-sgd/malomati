@@ -8,6 +8,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/common/force_value_notifier.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/core/managers/dashboard_leave_balances.dart';
 import 'package:malomati/core/managers/location_access_manager.dart';
@@ -41,7 +42,7 @@ import '../../../res/drawables/background_box_decoration.dart';
 import '../utils/location.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -64,8 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final ValueNotifier<int> _punchStatus = ValueNotifier<int>(-1);
   final ValueNotifier<int> _onAttendanceRespose = ValueNotifier<int>(-1);
 
-  final ValueNotifier<String> _remainingTimeValue =
-      ValueNotifier<String>('00:00:00');
+  final ForceValueNotifier<String> _remainingTimeValue =
+      ForceValueNotifier<String>('00:00:00');
   Timer? _punchRemainingTimer;
   Timer? _eventBannerTimer;
   final _locationAccessManager = sl<LocationAccessManager>();
@@ -79,6 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
   static const int _workNotificationId = 100;
+
+  void _setRemainingTimeValue(String value) {
+    _remainingTimeValue.setAndNotify(value);
+  }
 
   void _onAttendanceResponseTick() {
     Future.delayed(const Duration(milliseconds: 200), () {
@@ -225,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (punch1Time == null ||
         punch1Time.isEmpty ||
         (punch2Time != null && punch2Time.isNotEmpty)) {
-      _remainingTimeValue.value = '00:00:00';
+      _setRemainingTimeValue('00:00:00');
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
       //if (_workNotificationScheduled) {
@@ -319,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final diff = targetTime.difference(now);
       if (diff.isNegative) {
-        _remainingTimeValue.value = '00:00:00';
+        _setRemainingTimeValue('00:00:00');
         timer.cancel();
         _punchRemainingTimer = null;
         // direct show in case the scheduled notification failed or app is
@@ -333,8 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
         String twoDigitSeconds = twoDigits(diff.inSeconds.remainder(60));
-        _remainingTimeValue.value =
-            "${twoDigits(diff.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+        _setRemainingTimeValue(
+            "${twoDigits(diff.inHours)}:$twoDigitMinutes:$twoDigitSeconds");
       }
     });
   }
