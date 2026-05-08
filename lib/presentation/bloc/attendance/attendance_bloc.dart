@@ -50,7 +50,7 @@ class AttendanceBloc extends Cubit<AttendanceState> {
   }
 
   Future<void> getAttendanceDetails({required String dateRange}) async {
-    emit(OnAttendanceDataLoading());
+    //emit(OnAttendanceDataLoading());
 
     Map<String, dynamic> requestParams = {
       'date-range': dateRange,

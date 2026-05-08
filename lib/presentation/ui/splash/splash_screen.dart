@@ -9,14 +9,34 @@ import '../../../core/enum.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool _isNavigating = false;
+
+  @override
+  void initState() {
+    super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark));
+  }
+
+  void _onLanguageSelected(BuildContext context, LocalEnum language) {
+    if (_isNavigating) return;
+    _isNavigating = true;
+    context.resources.setLocal(language: language.name);
+    context.settingDB.put(isSplashDoneKey, true);
+    Navigator.pushReplacementNamed(context, AppRoutes.loginRoute);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -72,11 +92,7 @@ class SplashScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.resources
-                              .setLocal(language: LocalEnum.ar.name);
-                          context.settingDB.put(isSplashDoneKey, true);
-                          Navigator.pushReplacementNamed(
-                              context, AppRoutes.loginRoute);
+                          _onLanguageSelected(context, LocalEnum.ar);
                         },
                         child: CustomBgWidgets().roundedCornerWidget(
                             widget: Center(
@@ -106,11 +122,7 @@ class SplashScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.resources
-                              .setLocal(language: LocalEnum.en.name);
-                          context.settingDB.put(isSplashDoneKey, true);
-                          Navigator.pushReplacementNamed(
-                              context, AppRoutes.loginRoute);
+                          _onLanguageSelected(context, LocalEnum.en);
                         },
                         child: CustomBgWidgets().roundedCornerWidget(
                             widget: Center(

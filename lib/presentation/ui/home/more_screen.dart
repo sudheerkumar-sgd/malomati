@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,24 +15,43 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../../core/enum.dart';
 import '../../../res/drawables/background_box_decoration.dart';
-import '../../../res/resources.dart';
 import '../widgets/image_widget.dart';
 import '../widgets/services_app_bar.dart';
 
 enum LanguageType { en, ar }
 
-class MoreScreen extends StatelessWidget {
-  MoreScreen({super.key});
-  late Resources resources;
-  final ValueNotifier _isNotificationEnabled = ValueNotifier<bool>(true);
-  final ValueNotifier _languageType =
+class MoreScreen extends StatefulWidget {
+  const MoreScreen({super.key});
+
+  @override
+  State<MoreScreen> createState() => _MoreScreenState();
+}
+
+class _MoreScreenState extends State<MoreScreen> {
+  final ValueNotifier<bool> _isNotificationEnabled = ValueNotifier<bool>(true);
+  final ValueNotifier<LanguageType> _languageType =
       ValueNotifier<LanguageType>(LanguageType.en);
+  bool _didInit = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    _languageType.value =
+        context.resources.isLocalEn ? LanguageType.en : LanguageType.ar;
+  }
+
+  @override
+  void dispose() {
+    _isNotificationEnabled.dispose();
+    _languageType.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
-    _languageType.value =
-        resources.isLocalEn ? LanguageType.en : LanguageType.ar;
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -193,9 +210,10 @@ class MoreScreen extends StatelessWidget {
                                             value: LanguageType.en,
                                             groupValue: languageType,
                                             onChanged: (LanguageType? value) {
-                                              _languageType.value = value;
+                                              _languageType.value =
+                                                  value ?? LanguageType.en;
                                               resources.setLocal(
-                                                  language: LocalEnum.ar.name);
+                                                  language: LocalEnum.en.name);
                                             }),
                                       ),
                                     ),
@@ -238,7 +256,8 @@ class MoreScreen extends StatelessWidget {
                                             value: LanguageType.ar,
                                             groupValue: languageType,
                                             onChanged: (LanguageType? value) {
-                                              _languageType.value = value;
+                                              _languageType.value =
+                                                  value ?? LanguageType.ar;
                                               resources.setLocal(
                                                   language: LocalEnum.ar.name);
                                             }),

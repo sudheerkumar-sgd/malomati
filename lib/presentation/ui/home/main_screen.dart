@@ -1,5 +1,4 @@
-// ignore_for_file: must_be_immutable
-
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   //   const MoreNavigatorScreen(),
   // ];
   final AudioPlayer _player = AudioPlayer();
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
 
   void _onItemTapped(int index) {
     if (_selectedIndex.value == index) {
@@ -75,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
                       path: context.resources.isLocalEn
                           ? DrawableAssets.gifBirthdayEn
                           : DrawableAssets.gifBirthdayAr)
-                  .loadImage)).then((value) => _player.dispose());
+                  .loadImage)).then((value) => _player.stop());
     } else if ((context.userDB
             .get(userJoiningDateEnKey, defaultValue: '')
             .contains(getDateByformat('dd-MMM', DateTime.now()))) &&
@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                       path: context.resources.isLocalEn
                           ? DrawableAssets.gifAnniversayEn
                           : DrawableAssets.gifAnniversayAr)
-                  .loadImage)).then((value) => _player.dispose());
+                  .loadImage)).then((value) => _player.stop());
     }
   }
 
@@ -117,15 +117,28 @@ class _MainScreenState extends State<MainScreen> {
           {'notification': initialMessage.notification, 'data': message});
     }
 
-    FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
+    _onMessageOpenedAppSubscription =
+        FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
       final message = remoteMessage.data;
       _handleMessage(
           {'notification': remoteMessage.notification, 'data': message});
     });
 
-    FirbaseConfig.onFirbaseMessageOpened.addListener(() {
-      _handleMessage({'data': FirbaseConfig.onFirbaseMessageOpened.value});
-    });
+    FirbaseConfig.onFirbaseMessageOpened.addListener(_onFirebaseMessageOpened);
+  }
+
+  void _onFirebaseMessageOpened() {
+    _handleMessage({'data': FirbaseConfig.onFirbaseMessageOpened.value});
+  }
+
+  void _onForegroundFCMMessage() {
+    if (!notificationUser.contains(context.userDB
+        .get(userNameKey, defaultValue: '')
+        .toString()
+        .toUpperCase())) {
+      _handleMessage(ConstantConfig.onFCMMessageReceived.value);
+      ConstantConfig.onFCMMessageReceived.value = null;
+    }
   }
 
   void _handleMessage(Map<String, dynamic>? message) {
@@ -163,14 +176,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    super.initState();
     ConstantConfig.badgeCount = 0;
-    Future.delayed(const Duration(seconds: 1), () async {
-      setupFirebaseNotificationMessage();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await setupFirebaseNotificationMessage();
+      if (!mounted) return;
       FlutterAppBadgeControl.isAppBadgeSupported()
           .then((value) => FlutterAppBadgeControl.removeBadge());
       SecurityCheck().checkSecurity(context);
+      _showBirthday(context);
+      checkIsUpdateAvailabe(context);
+      ConstantConfig.onFCMMessageReceived.addListener(_onForegroundFCMMessage);
     });
-    super.initState();
   }
 
   @override
@@ -178,20 +196,6 @@ class _MainScreenState extends State<MainScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: context.resources.color.appScaffoldBg,
         statusBarIconBrightness: Brightness.dark));
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (!context.mounted) return;
-      _showBirthday(context);
-      ConstantConfig.onFCMMessageReceived.addListener(() {
-        if (!notificationUser.contains(context.userDB
-            .get(userNameKey, defaultValue: '')
-            .toString()
-            .toUpperCase())) {
-          _handleMessage(ConstantConfig.onFCMMessageReceived.value);
-          ConstantConfig.onFCMMessageReceived.value = null;
-        }
-      });
-      checkIsUpdateAvailabe(context);
-    });
     return WillPopScope(
       onWillPop: () async {
         final bool isExitingApp =
@@ -310,5 +314,16 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    ConstantConfig.onFCMMessageReceived
+        .removeListener(_onForegroundFCMMessage);
+    FirbaseConfig.onFirbaseMessageOpened.removeListener(_onFirebaseMessageOpened);
+    _onMessageOpenedAppSubscription?.cancel();
+    _selectedIndex.dispose();
+    _player.dispose();
+    super.dispose();
   }
 }

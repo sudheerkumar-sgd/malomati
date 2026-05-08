@@ -7,16 +7,37 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import '../widgets/back_app_bar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class AboutMalomati extends StatelessWidget {
+class AboutMalomati extends StatefulWidget {
   static const String route = '/AboutMalomati';
-  final ValueNotifier<String> version = ValueNotifier('');
-  AboutMalomati({super.key});
+  const AboutMalomati({super.key});
+
+  @override
+  State<AboutMalomati> createState() => _AboutMalomatiState();
+}
+
+class _AboutMalomatiState extends State<AboutMalomati> {
+  final ValueNotifier<String> _version = ValueNotifier<String>('');
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    if (!mounted) return;
+    _version.value = "${packageInfo.version} (${packageInfo.buildNumber})";
+  }
+
+  @override
+  void dispose() {
+    _version.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      version.value = "${packageInfo.version} (${packageInfo.buildNumber})";
-    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -55,7 +76,7 @@ class AboutMalomati extends StatelessWidget {
                       height: context.resources.dimen.dp25,
                     ),
                     ValueListenableBuilder(
-                        valueListenable: version,
+                        valueListenable: _version,
                         builder: (context, value, child) {
                           return RichText(
                               text: TextSpan(

@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -17,30 +16,54 @@ import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 
 import '../widgets/back_app_bar.dart';
 
-class PunchInAccessScreen extends StatelessWidget {
+class PunchInAccessScreen extends StatefulWidget {
   static const String route = '/PunchInAccessScreen';
-  PunchInAccessScreen({super.key});
-  late Resources resources;
+  const PunchInAccessScreen({super.key});
+
+  @override
+  State<PunchInAccessScreen> createState() => _PunchInAccessScreenState();
+}
+
+class _PunchInAccessScreenState extends State<PunchInAccessScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
-  String? leave;
-  bool isLoading = false;
   final List<EmployeeEntity> _employeesList = [];
-  final ValueNotifier<int> _selectedTabIndex = ValueNotifier(1);
-  final ValueNotifier<bool> _doRefresh = ValueNotifier(false);
+  final ValueNotifier<int> _selectedTabIndex = ValueNotifier<int>(1);
+  final ValueNotifier<bool> _doRefresh = ValueNotifier<bool>(false);
   final _attendanceBloc = sl<AttendanceBloc>();
-  int loggedInEmployees = 0;
   final List<EmployeeEntity> _disabledmployeesList = [];
   EmployeeEntity? _selectedEmployee;
   final ScrollController _monthScrollController = ScrollController();
-  ValueNotifier<int> selectedMonth = ValueNotifier(0);
-  List<Map> monthYearList = [];
+  final ValueNotifier<int> selectedMonth = ValueNotifier<int>(0);
+  final List<Map<String, String>> monthYearList = <Map<String, String>>[];
+  Future<dynamic>? _disabledEmployeesFuture;
+  Future<dynamic>? _lateDoorFuture;
+  String _employeesCsv = '';
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedMonth.addListener(_onSelectedMonthChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    _getYearMonth();
+    _servicesBloc
+        .getEmployeesByDepartment(requestParams: {'DEPARTMENT_NUMBER': 63});
+  }
   void _getYearMonth() {
+    monthYearList.clear();
     int currentDate = DateTime.now().day;
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
@@ -48,7 +71,7 @@ class PunchInAccessScreen extends StatelessWidget {
     var date = DateTime.now();
     for (int i = 1; i <= currentDate; i++) {
       monthYearList.add({
-        'index': i - 1,
+        'index': '${i - 1}',
         'year': getDateByformat('MMM', date),
         'month': '$i',
         'start_date': getDateByformat(
@@ -58,6 +81,44 @@ class PunchInAccessScreen extends StatelessWidget {
       });
     }
     selectedMonth.value = currentDate - 1;
+  }
+
+  void _onSelectedMonthChanged() {
+    _reloadLateDoorFuture();
+    _doRefresh.value = !_doRefresh.value;
+  }
+
+  void _reloadDisabledEmployeesFuture() {
+    if (_employeesCsv.isEmpty) return;
+    _disabledEmployeesFuture = _attendanceBloc.getUserDetails(
+        apiUrl: '${attendanceUserPunchDetailsApiUrl}id=$_employeesCsv',
+        requestParams: {},
+        emitResult: false);
+  }
+
+  void _reloadLateDoorFuture() {
+    if (_employeesCsv.isEmpty) return;
+    final dateTime = DateTime.now();
+    final date = getDateByformat('ddMMyyyy',
+        DateTime(dateTime.year, dateTime.month, selectedMonth.value + 1));
+    final dateRange = '${date}000000-${date}235959';
+    _lateDoorFuture = _attendanceBloc.getLateDoorReport(
+      apiUrl: 'date-range=$dateRange;userid=$_employeesCsv',
+    );
+  }
+
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
   }
 
   void _setScrollByDirection(double offset) {
@@ -70,7 +131,7 @@ class PunchInAccessScreen extends StatelessWidget {
 
   Future<void> _disableOrEnablePunchAccess(BuildContext context,
       String employeeId, String userName, int accessValue) async {
-    Dialogs.loader(context);
+    _showLoader(context);
     final response = await _attendanceBloc.getUserDetails(
         apiUrl:
             '$setUserPunchAccessApiUrl;id=$employeeId;punch-api=$accessValue',
@@ -78,7 +139,7 @@ class PunchInAccessScreen extends StatelessWidget {
     if (!context.mounted) {
       return;
     }
-    Dialogs.dismiss(context);
+    _hideLoader(context);
     if (response is OnAttendanceApiError) {
       Dialogs.showInfoDialog(context, PopupType.fail, response.message);
     } else if (response is OnUserDetailsSuccess) {
@@ -95,35 +156,37 @@ class PunchInAccessScreen extends StatelessWidget {
               notificationId: 'AB3CDEFG76HIJK'));
       Dialogs.showInfoDialog(context, PopupType.success, context.string.success)
           .then((value) {
+        _reloadDisabledEmployeesFuture();
+        _reloadLateDoorFuture();
         _doRefresh.value = !_doRefresh.value;
-        if (context.mounted && accessValue == 0) {
-          Dialogs.dismiss(context);
-        }
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    _getYearMonth();
-    _servicesBloc
-        .getEmployeesByDepartment(requestParams: {'DEPARTMENT_NUMBER': 63});
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
         body: MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => _servicesBloc),
-            BlocProvider(create: (context) => _attendanceBloc)
+            BlocProvider<ServicesBloc>.value(value: _servicesBloc),
+            BlocProvider<AttendanceBloc>.value(value: _attendanceBloc),
           ],
           child: MultiBlocListener(
             listeners: [
               BlocListener<ServicesBloc, ServicesState>(
                 listener: (context, state) {
                   if (state is OnEmployeesSuccess) {
+                    _employeesList.clear();
                     _employeesList.addAll(state.employeesList);
+                    _employeesCsv = _employeesList
+                        .map((e) => e.eMPLOYEENUMBER)
+                        .where((e) => (e ?? '').isNotEmpty)
+                        .join(',');
+                    _reloadDisabledEmployeesFuture();
+                    _reloadLateDoorFuture();
                     _doRefresh.value = !_doRefresh.value;
                   }
                 },
@@ -296,9 +359,6 @@ class PunchInAccessScreen extends StatelessWidget {
                       child: ValueListenableBuilder(
                           valueListenable: _doRefresh,
                           builder: (context, doRefresh, child) {
-                            final employees = _employeesList
-                                .map((e) => e.eMPLOYEENUMBER)
-                                .join(',');
                             return _employeesList.isEmpty
                                 ? Center(
                                     child: Text(
@@ -310,15 +370,10 @@ class PunchInAccessScreen extends StatelessWidget {
                                   )
                                 : _selectedTabIndex.value == 1
                                     ? FutureBuilder(
-                                        future: _attendanceBloc.getUserDetails(
-                                            apiUrl:
-                                                '${attendanceUserPunchDetailsApiUrl}id=$employees',
-                                            requestParams: {},
-                                            emitResult: false),
+                                        future: _disabledEmployeesFuture,
                                         builder: (context, asyncSnapshot) {
                                           if (asyncSnapshot.connectionState ==
                                               ConnectionState.waiting) {
-                                            _disabledmployeesList.clear();
                                             return Center(
                                                 child:
                                                     CircularProgressIndicator());
@@ -332,6 +387,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                             ));
                                           } else if (state
                                               is OnUserDetailsSuccess) {
+                                            _disabledmployeesList.clear();
                                             _disabledmployeesList.addAll(
                                                 (state.attendanceUserDetailsEntity
                                                             .entity?.usersData ??
@@ -419,13 +475,6 @@ class PunchInAccessScreen extends StatelessWidget {
                                     : ValueListenableBuilder(
                                         valueListenable: selectedMonth,
                                         builder: (context, value, child) {
-                                          final dateTime = DateTime.now();
-                                          var date = getDateByformat(
-                                              'ddMMyyyy',
-                                              DateTime(dateTime.year,
-                                                  dateTime.month, value + 1));
-                                          final dateRange =
-                                              '${date}000000-${date}235959';
                                           return Column(
                                             children: [
                                               SizedBox(
@@ -516,11 +565,7 @@ class PunchInAccessScreen extends StatelessWidget {
                                                 height: resources.dimen.dp25,
                                               ),
                                               FutureBuilder(
-                                                  future: _attendanceBloc
-                                                      .getLateDoorReport(
-                                                    apiUrl:
-                                                        'date-range=$dateRange;userid=$employees',
-                                                  ),
+                                                  future: _lateDoorFuture,
                                                   builder:
                                                       (context, asyncSnapshot) {
                                                     if (asyncSnapshot
@@ -655,5 +700,17 @@ class PunchInAccessScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    selectedMonth.removeListener(_onSelectedMonthChanged);
+    _selectedTabIndex.dispose();
+    _doRefresh.dispose();
+    selectedMonth.dispose();
+    _monthScrollController.dispose();
+    _servicesBloc.close();
+    _attendanceBloc.close();
+    super.dispose();
   }
 }

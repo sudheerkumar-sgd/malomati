@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -9,17 +8,21 @@ import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.d
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
-import 'package:malomati/res/resources.dart';
 import '../../../core/common/common_utils.dart';
 import '../../../data/model/api_request_model.dart';
 import '../../../domain/entities/leave_details_entity.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class DeleteLeaveScreen extends StatelessWidget {
+class DeleteLeaveScreen extends StatefulWidget {
   static const String route = '/DeleteLeaveScreen';
-  DeleteLeaveScreen({super.key});
-  late Resources resources;
+  const DeleteLeaveScreen({super.key});
+
+  @override
+  State<DeleteLeaveScreen> createState() => _DeleteLeaveScreenState();
+}
+
+class _DeleteLeaveScreenState extends State<DeleteLeaveScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
@@ -27,7 +30,9 @@ class DeleteLeaveScreen extends StatelessWidget {
       ValueNotifier<List<LeaveDetailsEntity>>([]);
   final TextEditingController _commentsController = TextEditingController();
   String? leave;
-  bool isLoading = false;
+  bool _isLoading = false;
+  bool _didInit = false;
+  String _noLeavesText = '';
 
   onLeavesSelected(LeaveDetailsEntity? value) {
     leave = value?.id ?? '';
@@ -49,13 +54,33 @@ class DeleteLeaveScreen extends StatelessWidget {
         requestParams: deleteLeaveRequestModel.toDeleteLeaveRequest());
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoading) return;
+    _isLoading = true;
+    Dialogs.loader(context).then((_) {
+      _isLoading = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoading) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoading = false;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    resources = context.resources;
-    String noLeavesText = '';
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     _servicesBloc.getLeaves(
         apiUrl: deleteleavesApiUrl, requestParams: {'USER_NAME': userName});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -64,16 +89,12 @@ class DeleteLeaveScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                isLoading = true;
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnLeavesSuccess) {
-                noLeavesText = context.string.noDeleteLeaves;
+                _noLeavesText = context.string.noDeleteLeaves;
                 _leaves.value = state.leavesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
-                if (isLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  isLoading = false;
-                }
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -108,10 +129,7 @@ class DeleteLeaveScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                if (isLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  isLoading = false;
-                }
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -170,10 +188,10 @@ class DeleteLeaveScreen extends StatelessWidget {
                         ],
                         if (leaves.isEmpty) ...[
                           Expanded(
-                            child: noLeavesText.isNotEmpty
+                            child: _noLeavesText.isNotEmpty
                                 ? Center(
                                     child: Text(
-                                      noLeavesText,
+                                      _noLeavesText,
                                       style: context.textFontWeight600,
                                     ),
                                   )
@@ -192,5 +210,13 @@ class DeleteLeaveScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _leaves.dispose();
+    _commentsController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

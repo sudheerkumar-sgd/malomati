@@ -1,12 +1,7 @@
-// ignore_for_file: must_be_immutable
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/data/model/api_request_model.dart';
 import 'package:malomati/injection_container.dart';
@@ -19,16 +14,19 @@ import 'package:malomati/presentation/ui/widgets/item_attachment.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 import '../utils/date_time_util.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
-import 'package:file_picker/file_picker.dart';
 
-class OvertimeScreen extends StatelessWidget {
+class OvertimeScreen extends StatefulWidget {
   static const String route = '/LeavesScreen';
-  OvertimeScreen({super.key});
-  late Resources resources;
+  const OvertimeScreen({super.key});
+
+  @override
+  State<OvertimeScreen> createState() => _OvertimeScreenState();
+}
+
+class _OvertimeScreenState extends State<OvertimeScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _fromTimeController = TextEditingController();
@@ -38,9 +36,10 @@ class OvertimeScreen extends StatelessWidget {
   final dateFormat = 'yyy-MM-dd';
   final timeFormat = 'hh:mm a';
   final ValueNotifier<bool> _isUploadChanged = ValueNotifier(false);
-  final _uploadFiles = [];
+  final List<dynamic> _uploadFiles = [];
   final _formKey = GlobalKey<FormState>();
   String userName = '';
+  bool _isLoaderShowing = false;
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -83,33 +82,6 @@ class OvertimeScreen extends StatelessWidget {
         _isUploadChanged.value = !_isUploadChanged.value;
       }
     });
-  }
-
-  Future<void> _selectFile(BuildContext context) async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
-
-    if (result != null) {
-      final fileName = result.files.single.name;
-      if (fileName.isNotEmpty) {
-        File file = File(result.files.single.path ?? '');
-        printLog(message: '${file.lengthSync()}');
-        if (file.lengthSync() <= maxUploadFilesize) {
-          final bytes = file.readAsBytesSync();
-          final data = {
-            'fileName': fileName,
-            'fileNamebase64data': base64Encode(bytes),
-          };
-          _uploadFiles.add(data);
-          _isUploadChanged.value = !_isUploadChanged.value;
-        } else if (context.mounted) {
-          Dialogs.showInfoDialog(context, PopupType.fail,
-              "Upload file should not be more then 1mb");
-        }
-      }
-    } else {
-      printLog(message: 'message');
-    }
   }
 
   _onDeleteUpload(int id) {
@@ -162,9 +134,23 @@ class OvertimeScreen extends StatelessWidget {
         requestParams: apiRequestModel.toOvertimeRequest());
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
+    final resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
 
     return SafeArea(
@@ -175,9 +161,9 @@ class OvertimeScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -215,7 +201,7 @@ class OvertimeScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -478,5 +464,17 @@ class OvertimeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _startDateController.dispose();
+    _fromTimeController.dispose();
+    _toTimeController.dispose();
+    _noOfHoursController.dispose();
+    _reasonController.dispose();
+    _isUploadChanged.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 
 enum AttendanceStatus {
@@ -15,17 +14,28 @@ enum AttendanceStatus {
 }
 
 class ItemAttendanceList extends StatelessWidget {
-  final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
   final AttendanceEntity attendanceEntity;
-  ItemAttendanceList({required this.attendanceEntity, super.key});
+  const ItemAttendanceList({required this.attendanceEntity, super.key});
   AttendanceStatus? _getAttendanceStatus() {
-    var caseText =
-        '${attendanceEntity.firsthalf}${attendanceEntity.secondhalf}';
-    var dateParams = (attendanceEntity.processdate ?? '').split('/');
-    var dayOfMonth = getDateByformat(
-        'EEEE',
-        DateTime(int.parse(dateParams[2]), int.parse(dateParams[1]),
-            int.parse(dateParams[0])));
+    var caseText = '${attendanceEntity.firsthalf}${attendanceEntity.secondhalf}';
+    final dateParams = (attendanceEntity.processdate ?? '').split('/');
+    if (dateParams.length != 3) {
+      return null;
+    }
+    DateTime? processDate;
+    try {
+      processDate = DateTime(
+        int.parse(dateParams[2]),
+        int.parse(dateParams[1]),
+        int.parse(dateParams[0]),
+      );
+    } catch (_) {
+      processDate = null;
+    }
+    if (processDate == null) {
+      return null;
+    }
+    var dayOfMonth = getDateByformat('EEEE', processDate);
     if (dayOfMonth == 'Saturday' || dayOfMonth == 'Sunday') {
       return AttendanceStatus.weekOff;
     }
@@ -54,7 +64,6 @@ class ItemAttendanceList extends StatelessWidget {
   }
 
   Map _getDepartmentLocation() {
-    printLog(message: attendanceEntity.toString());
     if ((attendanceEntity.gpsLatitude ?? '').isNotEmpty) {
       return getDepartmentByLocation(
           double.parse(attendanceEntity.gpsLatitude ?? '0.0'),
@@ -355,126 +364,97 @@ class ItemAttendanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    attendanceEntity.departmentLocation = _getDepartmentLocation()['name'];
-    return ValueListenableBuilder(
-        valueListenable: _isExpanded,
-        builder: (context, isExpaned, widget) {
-          return InkWell(
-            onTap: () {
-              //_isExpanded.value = !isExpaned;
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              margin:
-                  EdgeInsets.symmetric(horizontal: context.resources.dimen.dp5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 7,
-                        height: 7,
-                        decoration: ShapeDecoration(
-                            shape: const CircleBorder(),
-                            color: _getAttendanceStatus()?.color),
-                      ),
-                      SizedBox(
-                        width: context.resources.dimen.dp8,
-                      ),
-                      Expanded(
-                        child: Text(
-                          attendanceEntity.processdate ?? '',
+    final status = _getAttendanceStatus();
+    final departmentLocation = _getDepartmentLocation()['name']?.toString() ?? '';
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: context.resources.dimen.dp5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 7,
+                height: 7,
+                decoration: ShapeDecoration(
+                    shape: const CircleBorder(), color: status?.color),
+              ),
+              SizedBox(
+                width: context.resources.dimen.dp8,
+              ),
+              Expanded(
+                child: Text(
+                  attendanceEntity.processdate ?? '',
+                  style: context.textFontWeight400
+                      .onColor(context.resources.color.textColor)
+                      .onFontFamily(fontFamily: fontFamilyEN)
+                      .onFontSize(context.resources.fontSize.dp12),
+                ),
+              ),
+              if ((attendanceEntity.worktime ?? '').isNotEmpty &&
+                  (attendanceEntity.worktime ?? '00:00') != '00:00') ...[
+                RichText(
+                  text: TextSpan(
+                      text: '${context.string.totalWorkTime}: ',
+                      style: context.textFontWeight400
+                          .onColor(context.resources.color.textColor)
+                          .onFontSize(context.resources.fontSize.dp12),
+                      children: [
+                        TextSpan(
+                          text: attendanceEntity.worktime ?? '',
                           style: context.textFontWeight400
                               .onColor(context.resources.color.textColor)
                               .onFontFamily(fontFamily: fontFamilyEN)
                               .onFontSize(context.resources.fontSize.dp12),
                         ),
+                      ]),
+                )
+              ],
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(
+                left: isLocalEn ? context.resources.dimen.dp15 : 0,
+                right: isLocalEn ? 0 : context.resources.dimen.dp15,
+                top: context.resources.dimen.dp8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Visibility(
+                      visible: status != null,
+                      child: Text(
+                        _getAttendanceStatusName(context, status),
+                        style: context.textFontWeight400
+                            .onColor(context.resources.color.textColor212B4B)
+                            .onFontSize(context.resources.fontSize.dp11),
                       ),
-                      // ImageWidget(
-                      //         path: isExpaned
-                      //             ? DrawableAssets.icChevronUp
-                      //             : DrawableAssets.icChevronDown)
-                      //     .loadImage
-                      if ((attendanceEntity.worktime ?? '').isNotEmpty &&
-                          (attendanceEntity.worktime ?? '00:00') !=
-                              '00:00') ...[
-                        RichText(
-                          text: TextSpan(
-                              text: '${context.string.totalWorkTime}: ',
-                              style: context.textFontWeight400
-                                  .onColor(context.resources.color.textColor)
-                                  .onFontSize(context.resources.fontSize.dp12),
-                              children: [
-                                TextSpan(
-                                  text: attendanceEntity.worktime ?? '',
-                                  style: context.textFontWeight400
-                                      .onColor(
-                                          context.resources.color.textColor)
-                                      .onFontFamily(fontFamily: fontFamilyEN)
-                                      .onFontSize(
-                                          context.resources.fontSize.dp12),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: isLocalEn ? context.resources.dimen.dp15 : 0,
-                        right: isLocalEn ? 0 : context.resources.dimen.dp15,
-                        top: context.resources.dimen.dp8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Visibility(
-                                  visible: _getAttendanceStatus() != null,
-                                  child: Text(
-                                    _getAttendanceStatusName(
-                                        context, _getAttendanceStatus()),
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.fontSize.dp11),
-                                  ),
-                                ),
-                                if ((attendanceEntity.departmentLocation ?? '')
-                                    .isNotEmpty) ...[
-                                  SizedBox(
-                                    height: context.resources.dimen.dp5,
-                                  ),
-                                  Text(
-                                    attendanceEntity.departmentLocation ?? '',
-                                    style: context.textFontWeight400
-                                        .onColor(context
-                                            .resources.color.textColor212B4B)
-                                        .onFontSize(
-                                            context.resources.fontSize.dp11),
-                                  ),
-                                ]
-                              ],
-                            ),
-                            _getAttendanceLog(context),
-                          ],
-                        ),
-                      ],
                     ),
-                  ),
-                ],
-              ),
+                    if (departmentLocation.isNotEmpty) ...[
+                      SizedBox(
+                        height: context.resources.dimen.dp5,
+                      ),
+                      Text(
+                        departmentLocation,
+                        style: context.textFontWeight400
+                            .onColor(context.resources.color.textColor212B4B)
+                            .onFontSize(context.resources.fontSize.dp11),
+                      ),
+                    ]
+                  ],
+                ),
+                _getAttendanceLog(context),
+              ],
             ),
-          );
-        });
+          ),
+        ],
+      ),
+    );
   }
 }

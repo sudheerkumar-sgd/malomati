@@ -125,8 +125,8 @@ double deg2rad(deg) {
   return deg * (pi / 180);
 }
 
-Map getDepartmentByLocation(double lat, double long) {
-  Map departmentsLocation = {};
+Map<String, dynamic> getDepartmentByLocation(double lat, double long) {
+  Map<String, dynamic> departmentsLocation = {};
   for (var departments in departmentsLocations) {
     var departmentDistance = distance(
             double.parse(departments['latitude'] as String),
@@ -162,8 +162,10 @@ DateTime getDateTimeByString(String format, String date) {
   }
 }
 
-startTimer({required Duration duration, required Function callback}) {
-  Timer.periodic(duration, (Timer t) => callback());
+/// Returns the periodic timer so callers can cancel it in [dispose].
+Timer startTimer(
+    {required Duration duration, required void Function() callback}) {
+  return Timer.periodic(duration, (Timer t) => callback());
 }
 
 int daysBetween(DateTime from, DateTime to) {

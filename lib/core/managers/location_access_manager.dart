@@ -40,7 +40,7 @@ class LocationAccessManager {
     return locations;
   }
 
-  Future<Map<dynamic, dynamic>> getAllowedDepartmentByLocation(
+  Future<Map<String, dynamic>> getAllowedDepartmentByLocation(
       double lat, double long) async {
     final currentDepartment = getDepartmentByLocation(lat, long);
     if ((currentDepartment['name'] ?? '').isEmpty) {

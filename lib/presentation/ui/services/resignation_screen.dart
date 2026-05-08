@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -13,14 +12,18 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class ResignationScreen extends StatelessWidget {
+class ResignationScreen extends StatefulWidget {
   static const String route = '/BadgeScreen';
-  ResignationScreen({super.key});
-  late Resources resources;
+  const ResignationScreen({super.key});
+
+  @override
+  State<ResignationScreen> createState() => _ResignationScreenState();
+}
+
+class _ResignationScreenState extends State<ResignationScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
@@ -28,12 +31,15 @@ class ResignationScreen extends StatelessWidget {
   String selectedReason = '';
   final TextEditingController _resignationController = TextEditingController();
   final dateFormat = 'yyyy-MM-dd';
-  final _uploadFiles = [];
+  final List<dynamic> _uploadFiles = [];
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
+  Future<List<String>>? _resignationReasonsFuture;
 
   void onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
       if (_uploadFiles.isEmpty) {
-        Dialogs.showInfoDialog(resources.context, PopupType.fail,
+        Dialogs.showInfoDialog(context, PopupType.fail,
             isLocalEn ? 'Please upload attachment' : 'يرجى تحميل المرفق');
         return;
       }
@@ -63,11 +69,34 @@ class ResignationScreen extends StatelessWidget {
     });
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    resources = context.resources;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     employeeId = context.userDB.get(userJobIdEnKey, defaultValue: '');
+    _resignationReasonsFuture =
+        _servicesBloc.getResignationReasons(requestParams: {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -76,9 +105,9 @@ class ResignationScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -113,7 +142,7 @@ class ResignationScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -160,8 +189,7 @@ class ResignationScreen extends StatelessWidget {
                               height: resources.dimen.dp20,
                             ),
                             FutureBuilder(
-                                future: _servicesBloc
-                                    .getResignationReasons(requestParams: {}),
+                                future: _resignationReasonsFuture,
                                 builder: (context, snapShot) {
                                   return DropDownWidget<String>(
                                     list: snapShot.data ?? [],
@@ -202,5 +230,12 @@ class ResignationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _resignationController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

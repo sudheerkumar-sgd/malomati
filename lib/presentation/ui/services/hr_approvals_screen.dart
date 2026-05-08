@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -26,12 +24,19 @@ class _HrApprovalsScreenState extends State<HrApprovalsScreen> {
   String noNotificationText = '';
   String userName = '';
   bool _isSilentLoading = false;
+  bool _isLoaderShowing = false;
+  bool _didInit = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    // Trigger initial fetch after first frame so BlocListener is mounted
+    // and can show/hide the loader reliably.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      userName = context.userDB.get(userNameKey, defaultValue: '');
+      if (!mounted) return;
       _fetchData();
     });
   }
@@ -45,6 +50,20 @@ class _HrApprovalsScreenState extends State<HrApprovalsScreen> {
   Future<void> _fetchData() async {
     await _servicesBloc
         .getHrApprovalsList(requestParams: {'USER_NAME': userName});
+  }
+
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
   }
 
   _onActionClicked(String id, BuildContext context) {
@@ -62,11 +81,9 @@ class _HrApprovalsScreenState extends State<HrApprovalsScreen> {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                if (!_isSilentLoading) Dialogs.loader(context);
+                if (!_isSilentLoading) _showLoader(context);
               } else if (state is OnHrApprovalsListSuccess) {
-                if (!_isSilentLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                if (!_isSilentLoading) _hideLoader(context);
                 setState(() {
                   noNotificationText = context.string.noHrRequests;
                   _notificationList = List.from(state.hrApprovalsList);
@@ -85,9 +102,7 @@ class _HrApprovalsScreenState extends State<HrApprovalsScreen> {
                 ConstantConfig.isApprovalCountChange.value =
                     !(ConstantConfig.isApprovalCountChange.value);
               } else if (state is OnServicesError) {
-                if (!_isSilentLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                if (!_isSilentLoading) _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },

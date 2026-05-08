@@ -37,11 +37,12 @@ class ItemFinancePRApprovals extends StatefulWidget {
 }
 
 class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
-  final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _isExpanded = ValueNotifier<bool>(false);
   final _servicesBloc = sl<ServicesBloc>();
   HrapprovalDetailsEntity? financeDetailsItems;
   bool showItems = false;
   String selectedAction = '';
+  bool _isLoaderShowing = false;
 
   _submitHrApproval(BuildContext context, String id, String action,
       {String? comments}) {
@@ -53,20 +54,34 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
       "FROM_USER": "",
       "COMMENTS": comments ?? action
     };
-    Dialogs.loader(context);
+    _showLoader(context);
     _servicesBloc.submitHrApproval(requestParams: requestParams);
+  }
+
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
   }
 
   @override
   void dispose() {
-    super.dispose();
     _servicesBloc.close();
     _isExpanded.dispose();
+    super.dispose();
   }
 
   _showItemsOrAttachements(BuildContext context) {
     if (financeDetailsItems == null) {
-      Dialogs.loader(context);
+      _showLoader(context);
       _servicesBloc.getFinanceItemDetailsList(
           apiUrl: financePRItemsApiUrl,
           requestParams: {'NOTIFICATION_ID': widget.data.nOTIFICATIONID});
@@ -104,11 +119,11 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
             //   Dialogs.loader(context);
             // } else
             if (state is OnHrApprovalsDetailsSuccess) {
-              Navigator.of(context, rootNavigator: true).pop();
+              _hideLoader(context);
               financeDetailsItems = state.hrApprovalDetails;
               _showItemsOrAttachements(context);
             } else if (state is OnsubmitHrApprovalSuccess) {
-              Navigator.of(context, rootNavigator: true).pop();
+              _hideLoader(context);
               if (state.apiEntity.isSuccess ?? false) {
                 for (int i = 0;
                     i < (state.apiEntity.entity?.aPPROVERSLIST.length ?? 0);
@@ -153,7 +168,7 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                     state.apiEntity.getDisplayMessage(resources));
               }
             } else if (state is OnServicesError) {
-              Navigator.of(context, rootNavigator: true).pop();
+              _hideLoader(context);
               Dialogs.showInfoDialog(context, PopupType.fail, state.message);
             }
           },
@@ -460,11 +475,15 @@ class _ItemFinanceApprovalsState extends State<ItemFinancePRApprovals> {
                                               context: context,
                                               builder: (context) =>
                                                   DialogRequestAnswerMoreInfo())
-                                          .then((value) => _submitHrApproval(
+                                          .then((value) {
+                                        if (value != null) {
+                                          _submitHrApproval(
                                               context,
                                               '${approvalDetails.nOTIFICATIONID ?? ''}',
                                               REQUESTMOREINFO,
-                                              comments: value['question']));
+                                              comments: value['question']);
+                                        }
+                                      });
                                     },
                                     child: Container(
                                       width: double.infinity,

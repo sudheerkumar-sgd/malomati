@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -9,15 +8,19 @@ import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
-import 'package:malomati/res/resources.dart';
 import '../../../data/model/api_request_model.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class BadgeScreen extends StatelessWidget {
+class BadgeScreen extends StatefulWidget {
   static const String route = '/BadgeScreen';
-  BadgeScreen({super.key});
-  late Resources resources;
+  const BadgeScreen({super.key});
+
+  @override
+  State<BadgeScreen> createState() => _BadgeScreenState();
+}
+
+class _BadgeScreenState extends State<BadgeScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   String userName = '';
@@ -25,6 +28,8 @@ class BadgeScreen extends StatelessWidget {
   final TextEditingController nationalityController = TextEditingController();
   final TextEditingController hiringDateController = TextEditingController();
   final TextEditingController jobTitleController = TextEditingController();
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
 
   onSubmit(String clickedButton) {
     if (_formKey.currentState!.validate()) {
@@ -42,9 +47,25 @@ class BadgeScreen extends StatelessWidget {
         requestParams: certificateRequestModel.toBadgeRequest());
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    resources = context.resources;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     empNumberController.text =
         context.userDB.get(userJobIdEnKey, defaultValue: '');
@@ -59,6 +80,11 @@ class BadgeScreen extends StatelessWidget {
         context.userDB.get(userJoiningDateEnKey, defaultValue: '');
     jobTitleController.text = context.userDB
         .get(isLocalEn ? userJobNameEnKey : userJobNameArKey, defaultValue: '');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -67,9 +93,9 @@ class BadgeScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -104,7 +130,7 @@ class BadgeScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -178,5 +204,15 @@ class BadgeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    empNumberController.dispose();
+    nationalityController.dispose();
+    hiringDateController.dispose();
+    jobTitleController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

@@ -14,9 +14,9 @@ import 'package:malomati/injection_container.dart' as di;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz1;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initTimezone();
+  _initTimezone();
   await FirbaseConfig().initFirbaseMessaging();
   await Hive.initFlutter();
   await Hive.openBox(appSettingsDb);
@@ -31,7 +31,7 @@ void main() async {
   runApp(Phoenix(child: const App()));
 }
 
-Future<void> _initTimezone() async {
+void _initTimezone() {
   tz1.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Asia/Dubai'));
 }

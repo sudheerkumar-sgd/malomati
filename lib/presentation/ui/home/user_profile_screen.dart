@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -9,18 +7,31 @@ import 'package:malomati/presentation/ui/widgets/back_app_bar.dart';
 import '../../../core/common/common_utils.dart';
 import '../../../injection_container.dart';
 import '../../../res/drawables/background_box_decoration.dart';
-import '../../../res/resources.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  late Resources resources;
-  final _loginBloc = sl<LoginBloc>();
-  UserProfileScreen({super.key});
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    resources = context.resources;
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  final _loginBloc = sl<LoginBloc>();
+  bool _didInit = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     _loginBloc.getProfile(requestParams: {
       'USER_NAME': context.userDB.get(userNameKey, defaultValue: '')
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: resources.color.appScaffoldBg,
@@ -472,5 +483,11 @@ class UserProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _loginBloc.close();
+    super.dispose();
   }
 }

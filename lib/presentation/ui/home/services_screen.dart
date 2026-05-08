@@ -37,119 +37,87 @@ class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
   static void onServiceClick(
       BuildContext context, FavoriteEntity favoriteEntity) {
-    Widget? screenWidget;
-    switch (favoriteEntity.id) {
+    final screenWidget = _screenForService(favoriteEntity);
+    if (screenWidget == null) return;
+    Navigator.push(
+      context,
+      PageTransition(
+          type: PageTransitionType.rightToLeft, child: screenWidget),
+    );
+  }
+
+  static Widget? _screenForService(FavoriteEntity favoriteEntity) {
+    final id = favoriteEntity.id;
+    if (id == null) return null;
+
+    switch (id) {
       case 1:
-        {
-          screenWidget = HrApprovalsScreen();
-        }
+        return HrApprovalsScreen();
       case 2:
-        {
-          screenWidget = FinanceApprovalsScreen();
-        }
-      case 3 || 4 || 5 || 6 || 7:
-        {
-          screenWidget = LeavesScreen(
-            leaveType: LeaveType.values.firstWhere(
-                ((element) => element.name == (favoriteEntity.name ?? ''))),
-          );
-        }
-      case 25:
-        {
-          screenWidget = RemoteWorkScreen();
-        }
+        return FinanceApprovalsScreen();
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return LeavesScreen(
+          leaveType: LeaveType.values.firstWhere(
+              (e) => e.name == (favoriteEntity.name ?? ''),
+              orElse: () => LeaveType.otherLeave),
+        );
       case 8:
-        {
-          screenWidget = InitiativesScreen();
-        }
+        return InitiativesScreen();
       case 9:
-        {
-          screenWidget = CertificatesScreen();
-        }
+        return CertificatesScreen();
       case 10:
-        {
-          screenWidget = ThankyouScreen();
-        }
+        return ThankyouScreen();
       case 11:
-        {
-          screenWidget = PayslipsScreen();
-        }
+        return PayslipsScreen();
       case 12:
-        {
-          screenWidget = AdvanceSalaryScreen();
-        }
+        return AdvanceSalaryScreen();
       case 13:
-        {
-          screenWidget = OvertimeScreen();
-        }
+        return OvertimeScreen();
       case 14:
-        {
-          screenWidget = BadgeScreen();
-        }
+        return BadgeScreen();
       case 15:
-        {
-          screenWidget = DeleteLeaveScreen();
-        }
+        return DeleteLeaveScreen();
       case 16:
-        {
-          screenWidget = CreateWarningScreen();
-        }
+        return CreateWarningScreen();
       case 17:
-        {
-          screenWidget = HolidaysScreen();
-        }
+        return HolidaysScreen();
       case 18:
-        {
-          screenWidget = MyTeamScreen();
-        }
+        return MyTeamScreen();
       case 19:
-        {
-          screenWidget = ViewWarningsScreen();
-        }
+        return ViewWarningsScreen();
       case 20:
-        {
-          screenWidget = VacationRulesScreen();
-        }
+        return VacationRulesScreen();
       case 21:
-        {
-          screenWidget = CancelInvoiceScreen();
-        }
+        return CancelInvoiceScreen();
       case 22:
-        {
-          screenWidget = ContractRenewScreen();
-        }
+        return ContractRenewScreen();
       case 23:
-        {
-          screenWidget = ResignationScreen();
-        }
+        return ResignationScreen();
       case 24:
-        {
-          screenWidget = TrainingCertificateScreen();
-        }
-      case 31:
-        {
-          screenWidget = GuestJobsScreen();
-        }
-      case 32:
-        {
-          screenWidget = const UAQAppsScreen();
-        }
+        return TrainingCertificateScreen();
+      case 25:
+        return RemoteWorkScreen();
       case 26:
-        {
-          screenWidget = PunchInAccessScreen();
-        }
-    }
-    if (screenWidget != null) {
-      Navigator.push(
-        context,
-        PageTransition(
-            type: PageTransitionType.rightToLeft, child: screenWidget),
-      );
+        return PunchInAccessScreen();
+      case 31:
+        return GuestJobsScreen();
+      case 32:
+        return const UAQAppsScreen();
+      default:
+        return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final services = sl<ConstantConfig>().getServicesByManager(
+        isManager: context.userDB.get(isMaangerKey, defaultValue: false),
+        isGuest: context.userDB.get(isGuestKey, defaultValue: false),
+        userName: context.userDB.get(userNameKey, defaultValue: ''));
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -166,11 +134,7 @@ class ServicesScreen extends StatelessWidget {
                     ? GuestServicesAppBarWidget(title: context.string.welcome)
                     : ServicesAppBarWidget(title: context.string.selfService)),
             ServicesList(
-              services: sl<ConstantConfig>().getServicesByManager(
-                  isManager:
-                      context.userDB.get(isMaangerKey, defaultValue: false),
-                  isGuest: context.userDB.get(isGuestKey, defaultValue: false),
-                  userName: context.userDB.get(userNameKey, defaultValue: '')),
+              services: services,
               callback: onServiceClick,
             ),
           ],

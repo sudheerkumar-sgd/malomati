@@ -18,17 +18,31 @@ import '../../../injection_container.dart';
 import '../widgets/custom_bg_widgets.dart';
 import '../widgets/image_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final loginBloc = sl<LoginBloc>();
   final _nameTextController = TextEditingController();
   final _pwdTextController = TextEditingController();
   final ValueNotifier<bool> _isRememberd = ValueNotifier(false);
   final _formKey = GlobalKey<FormState>();
   final ValueNotifier<bool> _isShowPassword = ValueNotifier(false);
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
 
+  @override
   void dispose() {
+    _nameTextController.dispose();
+    _pwdTextController.dispose();
+    _isRememberd.dispose();
+    _isShowPassword.dispose();
     loginBloc.close();
+    super.dispose();
   }
 
   onShowHidePassword() {
@@ -36,11 +50,25 @@ class LoginScreen extends StatelessWidget {
     _isShowPassword.value = !_isShowPassword.value;
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
-  Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark));
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     _isRememberd.value =
         context.userDB.get(isRememberdKey, defaultValue: false);
     if (_isRememberd.value) {
@@ -49,9 +77,17 @@ class LoginScreen extends StatelessWidget {
       _pwdTextController.text =
           context.userDB.get(passwordKey, defaultValue: '');
     }
-    Future.delayed(Duration.zero, () async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       SecurityCheck().checkSecurity(context);
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark));
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocProvider<LoginBloc>(
@@ -70,9 +106,10 @@ class LoginScreen extends StatelessWidget {
               BlocListener<LoginBloc, LoginState>(
                 listener: (context, state) {
                   if (state is OnLoading) {
-                    Dialogs.loader(context);
+                    _showLoader(context);
                   } else if (state is OnLoginSuccess) {
                     if (state.loginEntity.isSuccess ?? false) {
+                      _hideLoader(context);
                       oracleLoginId =
                           state.loginEntity.entity?.oracleLoginId ?? '';
                       context.userDB.put(userFullNameUsKey,
@@ -124,12 +161,12 @@ class LoginScreen extends StatelessWidget {
                                   : TourScreen()),
                           (_) => false);
                     } else {
-                      Navigator.pop(context);
+                      _hideLoader(context);
                       Dialogs.showInfoDialog(context, PopupType.fail,
                           context.string.usernameOrPasswordIsWrong);
                     }
                   } else if (state is OnLoginError) {
-                    Navigator.pop(context);
+                    _hideLoader(context);
                     Dialogs.showInfoDialog(
                         context, PopupType.fail, state.message);
                   }

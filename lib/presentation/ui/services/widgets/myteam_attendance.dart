@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/core/common/log.dart';
 import 'package:malomati/presentation/bloc/attendance/attendance_bloc.dart';
 
 import '../../../../domain/entities/employee_entity.dart';
@@ -12,14 +11,13 @@ import '../../../bloc/services/services_bloc.dart';
 import '../../widgets/dashed_progress_indicator.dart';
 
 class MyTeamAttendance extends StatefulWidget {
-  MyTeamAttendance({super.key});
+  const MyTeamAttendance({super.key});
 
   @override
   State<StatefulWidget> createState() => _MyTeamAttendanceState();
 }
 
-class _MyTeamAttendanceState extends State<MyTeamAttendance>
-    with SingleTickerProviderStateMixin {
+class _MyTeamAttendanceState extends State<MyTeamAttendance> {
   final _servicesBloc = sl<ServicesBloc>();
   final _attendanceBloc = sl<AttendanceBloc>();
   final ValueNotifier<List<EmployeeEntity>> _employeesList = ValueNotifier([]);
@@ -28,29 +26,18 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
   final ValueNotifier<bool> _isnotPunchedemployeesExpanded =
       ValueNotifier(false);
   String userName = '';
-  ValueNotifier<double> _fraction = ValueNotifier(-1.0);
+  final ValueNotifier<double> _fraction = ValueNotifier(-1.0);
   int loggedInEmployees = 0;
-  late Animation<double> _animation;
-  late AnimationController _controller;
+  bool _didInit = false;
   @override
   void initState() {
     super.initState();
-
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
   }
 
-  _startAnimation(double end) {
-    printLog(message: 'OnAttendanceSuccess $end');
-    _animation = Tween(begin: 0.0, end: end).animate(_controller)
-      ..addListener(() {
-        _fraction.value = _animation.value;
-      });
-
-    _controller.forward();
-  }
-
-  _getAttendanceByEmployee() async {
+  Future<void> _getAttendanceByEmployee() async {
+    loggedInEmployees = 0;
+    _notPunchedemployeesList.value = [];
+    _fraction.value = -1.0;
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
     for (int i = 0; i < _employeesList.value.length; i++) {
       Map<String, dynamic> requestParams = {
@@ -60,15 +47,27 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
       await _attendanceBloc.getAttendance(
           requestParams: requestParams, returnValue: true);
     }
+    final total = _employeesList.value.length;
+    _fraction.value = total == 0 ? 0.0 : loggedInEmployees / total;
+  }
+
+  void _loadMyTeamAttendance() {
+    _servicesBloc.getEmployeesByManager(requestParams: {'USER_NAME': userName});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    _loadMyTeamAttendance();
   }
 
   @override
   Widget build(BuildContext context) {
-    _controller.forward();
-    userName = context.userDB.get(userNameKey, defaultValue: '');
     final resources = context.resources;
-    var percentage = 0.0;
-    _servicesBloc.getEmployeesByManager(requestParams: {'USER_NAME': userName});
+    var percentage = _fraction.value < 0 ? 0.0 : _fraction.value;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => _servicesBloc),
@@ -109,10 +108,12 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                     _notPunchedemployeesList.value = list;
                   }
                 }
-                percentage = loggedInEmployees / _employeesList.value.length;
+                final total = _employeesList.value.length;
+                percentage = total == 0 ? 0.0 : loggedInEmployees / total;
                 _fraction.value = percentage;
               } else if (state is OnAttendanceApiError) {
-                percentage = loggedInEmployees / _employeesList.value.length;
+                final total = _employeesList.value.length;
+                percentage = total == 0 ? 0.0 : loggedInEmployees / total;
                 _fraction.value = percentage;
               }
             },
@@ -258,9 +259,13 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
                 ),
               ),
             ),
-            ValueListenableBuilder(
-                valueListenable: _notPunchedemployeesList,
-                builder: (context, list, child) {
+            ValueListenableBuilder<bool>(
+                valueListenable: _isnotPunchedemployeesExpanded,
+                builder: (context, isExpanded, child) {
+                  if (!isExpanded) {
+                    return const SizedBox.shrink();
+                  }
+                  final list = _notPunchedemployeesList.value;
                   return Align(
                     alignment: Alignment.topLeft,
                     child: Column(
@@ -293,5 +298,16 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance>
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _employeesList.dispose();
+    _notPunchedemployeesList.dispose();
+    _isnotPunchedemployeesExpanded.dispose();
+    _fraction.dispose();
+    _servicesBloc.close();
+    _attendanceBloc.close();
+    super.dispose();
   }
 }

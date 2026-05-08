@@ -1,7 +1,3 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -15,24 +11,57 @@ import '../utils/dialogs.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class HolidaysScreen extends StatelessWidget {
+class HolidaysScreen extends StatefulWidget {
+  const HolidaysScreen({super.key});
+
+  @override
+  State<HolidaysScreen> createState() => _HolidaysScreenState();
+}
+
+class _HolidaysScreenState extends State<HolidaysScreen> {
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<EventsEntity>> _notificationList = ValueNotifier([]);
+  final ValueNotifier<List<EventsEntity>> _notificationList =
+      ValueNotifier<List<EventsEntity>>([]);
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(true);
 
-  String userName = '';
+  String _noNotificationText = '';
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
 
-  HolidaysScreen({super.key});
+  void _fetchHolidayEvents() {
+    _isLoading.value = true;
+    _servicesBloc.getHolidayEvents(requestParams: {
+      'START_DATE': '${DateTime.now().year}-01-01',
+      'END_DATE': '${DateTime.now().year}-12-31'
+    });
+  }
+
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    _fetchHolidayEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var noNotificationText = '';
     var resources = context.resources;
-    Timer(const Duration(milliseconds: 50), () {
-      _servicesBloc.getHolidayEvents(requestParams: {
-        'START_DATE': '${DateTime.now().year}-01-01',
-        'END_DATE': '${DateTime.now().year}-12-31'
-      });
-    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -41,13 +70,15 @@ class HolidaysScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnHolidayEventsSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
-                noNotificationText = context.string.noHrRequests;
+                _hideLoader(context);
+                _noNotificationText = context.string.noHrRequests;
                 _notificationList.value = state.holidayEvents;
+                _isLoading.value = false;
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
+                _isLoading.value = false;
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -67,30 +98,41 @@ class HolidaysScreen extends StatelessWidget {
                     height: context.resources.dimen.dp20,
                   ),
                   Expanded(
-                    child: ValueListenableBuilder(
-                        valueListenable: _notificationList,
-                        builder: (context, notificationList, child) {
-                          return (notificationList.isEmpty &&
-                                  noNotificationText.isNotEmpty)
-                              ? Center(
-                                  child: Text(
-                                    noNotificationText,
-                                    style: context.textFontWeight600,
-                                  ),
-                                )
-                              : ListView.separated(
-                                  controller: ScrollController(),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) => ItemEvents(
-                                        data: notificationList[index],
-                                      ),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                        height: resources.dimen.dp20,
-                                      ),
-                                  itemCount: notificationList.length);
-                        }),
-                  ),
+                      child: ValueListenableBuilder<bool>(
+                          valueListenable: _isLoading,
+                          builder: (context, isLoading, _) {
+                            if (isLoading) {
+                              return const Center(
+                                  child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: CircularProgressIndicator()));
+                            }
+                            return ValueListenableBuilder<List<EventsEntity>>(
+                                valueListenable: _notificationList,
+                                builder: (context, notificationList, child) {
+                                  return (notificationList.isEmpty &&
+                                          _noNotificationText.isNotEmpty)
+                                      ? Center(
+                                          child: Text(
+                                            _noNotificationText,
+                                            style: context.textFontWeight600,
+                                          ),
+                                        )
+                                      : ListView.separated(
+                                          controller: _scrollController,
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder: (context, index) =>
+                                              ItemEvents(
+                                                data: notificationList[index],
+                                              ),
+                                          separatorBuilder: (context, index) =>
+                                              SizedBox(
+                                                height: resources.dimen.dp20,
+                                              ),
+                                          itemCount: notificationList.length);
+                                });
+                          })),
                 ],
               ),
             ),
@@ -98,5 +140,14 @@ class HolidaysScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _notificationList.dispose();
+    _isLoading.dispose();
+    _scrollController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

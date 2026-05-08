@@ -26,18 +26,19 @@ const ANSWERMOREINFO = 'ANSWER_MORE_INFO';
 class ItemHRApprovals extends StatefulWidget {
   final HrApprovalEntity data;
   final Function(String, BuildContext) callBack;
-  ItemHRApprovals({required this.data, required this.callBack, super.key});
+  const ItemHRApprovals({required this.data, required this.callBack, super.key});
 
   @override
   State<StatefulWidget> createState() => _ItemHRApprovalsState();
 }
 
 class _ItemHRApprovalsState extends State<ItemHRApprovals> {
-  final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _isExpanded = ValueNotifier<bool>(false);
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<HrapprovalDetailsEntity> _notificationDetails =
-      ValueNotifier(HrapprovalDetailsEntity());
+      ValueNotifier<HrapprovalDetailsEntity>(HrapprovalDetailsEntity());
   String selectedAction = '';
+  bool _isLoaderShowing = false;
 
   _submitHrApproval(
     BuildContext context,
@@ -53,8 +54,22 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
       "FROM_USER": context.userDB.get(userNameKey, defaultValue: ''),
       "COMMENTS": comments ?? action
     };
-    Dialogs.loader(context);
+    _showLoader(context);
     _servicesBloc.submitHrApproval(requestParams: requestParams);
+  }
+
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
   }
 
   String _getFontFamily(String name) {
@@ -70,9 +85,9 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
   @override
   void dispose() {
     _servicesBloc.close();
-    super.dispose();
     _isExpanded.dispose();
     _notificationDetails.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,7 +109,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
             if (state is OnHrApprovalsDetailsSuccess) {
               _notificationDetails.value = state.hrApprovalDetails;
             } else if (state is OnsubmitHrApprovalSuccess) {
-              Navigator.of(context, rootNavigator: true).pop();
+              _hideLoader(context);
               if (state.apiEntity.isSuccess ?? false) {
                 for (int i = 0;
                     i < (state.apiEntity.entity?.aPPROVERSLIST.length ?? 0);
@@ -137,7 +152,7 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
                     state.apiEntity.getDisplayMessage(resources));
               }
             } else if (state is OnServicesError) {
-              Navigator.of(context, rootNavigator: true).pop();
+              _hideLoader(context);
               Dialogs.showInfoDialog(context, PopupType.fail, state.message);
             }
           },
@@ -146,11 +161,14 @@ class _ItemHRApprovalsState extends State<ItemHRApprovals> {
               InkWell(
                 onTap: () {
                   _isExpanded.value = !_isExpanded.value;
-                  _servicesBloc.getHrApprovalDetails(requestParams: {
-                    'NOTIFICATION_ID': widget.data.nOTIFICATIONID,
-                    "USER_NAME": widget.data.uSERNAME,
-                    "ITEM_KEY": widget.data.iTEMKEY,
-                  });
+                  if (_isExpanded.value &&
+                      _notificationDetails.value.notificationDetails.isEmpty) {
+                    _servicesBloc.getHrApprovalDetails(requestParams: {
+                      'NOTIFICATION_ID': widget.data.nOTIFICATIONID,
+                      "USER_NAME": widget.data.uSERNAME,
+                      "ITEM_KEY": widget.data.iTEMKEY,
+                    });
+                  }
                 },
                 child: Row(
                   children: [

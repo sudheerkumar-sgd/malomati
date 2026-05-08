@@ -1,7 +1,3 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/config/constant_config.dart';
@@ -16,28 +12,48 @@ import '../utils/dialogs.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
   final _homeBloc = sl<HomeBloc>();
   final ValueNotifier<List<FinanceApprovalEntity>> _notificationList =
-      ValueNotifier([]);
+      ValueNotifier<List<FinanceApprovalEntity>>([]);
+  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(true);
+  final ScrollController _scrollController = ScrollController();
 
-  String userName = '';
-  List<String> toBeDeleted = [];
+  String _userName = '';
+  String _noNotificationText = '';
+  final List<String> _toBeDeleted = [];
+  bool _didInit = false;
 
-  NotificationsScreen({super.key});
+  void _fetchNotifications() {
+    _isLoading.value = true;
+    _homeBloc.getNotificationsList(requestParams: {
+      'USER_NAME': _userName,
+      'START_DATE': getDateByformat(
+          'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
+      'END_DATE':
+          getDateByformat('yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
+    });
+  }
 
-  _onActionClicked(BuildContext context, String id, String action) {
+  void _onActionClicked(BuildContext context, String id, String action) {
     // final list = _notificationList.value;
     // final index = list.indexWhere((element) => element.nOTIFICATIONID == id);
     // list.removeAt(index);
     // _notificationList.value = [];
     // _notificationList.value = list;
     if (action == 'add') {
-      toBeDeleted.add(id);
+      _toBeDeleted.add(id);
     } else if (action == 'remove') {
-      toBeDeleted.remove(id);
+      _toBeDeleted.remove(id);
     } else if (action == 'delete') {
-      String ids = toBeDeleted.join('#');
+      String ids = _toBeDeleted.join('#');
       context.userDB.put(deletedNotificationsKey,
           '${context.userDB.get(deletedNotificationsKey, defaultValue: '')}#$ids');
       String deletedIds =
@@ -54,19 +70,17 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    _userName = context.userDB.get(userNameKey, defaultValue: '');
+    _fetchNotifications();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var noNotificationText = '';
     var resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    Timer(const Duration(milliseconds: 50), () {
-      _homeBloc.getNotificationsList(requestParams: {
-        'USER_NAME': userName,
-        'START_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
-        'END_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
-      });
-    });
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -74,10 +88,8 @@ class NotificationsScreen extends StatelessWidget {
           create: (context) => _homeBloc,
           child: BlocListener<HomeBloc, HomeState>(
             listener: (context, state) {
-              if (state is OnLoading) {
-                Dialogs.loader(context);
-              } else if (state is OnNotificationsListSuccess) {
-                noNotificationText = context.string.noHrRequests;
+              if (state is OnNotificationsListSuccess) {
+                _noNotificationText = context.string.noHrRequests;
                 String deletedNotification = context.userDB
                     .get(deletedNotificationsKey, defaultValue: '');
                 final list = state.notificationsList
@@ -93,7 +105,9 @@ class NotificationsScreen extends StatelessWidget {
                 ConstantConfig.notificationsCount = 0;
                 ConstantConfig.isApprovalCountChange.value =
                     !(ConstantConfig.isApprovalCountChange.value);
+                _isLoading.value = false;
               } else if (state is OnApiError) {
+                _isLoading.value = false;
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -111,35 +125,40 @@ class NotificationsScreen extends StatelessWidget {
                     height: context.resources.dimen.dp20,
                   ),
                   Expanded(
-                    child: ValueListenableBuilder(
-                        valueListenable: _notificationList,
-                        builder: (context, notificationList, child) {
-                          return (notificationList.isEmpty)
-                              ? noNotificationText.isNotEmpty
-                                  ? Center(
-                                      child: Text(
-                                        noNotificationText,
-                                        style: context.textFontWeight600,
-                                      ),
-                                    )
-                                  : const Center(
-                                      child: SizedBox(
-                                          width: 40,
-                                          height: 40,
-                                          child: CircularProgressIndicator()))
-                              : ListView.separated(
-                                  controller: ScrollController(),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (context, index) =>
-                                      ItemNotifications(
-                                        data: notificationList[index],
-                                        callBack: _onActionClicked,
-                                      ),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                        height: resources.dimen.dp20,
-                                      ),
-                                  itemCount: notificationList.length);
+                    child: ValueListenableBuilder<bool>(
+                        valueListenable: _isLoading,
+                        builder: (context, isLoading, _) {
+                          if (isLoading) {
+                            return const Center(
+                                child: SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: CircularProgressIndicator()));
+                          }
+                          return ValueListenableBuilder<List<FinanceApprovalEntity>>(
+                              valueListenable: _notificationList,
+                              builder: (context, notificationList, child) {
+                                return (notificationList.isEmpty)
+                                    ? Center(
+                                        child: Text(
+                                          _noNotificationText,
+                                          style: context.textFontWeight600,
+                                        ),
+                                      )
+                                    : ListView.separated(
+                                        controller: _scrollController,
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder: (context, index) =>
+                                            ItemNotifications(
+                                          data: notificationList[index],
+                                          callBack: _onActionClicked,
+                                        ),
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(
+                                          height: resources.dimen.dp20,
+                                        ),
+                                        itemCount: notificationList.length);
+                              });
                         }),
                   ),
                 ],
@@ -149,5 +168,14 @@ class NotificationsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _notificationList.dispose();
+    _isLoading.dispose();
+    _scrollController.dispose();
+    _homeBloc.close();
+    super.dispose();
   }
 }

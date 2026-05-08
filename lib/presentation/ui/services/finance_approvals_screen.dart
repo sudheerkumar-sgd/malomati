@@ -40,12 +40,23 @@ class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
   String userName = '';
   String noNotificationText = '';
   bool _isSilentLoading = false;
+  bool _isLoaderShowing = false;
+
+  void _updateButtons() {
+    _buttons.value = [
+      {'name': 'PO', 'count': ConstantConfig.financePOApprovalCount},
+      {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
+      {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount},
+      {'name': 'Payroll', 'count': ConstantConfig.financePayrollApprovalCount},
+    ];
+  }
 
   @override
   void initState() {
     super.initState();
     selectedButtonIndex = ValueNotifier<int>(widget.index);
     selectedButtonIndex.addListener(_fetchData);
+    _updateButtons();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userName = context.userDB.get(userNameKey, defaultValue: '');
       _fetchData();
@@ -82,6 +93,20 @@ class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
     _servicesBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   _onActionClicked(String id, BuildContext context) {
     _fetchData();
     _fetchCounts();
@@ -90,12 +115,6 @@ class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
   @override
   Widget build(BuildContext context) {
     var resources = context.resources;
-    _buttons.value = [
-      {'name': 'PO', 'count': ConstantConfig.financePOApprovalCount},
-      {'name': 'PR', 'count': ConstantConfig.financePRApprovalCount},
-      {'name': 'Invoice', 'count': ConstantConfig.financeINVApprovalCount},
-      {'name': 'Payroll', 'count': ConstantConfig.financePayrollApprovalCount},
-    ];
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -104,7 +123,7 @@ class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                if (!_isSilentLoading) Dialogs.loader(context);
+                if (!_isSilentLoading) _showLoader(context);
               } else if (state is OnRequestsCountSuccess) {
                 ConstantConfig.hrApprovalCount =
                     state.requestsCountEntity.hRCOUNT ?? 0;
@@ -116,37 +135,16 @@ class _FinanceApprovalsScreenState extends State<FinanceApprovalsScreen> {
                     state.requestsCountEntity.iNVCOUNT ?? 0;
                 ConstantConfig.isApprovalCountChange.value =
                     !(ConstantConfig.isApprovalCountChange.value);
-                _buttons.value = [
-                  {
-                    'name': 'PO',
-                    'count': ConstantConfig.financePOApprovalCount
-                  },
-                  {
-                    'name': 'PR',
-                    'count': ConstantConfig.financePRApprovalCount
-                  },
-                  {
-                    'name': 'Invoice',
-                    'count': ConstantConfig.financeINVApprovalCount
-                  },
-                  {
-                    'name': 'Payroll',
-                    'count': ConstantConfig.financePayrollApprovalCount
-                  },
-                ];
+                _updateButtons();
               } else if (state is OnFinanceApprovalsListSuccess) {
-                if (!_isSilentLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                if (!_isSilentLoading) _hideLoader(context);
                 setState(() {
                   noNotificationText = context.string.noHrRequests;
                   _financeNotificationList =
                       List.from(state.financeApprovalsList);
                 });
               } else if (state is OnServicesError) {
-                if (!_isSilentLoading) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                if (!_isSilentLoading) _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },

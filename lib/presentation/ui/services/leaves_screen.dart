@@ -8,9 +8,9 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/model/leave_request_model.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
+import 'package:malomati/core/managers/dashboard_leave_balances.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
-import 'package:malomati/presentation/ui/home/home_screen.dart';
 import 'package:malomati/presentation/ui/services/widgets/dialog_upload_attachment.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
 import 'package:malomati/presentation/ui/utils/date_time_util.dart';
@@ -23,7 +23,7 @@ import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:malomati/res/resources.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart'
-    show SfDateRangePicker, DateRangePickerSelectionMode, PickerDateRange;
+    show DateRangePickerSelectionMode, PickerDateRange;
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/animated_toggle.dart';
 import '../widgets/back_app_bar.dart';
@@ -55,17 +55,22 @@ enum LeaveSubType {
   const LeaveSubType(this.name);
 }
 
-class LeavesScreen extends StatelessWidget {
+class LeavesScreen extends StatefulWidget {
   static const String route = '/LeavesScreen';
   final LeaveType leaveType;
-  LeavesScreen({required this.leaveType, super.key});
+  const LeavesScreen({required this.leaveType, super.key});
+
+  @override
+  State<LeavesScreen> createState() => _LeavesScreenState();
+}
+
+class _LeavesScreenState extends State<LeavesScreen> {
   late Resources resources;
   final _servicesBloc = sl<ServicesBloc>();
   final ValueNotifier<List<LeaveTypeEntity>> _leaveTypeList = ValueNotifier([]);
   LeaveTypeEntity? selectedLeaveType;
   LeaveSubType leaveSubType = LeaveSubType.planned;
   final TextEditingController _startDateController = TextEditingController();
-  //final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
@@ -73,7 +78,7 @@ class LeavesScreen extends StatelessWidget {
   final timeFormat = 'hh:mm a';
   final ValueNotifier<bool> _isUploadChanged = ValueNotifier(false);
   final ValueNotifier<bool> _isleaveTypeChanged = ValueNotifier(false);
-  final _uploadFiles = [];
+  final List<dynamic> _uploadFiles = [];
   String currentBalanceText = '';
   final _formKey = GlobalKey<FormState>();
   final ValueNotifier<String> _durationText = ValueNotifier('0');
@@ -81,22 +86,24 @@ class LeavesScreen extends StatelessWidget {
   String userName = '';
   DateTime? startDate;
   DateTime? endDate;
+  bool _didInit = false;
 
   String _getTitleByLeaveType(BuildContext context) {
-    switch (leaveType) {
+    switch (widget.leaveType) {
       case LeaveType.anualLeave:
         {
-          currentBalanceText = HomeScreen.anualLeaveBalance;
+          currentBalanceText = sl<DashboardLeaveBalances>().annualLeaveBalance;
           return context.string.annualLeaves;
         }
       case LeaveType.permission:
         {
-          currentBalanceText = HomeScreen.permissionBalance;
+          currentBalanceText =
+              sl<DashboardLeaveBalances>().permissionLeaveBalance;
           return context.string.permission;
         }
       case LeaveType.sickLeave:
         {
-          currentBalanceText = HomeScreen.sickLeaveBalance;
+          currentBalanceText = sl<DashboardLeaveBalances>().sickLeaveBalance;
           return context.string.sickLeaves;
         }
       case LeaveType.missionLeave:
@@ -105,7 +112,7 @@ class LeavesScreen extends StatelessWidget {
         }
       case LeaveType.workFromHome:
         {
-          return leaveType.toString();
+          return widget.leaveType.toString();
         }
       default:
         {
@@ -143,8 +150,8 @@ class LeavesScreen extends StatelessWidget {
               '${getDateByformat(dateFormat, value.startDate!)} - ${getDateByformat(dateFormat, value.endDate ?? value.startDate!)}';
           startDate = value.startDate!;
           endDate = value.endDate ?? value.startDate!;
-          if (leaveType != LeaveType.permission &&
-              leaveType != LeaveType.otherLeave) {
+          if (widget.leaveType != LeaveType.permission &&
+              widget.leaveType != LeaveType.otherLeave) {
             _servicesBloc.getWorkingDays(requestParams: {
               'P_FROM_DATE': getDateByformat("yyyy-MM-dd", value.startDate!),
               'P_TO_DATE': getDateByformat(
@@ -206,10 +213,10 @@ class LeavesScreen extends StatelessWidget {
     leaveRequestModel.lEAVETYPE = leaveSubType.name;
     leaveRequestModel.uSERNAME = userName;
     leaveRequestModel.cREATORUSERNAME = '';
-    if (leaveType == LeaveType.otherLeave) {
+    if (widget.leaveType == LeaveType.otherLeave) {
       leaveRequestModel.aBSENCETYPEID = '${selectedLeaveType?.id}';
     } else {
-      leaveRequestModel.aBSENCETYPEID = leaveType.id;
+      leaveRequestModel.aBSENCETYPEID = widget.leaveType.id;
     }
     leaveRequestModel.sTARTDATE = getDateByformat(dateFormat, startDate!);
     if (leaveRequestModel.aBSENCETYPEID == LeaveType.permission.id) {
@@ -250,69 +257,78 @@ class LeavesScreen extends StatelessWidget {
     _servicesBloc.submitLeaveRequest(requestParams: leaveRequestModel.toJson());
   }
 
+  void _onStartTimeChanged() {
+    _endTimeController.text = '';
+  }
+
+  void _onEndTimeChanged() {
+    if (_endTimeController.text.isNotEmpty) {
+      final minutes = getMinutes(
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_startTimeController.text}'),
+          getDateTimeByString('$dateFormat $timeFormat',
+              '${_startDateController.text} ${_endTimeController.text}'));
+      var text = '';
+      if (minutes >= 30) {
+        if (minutes >= 60) {
+          text = '${minutes ~/ 60}:${minutes % 60} ${context.string.hours}';
+        } else {
+          text = '$minutes min';
+        }
+        _durationText.value = text;
+      } else {
+        _endTimeController.text = '';
+        Dialogs.showInfoDialog(
+            context, PopupType.fail, 'Minimum duration should be 30 mins');
+      }
+    }
+  }
+
+  void _setDefaultLeaveSubType() {
+    if (widget.leaveType == LeaveType.permission ||
+        widget.leaveType == LeaveType.missionLeave ||
+        widget.leaveType == LeaveType.sickLeave ||
+        widget.leaveType == LeaveType.anualLeave) {
+      leaveSubType = LeaveSubType.confirmed;
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+
     userName = context.userDB.get(userNameKey);
-    if (leaveType == LeaveType.otherLeave) {
+    _setDefaultLeaveSubType();
+    if (widget.leaveType == LeaveType.otherLeave) {
       _servicesBloc.getLeaveTypes(requestParams: {});
     }
+    if (widget.leaveType == LeaveType.permission) {
+      _startTimeController.addListener(_onStartTimeChanged);
+      _endTimeController.addListener(_onEndTimeChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    _startTimeController.removeListener(_onStartTimeChanged);
+    _endTimeController.removeListener(_onEndTimeChanged);
+    _startDateController.dispose();
+    _startTimeController.dispose();
+    _endTimeController.dispose();
+    _commentController.dispose();
+    _leaveTypeList.dispose();
+    _isUploadChanged.dispose();
+    _isleaveTypeChanged.dispose();
+    _durationText.dispose();
+    _servicesBloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     resources = context.resources;
-    // _endDateController.addListener(
-    //   () {
-    //     if (leaveType != LeaveType.permission &&
-    //         leaveType != LeaveType.otherLeave &&
-    //         _endDateController.text.isNotEmpty) {
-    //       _servicesBloc.getWorkingDays(requestParams: {
-    //         'P_FROM_DATE': getDateByformat("yyyy-MM-dd",
-    //             getDateTimeByString(dateFormat, _startDateController.text)),
-    //         'P_TO_DATE': getDateByformat("yyyy-MM-dd",
-    //             getDateTimeByString(dateFormat, _endDateController.text))
-    //       });
-    //     }
-    //   },
-    // );
-    if (leaveType.id == LeaveType.permission.id) {
-      leaveSubType = LeaveSubType.confirmed;
-    } else if (leaveType.id == LeaveType.missionLeave.id) {
-      leaveSubType = LeaveSubType.confirmed;
-    } else if (leaveType.id == LeaveType.sickLeave.id) {
-      leaveSubType = LeaveSubType.confirmed;
-    } else if (leaveType.id == LeaveType.anualLeave.id) {
-      leaveSubType = LeaveSubType.confirmed;
-    }
-    if (leaveType.id == LeaveType.permission.id) {
-      leaveSubType = LeaveSubType.confirmed;
-      _startTimeController.addListener(
-        () {
-          _endTimeController.text = '';
-        },
-      );
-      _endTimeController.addListener(
-        () {
-          if (_endTimeController.text.isNotEmpty) {
-            final minutes = getMinutes(
-                getDateTimeByString('$dateFormat $timeFormat',
-                    '${_startDateController.text} ${_startTimeController.text}'),
-                getDateTimeByString('$dateFormat $timeFormat',
-                    '${_startDateController.text} ${_endTimeController.text}'));
-            var text = '';
-            if (minutes >= 30) {
-              if (minutes >= 60) {
-                text =
-                    '${minutes ~/ 60}:${minutes % 60} ${context.string.hours}';
-              } else {
-                text = '$minutes min';
-              }
-              _durationText.value = text;
-            } else {
-              _endTimeController.text = '';
-              Dialogs.showInfoDialog(context, PopupType.fail,
-                  'Minimum duration should be 30 mins');
-            }
-          }
-        },
-      );
-    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -349,16 +365,16 @@ class LeavesScreen extends StatelessWidget {
                               to: state.leaveSubmitResponse.entity
                                       ?.aPPROVERSLIST[i] ??
                                   '',
-                              title: (leaveType == LeaveType.otherLeave)
+                              title: (widget.leaveType == LeaveType.otherLeave)
                                   ? '${selectedLeaveType?.name}'
-                                  : leaveType.name,
+                                  : widget.leaveType.name,
                               body: getLeavesApproverFCMBodyText(
                                   context.userDB.get(userFullNameUsKey),
-                                  (leaveType == LeaveType.otherLeave)
+                                  (widget.leaveType == LeaveType.otherLeave)
                                       ? '${selectedLeaveType?.name}'
-                                      : leaveType.name,
+                                      : widget.leaveType.name,
                                   '${startDate != null ? getDateByformat(dateFormat, startDate!) : ''} ${_startTimeController.text}',
-                                  '${leaveType.id == LeaveType.permission.id ? (startDate != null ? getDateByformat(dateFormat, startDate!) : '') : (endDate != null ? getDateByformat(dateFormat, endDate!) : '')} ${_endTimeController.text}'),
+                                  '${widget.leaveType.id == LeaveType.permission.id ? (startDate != null ? getDateByformat(dateFormat, startDate!) : '') : (endDate != null ? getDateByformat(dateFormat, endDate!) : '')} ${_endTimeController.text}'),
                               type: fcmTypeHRApprovals,
                               notificationId:
                                   state.leaveSubmitResponse.entity?.nTFID ??
@@ -391,9 +407,9 @@ class LeavesScreen extends StatelessWidget {
                   ),
                   BackAppBarWidget(title: _getTitleByLeaveType(context)),
                   Visibility(
-                    visible: leaveType == LeaveType.anualLeave ||
-                        leaveType == LeaveType.sickLeave ||
-                        leaveType == LeaveType.permission,
+                    visible: widget.leaveType == LeaveType.anualLeave ||
+                        widget.leaveType == LeaveType.sickLeave ||
+                        widget.leaveType == LeaveType.permission,
                     child: Column(
                       children: [
                         SizedBox(
@@ -548,7 +564,7 @@ class LeavesScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Visibility(
-                              visible: leaveType == LeaveType.otherLeave,
+                              visible: widget.leaveType == LeaveType.otherLeave,
                               child: ValueListenableBuilder(
                                   valueListenable: _leaveTypeList,
                                   builder: (context, leaveTypeList, widget) {
@@ -566,7 +582,7 @@ class LeavesScreen extends StatelessWidget {
                                   }),
                             ),
                             Visibility(
-                              visible: leaveType == LeaveType.otherLeave,
+                              visible: widget.leaveType == LeaveType.otherLeave,
                               child: SizedBox(
                                 height: resources.dimen.dp20,
                               ),
@@ -579,7 +595,7 @@ class LeavesScreen extends StatelessWidget {
                                             ? getDateTimeByString(dateFormat,
                                                 _startDateController.text)
                                             : DateTime.now(),
-                                    selectionMode: leaveType.id ==
+                                    selectionMode: widget.leaveType.id ==
                                             LeaveType.permission.id
                                         ? DateRangePickerSelectionMode.single
                                         : DateRangePickerSelectionMode.range);
@@ -589,19 +605,19 @@ class LeavesScreen extends StatelessWidget {
                                 textAlign:
                                     isLocalEn ? TextAlign.start : TextAlign.end,
                                 height: resources.dimen.dp27,
-                                labelText:
-                                    leaveType.id == LeaveType.permission.id
-                                        ? context.string.date
-                                        : context.string.leaveDates,
-                                hintText: leaveType.id ==
+                                labelText: widget.leaveType.id ==
+                                        LeaveType.permission.id
+                                    ? context.string.date
+                                    : context.string.leaveDates,
+                                hintText: widget.leaveType.id ==
                                         LeaveType.permission.id
                                     ? context.string.chooseDate
                                     : '${context.string.startDate} - ${context.string.endDate}',
                                 fontFamily: fontFamilyEN,
-                                errorMessage:
-                                    leaveType.id == LeaveType.permission.id
-                                        ? context.string.chooseDate
-                                        : context.string.chooseLeaveDates,
+                                errorMessage: widget.leaveType.id ==
+                                        LeaveType.permission.id
+                                    ? context.string.chooseDate
+                                    : context.string.chooseLeaveDates,
                                 suffixIconPath: DrawableAssets.icCalendar,
                                 textController: _startDateController,
                               ),
@@ -634,9 +650,9 @@ class LeavesScreen extends StatelessWidget {
                             // ],
                             ValueListenableBuilder(
                                 valueListenable: _isleaveTypeChanged,
-                                builder: (contex, value, widget) {
+                                builder: (contex, value, valueWidget) {
                                   return Visibility(
-                                    visible: leaveType.id ==
+                                    visible: widget.leaveType.id ==
                                             LeaveType.permission.id ||
                                         '${selectedLeaveType?.id ?? ''}' ==
                                             LeaveType.permission.id,
@@ -866,7 +882,7 @@ class LeavesScreen extends StatelessWidget {
                                     textController: _commentController,
                                     errorMessage:
                                         (selectedLeaveType?.id == 68 ||
-                                                leaveType.id == '68')
+                                                widget.leaveType.id == '68')
                                             ? context.string.comments
                                             : '',
                                   );

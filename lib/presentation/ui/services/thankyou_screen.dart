@@ -1,6 +1,3 @@
-// ignore_for_file: must_be_immutable
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -34,28 +31,38 @@ enum ThankyouListType {
   granted,
 }
 
-class ThankyouScreen extends StatelessWidget {
+class ThankyouScreen extends StatefulWidget {
   static const String route = '/ThankyouScreen';
-  ThankyouScreen({super.key});
+  const ThankyouScreen({super.key});
+
+  @override
+  State<ThankyouScreen> createState() => _ThankyouScreenState();
+}
+
+class _ThankyouScreenState extends State<ThankyouScreen> {
   late Resources resources;
-  final ValueNotifier _selectedListType =
+  final ValueNotifier<ThankyouListType> _selectedListType =
       ValueNotifier<ThankyouListType>(ThankyouListType.create);
   final _servicesBloc = sl<ServicesBloc>();
   List<DepartmentEntity> _departments = [];
   List<ThankyouReasonEntity> _reasons = [];
-  final ValueNotifier _employees = ValueNotifier<List<EmployeeEntity>>([]);
-  final ValueNotifier _thankYouList = ValueNotifier<List<ThankyouEntity>>([]);
+  final ValueNotifier<List<EmployeeEntity>> _employees =
+      ValueNotifier<List<EmployeeEntity>>([]);
+  final ValueNotifier<List<ThankyouEntity>> _thankYouList =
+      ValueNotifier<List<ThankyouEntity>>([]);
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _noteController = TextEditingController();
   DepartmentEntity? department;
   EmployeeEntity? employee;
   ThankyouReasonEntity? reason;
-  ValueNotifier<int> selectedMonth = ValueNotifier(0);
+  final ValueNotifier<int> selectedMonth = ValueNotifier<int>(0);
   List<Map> monthYearList = [];
   final ScrollController _monthScrollController = ScrollController();
   final ScrollController _listScrollController = ScrollController();
   String userName = '';
   String personId = '';
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
 
   onDepartmentSelected(DepartmentEntity? value) {
     employee = null;
@@ -91,6 +98,7 @@ class ThankyouScreen extends StatelessWidget {
   }
 
   _getYearMonth() {
+    monthYearList.clear();
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
     for (int i = 1; i <= currentMonth; i++) {
@@ -116,8 +124,9 @@ class ThankyouScreen extends StatelessWidget {
   }
 
   _getThankyouList(ThankyouListType type) {
+    if (monthYearList.isEmpty) return;
     final requestedParams = {
-      'thankyou_type': _selectedListType.value,
+      'thankyou_type': type,
       'USER_NAME': userName,
       'PERSON_ID': personId,
       'START_DATE': monthYearList[selectedMonth.value]['start_date'],
@@ -126,8 +135,50 @@ class ThankyouScreen extends StatelessWidget {
     _servicesBloc.getThankyouList(requestParams: requestedParams);
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
+  void _onSelectedMonthChanged() {
+    final type = _selectedListType.value;
+    if (type != ThankyouListType.create) {
+      _getThankyouList(type);
+    }
+  }
+
+  void _onSelectedListTypeChanged() {
+    if (!mounted) return;
+    final type = _selectedListType.value;
+    if (type == ThankyouListType.create) return;
+    _getThankyouList(type);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_monthScrollController.hasClients) return;
+      _setScrollByDirection(_monthScrollController.position.maxScrollExtent + 100);
+    });
+  }
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    selectedMonth.addListener(_onSelectedMonthChanged);
+    _selectedListType.addListener(_onSelectedListTypeChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
     resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     personId = context.userDB.get(userPersonIdKey, defaultValue: '');
@@ -141,13 +192,26 @@ class ThankyouScreen extends StatelessWidget {
                 .toThankyouReasonEntity())
         .toList();
     _getYearMonth();
-    selectedMonth.addListener(
-      () {
-        _getThankyouList(
-          _selectedListType.value,
-        );
-      },
-    );
+  }
+
+  @override
+  void dispose() {
+    selectedMonth.removeListener(_onSelectedMonthChanged);
+    _selectedListType.removeListener(_onSelectedListTypeChanged);
+    _selectedListType.dispose();
+    _employees.dispose();
+    _thankYouList.dispose();
+    selectedMonth.dispose();
+    _noteController.dispose();
+    _monthScrollController.dispose();
+    _listScrollController.dispose();
+    _servicesBloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -156,12 +220,12 @@ class ThankyouScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnEmployeesSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 _employees.value = state.employeesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -189,11 +253,10 @@ class ThankyouScreen extends StatelessWidget {
                           '');
                 }
               } else if (state is OnThankyouListSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
-                //_thankYouList.value = [];
+                _hideLoader(context);
                 _thankYouList.value = state.thankYouList;
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -222,8 +285,11 @@ class ThankyouScreen extends StatelessWidget {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    _selectedListType.value =
-                                        ThankyouListType.create;
+                                    if (_selectedListType.value !=
+                                        ThankyouListType.create) {
+                                      _selectedListType.value =
+                                          ThankyouListType.create;
+                                    }
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -262,8 +328,11 @@ class ThankyouScreen extends StatelessWidget {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    _selectedListType.value =
-                                        ThankyouListType.received;
+                                    if (_selectedListType.value !=
+                                        ThankyouListType.received) {
+                                      _selectedListType.value =
+                                          ThankyouListType.received;
+                                    }
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -302,8 +371,11 @@ class ThankyouScreen extends StatelessWidget {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    _selectedListType.value =
-                                        ThankyouListType.granted;
+                                    if (_selectedListType.value !=
+                                        ThankyouListType.granted) {
+                                      _selectedListType.value =
+                                          ThankyouListType.granted;
+                                    }
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -403,12 +475,6 @@ class ThankyouScreen extends StatelessWidget {
                             );
                           } else if (type == ThankyouListType.received ||
                               type == ThankyouListType.granted) {
-                            Timer(const Duration(milliseconds: 100), () {
-                              _setScrollByDirection(_monthScrollController
-                                      .position.maxScrollExtent +
-                                  100);
-                              _getThankyouList(type);
-                            });
                             return Column(
                               children: [
                                 SizedBox(
@@ -479,37 +545,32 @@ class ThankyouScreen extends StatelessWidget {
                                   height: resources.dimen.dp25,
                                 ),
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: ValueListenableBuilder(
-                                        valueListenable: _thankYouList,
-                                        builder: (context, list, child) {
-                                          return ListView.separated(
-                                            scrollDirection: Axis.vertical,
-                                            shrinkWrap: true,
-                                            controller: _listScrollController,
-                                            separatorBuilder:
-                                                (BuildContext context,
-                                                    int index) {
-                                              return Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical:
-                                                        resources.dimen.dp20),
-                                                child: Divider(
-                                                  height: 1,
-                                                  color: resources.color
-                                                      .bottomSheetIconUnSelected,
-                                                ),
-                                              );
-                                            },
-                                            itemCount: list.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return ItemThankyouReceived(
-                                                  data: list[index]);
-                                            },
-                                          );
-                                        }),
-                                  ),
+                                  child: ValueListenableBuilder(
+                                      valueListenable: _thankYouList,
+                                      builder: (context, list, child) {
+                                        return ListView.separated(
+                                          scrollDirection: Axis.vertical,
+                                          controller: _listScrollController,
+                                          separatorBuilder:
+                                              (BuildContext context, int index) {
+                                            return Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: resources.dimen.dp20),
+                                              child: Divider(
+                                                height: 1,
+                                                color: resources.color
+                                                    .bottomSheetIconUnSelected,
+                                              ),
+                                            );
+                                          },
+                                          itemCount: list.length,
+                                          itemBuilder:
+                                              (BuildContext context, int index) {
+                                            return ItemThankyouReceived(
+                                                data: list[index]);
+                                          },
+                                        );
+                                      }),
                                 ),
                               ],
                             );

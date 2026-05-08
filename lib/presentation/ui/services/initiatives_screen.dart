@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -13,14 +12,18 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class InitiativesScreen extends StatelessWidget {
+class InitiativesScreen extends StatefulWidget {
   static const String route = '/InitiativesScreen';
-  InitiativesScreen({super.key});
-  late Resources resources;
+  const InitiativesScreen({super.key});
+
+  @override
+  State<InitiativesScreen> createState() => _InitiativesScreenState();
+}
+
+class _InitiativesScreenState extends State<InitiativesScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -31,6 +34,7 @@ class InitiativesScreen extends StatelessWidget {
   NameIdEntity? serveDepartmentStrategy;
   String? initiativeYear;
   String userName = '';
+  bool _isLoaderShowing = false;
 
   onApplicabilitySelected(NameIdEntity? value) {
     applicability = value;
@@ -71,9 +75,23 @@ class InitiativesScreen extends StatelessWidget {
         requestParams: initiativeRequestModel.toJson());
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
+    final resources = context.resources;
     userName = context.userDB.get(userNameKey, defaultValue: '');
     return SafeArea(
       child: Scaffold(
@@ -83,9 +101,9 @@ class InitiativesScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnServicesRequestSubmitSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -120,7 +138,7 @@ class InitiativesScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -249,5 +267,14 @@ class InitiativesScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _costController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

@@ -1,12 +1,9 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/leaves_screen.dart';
@@ -19,16 +16,19 @@ import 'package:malomati/presentation/ui/widgets/back_app_bar.dart';
 import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart'
     show DateRangePickerSelectionMode, PickerDateRange;
 
-class RemoteWorkScreen extends StatelessWidget {
+class RemoteWorkScreen extends StatefulWidget {
   static const String route = '/RemoteWorkScreen';
-  RemoteWorkScreen({super.key});
-  late Resources resources;
+  const RemoteWorkScreen({super.key});
+
+  @override
+  State<RemoteWorkScreen> createState() => _RemoteWorkScreenState();
+}
+
+class _RemoteWorkScreenState extends State<RemoteWorkScreen> {
   final _servicesBloc = sl<ServicesBloc>();
-  final ValueNotifier<List<LeaveTypeEntity>> _leaveTypeList = ValueNotifier([]);
   LeaveSubType leaveSubType = LeaveSubType.planned;
   final TextEditingController _startDateController = TextEditingController();
   //final TextEditingController _endDateController = TextEditingController();
@@ -42,6 +42,7 @@ class RemoteWorkScreen extends StatelessWidget {
   String reason = '';
   DateTime? startDate;
   DateTime? endDate;
+  bool _isLoaderShowing = false;
 
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
@@ -100,11 +101,25 @@ class RemoteWorkScreen extends StatelessWidget {
         apiUrl: workFromHomeApiUrl, requestParams: requestParams);
   }
 
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     userName = context.userDB.get(userNameKey);
     empNumber = context.userDB.get(userJobIdEnKey);
-    resources = context.resources;
+    final resources = context.resources;
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -113,13 +128,9 @@ class RemoteWorkScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                isLoaderShowing = true;
-                Dialogs.loader(context)
-                    .then((value) => isLoaderShowing = false);
+                _showLoader(context);
               } else if (state is OnServicesRequestSubmitSuccess) {
-                if (isLoaderShowing) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                _hideLoader(context);
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,
@@ -137,9 +148,7 @@ class RemoteWorkScreen extends StatelessWidget {
                           .getDisplayMessage(resources));
                 }
               } else if (state is OnServicesError) {
-                if (isLoaderShowing) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -279,5 +288,13 @@ class RemoteWorkScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _startDateController.dispose();
+    _commentController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

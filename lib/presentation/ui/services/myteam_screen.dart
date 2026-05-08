@@ -1,22 +1,30 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/services/widgets/leaves_form.dart';
 import 'package:malomati/presentation/ui/services/widgets/myteam_attendance.dart';
 import 'package:malomati/presentation/ui/widgets/tab_buttons_widget.dart';
-import 'package:malomati/res/resources.dart';
 import '../widgets/back_app_bar.dart';
 
-class MyTeamScreen extends StatelessWidget {
+class MyTeamScreen extends StatefulWidget {
   static const String route = '/MyTeamScreen';
-  MyTeamScreen({super.key});
-  late Resources resources;
-  ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
-  List<Map> buttons = [];
+  const MyTeamScreen({super.key});
+
+  @override
+  State<MyTeamScreen> createState() => _MyTeamScreenState();
+}
+
+class _MyTeamScreenState extends State<MyTeamScreen> {
+  final ValueNotifier<int> selectedButtonIndex = ValueNotifier<int>(0);
+
+  @override
+  void dispose() {
+    selectedButtonIndex.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
-    buttons = [
+    final buttons = [
       {'name': context.string.attendanceRate},
       {'name': context.string.createAbsence},
     ];
@@ -45,7 +53,7 @@ class MyTeamScreen extends StatelessWidget {
               ),
               ValueListenableBuilder(
                   valueListenable: selectedButtonIndex,
-                  builder: (context, value, widget) {
+                  builder: (context, value, child) {
                     return value == 0
                         ? Expanded(
                             child: SingleChildScrollView(

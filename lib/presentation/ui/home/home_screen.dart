@@ -9,6 +9,7 @@ import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/config/firbase_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
+import 'package:malomati/core/managers/dashboard_leave_balances.dart';
 import 'package:malomati/core/managers/location_access_manager.dart';
 import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
@@ -42,10 +43,6 @@ import '../utils/location.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
-  static String anualLeaveBalance = '';
-  static String sickLeaveBalance = '';
-  static String permissionBalance = '';
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -70,15 +67,156 @@ class _HomeScreenState extends State<HomeScreen> {
   final ValueNotifier<String> _remainingTimeValue =
       ValueNotifier<String>('00:00:00');
   Timer? _punchRemainingTimer;
+  Timer? _eventBannerTimer;
   final _locationAccessManager = sl<LocationAccessManager>();
+  final PageController _eventsPageController = PageController(initialPage: 0);
+  StreamSubscription<AttendanceEntity>? _attendanceSubscription;
+  Future<AttendanceState>? _userPunchDetailsFuture;
+  final ValueNotifier<AttendanceEntity> _liveAttendance =
+      ValueNotifier<AttendanceEntity>(AttendanceEntity());
+  bool _didInitHomeDependencies = false;
 
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
   static const int _workNotificationId = 100;
 
+  void _onAttendanceResponseTick() {
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (!mounted) return;
+      _punchStatus.value = _onAttendanceRespose.value;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      _locationAccessManager.loadLocationAccessDepartments();
+    });
+    _onAttendanceRespose.addListener(_onAttendanceResponseTick);
+    _attendanceSubscription =
+        _attendanceBloc.getAttendanceData.listen((entity) {
+      if (!mounted) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final ctx = context;
+        _liveAttendance.value = entity;
+        if ((entity.punch2Time ?? '').isNotEmpty) {
+          _onAttendanceRespose.value = 2;
+        } else if ((entity.punch1Time ?? '').isNotEmpty) {
+          _onAttendanceRespose.value = 1;
+        } else {
+          _onAttendanceRespose.value = 0;
+        }
+        _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
+          apiUrl: attendanceUserPunchDetailsApiUrl,
+          requestParams: {},
+          emitResult: false,
+        );
+        _calculateRemainingTime(ctx, entity.punch1Time, entity.punch2Time);
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitHomeDependencies) return;
+    _didInitHomeDependencies = true;
+
+    final userDB = context.userDB;
+    final userName = userDB.get(userNameKey, defaultValue: '');
+
+    _weatherEntity.value = WeatherEntity(
+      temperature: userDB.get(lastTemperature, defaultValue: 0),
+      weathercode: userDB.get(lastWeathercode, defaultValue: 1),
+    );
+
+    _refreshAttendance();
+    _homeBloc.getDashboardData(userName: userName);
+    _homeBloc.getEventsData(
+      departmentId: userDB.get(departmentIdKey, defaultValue: ''),
+    );
+    _homeBloc.getFavoritesdData(userDB: userDB);
+    _homeBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (!mounted) return;
+      final ctx = context;
+      _homeBloc.getNotificationsList(requestParams: {
+        'USER_NAME': userName,
+        'START_DATE': getDateByformat(
+            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
+        'END_DATE': getDateByformat(
+            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1))),
+      });
+      if (ctx.userDB.get(lastWeatherCheckDate) == null ||
+          getMinutes(ctx.userDB.get(lastWeatherCheckDate), DateTime.now()) >
+              120) {
+        _getWeatherDetails();
+      }
+      _homeBloc.getFCMAccessToken(userDB: ctx.userDB);
+    });
+
+    if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
+        DateTime.now().month) {
+      Future.delayed(const Duration(milliseconds: 2000), () async {
+        final InAppReview inAppReview = InAppReview.instance;
+        if (await inAppReview.isAvailable()) {
+          inAppReview.requestReview();
+          if (mounted) {
+            context.userDB.put(showRatingMonth, DateTime.now().month);
+          }
+        }
+      });
+    }
+
+    _eventBannerTimer?.cancel();
+    _eventBannerTimer = startTimer(
+      duration: const Duration(seconds: 4),
+      callback: () {
+        if (!mounted) return;
+        if (_eventsListEntity.value.length <= 1) return;
+        final nextIndex =
+            _eventBannerChange.value == _eventsListEntity.value.length - 1
+                ? 0
+                : _eventBannerChange.value + 1;
+        if (nextIndex > 0) {
+          _eventsPageController.animateToPage(
+            nextIndex,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.linear,
+          );
+        } else {
+          _eventsPageController.jumpToPage(nextIndex);
+        }
+      },
+    );
+
+    _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
+      apiUrl: attendanceUserPunchDetailsApiUrl,
+      requestParams: {},
+      emitResult: false,
+    );
+  }
+
   @override
   void dispose() {
+    _onAttendanceRespose.removeListener(_onAttendanceResponseTick);
+    _attendanceSubscription?.cancel();
+    _eventBannerTimer?.cancel();
     _punchRemainingTimer?.cancel();
+    _eventsPageController.dispose();
+    _dashboardEntity.dispose();
+    _eventsListEntity.dispose();
+    _favoriteEntity.dispose();
+    _weatherEntity.dispose();
+    _eventBannerChange.dispose();
+    _isFavoriteEdited.dispose();
+    _punchStatus.dispose();
+    _onAttendanceRespose.dispose();
+    _remainingTimeValue.dispose();
+    _liveAttendance.dispose();
     super.dispose();
   }
 
@@ -248,88 +386,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      _locationAccessManager.loadLocationAccessDepartments();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final userName = context.userDB.get(userNameKey, defaultValue: '');
-    _refreshAttendance();
-    _homeBloc.getDashboardData(
-        userName: context.userDB.get(userNameKey, defaultValue: ''));
-    _homeBloc.getEventsData(
-        departmentId: context.userDB.get(departmentIdKey, defaultValue: ''));
-    _homeBloc.getFavoritesdData(userDB: context.userDB);
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      if (!context.mounted) {
-        return;
-      }
-      _homeBloc.getNotificationsList(requestParams: {
-        'USER_NAME': userName,
-        'START_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().subtract(const Duration(days: 2))),
-        'END_DATE': getDateByformat(
-            'yyy-MM-dd', DateTime.now().add(const Duration(days: 1)))
-      });
-      if (context.userDB.get(lastWeatherCheckDate) == null ||
-          getMinutes(context.userDB.get(lastWeatherCheckDate), DateTime.now()) >
-              120) {
-        _getWeatherDetails();
-      }
-      _homeBloc.getFCMAccessToken(userDB: context.userDB);
-    });
-    if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
-        DateTime.now().month) {
-      Future.delayed(const Duration(milliseconds: 2000), () async {
-        final InAppReview inAppReview = InAppReview.instance;
-        if (await inAppReview.isAvailable()) {
-          inAppReview.requestReview();
-          if (context.mounted) {
-            context.userDB.put(showRatingMonth, DateTime.now().month);
-          }
-        }
-      });
-    }
-    _onAttendanceRespose.addListener(
-      () {
-        Timer(const Duration(milliseconds: 200), () {
-          _punchStatus.value = _onAttendanceRespose.value;
-        });
-      },
-    );
-    _homeBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
     final currentDate = DateTime.now();
     final currentDayName = getDateByformat('EEEE', currentDate);
     final currentDay = getDateByformat('dd', currentDate);
     final currentMonth = getDateByformat('MMMM', DateTime.now());
     final currentYear = DateTime.now().year;
-    _weatherEntity.value = WeatherEntity(
-        temperature: context.userDB.get(lastTemperature, defaultValue: 0),
-        weathercode: context.userDB.get(lastWeathercode, defaultValue: 1));
-    final pageController = PageController(
-      initialPage: 0,
-    );
-    startTimer(
-        duration: const Duration(seconds: 4),
-        callback: () {
-          if (_eventsListEntity.value.length > 1) {
-            int nextIndex =
-                _eventBannerChange.value == _eventsListEntity.value.length - 1
-                    ? 0
-                    : (_eventBannerChange.value + 1);
-            if (nextIndex > 0) {
-              pageController.animateToPage(nextIndex,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.linear);
-            } else {
-              pageController.jumpTo(nextIndex.toDouble());
-            }
-          }
-        });
     return SafeArea(
       child: Scaffold(
           backgroundColor: context.resources.color.appScaffoldBg,
@@ -340,8 +402,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is OnLoading) {
                     Dialogs.loader(context);
                   } else if (state is OnDashboardSuccess) {
-                    _dashboardEntity.value =
+                    final entity =
                         state.dashboardEntity.entity ?? DashboardEntity();
+                    _dashboardEntity.value = entity;
+                    sl<DashboardLeaveBalances>().update(
+                      annual:
+                          '${entity.aNNUALACCRUAL ?? '0'} ${context.string.days}',
+                      sick:
+                          '${entity.sICKACCRUAL ?? '0'} ${context.string.days}',
+                      permission:
+                          '${entity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}',
+                    );
                     ConstantConfig.cancelInvoiceUsers =
                         state.dashboardEntity.entity?.cANCELINVOICEUSERS ?? '';
                   } else if (state is OnEventsSuccess) {
@@ -581,32 +652,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: context.resources.dimen.dp10,
                               ),
-                              StreamBuilder(
-                                stream: _attendanceBloc.getAttendanceData,
-                                builder: (context, attendanceData) {
-                                  final attendanceEntity =
-                                      attendanceData.data ?? AttendanceEntity();
-                                  if ((attendanceEntity.punch2Time ?? '')
-                                      .isNotEmpty) {
-                                    _onAttendanceRespose.value = 2;
-                                  } else if ((attendanceEntity.punch1Time ?? '')
-                                      .isNotEmpty) {
-                                    _onAttendanceRespose.value = 1;
-                                  } else {
-                                    _onAttendanceRespose.value = 0;
-                                  }
-
-                                  _calculateRemainingTime(
-                                      context,
-                                      attendanceEntity.punch1Time,
-                                      attendanceEntity.punch2Time);
-
-                                  return FutureBuilder(
-                                    future: _attendanceBloc.getUserDetails(
-                                        apiUrl:
-                                            attendanceUserPunchDetailsApiUrl,
-                                        requestParams: {},
-                                        emitResult: false),
+                              ValueListenableBuilder<AttendanceEntity>(
+                                valueListenable: _liveAttendance,
+                                builder: (context, attendanceEntity, _) {
+                                  return FutureBuilder<AttendanceState>(
+                                    future: _userPunchDetailsFuture,
                                     builder: (context, asyncSnapshot) {
                                       final state = asyncSnapshot.data;
                                       bool isPunchAccessDisabled = false;
@@ -1002,12 +1052,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ValueListenableBuilder(
                                 valueListenable: _dashboardEntity,
                                 builder: (context, dashboardEntity, widget) {
-                                  HomeScreen.anualLeaveBalance =
-                                      '${dashboardEntity.aNNUALACCRUAL ?? '0'} ${context.string.days}';
-                                  HomeScreen.sickLeaveBalance =
-                                      '${dashboardEntity.sICKACCRUAL ?? '0'} ${context.string.days}';
-                                  HomeScreen.permissionBalance =
-                                      '${dashboardEntity.pERMISSIONACCRUAL ?? '0'} ${context.string.hours}';
                                   return Container(
                                     margin: EdgeInsets.symmetric(
                                         horizontal:
@@ -1083,7 +1127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ).loadImage
                                             : PageView(
                                                 clipBehavior: Clip.none,
-                                                controller: pageController,
+                                                controller:
+                                                    _eventsPageController,
                                                 children: [
                                                   for (int i = 0;
                                                       i < eventsList.length;
@@ -1173,67 +1218,75 @@ class _HomeScreenState extends State<HomeScreen> {
                             ValueListenableBuilder(
                                 valueListenable: _favoriteEntity,
                                 builder: (context, favoriteEntity, widget) {
-                                  return GridView.builder(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: context.resources.dimen.dp25,
-                                    ),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: favoriteEntity.length,
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: context.resources
-                                                  .getUserSelcetedFontSize() ==
-                                              FontSizeEnum.bigSize
-                                          ? 1.0
-                                          : context.resources
-                                                      .getUserSelcetedFontSize() ==
-                                                  FontSizeEnum.smallSize
-                                              ? 1.2
-                                              : 1.1,
-                                      mainAxisSpacing:
-                                          context.resources.dimen.dp20,
-                                    ),
-                                    itemBuilder: (ctx, i) {
-                                      return InkWell(
-                                        onTap: () {
-                                          if (!_isFavoriteEdited.value) {
-                                            if (favoriteEntity[i].name ==
-                                                favoriteAdd) {
-                                              final services =
-                                                  sl<ConstantConfig>()
-                                                      .getServicesByManager(
-                                                          isManager: context
-                                                              .userDB
-                                                              .get(isMaangerKey,
-                                                                  defaultValue:
-                                                                      false))
-                                                      .where((element) =>
-                                                          !favoriteEntity
-                                                              .contains(
-                                                                  element))
-                                                      .toList();
-                                              Dialogs.showBottomSheetDialog(
-                                                  context,
-                                                  ServicesList(
-                                                      services: services,
-                                                      callback: _addFavorite));
-                                            } else {
-                                              ServicesScreen.onServiceClick(
-                                                  context, favoriteEntity[i]);
+                                  return LayoutBuilder(
+                                      builder: (context, constraints) {
+                                    final crossAxisCount =
+                                        (constraints.maxWidth / 170)
+                                            .floor()
+                                            .clamp(3, 6);
+                                    return GridView.builder(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            context.resources.dimen.dp25,
+                                      ),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: favoriteEntity.length,
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: crossAxisCount,
+                                        childAspectRatio: context.resources
+                                                    .getUserSelcetedFontSize() ==
+                                                FontSizeEnum.bigSize
+                                            ? 1.0
+                                            : context.resources
+                                                        .getUserSelcetedFontSize() ==
+                                                    FontSizeEnum.smallSize
+                                                ? 1.2
+                                                : 1.1,
+                                        mainAxisSpacing:
+                                            context.resources.dimen.dp20,
+                                      ),
+                                      itemBuilder: (ctx, i) {
+                                        return InkWell(
+                                          onTap: () {
+                                            if (!_isFavoriteEdited.value) {
+                                              if (favoriteEntity[i].name ==
+                                                  favoriteAdd) {
+                                                final services = sl<
+                                                        ConstantConfig>()
+                                                    .getServicesByManager(
+                                                        isManager: context
+                                                            .userDB
+                                                            .get(isMaangerKey,
+                                                                defaultValue:
+                                                                    false))
+                                                    .where((element) =>
+                                                        !favoriteEntity
+                                                            .contains(element))
+                                                    .toList();
+                                                Dialogs.showBottomSheetDialog(
+                                                    context,
+                                                    ServicesList(
+                                                        services: services,
+                                                        callback:
+                                                            _addFavorite));
+                                              } else {
+                                                ServicesScreen.onServiceClick(
+                                                    context, favoriteEntity[i]);
+                                              }
                                             }
-                                          }
-                                        },
-                                        child: ItemDashboardService(
-                                          data: favoriteEntity[i],
-                                          callback: _removeFavorite,
-                                          showDelete: _isFavoriteEdited.value,
-                                        ),
-                                      );
-                                    },
-                                  );
+                                          },
+                                          child: ItemDashboardService(
+                                            data: favoriteEntity[i],
+                                            callback: _removeFavorite,
+                                            showDelete: _isFavoriteEdited.value,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  });
                                 }),
                           ],
                         ),

@@ -1,9 +1,7 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/constants/data_constants.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
@@ -12,16 +10,19 @@ import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
-import 'package:malomati/res/resources.dart';
 import '../../../core/common/common_utils.dart';
-import '../../../data/model/api_request_model.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
-class PayslipsScreen extends StatelessWidget {
+class PayslipsScreen extends StatefulWidget {
   static const String route = '/PayslipsScreen';
-  PayslipsScreen({super.key});
-  late Resources resources;
+  const PayslipsScreen({super.key});
+
+  @override
+  State<PayslipsScreen> createState() => _PayslipsScreenState();
+}
+
+class _PayslipsScreenState extends State<PayslipsScreen> {
   final _servicesBloc = sl<ServicesBloc>();
   String userName = '';
   final ValueNotifier<PayslipEntity?> _payslipDetails =
@@ -35,28 +36,24 @@ class PayslipsScreen extends StatelessWidget {
   final textHeight = 1.5;
   final fontFamily = fontFamilyEN;
   final grayLightColor = const Color(0xFFF1F1F1);
+  bool _didInit = false;
+  bool _isLoaderShowing = false;
+  late final List<String> _years;
 
   onYearSelected(String? year) {
     selectedYear = year ?? '';
     getMonthsList(year);
   }
 
-  getMonthsList(String? selectedYear) {
+  void getMonthsList(String? selectedYear) {
     final year = DateTime.now().year;
     final month = DateTime.now().month;
-    //_months.value = [];
-    final monthsList =
-        '$year' == selectedYear ? months.sublist(0, month - 1) : months;
-    selectedMonth =
-        '$year' == selectedYear ? monthsList[month - 2] : monthsList[0];
+    final monthsList = '$year' == selectedYear
+        ? months.sublist(0, month - 1)
+        : List<String>.from(months);
+    selectedMonth = '$year' == selectedYear ? monthsList[month - 2] : monthsList[0];
     _months.value = monthsList;
-    if (_payslipDetails.value == null) {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        onMonthSelected(selectedMonth);
-      });
-    } else {
-      onMonthSelected(selectedMonth);
-    }
+    onMonthSelected(selectedMonth);
   }
 
   onMonthSelected(String? month) {
@@ -70,24 +67,35 @@ class PayslipsScreen extends StatelessWidget {
     });
   }
 
-  _submitAdvanceSalaryRequest() {
-    final certificateRequestModel = ApiRequestModel();
-    certificateRequestModel.uSERNAME = userName;
-    certificateRequestModel.aPPROVALCOMMENT = _commentsController.text;
-    certificateRequestModel.lEAVE = leave;
-    _servicesBloc.submitServicesRequest(
-        apiUrl: advanceSalaryApiUrl,
-        requestParams: certificateRequestModel.toAdvanceSalaryRequest());
+  void _showLoader(BuildContext context) {
+    if (_isLoaderShowing) return;
+    _isLoaderShowing = true;
+    Dialogs.loader(context).then((_) {
+      _isLoaderShowing = false;
+    });
+  }
+
+  void _hideLoader(BuildContext context) {
+    if (!_isLoaderShowing) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    _isLoaderShowing = false;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    final currentYear = DateTime.now().year;
+    selectedYear = '$currentYear';
+    _years = ['${currentYear - 2}', '${currentYear - 1}', '$currentYear'];
+    getMonthsList(selectedYear);
   }
 
   @override
   Widget build(BuildContext context) {
-    resources = context.resources;
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    final currentYear = DateTime.now().year;
-    selectedYear = '$currentYear';
-    final years = ['${currentYear - 2}', '${currentYear - 1}', '$currentYear'];
-    getMonthsList(selectedYear);
+    final resources = context.resources;
     final fullName = context.userDB.get(userFullNameUsKey, defaultValue: '');
     final jobTitle = context.userDB.get(userJobNameEnKey, defaultValue: '');
     final jobId = context.userDB.get(userJobIdEnKey, defaultValue: '');
@@ -101,12 +109,12 @@ class PayslipsScreen extends StatelessWidget {
           child: BlocListener<ServicesBloc, ServicesState>(
             listener: (context, state) {
               if (state is OnServicesLoading) {
-                Dialogs.loader(context);
+                _showLoader(context);
               } else if (state is OnPayslipDetailsSuccess) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 _payslipDetails.value = state.payslipEntity;
               } else if (state is OnServicesError) {
-                Navigator.of(context, rootNavigator: true).pop();
+                _hideLoader(context);
                 Dialogs.showInfoDialog(context, PopupType.fail, state.message);
               }
             },
@@ -127,7 +135,7 @@ class PayslipsScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DropDownWidget<String>(
-                          list: years,
+                          list: _years,
                           labelText: 'Year',
                           selectedValue: selectedYear,
                           callback: onYearSelected,
@@ -2013,5 +2021,14 @@ class PayslipsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _payslipDetails.dispose();
+    _months.dispose();
+    _commentsController.dispose();
+    _servicesBloc.close();
+    super.dispose();
   }
 }

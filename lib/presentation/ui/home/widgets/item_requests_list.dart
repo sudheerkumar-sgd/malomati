@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
@@ -7,8 +5,6 @@ import 'package:malomati/data/data_sources/api_urls.dart';
 import 'package:malomati/domain/entities/request_details_entity.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/requests/requests_bloc.dart';
-import 'package:malomati/presentation/bloc/services/services_bloc.dart'
-    hide OnsubmitHrApprovalSuccess;
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/presentation/ui/widgets/action_button_widget.dart';
 import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
@@ -20,17 +16,21 @@ import '../../../../core/common/common_utils.dart';
 import '../../../../domain/entities/finance_approval_entity.dart';
 import '../../services/widgets/dialog_request_answer_more_info.dart';
 
-class ItemRequestsList extends StatelessWidget {
-  final ValueNotifier _isExpanded = ValueNotifier<bool>(false);
-  final _requestsBloc = sl<RequestsBloc>();
-
+class ItemRequestsList extends StatefulWidget {
   final FinanceApprovalEntity data;
-  final ValueNotifier<RequestDetailsEntity?> _requestDetails =
-      ValueNotifier(null);
   final Function(bool)? onDataChange;
-  late BuildContext context;
 
-  ItemRequestsList({required this.data, this.onDataChange, super.key});
+  const ItemRequestsList({required this.data, this.onDataChange, super.key});
+
+  @override
+  State<ItemRequestsList> createState() => _ItemRequestsListState();
+}
+
+class _ItemRequestsListState extends State<ItemRequestsList> {
+  final ValueNotifier<bool> _isExpanded = ValueNotifier<bool>(false);
+  final _requestsBloc = sl<RequestsBloc>();
+  final ValueNotifier<RequestDetailsEntity?> _requestDetails =
+      ValueNotifier<RequestDetailsEntity?>(null);
 
   Color getColorByAction(String action) {
     switch (action.toUpperCase()) {
@@ -43,7 +43,7 @@ class ItemRequestsList extends StatelessWidget {
     }
   }
 
-  String getStatusByAction(RequestDetailsEntity requestDetails) {
+  String getStatusByAction(BuildContext context, RequestDetailsEntity requestDetails) {
     switch (requestDetails.action) {
       case 'APPROVED':
         return requestDetails.action ?? '';
@@ -58,7 +58,6 @@ class ItemRequestsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
     var resources = context.resources;
     return BlocProvider(
       create: (context) => _requestsBloc,
@@ -70,7 +69,7 @@ class ItemRequestsList extends StatelessWidget {
         },
         child: ValueListenableBuilder(
             valueListenable: _isExpanded,
-            builder: (context, isExpaned, widget) {
+            builder: (context, isExpaned, child) {
               return Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -81,9 +80,9 @@ class ItemRequestsList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ImageWidget(
-                            path: data.aCTION == 'APPROVED'
+                            path: this.widget.data.aCTION == 'APPROVED'
                                 ? DrawableAssets.icApprovedCircle
-                                : data.aCTION == 'REJECTED'
+                                : this.widget.data.aCTION == 'REJECTED'
                                     ? DrawableAssets.icRejectCircle
                                     : DrawableAssets.icPendingCircle)
                         .loadImage,
@@ -100,8 +99,8 @@ class ItemRequestsList extends StatelessWidget {
                               if (_requestDetails.value == null) {
                                 _requestsBloc.getRequestlDetails(
                                     requestParams: {
-                                      'NOTIFICATION_ID': data.nOTIFICATIONID,
-                                      'ITEM_KEY': data.iTEMKEY
+                                      'NOTIFICATION_ID': widget.data.nOTIFICATIONID,
+                                      'ITEM_KEY': widget.data.iTEMKEY
                                     });
                               }
                             },
@@ -111,7 +110,7 @@ class ItemRequestsList extends StatelessWidget {
                                 Expanded(
                                   child: RichText(
                                       text: TextSpan(
-                                          text: '${data.sUBJECT ?? ''}\n',
+                                          text: '${this.widget.data.sUBJECT ?? ''}\n',
                                           style: context.textFontWeight400
                                               .onColor(context
                                                   .resources.color.textColor)
@@ -141,7 +140,7 @@ class ItemRequestsList extends StatelessWidget {
                                               ': dd/MM/yyyy, hh:mm a',
                                               getDateTimeByString(
                                                   'yyyy-MM-ddThh:mm:ss',
-                                                  data.cREATIONDATE ?? '')),
+                                                  widget.data.cREATIONDATE ?? '')),
                                           style: context.textFontWeight400
                                               .onColor(context
                                                   .resources.color.textColor)
@@ -332,7 +331,8 @@ class ItemRequestsList extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    getStatusByAction(details),
+                                                    getStatusByAction(
+                                                        context, details),
                                                     style: context
                                                         .textFontWeight600
                                                         .onFontSize(context
@@ -393,8 +393,11 @@ class ItemRequestsList extends StatelessWidget {
                                                         final requestParams = {
                                                           "ACTION_TYPE":
                                                               'ANSWER_MORE_INFO',
-                                                          "NOTIFICATION_ID": data
-                                                              .nOTIFICATIONID,
+                                                          "NOTIFICATION_ID":
+                                                              this
+                                                                  .widget
+                                                                  .data
+                                                                  .nOTIFICATIONID,
                                                           "TO_USER": "",
                                                           "FROM_USER": "",
                                                           "COMMENTS": value
@@ -440,7 +443,8 @@ class ItemRequestsList extends StatelessWidget {
                                                               apiUrl:
                                                                   changeLeaveTypeApiUrl,
                                                               requestParams: {
-                                                        'itemKey': data.iTEMKEY,
+                                                        'itemKey':
+                                                            this.widget.data.iTEMKEY,
                                                         'personId':
                                                             context.userDB.get(
                                                                 userPersonIdKey,
@@ -463,7 +467,7 @@ class ItemRequestsList extends StatelessWidget {
                                                                   ? 'Your request to change leave type to Confirmed has been submitted successfully.'
                                                                   : 'تم تقديم طلبك لتغيير نوع الإجازة إلى مؤكد بنجاح.')
                                                           .then((value) {
-                                                        onDataChange
+                                                        this.widget.onDataChange
                                                             ?.call(true);
                                                       });
                                                     } else {
@@ -510,5 +514,13 @@ class ItemRequestsList extends StatelessWidget {
             }),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _isExpanded.dispose();
+    _requestDetails.dispose();
+    _requestsBloc.close();
+    super.dispose();
   }
 }

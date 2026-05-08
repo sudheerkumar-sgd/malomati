@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -24,21 +22,28 @@ enum SelectedListType {
   requests,
 }
 
-class RequestsScreen extends StatelessWidget {
+class RequestsScreen extends StatefulWidget {
+  const RequestsScreen({super.key});
+
+  @override
+  State<RequestsScreen> createState() => _RequestsScreenState();
+}
+
+class _RequestsScreenState extends State<RequestsScreen> {
   final _attendanceBloc = sl<AttendanceBloc>();
   final _requestsBloc = sl<RequestsBloc>();
-  final ValueNotifier _selectedListType =
+  final ValueNotifier<SelectedListType> _selectedListType =
       ValueNotifier<SelectedListType>(SelectedListType.attendance);
   final ValueNotifier<List<FinanceApprovalEntity>> _requestsList =
-      ValueNotifier([]);
-  ScrollController controller = ScrollController();
+      ValueNotifier<List<FinanceApprovalEntity>>([]);
+  final ScrollController controller = ScrollController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   DateTime _endDateTime = DateTime.now();
   final dateFormat = 'yyyy-MM-dd';
   String userName = '';
-  bool isRequestsLoading = false;
-  RequestsScreen({super.key});
+  final ValueNotifier<bool> _isRequestsLoading = ValueNotifier<bool>(false);
+  bool _didInit = false;
   Future<void> _selectDate(
       BuildContext context, TextEditingController controller,
       {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
@@ -54,7 +59,7 @@ class RequestsScreen extends StatelessWidget {
   }
 
   getRequests() {
-    isRequestsLoading = true;
+    _isRequestsLoading.value = true;
     _requestsList.value = [FinanceApprovalEntity()];
     _requestsBloc.getRequestsList(requestParams: {
       'USER_NAME': userName,
@@ -63,38 +68,68 @@ class RequestsScreen extends StatelessWidget {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    userName = context.userDB.get(userNameKey, defaultValue: '');
-    final date = DateTime.now(); //.subtract(const Duration(days: 1));
-    var dateCurrent = DateFormat('ddMMyyyy').format(date);
-    var dateStart =
+  void _onStartDateChanged() {
+    _endDateController.text = '';
+  }
+
+  void _onEndDateChanged() {
+    if (_endDateController.text.isNotEmpty) {
+      getRequests();
+    }
+  }
+
+  void _loadAttendanceHistory() {
+    final date = DateTime.now();
+    final dateCurrent = DateFormat('ddMMyyyy').format(date);
+    final dateStart =
         DateFormat('ddMMyyyy').format(DateTime(date.year, date.month, 1));
-    Map<String, dynamic> attendanceRequestParams = {
+    final attendanceRequestParams = {
       'date-range': '$dateStart-$dateCurrent',
     };
     _attendanceBloc.getAttendance(requestParams: attendanceRequestParams);
     _attendanceBloc.getAttendanceDetails(
         dateRange: '${dateStart}000000-${dateCurrent}235959');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDateController.addListener(_onStartDateChanged);
+    _endDateController.addListener(_onEndDateChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInit) return;
+    _didInit = true;
+    userName = context.userDB.get(userNameKey, defaultValue: '');
+    final date = DateTime.now();
     _startDateController.text =
         DateFormat(dateFormat).format(DateTime(date.year, date.month, 1));
-    _endDateTime = DateTime.now().add(const Duration(days: 1));
-    _endDateController.text = DateFormat(dateFormat).format(DateTime.now());
-    Future.delayed(const Duration(seconds: 1), () {
-      getRequests();
-    });
-    _startDateController.addListener(
-      () {
-        _endDateController.text = '';
-      },
-    );
-    _endDateController.addListener(
-      () {
-        if (_endDateController.text.isNotEmpty) {
-          getRequests();
-        }
-      },
-    );
+    _endDateController.text = DateFormat(dateFormat).format(date);
+    _endDateTime = date.add(const Duration(days: 1));
+    _loadAttendanceHistory();
+    getRequests();
+  }
+
+  @override
+  void dispose() {
+    _startDateController.removeListener(_onStartDateChanged);
+    _endDateController.removeListener(_onEndDateChanged);
+    _selectedListType.dispose();
+    _requestsList.dispose();
+    _isRequestsLoading.dispose();
+    controller.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
+    _attendanceBloc.close();
+    _requestsBloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: context.resources.color.appScaffoldBg,
@@ -102,7 +137,7 @@ class RequestsScreen extends StatelessWidget {
           create: (context) => _requestsBloc,
           child: BlocListener<RequestsBloc, RequestsState>(
             listener: (context, state) {
-              isRequestsLoading = false;
+              _isRequestsLoading.value = false;
               if (state is OnRequestListSuccess) {
                 _requestsList.value = state.requestsList;
               } else if (state is OnRequestsApiError) {
@@ -422,40 +457,49 @@ class RequestsScreen extends StatelessWidget {
                                                       ),
                                                     ],
                                                   )
-                                                : isRequestsLoading
-                                                    ? Center(
-                                                        child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: context
+                                                : ValueListenableBuilder<bool>(
+                                                    valueListenable:
+                                                        _isRequestsLoading,
+                                                    builder:
+                                                        (context, isLoading, _) {
+                                                      return isLoading
+                                                          ? Center(
+                                                              child: Container(
+                                                                margin: EdgeInsets.only(
+                                                                    top: context
+                                                                        .resources
+                                                                        .dimen
+                                                                        .dp20),
+                                                                height: context
+                                                                    .resources
+                                                                    .dimen
+                                                                    .dp20,
+                                                                width: context
+                                                                    .resources
+                                                                    .dimen
+                                                                    .dp20,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  strokeWidth: context
                                                                       .resources
                                                                       .dimen
-                                                                      .dp20),
-                                                          height: context
-                                                              .resources
-                                                              .dimen
-                                                              .dp20,
-                                                          width: context
-                                                              .resources
-                                                              .dimen
-                                                              .dp20,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            strokeWidth: context
-                                                                .resources
-                                                                .dimen
-                                                                .dp2,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : ItemRequestsList(
-                                                        data: list[index - 1],
-                                                        onDataChange: (value) {
-                                                          if (value == true) {
-                                                            getRequests();
-                                                          }
-                                                        },
-                                                      );
+                                                                      .dp2,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : ItemRequestsList(
+                                                              data:
+                                                                  list[index - 1],
+                                                              onDataChange:
+                                                                  (value) {
+                                                                if (value ==
+                                                                    true) {
+                                                                  getRequests();
+                                                                }
+                                                              },
+                                                            );
+                                                    },
+                                                  );
                                           },
                                           separatorBuilder: (context, index) =>
                                               index > 0
