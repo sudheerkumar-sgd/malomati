@@ -9,6 +9,7 @@ class ConstantConfig {
   final punchAccessUsers = [
     'mooza.binyeem',
     'shaikha.bintook',
+    'mohammed.kamran'
   ];
   final services = [
     FavoriteEntity(
