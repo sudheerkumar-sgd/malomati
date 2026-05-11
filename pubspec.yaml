@@ -107,7 +107,6 @@ flutter:
   assets:
   # files:
      - assets/json/hr_law.pdf
-     - assets/fcm_credentials.json
   # audios images:
      - assets/audio/anniversay.mp3
      - assets/audio/birthday.mp3

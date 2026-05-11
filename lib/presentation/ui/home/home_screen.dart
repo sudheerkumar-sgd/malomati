@@ -161,15 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _getWeatherDetails();
       }
       _homeBloc.getFCMAccessToken(userDB: ctx.userDB);
-      final jsonString = await rootBundle.loadString(
-        'assets/fcm_credentials.json',
-      );
-
-      // Convert to Base64
-      final base64String = base64Encode(
-        utf8.encode(jsonString),
-      );
-      print(base64String);
     });
 
     if (context.userDB.get(showRatingMonth, defaultValue: -1) !=
