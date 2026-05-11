@@ -6,7 +6,7 @@ import 'package:malomati/core/common/common.dart';
 import 'package:malomati/presentation/ui/widgets/text_input_widget.dart';
 
 import '../../../../core/constants/data_constants.dart';
-import '../../../../data/model/department_model.dart';
+import 'package:malomati/domain/mappers/department_json_mapper.dart';
 import '../../../../domain/entities/department_entity.dart';
 import '../../../../domain/entities/employee_entity.dart';
 import '../../../../injection_container.dart';
@@ -49,7 +49,7 @@ class DialogRequestAnswerMoreInfo extends StatelessWidget {
     final resources = context.resources;
     _departments = departments
         .map((departmentJson) =>
-            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+            DepartmentJsonMapper.toDepartmentEntity(departmentJson))
         .toList();
     return BlocProvider(
       create: (context) => _servicesBloc,

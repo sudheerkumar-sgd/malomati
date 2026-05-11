@@ -15,6 +15,18 @@
             ]
         },
         {
+            "name": "Malomati-App (FCM defines)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--dart-define-from-file",
+                "fcm_dart_defines.json"
+            ]
+        },
+        {
             "name": "Malomati-App (profile mode)",
             "request": "launch",
             "type": "dart",

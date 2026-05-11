@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:malomati/core/config/fcm_credentials.dart';
 import 'package:malomati/core/error/failures.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/data/data_sources/remote_data_source.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/attendance_List_model.dart';
@@ -798,18 +799,48 @@ class ApisRepositoryImpl extends ApisRepository {
 
   @override
   Future<Either<Failure, AccessToken>> getFCMAccessToken() async {
-    var isConnected = await networkInfo.isConnected();
-    if (isConnected) {
-      try {
-        final accessToken = await dataSource.getFCMAccessToken();
-        return Right(accessToken);
-      } on DioException catch (error) {
-        return Left(ServerFailure(error.message ?? ''));
-      } catch (error) {
-        return Left(Exception(error.toString()));
-      }
-    } else {
+    if (!FcmCredentials.isConfigured) {
+      return Left(
+        ServerFailure(
+          'FCM is not configured. Use one of: (1) android/fcm.local.properties from '
+          'android/fcm.local.properties.example, then Clean + Rebuild; '
+          '(2) flutter run --dart-define-from-file=fcm_dart_defines.json (copy from '
+          'fcm_dart_defines.example.json); see doc/FCM_CREDENTIALS.md.',
+        ),
+      );
+    }
+    final isConnected = await networkInfo.isConnected();
+    if (!isConnected) {
       return Left(ConnectionFailure());
     }
+    try {
+      final accessToken = await dataSource.getFCMAccessToken();
+      return Right(accessToken);
+    } on DioException catch (error) {
+      return Left(ServerFailure(error.message ?? ''));
+    } catch (error) {
+      final message = _fcmTokenErrorMessage(error);
+      return Left(ServerFailure(message));
+    }
+  }
+
+  /// User-safe message for FCM OAuth failures (no stack dumps in UI).
+  static String _fcmTokenErrorMessage(Object error) {
+    if (error is StateError) {
+      return error.message;
+    }
+    if (error is FormatException) {
+      return 'Invalid FCM credential data: ${error.message}';
+    }
+    final raw = error.toString();
+    if (raw.contains('invalid_grant') ||
+        raw.contains('Invalid JWT') ||
+        raw.contains('invalid_issuer')) {
+      return 'FCM login rejected: check service account JSON / private key and OAuth client id.';
+    }
+    if (raw.length > 200) {
+      return 'FCM token request failed (${error.runtimeType}). Check credentials and network.';
+    }
+    return raw;
   }
 }

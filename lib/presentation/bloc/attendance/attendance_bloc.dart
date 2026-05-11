@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/utils.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/domain/entities/attendance_entity.dart';
 import 'package:malomati/domain/entities/attendance_list_entity.dart';
 import 'package:malomati/domain/entities/attendance_user_details_entity.dart';

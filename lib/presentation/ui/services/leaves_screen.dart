@@ -6,7 +6,7 @@ import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/common/log.dart';
-import 'package:malomati/data/model/leave_request_model.dart';
+import 'package:malomati/domain/requests/leave_request_model.dart';
 import 'package:malomati/domain/entities/leave_type_entity.dart';
 import 'package:malomati/core/managers/dashboard_leave_balances.dart';
 import 'package:malomati/injection_container.dart';

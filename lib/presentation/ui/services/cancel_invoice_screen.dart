@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/injection_container.dart';
 import 'package:malomati/presentation/bloc/services/services_bloc.dart';
 import 'package:malomati/presentation/ui/services/widgets/submit_cancel_widget.dart';
@@ -10,7 +10,7 @@ import 'package:malomati/presentation/ui/utils/dialogs.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../core/common/common_utils.dart';
-import '../../../data/model/api_request_model.dart';
+import 'package:malomati/domain/requests/api_request_model.dart';
 import '../../../domain/entities/invoice_list_entity.dart';
 import '../../../domain/entities/leave_details_entity.dart';
 import '../widgets/alert_dialog_widget.dart';

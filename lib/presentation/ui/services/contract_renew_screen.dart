@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/department_model.dart';
+import 'package:malomati/core/network/api_urls.dart';
+import 'package:malomati/domain/mappers/department_json_mapper.dart';
 import 'package:malomati/domain/entities/department_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/injection_container.dart';
@@ -90,7 +90,7 @@ class ContractRenewScreen extends StatelessWidget {
     userName = context.userDB.get(userNameKey, defaultValue: '');
     _departments = departments
         .map((departmentJson) =>
-            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+            DepartmentJsonMapper.toDepartmentEntity(departmentJson))
         .toList();
     empNumberController.text =
         context.userDB.get(userJobIdEnKey, defaultValue: '');

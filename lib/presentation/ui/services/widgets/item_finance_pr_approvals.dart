@@ -5,7 +5,7 @@ import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/extensions/build_context_extension.dart';
 import 'package:malomati/core/extensions/text_style_extension.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/domain/entities/hrapproval_details_entity.dart';
 import 'package:malomati/presentation/ui/services/widgets/view_attachments_widget.dart';

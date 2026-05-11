@@ -1,0 +1,23 @@
+// Working template for iOS FCM dart-define injection.
+//
+// 1) Copy this file to: ios/Flutter/fcm-dart-defines.xcconfig
+//    (that target file is gitignored; do not commit it).
+//
+// 2) Generate the define segment from your service-account JSON file.
+//    The final segment must be base64 of:
+//      FCM_SERVICE_ACCOUNT_JSON_BASE64=<base64_of_service_account_json>
+//
+//    macOS/Linux (single command, no placeholders):
+//      KEY_B64="$(base64 < /absolute/path/service-account.json | tr -d '\n')"
+//      printf '%s' "FCM_SERVICE_ACCOUNT_JSON_BASE64=$KEY_B64" | openssl base64 -A
+//
+//    Windows PowerShell:
+//      $jsonB64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\absolute\path\service-account.json"))
+//      [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("FCM_SERVICE_ACCOUNT_JSON_BASE64=$jsonB64"))
+//
+// 3) Paste the output (single line, no spaces/newlines) into ENCODED_SEGMENT_HERE below
+//    and uncomment the line.
+//
+// 4) Clean and rebuild in Xcode.
+
+// DART_DEFINES=$(inherited),$(DART_DEFINES),ENCODED_SEGMENT_HERE

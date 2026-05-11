@@ -14,6 +14,15 @@ doc/api/
 # dotenv environment variables file
 .env*
 
+# Local Flutter --dart-define-from-file for FCM (never commit secrets)
+fcm_dart_defines.json
+
+# Android-only FCM injection for Gradle / Android Studio (never commit secrets)
+android/fcm.local.properties
+
+# iOS: optional FCM dart-define append (never commit secrets)
+ios/Flutter/fcm-dart-defines.xcconfig
+
 # Avoid committing generated Javascript files:
 *.dart.js
 *.info.json      # Produced by the --dump-info flag.

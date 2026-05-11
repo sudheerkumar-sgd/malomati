@@ -29,6 +29,23 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// FCM: merge into Flutter's dart-defines so String.fromEnvironment works when you
+// build/run from Android Studio or ./gradlew (no `flutter run --dart-define...`).
+// Create android/fcm.local.properties from fcm.local.properties.example (gitignored).
+def fcmLocalProps = new Properties()
+def fcmLocalFile = rootProject.file('fcm.local.properties')
+if (fcmLocalFile.exists()) {
+    fcmLocalFile.withReader('UTF-8') { reader -> fcmLocalProps.load(reader) }
+}
+def fcmJsonB64FromGradle = fcmLocalProps.getProperty('fcm.service.account.json.base64')?.trim()
+if (fcmJsonB64FromGradle) {
+    def pair = 'FCM_SERVICE_ACCOUNT_JSON_BASE64=' + fcmJsonB64FromGradle
+    def segment = java.util.Base64.getEncoder().encodeToString(pair.getBytes('UTF-8'))
+    def existing = project.hasProperty('dart-defines') ? project.property('dart-defines').toString() : ''
+    def merged = existing ? (existing + ',' + segment) : segment
+    project.ext.set('dart-defines', merged)
+}
+
 android {
     namespace "com.gov.uaq.hrms"
     compileSdk  flutter.compileSdkVersion

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/api_request_model.dart';
-import 'package:malomati/data/model/department_model.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/domain/entities/department_entity.dart';
+import 'package:malomati/domain/enums/thankyou_list_type.dart';
+import 'package:malomati/domain/mappers/department_json_mapper.dart';
+import 'package:malomati/domain/requests/api_request_model.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
 import 'package:malomati/domain/entities/thankyou_reason_entity.dart';
@@ -24,12 +25,6 @@ import 'package:malomati/res/resources.dart';
 import '../../../core/constants/data_constants.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
-
-enum ThankyouListType {
-  create,
-  received,
-  granted,
-}
 
 class ThankyouScreen extends StatefulWidget {
   static const String route = '/ThankyouScreen';
@@ -184,12 +179,11 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
     personId = context.userDB.get(userPersonIdKey, defaultValue: '');
     _departments = departments
         .map((departmentJson) =>
-            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+            DepartmentJsonMapper.toDepartmentEntity(departmentJson))
         .toList();
     _reasons = thankYouReasonList
         .map((thankYouReasonJson) =>
-            DepartmentModel.fromJson(thankYouReasonJson)
-                .toThankyouReasonEntity())
+            DepartmentJsonMapper.toThankyouReasonEntity(thankYouReasonJson))
         .toList();
     _getYearMonth();
   }

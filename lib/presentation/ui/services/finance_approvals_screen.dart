@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/domain/entities/finance_approval_entity.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_inv_approvals.dart';
 import 'package:malomati/presentation/ui/services/widgets/item_finance_payroll_approvals.dart';

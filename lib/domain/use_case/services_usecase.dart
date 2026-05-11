@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import 'package:malomati/data/model/api_response_model.dart';
 import 'package:malomati/data/model/response_models.dart';
 import 'package:malomati/domain/entities/api_entity.dart';
@@ -15,7 +15,7 @@ import 'package:malomati/domain/entities/name_id_entity.dart';
 import 'package:malomati/domain/entities/payslip_entity.dart';
 import 'package:malomati/domain/entities/requests_count_entity.dart';
 import 'package:malomati/domain/entities/thankyou_entity.dart';
-import 'package:malomati/domain/repository/apis_repository.dart';
+import 'package:malomati/domain/repository/services_repository.dart';
 import 'package:malomati/domain/use_case/base_usecase.dart';
 import '../../core/error/failures.dart';
 import '../entities/delegation_category_entity.dart';
@@ -25,17 +25,17 @@ import '../entities/leave_submit_response_entity.dart';
 import '../entities/warning_list_entity.dart';
 
 class ServicesUseCase extends BaseUseCase {
-  final ApisRepository apisRepository;
-  ServicesUseCase({required this.apisRepository});
+  final ServicesRepository servicesRepository;
+  ServicesUseCase({required this.servicesRepository});
 
   Future<Either<Failure, LeaveTypeListEntity>> getLeaveTypes(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getLeaveTypes(requestParams: requestParams);
+    return await servicesRepository.getLeaveTypes(requestParams: requestParams);
   }
 
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
       submitLeaveRequest({required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitLeaveRequest(
+    return await servicesRepository.submitLeaveRequest(
         requestParams: requestParams);
   }
 
@@ -43,108 +43,108 @@ class ServicesUseCase extends BaseUseCase {
       submitServicesRequest(
           {required String apiUrl,
           required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitServicesRequest(
+    return await servicesRepository.submitServicesRequest(
         apiUrl: apiUrl, requestParams: requestParams);
   }
 
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByDepartment(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getEmployeesByDepartment(
+    return await servicesRepository.getEmployeesByDepartment(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, List<EmployeeEntity>>> getEmployeesByManager(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getEmployeesByManager(
+    return await servicesRepository.getEmployeesByManager(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, List<LeaveDetailsEntity>>> getLeaves(
       {required String apiUrl,
       required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getLeaves(
+    return await servicesRepository.getLeaves(
         apiUrl: apiUrl, requestParams: requestParams);
   }
 
   Future<Either<Failure, List<HrApprovalEntity>>> getHrApprovalsList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getHrApprovalsList(
+    return await servicesRepository.getHrApprovalsList(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, HrapprovalDetailsEntity>> getHrApprovalDetails(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getHrApprovalDetails(
+    return await servicesRepository.getHrApprovalDetails(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, List<FinanceApprovalEntity>>> getFinanceApprovalList(
       {required apiUrl, required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getFinanceApprovalList(
+    return await servicesRepository.getFinanceApprovalList(
         apiUrl: apiUrl, requestParams: requestParams);
   }
 
   Future<Either<Failure, HrapprovalDetailsEntity>> getFinanceItemDetailsList(
       {required apiUrl, required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getFinanceItemDetailsList(
+    return await servicesRepository.getFinanceItemDetailsList(
         apiUrl: apiUrl, requestParams: requestParams);
   }
 
   Future<Either<Failure, PayslipEntity>> getPayslipDetails(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getPayslipDetails(requestParams: requestParams);
+    return await servicesRepository.getPayslipDetails(requestParams: requestParams);
   }
 
   Future<Either<Failure, WorkingDaysEntity>> getWorkingDays(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getWorkingDays(requestParams: requestParams);
+    return await servicesRepository.getWorkingDays(requestParams: requestParams);
   }
 
   Future<Either<Failure, ApiEntity<LeaveSubmitResponseEntity>>>
       submitHrApproval({required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitHrApproval(requestParams: requestParams);
+    return await servicesRepository.submitHrApproval(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<ThankyouEntity>>> getThankyouList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getThankyouList(requestParams: requestParams);
+    return await servicesRepository.getThankyouList(requestParams: requestParams);
   }
 
   Future<Either<Failure, RequestsCountEntity>> getRequestsCount(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getRequestsCount(requestParams: requestParams);
+    return await servicesRepository.getRequestsCount(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<EventsEntity>>> getHolidaysList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getHolidaysList(requestParams: requestParams);
+    return await servicesRepository.getHolidaysList(requestParams: requestParams);
   }
 
   Future<Either<Failure, String>> sendPushNotifications(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.sendPushNotifications(
+    return await servicesRepository.sendPushNotifications(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, Map<String, dynamic>>> submitJobEmailRequest(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.submitJobEmailRequest(
+    return await servicesRepository.submitJobEmailRequest(
         requestParams: requestParams);
   }
 
   Future<Either<Failure, List<WarningListEntity>>> getWarningList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getWarningList(requestParams: requestParams);
+    return await servicesRepository.getWarningList(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<InvoiceListEntity>>> getInvoicesList(
       {required Map<String, dynamic> requestParams}) async {
-    return await apisRepository.getInvoicesList(requestParams: requestParams);
+    return await servicesRepository.getInvoicesList(requestParams: requestParams);
   }
 
   Future<Either<Failure, List<NameIdEntity>>> getDelegationTypes(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: delegationTypesApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromVactionTypesJson,
@@ -159,7 +159,7 @@ class ServicesUseCase extends BaseUseCase {
 
   Future<Either<Failure, List<DelegationUserEntity>>> getDelegationUsers(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: delegationUsersApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromDelegationUsersJson,
@@ -175,7 +175,7 @@ class ServicesUseCase extends BaseUseCase {
   Future<Either<Failure, List<DelegationCategoryEntity>>>
       getDelegationCategories(
           {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: delegationCategoriesApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromDelegationCategoriesJson,
@@ -190,7 +190,7 @@ class ServicesUseCase extends BaseUseCase {
 
   Future<Either<Failure, List<DelegationItemEntity>>> getDelegationList(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: delegationListApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromDelegationListJson,
@@ -205,7 +205,7 @@ class ServicesUseCase extends BaseUseCase {
 
   Future<Either<Failure, List<DelegationItemEntity>>> deleteDelegation(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.post<ListModel>(
+    var apiResponse = await servicesRepository.post<ListModel>(
       apiUrl: delegationDeleteApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromDelegationListJson,
@@ -220,7 +220,7 @@ class ServicesUseCase extends BaseUseCase {
 
   Future<Either<Failure, List<String>>> getResignationReasons(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: resignationReasonsApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromResignationReasonsJson,
@@ -235,7 +235,7 @@ class ServicesUseCase extends BaseUseCase {
 
   Future<Either<Failure, List<String>>> getTrainingCerttypeList(
       {required Map<String, dynamic> requestParams}) async {
-    var apiResponse = await apisRepository.get<ListModel>(
+    var apiResponse = await servicesRepository.get<ListModel>(
       apiUrl: trainingCertListApiUrl,
       requestParams: requestParams,
       responseModel: ListModel.fromTrainingCertTypeJson,

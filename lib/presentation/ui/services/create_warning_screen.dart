@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/api_request_model.dart';
-import 'package:malomati/data/model/department_model.dart';
+import 'package:malomati/core/network/api_urls.dart';
+import 'package:malomati/domain/mappers/department_json_mapper.dart';
+import 'package:malomati/domain/mappers/warning_reason_json_mapper.dart';
+import 'package:malomati/domain/requests/api_request_model.dart';
 import 'package:malomati/domain/entities/department_entity.dart';
 import 'package:malomati/domain/entities/employee_entity.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
@@ -17,7 +18,6 @@ import 'package:malomati/presentation/ui/widgets/dropdown_widget.dart';
 import 'package:malomati/presentation/ui/widgets/right_icon_text_widget.dart';
 import 'package:malomati/res/resources.dart';
 import '../../../core/constants/data_constants.dart';
-import '../../../data/model/response_models.dart';
 import '../widgets/alert_dialog_widget.dart';
 import '../widgets/back_app_bar.dart';
 
@@ -78,11 +78,13 @@ class CreateWarningScreen extends StatelessWidget {
     personId = context.userDB.get(userPersonIdKey, defaultValue: '');
     _departments = departments
         .map((departmentJson) =>
-            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+            DepartmentJsonMapper.toDepartmentEntity(departmentJson))
         .toList();
     _reasons = warningReasons
-        .map((warningReasonsJson) =>
-            WarningReasonsModel.fromJson(warningReasonsJson).toNameIdEntity())
+        .map((warningReasonsJson) => WarningReasonJsonMapper.toNameIdEntity(
+              warningReasonsJson,
+              isLocalEn: context.resources.isLocalEn,
+            ))
         .toList();
     return SafeArea(
       child: Scaffold(

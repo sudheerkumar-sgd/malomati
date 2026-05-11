@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/data_constants.dart';
-import 'package:malomati/data/data_sources/api_urls.dart';
-import 'package:malomati/data/model/department_model.dart';
+import 'package:malomati/core/network/api_urls.dart';
+import 'package:malomati/domain/mappers/department_json_mapper.dart';
 import 'package:malomati/domain/entities/delegation_category_entity.dart';
 import 'package:malomati/domain/entities/delegation_entity.dart';
 import 'package:malomati/domain/entities/department_entity.dart';
@@ -127,7 +127,7 @@ class DelegationCreateWidget extends StatelessWidget {
     );
     _departments = departments
         .map((departmentJson) =>
-            DepartmentModel.fromJson(departmentJson).toDepartmentEntity())
+            DepartmentJsonMapper.toDepartmentEntity(departmentJson))
         .toList();
     Future.delayed(Duration.zero, () {
       _servicesBloc.getDelegationTypes(requestParams: {

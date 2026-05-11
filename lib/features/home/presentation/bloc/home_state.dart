@@ -12,14 +12,6 @@ class OnLoading extends HomeState {
   List<Object?> get props => [];
 }
 
-// class OnAttendanceSuccess extends HomeState {
-//   final ApiEntity<AttendanceListEntity> attendanceEntity;
-
-//   OnAttendanceSuccess({required this.attendanceEntity});
-//   @override
-//   List<Object?> get props => [attendanceEntity];
-// }
-
 class OnDashboardSuccess extends HomeState {
   final ApiEntity<DashboardEntity> dashboardEntity;
 

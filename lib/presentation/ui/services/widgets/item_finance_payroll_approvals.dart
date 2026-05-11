@@ -20,7 +20,7 @@ import 'package:malomati/presentation/ui/widgets/show_attachment_dialog.dart';
 import 'package:malomati/res/drawables/background_box_decoration.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 
-import '../../../../data/data_sources/api_urls.dart';
+import 'package:malomati/core/network/api_urls.dart';
 import '../../../../injection_container.dart';
 import '../../../bloc/services/services_bloc.dart';
 import '../../utils/dialogs.dart';
