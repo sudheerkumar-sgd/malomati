@@ -102,7 +102,7 @@ class _AboutMalomatiState extends State<AboutMalomati> {
                                 .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
-                            text: '8th ',
+                            text: '11th ',
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),

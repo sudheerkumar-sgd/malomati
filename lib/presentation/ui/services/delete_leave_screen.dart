@@ -95,16 +95,6 @@ class _DeleteLeaveScreenState extends State<DeleteLeaveScreen> {
                 _leaves.value = state.leavesList;
               } else if (state is OnServicesRequestSubmitSuccess) {
                 _hideLoader(context);
-                _servicesBloc.sendPushNotifications(
-                    requestParams: getFCMMessageData(
-                        to: userName,
-                        title: 'Delete Leave',
-                        body:
-                            '${context.userDB.get(userFullNameUsKey)} has applied for Delete Leave Request',
-                        type: '',
-                        notificationId: state
-                                .servicesRequestSuccessResponse.entity?.nTFID ??
-                            ''));
                 if (state.servicesRequestSuccessResponse.isSuccess ?? false) {
                   Dialogs.showInfoDialog(
                           context,

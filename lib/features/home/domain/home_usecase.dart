@@ -131,8 +131,7 @@ class HomeUseCase extends BaseUseCase {
         }
       }
       final result = await homeRepository.getFCMAccessToken();
-      return result.fold(
-          (l) => Left(ServerFailure(l.errorMessage)), (r) {
+      return result.fold((l) => Left(ServerFailure(l.errorMessage)), (r) {
         ConstantConfig.fcmAccessTokenJson = r;
         userDB.put(accessTokenDataKey, jsonEncode(r.toJson()));
         return Right(r);
