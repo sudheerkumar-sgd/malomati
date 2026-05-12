@@ -22,6 +22,22 @@ class AttendanceBloc extends Cubit<AttendanceState> {
   final BehaviorSubject<ApiEntity<AttendanceListEntity>> _attendanceDetails =
       BehaviorSubject<ApiEntity<AttendanceListEntity>>();
 
+  Future<AttendanceState> getUserAttendance(
+      {required Map<String, dynamic> requestParams,
+      bool emitValue = false}) async {
+    //emit(OnAttendanceDataLoading());
+    final result = await attendanceUseCase.getAttendanceReport(
+        requestParams: requestParams);
+    if (emitValue) {
+      emit(result.fold(
+          (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+          (r) => OnAttendanceSuccess(attendanceEntity: r)));
+    }
+    return result.fold(
+        (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+        (r) => OnAttendanceSuccess(attendanceEntity: r));
+  }
+
   Future<void> getAttendance(
       {required Map<String, dynamic> requestParams,
       bool returnValue = false}) async {

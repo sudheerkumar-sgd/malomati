@@ -27,6 +27,7 @@ import 'package:malomati/presentation/ui/home/widgets/item_dashboard_leaves.dart
 import 'package:malomati/presentation/ui/home/widgets/item_dashboard_service.dart';
 import 'package:malomati/presentation/ui/home/widgets/services_list.dart';
 import 'package:malomati/presentation/ui/utils/dialogs.dart';
+import 'package:malomati/presentation/ui/widgets/alert_dialog_widget.dart';
 import 'package:malomati/presentation/ui/widgets/image_widget.dart';
 import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
 import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
@@ -70,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Timer? _eventBannerTimer;
   final _locationAccessManager = sl<LocationAccessManager>();
   final PageController _eventsPageController = PageController(initialPage: 0);
-  StreamSubscription<AttendanceEntity>? _attendanceSubscription;
   Future<AttendanceState>? _userPunchDetailsFuture;
   final ValueNotifier<AttendanceEntity> _liveAttendance =
       ValueNotifier<AttendanceEntity>(AttendanceEntity());
@@ -100,28 +100,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       _locationAccessManager.loadLocationAccessDepartments();
     });
     _onAttendanceRespose.addListener(_onAttendanceResponseTick);
-    _attendanceSubscription =
-        _attendanceBloc.getAttendanceData.listen((entity) {
-      if (!mounted) return;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        final ctx = context;
-        _liveAttendance.value = entity;
-        if ((entity.punch2Time ?? '').isNotEmpty) {
-          _onAttendanceRespose.value = 2;
-        } else if ((entity.punch1Time ?? '').isNotEmpty) {
-          _onAttendanceRespose.value = 1;
-        } else {
-          _onAttendanceRespose.value = 0;
-        }
-        _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
-          apiUrl: attendanceUserPunchDetailsApiUrl,
-          requestParams: {},
-          emitResult: false,
-        );
-        _calculateRemainingTime(ctx, entity.punch1Time, entity.punch2Time);
-      });
-    });
   }
 
   @override
@@ -131,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.resumed && _wasPaused) {
       _wasPaused = false;
       if (mounted) {
-        _refreshAttendance();
+        _refreshAttendance(notifyOnFailure: false);
       }
     }
   }
@@ -154,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // avoids races when the home tab is rebuilt after switching bottom tabs.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _refreshAttendance();
+      _refreshAttendance(notifyOnFailure: true);
     });
     _homeBloc.getDashboardData(userName: userName);
     _homeBloc.getEventsData(
@@ -227,7 +205,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _onAttendanceRespose.removeListener(_onAttendanceResponseTick);
-    _attendanceSubscription?.cancel();
     _eventBannerTimer?.cancel();
     _punchRemainingTimer?.cancel();
     _eventsPageController.dispose();
@@ -241,6 +218,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _onAttendanceRespose.dispose();
     _remainingTimeValue.dispose();
     _liveAttendance.dispose();
+    _attendanceBloc.close();
     super.dispose();
   }
 
@@ -252,11 +230,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       _setRemainingTimeValue('00:00:00');
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
-      //if (_workNotificationScheduled) {
       await Workmanager().cancelAll();
       FirbaseConfig.cancelNotification(_workNotificationId);
       _workNotificationScheduled = false;
-      //}
       return;
     }
 
@@ -274,12 +250,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      // var targetTime = punchInToday.add(isRamdanMonth()
-      //     ? const Duration(hours: 5, minutes: 30)
-      //     : now.day == 6 ? const Duration(hours: 4, minutes: 30) : const Duration(hours: 8));
-      // final limitTime = isRamdanMonth()
-      //     ? DateTime(now.year, now.month, now.day, 15, 30, 0)
-      //     : now.day == 6 ? DateTime(now.year, now.month, now.day, 12, 30, 0) : DateTime(now.year, now.month, now.day, 16, 0, 0);
       var targetTime = punchInToday.add(now.weekday == DateTime.friday
           ? const Duration(hours: 4, minutes: 30)
           : const Duration(hours: 8));
@@ -324,12 +294,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      // var targetTime = punchInToday.add(isRamdanMonth()
-      //     ? const Duration(hours: 5, minutes: 30)
-      //     : const Duration(hours: 8));
-      // final limitTime = isRamdanMonth()
-      //     ? DateTime(now.year, now.month, now.day, 15, 30, 0)
-      //     : DateTime(now.year, now.month, now.day, 16, 0, 0);
       var targetTime = punchInToday.add(now.weekday == DateTime.friday
           ? const Duration(hours: 4, minutes: 30)
           : const Duration(hours: 8));
@@ -346,13 +310,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         _setRemainingTimeValue('00:00:00');
         timer.cancel();
         _punchRemainingTimer = null;
-        // direct show in case the scheduled notification failed or app is
-        // foreground – scheduled notification may also fire around this time
-        // if (Platform.isAndroid) {
-        //   FirbaseConfig.showLocalNotification(
-        //       context.string.workNotificationTitle,
-        //       context.string.workNotificationBody);
-        // }
       } else {
         String twoDigits(int n) => n.toString().padLeft(2, "0");
         String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
@@ -363,14 +320,73 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     });
   }
 
-  _refreshAttendance() {
+  void _refreshAttendance({bool notifyOnFailure = true}) {
     var date = getDateByformat('ddMMyyyy', DateTime.now());
     Map<String, dynamic> attendanceRequestParams = {
       'date-range': '$date-$date',
     };
-    _attendanceBloc.getAttendance(requestParams: attendanceRequestParams);
-    _attendanceBloc.getAttendanceDetails(
-        dateRange: '${date}000000-${date}235959');
+    _attendanceBloc
+        .getUserAttendance(requestParams: attendanceRequestParams)
+        .then((state) {
+      if (state is OnAttendanceSuccess) {
+        final entity =
+            state.attendanceEntity.entity?.attendanceList.firstOrNull ??
+                AttendanceEntity();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          final ctx = context;
+          _liveAttendance.value = entity;
+          if ((entity.punch2Time ?? '').isNotEmpty) {
+            _onAttendanceRespose.value = 2;
+          } else if ((entity.punch1Time ?? '').isNotEmpty) {
+            _onAttendanceRespose.value = 1;
+          } else {
+            _onAttendanceRespose.value = 0;
+          }
+          _calculateRemainingTime(ctx, entity.punch1Time, entity.punch2Time);
+        });
+      } else if (state is OnAttendanceApiError) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          _liveAttendance.value = AttendanceEntity();
+          _onAttendanceRespose.value = -1;
+          _setRemainingTimeValue('00:00:00');
+          _punchRemainingTimer?.cancel();
+          _punchRemainingTimer = null;
+          if (notifyOnFailure) {
+            final message = state.message.isNotEmpty
+                ? state.message
+                : context.string.noInternet;
+            Dialogs.showInfoDialog(
+              context,
+              PopupType.fail,
+              message,
+            );
+          }
+        });
+      }
+    }, onError: (_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _liveAttendance.value = AttendanceEntity();
+        _onAttendanceRespose.value = -1;
+        _setRemainingTimeValue('00:00:00');
+        _punchRemainingTimer?.cancel();
+        _punchRemainingTimer = null;
+        if (notifyOnFailure) {
+          Dialogs.showInfoDialog(
+            context,
+            PopupType.fail,
+            context.string.noInternet,
+          );
+        }
+      });
+    });
+    _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
+      apiUrl: attendanceUserPunchDetailsApiUrl,
+      requestParams: {},
+      emitResult: false,
+    );
   }
 
   _addFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
@@ -400,6 +416,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     var isLocationOn = await Location.checkGps();
     if (isLocationOn) {
       Location.getLocation().then((value) {
+        if (!mounted) return;
         _homeBloc.getWeatherReport(requestParams: {
           'latitude': value.latitude,
           'longitude': value.longitude,
@@ -673,7 +690,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                         attendanceEntity),
                                                               ),
                                                             ).then((value) {
-                                                              if (value == true) {
+                                                              if (value ==
+                                                                  true) {
                                                                 _refreshAttendance();
                                                               }
                                                             });
@@ -824,7 +842,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                                 ),
                                                               ),
                                                             ).then((value) {
-                                                              if (value == true) {
+                                                              if (value ==
+                                                                  true) {
                                                                 _refreshAttendance();
                                                               }
                                                             });
