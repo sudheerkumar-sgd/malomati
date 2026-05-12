@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final _homeBloc = sl<HomeBloc>();
   final _attendanceBloc = sl<AttendanceBloc>();
   final ValueNotifier<DashboardEntity> _dashboardEntity =
@@ -76,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final ValueNotifier<AttendanceEntity> _liveAttendance =
       ValueNotifier<AttendanceEntity>(AttendanceEntity());
   bool _didInitHomeDependencies = false;
+  bool _wasPaused = false;
 
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     Future.microtask(() {
       _locationAccessManager.loadLocationAccessDepartments();
     });
@@ -124,6 +125,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _wasPaused = true;
+    } else if (state == AppLifecycleState.resumed && _wasPaused) {
+      _wasPaused = false;
+      if (mounted) {
+        _refreshAttendance();
+      }
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_didInitHomeDependencies) return;
@@ -137,7 +150,12 @@ class _HomeScreenState extends State<HomeScreen> {
       weathercode: userDB.get(lastWeathercode, defaultValue: 1),
     );
 
-    _refreshAttendance();
+    // After first frame so route + inherited scope (e.g. user DB) are stable; also
+    // avoids races when the home tab is rebuilt after switching bottom tabs.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _refreshAttendance();
+    });
     _homeBloc.getDashboardData(userName: userName);
     _homeBloc.getEventsData(
       departmentId: userDB.get(departmentIdKey, defaultValue: ''),
@@ -207,6 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _onAttendanceRespose.removeListener(_onAttendanceResponseTick);
     _attendanceSubscription?.cancel();
     _eventBannerTimer?.cancel();

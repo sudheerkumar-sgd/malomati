@@ -3,10 +3,12 @@ import 'package:malomati/presentation/ui/home/home_screen.dart';
 
 class HomeNavigatorScreen extends StatelessWidget {
   const HomeNavigatorScreen({Key? key}) : super(key: key);
-  static var homeKey = GlobalKey<NavigatorState>();
+
+  /// Stable key so parent rebuilds (e.g. bottom bar) do not reset this navigator.
+  static final GlobalKey<NavigatorState> homeKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    homeKey = GlobalKey<NavigatorState>();
     return Navigator(
         key: homeKey,
         initialRoute: '/',
