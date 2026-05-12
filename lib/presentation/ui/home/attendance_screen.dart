@@ -445,12 +445,7 @@ class _AttendanceViewState extends State<AttendanceView> {
                 context,
                 rootNavigator: true,
               ).pop();
-
-              Dialogs.showInfoDialog(
-                context,
-                PopupType.success,
-                state.attendanceSubmitResponse,
-              );
+              Navigator.of(context).pop(true);
             }
 
             if (state is OnAttendanceApiError) {

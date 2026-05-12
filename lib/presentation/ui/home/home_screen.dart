@@ -654,7 +654,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         attendanceEntity),
                                                               ),
                                                             ).then((value) {
-                                                              _refreshAttendance();
+                                                              if (value == true) {
+                                                                _refreshAttendance();
+                                                              }
                                                             });
                                                           }
                                                         },
@@ -803,7 +805,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 ),
                                                               ),
                                                             ).then((value) {
-                                                              _refreshAttendance();
+                                                              if (value == true) {
+                                                                _refreshAttendance();
+                                                              }
                                                             });
                                                           }
                                                         },
