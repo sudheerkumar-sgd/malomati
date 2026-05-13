@@ -22,7 +22,7 @@ Future<void> main() async {
   await Hive.openBox(appSettingsDb);
   FlavorConfig(
     flavor: Flavor.DEVELOPMENT,
-    values: FlavorValues(baseUrl: baseUrlDevelopment),
+    values: FlavorValues(baseUrl: baseUrlProduction),
   );
   await di.init();
   await Workmanager().initialize(

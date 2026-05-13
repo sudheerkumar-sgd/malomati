@@ -430,7 +430,6 @@ class _AttendanceViewState extends State<AttendanceView> {
   @override
   Widget build(BuildContext context) {
     attendanceOptions = _attendanceOptions();
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: resources.color.appScaffoldBg,
@@ -545,9 +544,11 @@ class _AttendanceViewState extends State<AttendanceView> {
                         ) {
                           return Text(
                             value,
-                            style: context.textFontWeight600.onFontSize(
-                              context.resources.fontSize.dp20,
-                            ),
+                            style: context.textFontWeight600
+                                .onFontSize(
+                                  context.resources.fontSize.dp20,
+                                )
+                                .onFontFamily(fontFamily: fontFamilyEN),
                           );
                         },
                       ),

@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // avoids races when the home tab is rebuilt after switching bottom tabs.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _refreshAttendance(notifyOnFailure: true);
+      _refreshAttendance(notifyOnFailure: false);
     });
     _homeBloc.getDashboardData(userName: userName);
     _homeBloc.getEventsData(
@@ -140,6 +140,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
     _homeBloc.getFavoritesdData(userDB: userDB);
     _homeBloc.getRequestsCount(requestParams: {'USER_NAME': userName});
+
+    _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
+      apiUrl: attendanceUserPunchDetailsApiUrl,
+      requestParams: {},
+      emitResult: false,
+    );
 
     Future.delayed(const Duration(milliseconds: 100), () async {
       if (!mounted) return;
@@ -320,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     });
   }
 
-  void _refreshAttendance({bool notifyOnFailure = true}) {
+  void _refreshAttendance({bool notifyOnFailure = false}) {
     var date = getDateByformat('ddMMyyyy', DateTime.now());
     Map<String, dynamic> attendanceRequestParams = {
       'date-range': '$date-$date',
@@ -332,41 +338,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         final entity =
             state.attendanceEntity.entity?.attendanceList.firstOrNull ??
                 AttendanceEntity();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          final ctx = context;
-          _liveAttendance.value = entity;
-          if ((entity.punch2Time ?? '').isNotEmpty) {
-            _onAttendanceRespose.value = 2;
-          } else if ((entity.punch1Time ?? '').isNotEmpty) {
-            _onAttendanceRespose.value = 1;
-          } else {
-            _onAttendanceRespose.value = 0;
-          }
-          _calculateRemainingTime(ctx, entity.punch1Time, entity.punch2Time);
-        });
+        if (!mounted) return;
+        _liveAttendance.value = entity;
+        if ((entity.punch2Time ?? '').isNotEmpty) {
+          _onAttendanceRespose.value = 2;
+        } else if ((entity.punch1Time ?? '').isNotEmpty) {
+          _onAttendanceRespose.value = 1;
+        } else {
+          _onAttendanceRespose.value = 0;
+        }
+        _calculateRemainingTime(context, entity.punch1Time, entity.punch2Time);
       } else if (state is OnAttendanceApiError) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          _liveAttendance.value = AttendanceEntity();
-          _onAttendanceRespose.value = -1;
-          _setRemainingTimeValue('00:00:00');
-          _punchRemainingTimer?.cancel();
-          _punchRemainingTimer = null;
-          if (notifyOnFailure) {
-            final message = state.message.isNotEmpty
-                ? state.message
-                : context.string.noInternet;
-            Dialogs.showInfoDialog(
-              context,
-              PopupType.fail,
-              message,
-            );
-          }
-        });
-      }
-    }, onError: (_) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         _liveAttendance.value = AttendanceEntity();
         _onAttendanceRespose.value = -1;
@@ -374,19 +356,31 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         _punchRemainingTimer?.cancel();
         _punchRemainingTimer = null;
         if (notifyOnFailure) {
+          final message = state.message.isNotEmpty
+              ? state.message
+              : context.string.noInternet;
           Dialogs.showInfoDialog(
             context,
             PopupType.fail,
-            context.string.noInternet,
+            message,
           );
         }
-      });
+      }
+    }, onError: (_) {
+      if (!mounted) return;
+      _liveAttendance.value = AttendanceEntity();
+      _onAttendanceRespose.value = -1;
+      _setRemainingTimeValue('00:00:00');
+      _punchRemainingTimer?.cancel();
+      _punchRemainingTimer = null;
+      if (notifyOnFailure) {
+        Dialogs.showInfoDialog(
+          context,
+          PopupType.fail,
+          context.string.noInternet,
+        );
+      }
     });
-    _userPunchDetailsFuture = _attendanceBloc.getUserDetails(
-      apiUrl: attendanceUserPunchDetailsApiUrl,
-      requestParams: {},
-      emitResult: false,
-    );
   }
 
   _addFavorite(BuildContext context, FavoriteEntity favoriteEntity) {
