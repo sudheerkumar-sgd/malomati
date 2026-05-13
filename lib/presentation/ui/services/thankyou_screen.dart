@@ -158,7 +158,8 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
     _getThankyouList(type);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || !_monthScrollController.hasClients) return;
-      _setScrollByDirection(_monthScrollController.position.maxScrollExtent + 100);
+      _setScrollByDirection(
+          _monthScrollController.position.maxScrollExtent + 100);
     });
   }
 
@@ -472,7 +473,7 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
                             return Column(
                               children: [
                                 SizedBox(
-                                  height: 70,
+                                  height: 80,
                                   child: Row(
                                     children: [
                                       InkWell(
@@ -546,10 +547,12 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
                                           scrollDirection: Axis.vertical,
                                           controller: _listScrollController,
                                           separatorBuilder:
-                                              (BuildContext context, int index) {
+                                              (BuildContext context,
+                                                  int index) {
                                             return Container(
                                               padding: EdgeInsets.symmetric(
-                                                  vertical: resources.dimen.dp20),
+                                                  vertical:
+                                                      resources.dimen.dp20),
                                               child: Divider(
                                                 height: 1,
                                                 color: resources.color
@@ -558,8 +561,8 @@ class _ThankyouScreenState extends State<ThankyouScreen> {
                                             );
                                           },
                                           itemCount: list.length,
-                                          itemBuilder:
-                                              (BuildContext context, int index) {
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return ItemThankyouReceived(
                                                 data: list[index]);
                                           },

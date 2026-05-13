@@ -39,7 +39,7 @@ class _PunchInAccessScreenState extends State<PunchInAccessScreen> {
   EmployeeEntity? _selectedEmployee;
   final ScrollController _monthScrollController = ScrollController();
   final ValueNotifier<int> selectedMonth = ValueNotifier<int>(0);
-  final List<Map<String, String>> monthYearList = <Map<String, String>>[];
+  final List<Map<String, dynamic>> monthYearList = <Map<String, dynamic>>[];
   Future<dynamic>? _disabledEmployeesFuture;
   Future<dynamic>? _lateDoorFuture;
   String _employeesCsv = '';
@@ -62,6 +62,7 @@ class _PunchInAccessScreenState extends State<PunchInAccessScreen> {
     _servicesBloc
         .getEmployeesByDepartment(requestParams: {'DEPARTMENT_NUMBER': 63});
   }
+
   void _getYearMonth() {
     monthYearList.clear();
     int currentDate = DateTime.now().day;
@@ -71,7 +72,7 @@ class _PunchInAccessScreenState extends State<PunchInAccessScreen> {
     var date = DateTime.now();
     for (int i = 1; i <= currentDate; i++) {
       monthYearList.add({
-        'index': '${i - 1}',
+        'index': i - 1,
         'year': getDateByformat('MMM', date),
         'month': '$i',
         'start_date': getDateByformat(
@@ -478,7 +479,7 @@ class _PunchInAccessScreenState extends State<PunchInAccessScreen> {
                                           return Column(
                                             children: [
                                               SizedBox(
-                                                height: 70,
+                                                height: 80,
                                                 child: Row(
                                                   children: [
                                                     InkWell(
