@@ -313,6 +313,7 @@ class _AttendanceViewState extends State<AttendanceView> {
 
     if ((department['name'] ?? '').isEmpty) {
       _attendanceBloc.getUserDetails(
+        showLoading: true,
         requestParams: {},
       );
     } else {

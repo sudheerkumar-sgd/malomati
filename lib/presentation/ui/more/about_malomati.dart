@@ -102,13 +102,14 @@ class _AboutMalomatiState extends State<AboutMalomati> {
                                 .onFontSize(context.resources.fontSize.dp11),
                             children: [
                           TextSpan(
-                            text: '13th ',
+                            text: '2nd ',
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11)
                                 .onFontFamily(fontFamily: fontFamilyEN),
                           ),
                           TextSpan(
-                            text: isLocalEn ? 'May' : getArabicMonthName('May'),
+                            text:
+                                isLocalEn ? 'June' : getArabicMonthName('June'),
                             style: context.textFontWeight400
                                 .onFontSize(context.resources.fontSize.dp11),
                           ),
