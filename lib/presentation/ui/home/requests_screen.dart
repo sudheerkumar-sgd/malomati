@@ -460,8 +460,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                 : ValueListenableBuilder<bool>(
                                                     valueListenable:
                                                         _isRequestsLoading,
-                                                    builder:
-                                                        (context, isLoading, _) {
+                                                    builder: (context,
+                                                        isLoading, _) {
                                                       return isLoading
                                                           ? Center(
                                                               child: Container(
@@ -480,16 +480,17 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                                                     .dp20,
                                                                 child:
                                                                     CircularProgressIndicator(
-                                                                  strokeWidth: context
-                                                                      .resources
-                                                                      .dimen
-                                                                      .dp2,
+                                                                  strokeWidth:
+                                                                      context
+                                                                          .resources
+                                                                          .dimen
+                                                                          .dp2,
                                                                 ),
                                                               ),
                                                             )
                                                           : ItemRequestsList(
-                                                              data:
-                                                                  list[index - 1],
+                                                              data: list[
+                                                                  index - 1],
                                                               onDataChange:
                                                                   (value) {
                                                                 if (value ==
