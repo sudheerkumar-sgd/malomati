@@ -176,9 +176,9 @@ class FirbaseConfig {
     var initialSetting = InitializationSettings(
         android: android, iOS: initiallizationSettingsIOS);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin?.initialize(initialSetting);
+    flutterLocalNotificationsPlugin?.initialize(settings: initialSetting);
     flutterLocalNotificationsPlugin?.initialize(
-      initialSetting,
+      settings: initialSetting,
       onDidReceiveNotificationResponse: (details) {
         onFirbaseMessageOpened.value = jsonDecode(details.payload ?? '');
       },
@@ -202,8 +202,11 @@ class FirbaseConfig {
     const iOSDetails = DarwinNotificationDetails();
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
-    await flutterLocalNotificationsPlugin?.show(0, payload.notification!.title,
-        payload.notification!.body, platformChannelSpecifics,
+    await flutterLocalNotificationsPlugin?.show(
+        id: 0,
+        title: payload.notification!.title,
+        body: payload.notification!.body,
+        notificationDetails: platformChannelSpecifics,
         payload: jsonEncode(payload.data));
   }
 
@@ -225,7 +228,10 @@ class FirbaseConfig {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
     await flutterLocalNotificationsPlugin?.show(
-        DateTime.now().millisecond, title, body, platformChannelSpecifics);
+        id: DateTime.now().millisecond,
+        title: title,
+        body: body,
+        notificationDetails: platformChannelSpecifics);
   }
 
   /// schedule a notification at [scheduledDate]
@@ -260,7 +266,11 @@ class FirbaseConfig {
             'Attempting to schedule notification with exactAllowWhileIdle at $tzDateTime');
       }
       await flutterLocalNotificationsPlugin?.zonedSchedule(
-          id, title, body, tzDateTime, platformChannelSpecifics,
+          id: id,
+          title: title,
+          body: body,
+          scheduledDate: tzDateTime,
+          notificationDetails: platformChannelSpecifics,
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle);
       if (kDebugMode) {
         print('Notification scheduled successfully with exact mode');
@@ -284,11 +294,11 @@ class FirbaseConfig {
                 'Exact alarms permission denied. Falling back to inexact mode.');
           }
           await flutterLocalNotificationsPlugin?.zonedSchedule(
-            id,
-            title,
-            body,
-            tzDateTime,
-            platformChannelSpecifics,
+            id: id,
+            title: title,
+            body: body,
+            scheduledDate: tzDateTime,
+            notificationDetails: platformChannelSpecifics,
             androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
             matchDateTimeComponents: DateTimeComponents.dateAndTime,
           );
@@ -314,7 +324,7 @@ class FirbaseConfig {
   }
 
   static Future<void> cancelNotification(int id) async {
-    await flutterLocalNotificationsPlugin?.cancel(id);
+    await flutterLocalNotificationsPlugin?.cancel(id: id);
   }
 
   static Future<void> cancelAllNotifications() async {

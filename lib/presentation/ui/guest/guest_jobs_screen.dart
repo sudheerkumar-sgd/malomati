@@ -42,8 +42,8 @@ class GuestJobsScreen extends StatelessWidget {
     String filePath = '';
     String fileName = '';
     String? mimeType;
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    FilePickerResult? result = await FilePicker.pickFiles(
+        type: FileType.custom, allowedExtensions: ['pdf']);
     if (result != null) {
       fileName = result.files.single.name;
       filePath = result.files.single.path ?? '';

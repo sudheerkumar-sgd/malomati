@@ -104,7 +104,10 @@ class DropDownWidget<T> extends StatelessWidget {
                       ? const EdgeInsets.only(right: 10.0)
                       : const EdgeInsets.only(left: 10.0),
                   child: ImageWidget(
+                          width: 10,
+                          height: 10,
                           path: DrawableAssets.icChevronDown,
+                          boxType: BoxFit.contain,
                           backgroundTint: context.resources.color.viewBgColor)
                       .loadImage,
                 ),

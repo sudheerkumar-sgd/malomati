@@ -107,7 +107,7 @@ class LeavesForm extends StatelessWidget {
 
   Future<void> _selectFile(BuildContext context) async {
     FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.any);
+        await FilePicker.pickFiles(type: FileType.any);
 
     if (result != null) {
       final fileName = result.files.single.name;

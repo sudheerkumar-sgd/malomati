@@ -120,6 +120,8 @@ class RightIconTextWidget extends StatelessWidget {
                           ? const EdgeInsets.only(right: 15.0)
                           : const EdgeInsets.only(left: 15.0),
                       child: ImageWidget(
+                        width: context.resources.dimen.dp20,
+                        height: context.resources.dimen.dp20,
                               path: suffixIconPath ?? '',
                               backgroundTint:
                                   context.resources.color.viewBgColor)
