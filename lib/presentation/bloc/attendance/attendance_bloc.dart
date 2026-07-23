@@ -38,6 +38,23 @@ class AttendanceBloc extends Cubit<AttendanceState> {
         (r) => OnAttendanceSuccess(attendanceEntity: r));
   }
 
+  Future<AttendanceState> getEmployeesAttendance(
+      {required Map<String, dynamic> requestParams,
+      bool returnValue = false}) async {
+    //emit(OnAttendanceDataLoading());
+    final result = await attendanceUseCase.geteEmployeesAttendanceReport(
+        requestParams: requestParams);
+    //_attendanceReport.sink.add(result.fold((l) => ApiEntity(), (r) => r));
+    // if (returnValue) {
+    //   emit(result.fold(
+    //       (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+    //       (r) => OnAttendanceSuccess(attendanceEntity: r)));
+    // }
+    return result.fold(
+        (l) => OnAttendanceApiError(message: _getErrorMessage(l)),
+        (r) => OnAttendanceSuccess(attendanceEntity: r));
+  }
+
   Future<void> getAttendance(
       {required Map<String, dynamic> requestParams,
       bool returnValue = false}) async {

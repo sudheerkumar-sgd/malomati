@@ -52,6 +52,8 @@ abstract class RemoteDataSource {
       {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceListModel>> getAttendance(
       {required Map<String, dynamic> requestParams});
+  Future<ApiResponse<AttendanceListModel>> getEmployeesAttendanceReport(
+      {required Map<String, dynamic> requestParams});
   Future<ApiResponse<AttendanceListModel>> getAttendanceDetails(
       {String? apiUrl, required Map<String, dynamic> requestParams});
   Future<String> submitAttendanceDetails(
@@ -215,6 +217,27 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         default:
           throw _getExceptionType(response);
       }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<ApiResponse<AttendanceListModel>> getEmployeesAttendanceReport(
+      {required Map<String, dynamic> requestParams}) async {
+    final dio2 = Dio();
+    dio2.options.baseUrl = baseUrlAttendanceDevelopment;
+    dio2.interceptors.add(DioLoggingInterceptor());
+    try {
+      var response = await dio2.get(
+        '${attendanceApiUrl}date-range=${requestParams['date-range']};id=${requestParams['ids']}$attendanceRequestedParams',
+        options: Options(headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        }),
+      );
+      return ApiResponse<AttendanceListModel>.fromJson(
+          response.data, (p0) => AttendanceListModel.fromJson(response.data));
     } catch (e) {
       if (e is ServerException) rethrow;
       throw e.toString();
@@ -803,8 +826,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       } on StateError catch (e) {
         throw ServerException(message: e.message);
       } catch (e) {
-        throw ServerException(
-            message: 'Could not obtain FCM access token: $e');
+        throw ServerException(message: 'Could not obtain FCM access token: $e');
       }
     }
     final dio2 = Dio();

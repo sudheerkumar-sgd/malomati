@@ -17,6 +17,13 @@ class AttendanceUseCase extends BaseUseCase {
   final AttendanceRepository attendanceRepository;
   AttendanceUseCase({required this.attendanceRepository});
 
+  Future<Either<Failure, ApiEntity<AttendanceListEntity>>>
+      geteEmployeesAttendanceReport(
+          {required Map<String, dynamic> requestParams}) async {
+    return await attendanceRepository.getEmployeesAttendanceReport(
+        requestParams: requestParams);
+  }
+
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceReport(
       {required Map<String, dynamic> requestParams}) async {
     return await attendanceRepository.getAttendance(

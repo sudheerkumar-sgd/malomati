@@ -9,6 +9,9 @@ import '../entities/attendance_list_entity.dart';
 
 /// Attendance API + generic GET/POST for attendance subsystem.
 abstract class AttendanceRepository {
+  Future<Either<Failure, ApiEntity<AttendanceListEntity>>>
+      getEmployeesAttendanceReport(
+          {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendance(
       {required Map<String, dynamic> requestParams});
   Future<Either<Failure, ApiEntity<AttendanceListEntity>>> getAttendanceDetails(

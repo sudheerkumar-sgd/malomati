@@ -39,16 +39,34 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance> {
     _notPunchedemployeesList.value = [];
     _fraction.value = -1.0;
     var date = DateFormat('ddMMyyyy').format(DateTime.now());
-    for (int i = 0; i < _employeesList.value.length; i++) {
-      Map<String, dynamic> requestParams = {
-        'date-range': '$date-$date',
-        'oracle_id': _employeesList.value[i].pERSONID
-      };
-      await _attendanceBloc.getAttendance(
-          requestParams: requestParams, returnValue: true);
+    //for (int i = 0; i < _employeesList.value.length; i++) {
+    Map<String, dynamic> requestParams = {
+      'date-range': '$date-$date',
+      'ids': _employeesList.value.map((e) => e.pERSONID).join(',')
+    };
+    final result = await _attendanceBloc.getEmployeesAttendance(
+        requestParams: requestParams, returnValue: true);
+    if (result is OnAttendanceSuccess) {
+      final loggedEmployees = result.attendanceEntity.entity?.attendanceList
+          .where((e) => e.punch1Time?.isNotEmpty ?? false)
+          .map((e) => e.userid)
+          .toList();
+      loggedInEmployees = loggedEmployees?.length ?? 0;
+      final notPunchedEmployees = _employeesList.value
+          .where((e) => !loggedEmployees!.contains(e.pERSONID))
+          .toList();
+      _notPunchedemployeesList.value = notPunchedEmployees;
+      final total = _employeesList.value.length;
+      final percentage = total == 0 ? 0.0 : loggedInEmployees / total;
+      for (int i = 1; i < loggedInEmployees + 1; i++) {
+        _fraction.value = percentage * (i / loggedInEmployees);
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    } else {
+      final total = _employeesList.value.length;
+      _fraction.value = total == 0 ? 0.0 : loggedInEmployees / total;
     }
-    final total = _employeesList.value.length;
-    _fraction.value = total == 0 ? 0.0 : loggedInEmployees / total;
+    //}
   }
 
   void _loadMyTeamAttendance() {
@@ -86,7 +104,7 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance> {
             },
           ),
           BlocListener<AttendanceBloc, AttendanceState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state is OnAttendanceSuccess) {
                 if (state.attendanceEntity.entity?.attendanceList.isNotEmpty ??
                     false) {
@@ -110,7 +128,6 @@ class _MyTeamAttendanceState extends State<MyTeamAttendance> {
                 }
                 final total = _employeesList.value.length;
                 percentage = total == 0 ? 0.0 : loggedInEmployees / total;
-                _fraction.value = percentage;
               } else if (state is OnAttendanceApiError) {
                 final total = _employeesList.value.length;
                 percentage = total == 0 ? 0.0 : loggedInEmployees / total;
