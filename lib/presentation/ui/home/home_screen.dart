@@ -256,12 +256,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      var targetTime = punchInToday.add(now.weekday == DateTime.friday
-          ? const Duration(hours: 4, minutes: 30)
-          : const Duration(hours: 8));
-      final limitTime = now.weekday == DateTime.friday
-          ? DateTime(now.year, now.month, now.day, 12, 30, 0)
-          : DateTime(now.year, now.month, now.day, 16, 0, 0);
+      var targetTime = punchInToday.add(getWorkingHours(now));
+      final workingEndTime = getWorkingEndTime(now);
+      final limitTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        workingEndTime.hour,
+        workingEndTime.minute,
+      );
       if (targetTime.isAfter(limitTime)) {
         targetTime = limitTime;
       }
@@ -300,12 +303,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int.parse(punchInParts[1]),
           int.parse(punchInParts[2]));
 
-      var targetTime = punchInToday.add(now.weekday == DateTime.friday
-          ? const Duration(hours: 4, minutes: 30)
-          : const Duration(hours: 8));
-      final limitTime = now.weekday == DateTime.friday
-          ? DateTime(now.year, now.month, now.day, 12, 30, 0)
-          : DateTime(now.year, now.month, now.day, 16, 0, 0);
+      var targetTime = punchInToday.add(getWorkingHours(now));
+      final workingEndTime = getWorkingEndTime(now);
+      final limitTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        workingEndTime.hour,
+        workingEndTime.minute,
+      );
 
       if (targetTime.isAfter(limitTime)) {
         targetTime = limitTime;

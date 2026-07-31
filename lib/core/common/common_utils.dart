@@ -418,10 +418,32 @@ bool isRamdanMonth() {
   return (date > 18 && month == 2) || (date < 21 && month == 3);
 }
 
+/// Summer window: all of July through 28 Aug (inclusive).
+bool isSummerMonth([DateTime? at]) {
+  final now = at ?? DateTime.now();
+  return (now.month == 8 && now.day < 29);
+}
+
 void initWorkmanagerTask(Duration duration) {
   Workmanager().registerOneOffTask(
     'workhours-notification-task',
     'workhoursNotification',
     initialDelay: duration,
   );
+}
+
+Duration getWorkingHours([DateTime? at]) {
+  final now = at ?? DateTime.now();
+  if (now.weekday == DateTime.friday) {
+    return const Duration(hours: 4, minutes: 30);
+  }
+  return Duration(hours: isSummerMonth(now) ? 7 : 8);
+}
+
+TimeOfDay getWorkingEndTime([DateTime? at]) {
+  final now = at ?? DateTime.now();
+  if (now.weekday == DateTime.friday) {
+    return const TimeOfDay(hour: 12, minute: 30);
+  }
+  return TimeOfDay(hour: isSummerMonth(now) ? 15 : 16, minute: 0);
 }
