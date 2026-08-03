@@ -17,7 +17,6 @@ import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mime/mime.dart';
-import 'package:workmanager/workmanager.dart';
 
 import '../../data/model/leave_type_list_model.dart';
 
@@ -424,13 +423,13 @@ bool isSummerMonth([DateTime? at]) {
   return (now.month == 8 && now.day < 29);
 }
 
-void initWorkmanagerTask(Duration duration) {
-  Workmanager().registerOneOffTask(
-    'workhours-notification-task',
-    'workhoursNotification',
-    initialDelay: duration,
-  );
-}
+// void initWorkmanagerTask(Duration duration) {
+//   Workmanager().registerOneOffTask(
+//     'workhours-notification-task',
+//     'workhoursNotification',
+//     initialDelay: duration,
+//   );
+// }
 
 Duration getWorkingHours([DateTime? at]) {
   final now = at ?? DateTime.now();

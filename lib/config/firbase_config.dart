@@ -13,7 +13,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../firebase_options.dart';
 import 'constant_config.dart';
 
-//Define the background message handler
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -42,112 +41,74 @@ class FirbaseConfig {
   static ValueNotifier<Map<String, dynamic>?> onFirbaseMessageOpened =
       ValueNotifier(null);
 
-  /// initialize timezone database used by flutter_local_notifications
-  ///
-  /// this must be called once before scheduling any notifications.
+  // Bump id when channel importance/category changes (Android won't update existing).
+  static const String _localChannelId = 'work_hours_channel_v3';
+  static const String _notificationIcon = '@drawable/ic_notification_white';
+
+  static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  static bool _localNotificationsReady = false;
+
   static void _configureLocalTimeZone() {
     try {
       tz.initializeTimeZones();
-      final String timeZoneName = tz.local.name;
-      tz.setLocalLocation(tz.getLocation(timeZoneName));
-    } catch (_) {
-      // ignore errors; if timezone package isn't available scheduling will
-      // still fall back to system default but might be off by an hour.
-    }
+      tz.setLocalLocation(tz.getLocation('Asia/Dubai'));
+    } catch (_) {}
   }
 
   Future<void> initFirbaseMessaging() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    //Request permission
     final messaging = FirebaseMessaging.instance;
 
-    // Web/iOS app users need to grant permission to receive messages
     final settings = await messaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-        alert: true, badge: true, sound: true);
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     if (kDebugMode) {
       print('Permission granted: ${settings.authorizationStatus}');
     }
-    // Register with FCM
-    // use the registration token to send messages to users from your trusted server environment
-    String? token = await messaging.getToken();
 
+    String? token = await messaging.getToken();
     firbaseToken = token ?? '';
     if (kDebugMode) {
       print('Registration Token=$token');
     }
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true, // Required to display a heads up notification
-      badge: true,
-      sound: true,
-    );
-
     messaging.subscribeToTopic('MALOMATI');
     await initFlutterLocalNotifications();
-
-    // Request exact alarm permission on Android 12+
-    // if (Platform.isAndroid) {
-    //   flutterLocalNotificationsPlugin
-    //       ?.resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>()
-    //       ?.requestNotificationsPermission()
-    //       .then((granted) {
-    //     if (kDebugMode) {
-    //       print('Notification permission requested. Granted: $granted');
-    //     }
-    //   });
-    //   requestExactAlarmPermission().then((granted) {
-    //     if (kDebugMode) {
-    //       print('Exact alarm permission requested. Granted: $granted');
-    //     }
-    //   });
-    //   const AndroidNotificationChannel workChannel = AndroidNotificationChannel(
-    //     'work_channel_id',
-    //     'Work Notifications',
-    //     importance: Importance.max,
-    //   );
-    //   const AndroidNotificationChannel localChannel =
-    //       AndroidNotificationChannel(
-    //     'local_notification_channel_id',
-    //     'Local Notification',
-    //     importance: Importance.max,
-    //   );
-
-    //   final androidPlugin = flutterLocalNotificationsPlugin
-    //       ?.resolvePlatformSpecificImplementation<
-    //           AndroidFlutterLocalNotificationsPlugin>();
-    //   await androidPlugin?.createNotificationChannel(workChannel);
-    //   await androidPlugin?.createNotificationChannel(localChannel);
-    // }
   }
 
-  static FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  /// Call after the UI is up (never from main() — dialog blocks runApp).
+  static Future<bool> requestAndroidNotificationPermission() async {
+    if (!Platform.isAndroid) return true;
+    await ensureLocalNotificationsReady();
+    final android =
+        flutterLocalNotificationsPlugin?.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    final granted = await android?.requestNotificationsPermission();
+    if (kDebugMode) {
+      print('Android notification permission granted: $granted');
+      print(
+          'Android notifications enabled: ${await android?.areNotificationsEnabled()}');
+    }
+    return granted ?? (await android?.areNotificationsEnabled() ?? true);
+  }
 
   Future<void> initFlutterLocalNotifications() async {
-    // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (kDebugMode) {
-        //print('Handling a foreground message: ${json.encode(message)}');
         print('Handling a foreground message: ${message.messageId}');
-        print('Message data: ${message.data}');
-        print('Message notification: ${message.notification?.title}');
-        print('Message notification: ${message.notification?.body}');
-        print('Message notification: ${message.data.toString()}');
-        print(
-            'Message notification: ${message.notification?.android?.clickAction ?? ''}');
-        print(
-            'Message notification: ${message.notification?.apple?.subtitleLocArgs ?? ''}');
       }
       if (Platform.isAndroid) {
         showNotification(message);
@@ -167,158 +128,187 @@ class FirbaseConfig {
         ConstantConfig.onFCMMessageReceived.value = {'data': message.data};
       }
     });
-    // make sure timezone database is initialised so scheduled notifications work
-    //_configureLocalTimeZone();
 
-    var android =
-        const AndroidInitializationSettings('@mipmap/ic_app_notification');
-    var initiallizationSettingsIOS = const DarwinInitializationSettings();
-    var initialSetting = InitializationSettings(
-        android: android, iOS: initiallizationSettingsIOS);
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin?.initialize(settings: initialSetting);
-    flutterLocalNotificationsPlugin?.initialize(
-      settings: initialSetting,
-      onDidReceiveNotificationResponse: (details) {
-        onFirbaseMessageOpened.value = jsonDecode(details.payload ?? '');
-      },
-    );
+    await ensureLocalNotificationsReady();
   }
 
   Future<void> showNotification(RemoteMessage payload) async {
-    if (flutterLocalNotificationsPlugin == null) {
-      initFlutterLocalNotifications();
-    }
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'default_notification_channel_id',
-      'Notification',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-      icon: "@mipmap/ic_app_notification",
-      playSound: true,
+    await ensureLocalNotificationsReady();
+    final details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'default_notification_channel_id',
+        'Notification',
+        importance: Importance.max,
+        priority: Priority.high,
+        icon: _notificationIcon,
+        playSound: true,
+      ),
+      iOS: const DarwinNotificationDetails(),
     );
-    const iOSDetails = DarwinNotificationDetails();
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidDetails, iOS: iOSDetails);
     await flutterLocalNotificationsPlugin?.show(
-        id: 0,
-        title: payload.notification!.title,
-        body: payload.notification!.body,
-        notificationDetails: platformChannelSpecifics,
-        payload: jsonEncode(payload.data));
+      id: 0,
+      title: payload.notification?.title,
+      body: payload.notification?.body,
+      notificationDetails: details,
+      payload: jsonEncode(payload.data),
+    );
   }
+
+  static Future<void> ensureLocalNotificationsReady() async {
+    if (_localNotificationsReady && flutterLocalNotificationsPlugin != null) {
+      return;
+    }
+    _configureLocalTimeZone();
+    const android = AndroidInitializationSettings(_notificationIcon);
+    const ios = DarwinInitializationSettings();
+    flutterLocalNotificationsPlugin ??= FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin!.initialize(
+      settings: const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: (details) {
+        final payload = details.payload;
+        if (payload == null || payload.isEmpty) return;
+        try {
+          onFirbaseMessageOpened.value = jsonDecode(payload);
+        } catch (_) {}
+      },
+    );
+    if (Platform.isAndroid) {
+      const localChannel = AndroidNotificationChannel(
+        _localChannelId,
+        'Work Hours',
+        description: 'Working hours completed reminders',
+        importance: Importance.max,
+        playSound: true,
+      );
+      await flutterLocalNotificationsPlugin
+          ?.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(localChannel);
+    }
+    _localNotificationsReady = true;
+  }
+
+  static NotificationDetails get _localDetails => const NotificationDetails(
+        android: AndroidNotificationDetails(
+          _localChannelId,
+          'Work Hours',
+          channelDescription: 'Working hours completed reminders',
+          importance: Importance.max,
+          priority: Priority.max,
+          icon: _notificationIcon,
+          playSound: true,
+          visibility: NotificationVisibility.public,
+          // alarm + fullScreenIntent helps surface the alert when the screen is off.
+          category: AndroidNotificationCategory.alarm,
+          fullScreenIntent: true,
+          audioAttributesUsage: AudioAttributesUsage.alarm,
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      );
 
   static Future<void> showLocalNotification(String title, String body) async {
-    if (flutterLocalNotificationsPlugin == null) {
-      await FirbaseConfig().initFlutterLocalNotifications();
-    }
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'local_notification_channel_id',
-      'Local Notification',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-      icon: "@mipmap/ic_app_notification",
-      playSound: true,
-    );
-    const iOSDetails = DarwinNotificationDetails();
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidDetails, iOS: iOSDetails);
-    await flutterLocalNotificationsPlugin?.show(
-        id: DateTime.now().millisecond,
+    try {
+      await ensureLocalNotificationsReady();
+      // Never abort on Android permission check — iOS has no such gate.
+      // MainActivity already prompts for POST_NOTIFICATIONS on Android 13+.
+      if (Platform.isAndroid) {
+        await requestAndroidNotificationPermission();
+      }
+      await flutterLocalNotificationsPlugin!.show(
+        id: 100,
         title: title,
         body: body,
-        notificationDetails: platformChannelSpecifics);
+        notificationDetails: _localDetails,
+      );
+      if (kDebugMode) print('showLocalNotification posted: $title');
+    } catch (e, st) {
+      if (kDebugMode) {
+        print('showLocalNotification failed: $e');
+        print(st);
+      }
+    }
   }
 
-  /// schedule a notification at [scheduledDate]
+  /// Schedule a local notification at [scheduledDate] (Android + iOS).
+  /// Same zonedSchedule API on both; Android only differs in schedule mode fallbacks.
   static Future<void> scheduleLocalNotification({
     required int id,
     required String title,
     required String body,
     required DateTime scheduledDate,
   }) async {
-    if (flutterLocalNotificationsPlugin == null) {
-      FirbaseConfig().initFlutterLocalNotifications();
-    }
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      'local_notification_channel_id',
-      'Local Notification',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-      icon: "@mipmap/ic_app_notification",
-      playSound: true,
-    );
-    const iOSDetails = DarwinNotificationDetails();
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidDetails, iOS: iOSDetails);
-
-    final tzDateTime = tz.TZDateTime.from(scheduledDate, tz.local);
-
     try {
-      if (kDebugMode) {
-        print(
-            'Attempting to schedule notification with exactAllowWhileIdle at $tzDateTime');
+      await ensureLocalNotificationsReady();
+      _configureLocalTimeZone();
+
+      if (Platform.isAndroid) {
+        // Prompt only — do not return early (that made Android a no-op while iOS worked).
+        await requestAndroidNotificationPermission();
+        // Required so AlarmManager can fire while the screen is off / in Doze.
+        await requestExactAlarmPermission();
       }
-      await flutterLocalNotificationsPlugin?.zonedSchedule(
+
+      final location = tz.getLocation('Asia/Dubai');
+      final tzDateTime = tz.TZDateTime(
+        location,
+        scheduledDate.year,
+        scheduledDate.month,
+        scheduledDate.day,
+        scheduledDate.hour,
+        scheduledDate.minute,
+        scheduledDate.second,
+      );
+      final now = tz.TZDateTime.now(location);
+      // If target is now/past, bump a couple seconds so Android still uses
+      // zonedSchedule (immediate show() is flaky on some devices; schedule works).
+      final scheduleAt = tzDateTime.isAfter(now)
+          ? tzDateTime
+          : now.add(const Duration(seconds: 2));
+
+      await flutterLocalNotificationsPlugin?.cancel(id: id);
+
+      Future<void> schedule(AndroidScheduleMode mode) {
+        return flutterLocalNotificationsPlugin!.zonedSchedule(
           id: id,
           title: title,
           body: body,
-          scheduledDate: tzDateTime,
-          notificationDetails: platformChannelSpecifics,
-          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle);
-      if (kDebugMode) {
-        print('Notification scheduled successfully with exact mode');
+          scheduledDate: scheduleAt,
+          notificationDetails: _localDetails,
+          androidScheduleMode: mode,
+        );
       }
-      final pending =
-          await flutterLocalNotificationsPlugin?.pendingNotificationRequests();
-      print(
-          "Pending notifications count: ${pending?.first.body} $tzDateTime ${DateTime.now()}");
-    } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print(
-            'PlatformException scheduling notification: code=${e.code}, message=${e.message}');
-      }
-      // On Android 12+/13+ exact alarms may require permission. If the
-      // permission is not granted, fall back to an inexact schedule so the
-      // notification will still fire approximately at the requested time.
-      if (e.code == 'exact_alarms_not_permitted') {
+
+      // alarmClock uses setAlarmClock — most reliable when screen is off / Doze.
+      // exactAllowWhileIdle still needs SCHEDULE_EXACT_ALARM; inexact is deferred in Doze.
+      try {
+        await schedule(AndroidScheduleMode.alarmClock);
+      } catch (e) {
+        if (kDebugMode) print('alarmClock failed: $e — trying exactAllowWhileIdle');
         try {
-          if (kDebugMode) {
-            print(
-                'Exact alarms permission denied. Falling back to inexact mode.');
-          }
-          await flutterLocalNotificationsPlugin?.zonedSchedule(
-            id: id,
-            title: title,
-            body: body,
-            scheduledDate: tzDateTime,
-            notificationDetails: platformChannelSpecifics,
-            androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-            matchDateTimeComponents: DateTimeComponents.dateAndTime,
-          );
-          if (kDebugMode) {
-            print('Notification scheduled successfully with inexact mode');
-          }
+          await schedule(AndroidScheduleMode.exactAllowWhileIdle);
         } catch (e2) {
-          if (kDebugMode) {
-            print('Failed to schedule with inexact mode: $e2');
-          }
+          if (kDebugMode) print('exact failed: $e2 — using inexactAllowWhileIdle');
+          await schedule(AndroidScheduleMode.inexactAllowWhileIdle);
         }
-      } else {
-        if (kDebugMode) {
-          print('Unexpected PlatformException. Rethrowing.');
-        }
-        rethrow;
       }
-    } catch (e) {
+
       if (kDebugMode) {
-        print('Unexpected error scheduling notification: $e');
+        final android = flutterLocalNotificationsPlugin
+            ?.resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>();
+        final pending = await flutterLocalNotificationsPlugin
+            ?.pendingNotificationRequests();
+        print(
+            'Scheduled id=$id @ $scheduleAt pending=${pending?.length} canExact=${await android?.canScheduleExactNotifications()}');
+      }
+    } catch (e, st) {
+      if (kDebugMode) {
+        print('scheduleLocalNotification failed: $e');
+        print(st);
       }
     }
   }
@@ -331,12 +321,6 @@ class FirbaseConfig {
     await flutterLocalNotificationsPlugin?.cancelAll();
   }
 
-  /// Requests the exact alarm permission on Android 12+ (API 31+).
-  ///
-  /// If granted the plugin will be able to schedule notifications with
-  /// `AndroidScheduleMode.exactAllowWhileIdle`. On newer platforms the system
-  /// shows a runtime prompt and this method returns true when the user allows
-  /// it.  Returns null on non-Android platforms.
   static Future<bool?> requestExactAlarmPermission() async {
     try {
       return await flutterLocalNotificationsPlugin

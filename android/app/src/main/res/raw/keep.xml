@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keep assets referenced from Flutter/Dart by resource name string. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_notification_white,@mipmap/ic_app_notification,@mipmap/ic_launcher_flag" />

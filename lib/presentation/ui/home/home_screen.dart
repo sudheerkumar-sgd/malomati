@@ -33,7 +33,6 @@ import 'package:malomati/presentation/ui/widgets/page_indicator.dart';
 import 'package:malomati/presentation/ui/widgets/user_app_bar.dart';
 import 'package:malomati/res/drawables/drawable_assets.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:workmanager/workmanager.dart';
 
 import '../../../core/common/common_utils.dart';
 import '../../../core/constants/data_constants.dart';
@@ -79,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
+  bool _workNotificationShown = false;
   static const int _workNotificationId = 100;
 
   void _setRemainingTimeValue(String value) {
@@ -130,7 +130,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
     // After first frame so route + inherited scope (e.g. user DB) are stable; also
     // avoids races when the home tab is rebuilt after switching bottom tabs.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      // Must run after runApp — Android 13+ shows the system dialog here.
+      await FirbaseConfig.requestAndroidNotificationPermission();
       if (!mounted) return;
       _refreshAttendance(notifyOnFailure: false);
     });
@@ -228,6 +231,75 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  DateTime? _workTargetTime(String punch1Time, DateTime now) {
+    final punchInParts = punch1Time.split(':');
+    if (punchInParts.length < 2) return null;
+    final hour = int.tryParse(punchInParts[0].trim());
+    final minute = int.tryParse(punchInParts[1].trim());
+    if (hour == null || minute == null) return null;
+    final second = punchInParts.length >= 3
+        ? (int.tryParse(punchInParts[2].trim()) ?? 0)
+        : 0;
+    final punchInToday = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+      second,
+    );
+    var targetTime = punchInToday.add(getWorkingHours(now));
+    final workingEndTime = getWorkingEndTime(now);
+    final limitTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      workingEndTime.hour,
+      workingEndTime.minute,
+    );
+    if (targetTime.isAfter(limitTime)) {
+      targetTime = limitTime;
+    }
+    return targetTime;
+  }
+
+  Future<void> _fireWorkHoursNotification(BuildContext context) async {
+    if (_workNotificationShown) return;
+    _workNotificationShown = true;
+    final title = context.string.workNotificationTitle;
+    final body = context.string.workNotificationBody;
+    // Android: the 15s debug proved zonedSchedule works, while cancel+show()
+    // at countdown end wiped the pending alarm and often posted nothing.
+    // Deliver the same way — short schedule (iOS show() still fine via helper).
+    await FirbaseConfig.scheduleLocalNotification(
+      id: _workNotificationId,
+      title: title,
+      body: body,
+      scheduledDate: DateTime.now().add(const Duration(seconds: 2)),
+    );
+  }
+
+  Future<void> _scheduleWorkHoursNotification(
+    BuildContext context,
+    DateTime targetTime,
+    Duration diff,
+  ) async {
+    if (_workNotificationScheduled) return;
+    final title = context.string.workNotificationTitle;
+    final body = context.string.workNotificationBody;
+    await FirbaseConfig.scheduleLocalNotification(
+      id: _workNotificationId,
+      title: title,
+      body: body,
+      scheduledDate: targetTime,
+    );
+    // if (Platform.isAndroid) {
+    //   await Workmanager().cancelAll();
+    //   initWorkmanagerTask(diff);
+    // }
+    _workNotificationScheduled = true;
+  }
+
   _calculateRemainingTime(
       BuildContext context, String? punch1Time, String? punch2Time) async {
     if (punch1Time == null ||
@@ -236,55 +308,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       _setRemainingTimeValue('00:00:00');
       _punchRemainingTimer?.cancel();
       _punchRemainingTimer = null;
-      await Workmanager().cancelAll();
-      FirbaseConfig.cancelNotification(_workNotificationId);
+      //await Workmanager().cancelAll();
+      await FirbaseConfig.cancelNotification(_workNotificationId);
       _workNotificationScheduled = false;
+      _workNotificationShown = false;
       return;
     }
 
     if (_punchRemainingTimer != null) return;
 
-    // compute target time once and schedule notification
     final now = DateTime.now();
-    final punchInParts = punch1Time.split(':');
-    if (punchInParts.length >= 3) {
-      final punchInToday = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          int.parse(punchInParts[0]),
-          int.parse(punchInParts[1]),
-          int.parse(punchInParts[2]));
-
-      var targetTime = punchInToday.add(getWorkingHours(now));
-      final workingEndTime = getWorkingEndTime(now);
-      final limitTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        workingEndTime.hour,
-        workingEndTime.minute,
-      );
-      if (targetTime.isAfter(limitTime)) {
-        targetTime = limitTime;
-      }
-      final diff = targetTime.difference(now);
-      if (!diff.isNegative && !_workNotificationScheduled) {
-        if (Platform.isAndroid) {
-          await Workmanager().cancelAll();
-          initWorkmanagerTask(diff);
-        } else {
-          FirbaseConfig.cancelNotification(_workNotificationId);
-          FirbaseConfig.scheduleLocalNotification(
-            id: _workNotificationId,
-            title: context.string.workNotificationTitle,
-            body: context.string.workNotificationBody,
-            scheduledDate: targetTime,
-          );
-        }
-        _workNotificationScheduled = true;
-      }
+    final targetTime = _workTargetTime(punch1Time, now);
+    if (targetTime == null) {
+      _setRemainingTimeValue('00:00:00');
+      return;
     }
+
+    final diff = targetTime.difference(now);
+    if (diff.isNegative) {
+      _setRemainingTimeValue('00:00:00');
+      await _fireWorkHoursNotification(context);
+      return;
+    }
+
+    await _scheduleWorkHoursNotification(context, targetTime, diff);
 
     _punchRemainingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
@@ -292,42 +339,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         return;
       }
       final now = DateTime.now();
-      final punchInParts = punch1Time.split(':');
-      if (punchInParts.length < 3) return;
-
-      final punchInToday = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          int.parse(punchInParts[0]),
-          int.parse(punchInParts[1]),
-          int.parse(punchInParts[2]));
-
-      var targetTime = punchInToday.add(getWorkingHours(now));
-      final workingEndTime = getWorkingEndTime(now);
-      final limitTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        workingEndTime.hour,
-        workingEndTime.minute,
-      );
-
-      if (targetTime.isAfter(limitTime)) {
-        targetTime = limitTime;
-      }
+      final targetTime = _workTargetTime(punch1Time, now);
+      if (targetTime == null) return;
 
       final diff = targetTime.difference(now);
       if (diff.isNegative) {
         _setRemainingTimeValue('00:00:00');
         timer.cancel();
         _punchRemainingTimer = null;
+        _fireWorkHoursNotification(context);
       } else {
-        String twoDigits(int n) => n.toString().padLeft(2, "0");
-        String twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
-        String twoDigitSeconds = twoDigits(diff.inSeconds.remainder(60));
+        String twoDigits(int n) => n.toString().padLeft(2, '0');
+        final twoDigitMinutes = twoDigits(diff.inMinutes.remainder(60));
+        final twoDigitSeconds = twoDigits(diff.inSeconds.remainder(60));
         _setRemainingTimeValue(
-            "${twoDigits(diff.inHours)}:$twoDigitMinutes:$twoDigitSeconds");
+            '${twoDigits(diff.inHours)}:$twoDigitMinutes:$twoDigitSeconds');
       }
     });
   }

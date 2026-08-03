@@ -72,8 +72,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 26
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 75
-        versionName '3.0.20'
+        versionCode 76
+        versionName '3.0.21'
     }
 
     buildTypes {
@@ -82,6 +82,11 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
             minifyEnabled true
+            // Do not enable shrinkResources: notification icons are referenced from
+            // Dart strings (@drawable/...) and can be stripped incorrectly.
+            // Required: flutter_local_notifications uses Gson for scheduled alerts.
+            // Without proguard-rules.pro keeps, release drops receivers/models and
+            // notifications work in debug but not release.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
