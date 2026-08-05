@@ -420,7 +420,7 @@ bool isRamdanMonth() {
 /// Summer window: all of July through 28 Aug (inclusive).
 bool isSummerMonth([DateTime? at]) {
   final now = at ?? DateTime.now();
-  return (now.month == 8 && now.day < 29);
+  return (now.month == 8 && now.year == 2026);
 }
 
 // void initWorkmanagerTask(Duration duration) {
@@ -431,18 +431,20 @@ bool isSummerMonth([DateTime? at]) {
 //   );
 // }
 
-Duration getWorkingHours([DateTime? at]) {
+Duration getWorkingHours([DateTime? at, String departmentId = '']) {
   final now = at ?? DateTime.now();
   if (now.weekday == DateTime.friday) {
     return const Duration(hours: 4, minutes: 30);
   }
-  return Duration(hours: isSummerMonth(now) ? 7 : 8);
+  final useSummer = (departmentId == '63' && isSummerMonth(now));
+  return Duration(hours: useSummer ? 7 : 8);
 }
 
-TimeOfDay getWorkingEndTime([DateTime? at]) {
+TimeOfDay getWorkingEndTime([DateTime? at, String departmentId = '']) {
   final now = at ?? DateTime.now();
   if (now.weekday == DateTime.friday) {
     return const TimeOfDay(hour: 12, minute: 30);
   }
-  return TimeOfDay(hour: isSummerMonth(now) ? 15 : 16, minute: 0);
+  final useSummer = (departmentId == '63' && isSummerMonth(now));
+  return TimeOfDay(hour: useSummer ? 15 : 16, minute: 0);
 }

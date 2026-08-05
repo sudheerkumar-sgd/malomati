@@ -41,3 +41,4 @@ android/app/production/release/
 .DS_Store
 ios/Podfile.lock
 ios/Runner.xcodeproj/xcshareddata/xcschemes/production.xcscheme
+*.hprof

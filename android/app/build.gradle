@@ -85,7 +85,7 @@ android {
             // Do not enable shrinkResources: notification icons are referenced from
             // Dart strings (@drawable/...) and can be stripped incorrectly.
             // Required: flutter_local_notifications uses Gson for scheduled alerts.
-            // Without proguard-rules.pro keeps, release drops receivers/models and
+            // Without proguard-rules.pro keeps, release drops receivers/models and 
             // notifications work in debug but not release.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

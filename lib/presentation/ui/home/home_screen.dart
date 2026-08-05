@@ -231,7 +231,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  DateTime? _workTargetTime(String punch1Time, DateTime now) {
+  DateTime? _workTargetTime(
+      BuildContext context, String punch1Time, DateTime now) {
     final punchInParts = punch1Time.split(':');
     if (punchInParts.length < 2) return null;
     final hour = int.tryParse(punchInParts[0].trim());
@@ -248,8 +249,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       minute,
       second,
     );
-    var targetTime = punchInToday.add(getWorkingHours(now));
-    final workingEndTime = getWorkingEndTime(now);
+    final departmentId =
+        context.userDB.get(departmentIdKey, defaultValue: '');
+    var targetTime = punchInToday.add(getWorkingHours(now, departmentId));
+    final workingEndTime = getWorkingEndTime(now, departmentId);
     final limitTime = DateTime(
       now.year,
       now.month,
@@ -318,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     if (_punchRemainingTimer != null) return;
 
     final now = DateTime.now();
-    final targetTime = _workTargetTime(punch1Time, now);
+    final targetTime = _workTargetTime(context, punch1Time, now);
     if (targetTime == null) {
       _setRemainingTimeValue('00:00:00');
       return;
@@ -339,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         return;
       }
       final now = DateTime.now();
-      final targetTime = _workTargetTime(punch1Time, now);
+      final targetTime = _workTargetTime(context, punch1Time, now);
       if (targetTime == null) return;
 
       final diff = targetTime.difference(now);

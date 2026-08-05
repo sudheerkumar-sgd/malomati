@@ -19,6 +19,10 @@ pluginManagement {
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "8.11.1" apply false
+    // Flutter DependencyVersionChecker expects >= 2.2.20.
+    // The "Unsupported Kotlin plugin version" line is a WARNING from Flutter's
+    // own includeBuild (kotlin-dsl embeds 2.0.21 vs kotlin("jvm") 2.2.20) — not
+    // the app failure.
     id "org.jetbrains.kotlin.android" version "2.2.20" apply false
     id "com.google.gms.google-services" version "4.4.0" apply false
 }
