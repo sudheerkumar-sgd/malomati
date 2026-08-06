@@ -198,10 +198,7 @@ class FirbaseConfig {
           icon: _notificationIcon,
           playSound: true,
           visibility: NotificationVisibility.public,
-          // alarm + fullScreenIntent helps surface the alert when the screen is off.
-          category: AndroidNotificationCategory.alarm,
-          fullScreenIntent: true,
-          audioAttributesUsage: AudioAttributesUsage.alarm,
+          category: AndroidNotificationCategory.reminder,
         ),
         iOS: DarwinNotificationDetails(
           presentAlert: true,
