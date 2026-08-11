@@ -1,4 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:malomati/core/common/common_utils.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/data/model/attendance_model.dart';

@@ -36,7 +36,8 @@ class Location {
   }
 
   static Future<String> getPlaceByLocation(double lat, double long) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    List<Placemark> placemarks =
+        await Geocoding().placemarkFromCoordinates(lat, long);
     if (placemarks.isNotEmpty) {
       return placemarks[0].subLocality ?? placemarks[0].locality ?? '';
     } else {

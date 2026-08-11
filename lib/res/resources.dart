@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/res/colors/base_clors.dart';
 import 'package:malomati/res/colors/theme_peach_colors.dart';

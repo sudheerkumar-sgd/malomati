@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/l10n/app_localizations.dart';
 import '../../res/resources.dart';

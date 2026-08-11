@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:malomati/config/constant_config.dart';
 import 'package:malomati/core/constants/constants.dart';
 import 'package:malomati/core/error/failures.dart';
