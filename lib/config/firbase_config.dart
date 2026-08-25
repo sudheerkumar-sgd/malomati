@@ -5,12 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_badge_control/flutter_app_badge_control.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../firebase_options.dart';
 import 'constant_config.dart';
 
 @pragma('vm:entry-point')
@@ -56,9 +54,7 @@ class FirbaseConfig {
   }
 
   Future<void> initFirbaseMessaging() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
     final messaging = FirebaseMessaging.instance;
 
     final settings = await messaging.requestPermission(

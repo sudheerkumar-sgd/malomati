@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/presentation/ui/widgets/security_alert_dialog_widget.dart';
 import 'package:root_checker_plus/root_checker_plus.dart';
 
@@ -18,8 +18,8 @@ class SecurityCheck {
 
   void checkSecurity(BuildContext context) async {
     String message = '';
-    if (true) {
-      return; // Skip security checks in debug mode
+    if (kDebugMode) {
+      return;
     }
     if (Platform.isAndroid) {
       if (await isDeviceTampered()) {

@@ -21,6 +21,7 @@ class TextInputWidget {
   TextInputAction? textInputAction;
   final String? suffixIconPath;
   final Function? suffixIconClick;
+  final bool isSensitive;
   TextInputWidget({
     this.textStyle,
     this.hintText,
@@ -39,6 +40,7 @@ class TextInputWidget {
     this.textInputAction,
     this.suffixIconPath,
     this.suffixIconClick,
+    this.isSensitive = false,
   });
   Widget get textInputFiled => getTextField();
 
@@ -52,6 +54,9 @@ class TextInputWidget {
         textInputAction: textInputAction ?? TextInputAction.next,
         obscureText:
             textInputType == TextInputType.visiblePassword ? true : false,
+        enableInteractiveSelection: !isSensitive,
+        enableSuggestions: !isSensitive,
+        autocorrect: !isSensitive,
         maxLines: maxLines,
         validator: (value) {
           if (errorMessage.isNotEmpty && (value == null || value.isEmpty)) {

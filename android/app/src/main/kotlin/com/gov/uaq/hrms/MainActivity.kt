@@ -1,6 +1,8 @@
 package com.gov.uaq.hrms
 
 import android.Manifest
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
@@ -45,6 +47,11 @@ class MainActivity: FlutterActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).clearPrimaryClip()
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -55,6 +62,14 @@ class MainActivity: FlutterActivity() {
                     val detected = isFridaServerRunning() || isTracerPidDetected() || isXposedPresent()
                     result.success(detected)
                 }
+                else -> result.notImplemented()
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "malomati/local_crypto").setMethodCallHandler {
+                call, result ->
+            when (call.method) {
+                "getHiveKey" -> result.success(LocalCrypto.getOrCreateHiveKey(this))
                 else -> result.notImplemented()
             }
         }

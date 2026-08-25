@@ -34,6 +34,10 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher_flag"
         android:roundIcon="@mipmap/ic_launcher_flag_round"
+        android:allowBackup="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:replace="android:allowBackup,android:fullBackupContent,android:dataExtractionRules"
         >
         <activity
             android:name=".MainActivity"

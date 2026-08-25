@@ -269,6 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         .resources.dimen.dp40,
                                                     textController:
                                                         _pwdTextController,
+                                                    isSensitive: true,
                                                     textInputType: value
                                                         ? TextInputType.text
                                                         : TextInputType

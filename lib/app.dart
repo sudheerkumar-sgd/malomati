@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:malomati/config/app_routes.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/core/security/privacy_guard.dart';
 import 'core/enum.dart';
 import 'l10n/app_localizations.dart';
 
@@ -28,6 +29,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       locale: locale,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) =>
+          PrivacyGuard(child: child ?? const SizedBox.shrink()),
       title: 'Malomati',
       theme: theme.theme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

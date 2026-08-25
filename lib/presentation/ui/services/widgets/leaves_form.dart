@@ -106,13 +106,12 @@ class LeavesForm extends StatelessWidget {
   }
 
   Future<void> _selectFile(BuildContext context) async {
-    FilePickerResult? result =
-        await FilePicker.pickFiles(type: FileType.any);
+    final picked = await FilePicker.pickFile(type: FileType.any);
 
-    if (result != null) {
-      final fileName = result.files.single.name;
+    if (picked != null) {
+      final fileName = picked.name;
       if (fileName.isNotEmpty) {
-        File file = File(result.files.single.path ?? '');
+        File file = File(picked.path ?? '');
         printLog(message: '${file.lengthSync()}');
         if (file.lengthSync() <= maxUploadFilesize) {
           final bytes = file.readAsBytesSync();

@@ -1,4 +1,5 @@
-const String appSettingsDb = 'db_app_settings';
+const String appSettingsDb = 'db_app_settings_gcm';
+const String legacyAppSettingsDb = 'db_app_settings';
 const String userDb = 'db_users';
 const String themeModeKey = 'key_theme_mode';
 const String appColorKey = 'key_app_color';

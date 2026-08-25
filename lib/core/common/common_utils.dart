@@ -9,6 +9,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:malomati/config/constant_config.dart';
+import 'package:malomati/config/flavor_config.dart';
 import 'package:malomati/core/common/common.dart';
 import 'package:malomati/core/common/log.dart';
 import 'package:malomati/domain/entities/name_id_entity.dart';
@@ -392,6 +393,7 @@ String getFontNameByString(String text) {
 }
 
 void checkIsUpdateAvailabe(BuildContext context) {
+  if (FlavorConfig.isDevelopment()) return;
   AppVersionUpdate.checkForUpdates().then((data) {
     if (data.canUpdate == true && context.mounted) {
       showDialog(
@@ -401,6 +403,8 @@ void checkIsUpdateAvailabe(BuildContext context) {
             return const UpdateDialogWidget();
           });
     }
+  }).catchError((Object e) {
+    printLog(message: 'checkIsUpdateAvailabe: $e');
   });
 }
 

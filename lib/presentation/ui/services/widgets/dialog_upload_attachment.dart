@@ -21,12 +21,12 @@ class DialogUploadAttachmentWidget extends StatelessWidget {
     String fileName = '';
     String? mimeType;
     if (selectedOption == UploadOptions.file) {
-      FilePickerResult? result = await FilePicker.pickFiles(
+      final picked = await FilePicker.pickFile(
           type: FileType.custom, allowedExtensions: ['pdf']);
-      if (result != null) {
-        fileName = result.files.single.name;
-        filePath = result.files.single.path ?? '';
-        mimeType = lookupMimeType(filePath);
+      if (picked != null) {
+        fileName = picked.name;
+        filePath = picked.path ?? '';
+        mimeType = lookupMimeType(filePath.isNotEmpty ? filePath : fileName);
       }
     } else {
       try {

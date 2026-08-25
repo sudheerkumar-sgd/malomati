@@ -28,7 +28,5 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:393239977540:ios:8d559e1fad714c50a82611</string>
-	<key>DATABASE_URL</key>
-	<string>https://malomati-bf7ab.firebaseio.com</string>
 </dict>
 </plist>
