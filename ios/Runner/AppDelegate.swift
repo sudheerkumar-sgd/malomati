@@ -15,10 +15,9 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
-    let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "LocalCryptoPlugin")
     let channel = FlutterMethodChannel(
       name: "malomati/local_crypto",
-      binaryMessenger: registrar.messenger()
+      binaryMessenger: engineBridge.applicationRegistrar.messenger()
     )
     channel.setMethodCallHandler { call, result in
       guard call.method == "getHiveKey" else {
