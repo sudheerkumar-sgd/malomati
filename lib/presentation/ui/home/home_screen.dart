@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       ValueNotifier<AttendanceEntity>(AttendanceEntity());
   bool _didInitHomeDependencies = false;
   bool _wasPaused = false;
+  String userName = '';
 
   // notification state for work‑hour completion
   bool _workNotificationScheduled = false;
@@ -121,8 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _didInitHomeDependencies = true;
 
     final userDB = context.userDB;
-    final userName = userDB.get(userNameKey, defaultValue: '');
-
+    userName = userDB.get(userNameKey, defaultValue: '');
     _weatherEntity.value = WeatherEntity(
       temperature: userDB.get(lastTemperature, defaultValue: 0),
       weathercode: userDB.get(lastWeathercode, defaultValue: 1),
@@ -249,8 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       minute,
       second,
     );
-    final departmentId =
-        context.userDB.get(departmentIdKey, defaultValue: '');
+    final departmentId = context.userDB.get(departmentIdKey, defaultValue: '');
     var targetTime = punchInToday.add(getWorkingHours(now, departmentId));
     final workingEndTime = getWorkingEndTime(now, departmentId);
     final limitTime = DateTime(
@@ -1280,7 +1279,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                                             .userDB
                                                             .get(isMaangerKey,
                                                                 defaultValue:
-                                                                    false))
+                                                                    false),
+                                                        userName: userName)
                                                     .where((element) =>
                                                         !favoriteEntity
                                                             .contains(element))
