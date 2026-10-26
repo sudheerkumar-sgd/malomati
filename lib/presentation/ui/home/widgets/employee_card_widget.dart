@@ -56,12 +56,16 @@ String employeeCardPlaceholderPath({
   return DrawableAssets.icPlaceholderOtherMale;
 }
 
+const _ltrIsolateStart = '\u2066';
+const _ltrIsolateEnd = '\u2069';
+final _cardNumberPattern = RegExp(r'\+?[0-9]+(?:[ .\-:][0-9]+)*');
+
 List<InlineSpan> employeeCardNumberSpans(
   String text,
   TextStyle textStyle,
   TextStyle numberStyle,
 ) {
-  final matches = RegExp(r'[0-9][0-9+.\s:-]*').allMatches(text);
+  final matches = _cardNumberPattern.allMatches(text);
   if (matches.isEmpty) {
     return [TextSpan(text: text, style: textStyle)];
   }
@@ -74,7 +78,10 @@ List<InlineSpan> employeeCardNumberSpans(
         style: textStyle,
       ));
     }
-    spans.add(TextSpan(text: match.group(0), style: numberStyle));
+    spans.add(TextSpan(
+      text: '$_ltrIsolateStart${match.group(0)}$_ltrIsolateEnd',
+      style: numberStyle,
+    ));
     start = match.end;
   }
   if (start < text.length) {
@@ -367,7 +374,7 @@ class _EmployeeCardWidgetState extends State<EmployeeCardWidget>
                         style: context.textFontWeight600
                             .onFontSize(resources.fontSize.dp14)
                             .onFontFamily(fontFamily: fontFamilyAR)
-                            .onColor(resources.color.viewBgColor),
+                            .onColor(resources.color.textColor212B4B),
                       ),
                     if (jobNameAr.isNotEmpty) ...[
                       SizedBox(height: resources.dimen.dp2),
@@ -377,7 +384,7 @@ class _EmployeeCardWidgetState extends State<EmployeeCardWidget>
                         style: context.textFontWeight400
                             .onFontSize(resources.fontSize.dp10)
                             .onFontFamily(fontFamily: fontFamilyAR)
-                            .onColor(resources.color.textColorLight),
+                            .onColor(resources.color.viewBgColor),
                       ),
                     ],
                     SizedBox(height: resources.dimen.dp8),
@@ -400,7 +407,7 @@ class _EmployeeCardWidgetState extends State<EmployeeCardWidget>
                         style: context.textFontWeight400
                             .onFontSize(resources.fontSize.dp10)
                             .onFontFamily(fontFamily: fontFamilyEN)
-                            .onColor(resources.color.textColorLight),
+                            .onColor(resources.color.viewBgColor),
                       ),
                     ],
                   ],

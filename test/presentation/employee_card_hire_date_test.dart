@@ -49,19 +49,26 @@ void main() {
   });
 
   group('employeeCardNumberSpans', () {
-    test('keeps digits on the number style', () {
+    test('keeps plus and phone digits together as LTR', () {
       const textStyle = TextStyle(fontFamily: 'AR');
       const numberStyle = TextStyle(fontFamily: 'Inter');
       final spans = employeeCardNumberSpans(
-        'ص.ب: 225 +971',
+        'ص.ب: 225 +971 6 764 1000',
         textStyle,
         numberStyle,
       );
+      String visible(InlineSpan span) {
+        final text = (span as TextSpan).text ?? '';
+        return text.replaceAll(RegExp(r'[\u2066\u2069]'), '');
+      }
+
       expect(spans, hasLength(4));
-      expect((spans[1] as TextSpan).text, '225 ');
+      expect(visible(spans[1]), '225');
       expect((spans[1] as TextSpan).style?.fontFamily, 'Inter');
-      expect((spans[3] as TextSpan).text, '971');
+      expect(visible(spans[3]), '+971 6 764 1000');
       expect((spans[3] as TextSpan).style?.fontFamily, 'Inter');
+      expect((spans[3] as TextSpan).text, startsWith('\u2066'));
+      expect((spans[3] as TextSpan).text, endsWith('\u2069'));
     });
   });
 }
