@@ -1,0 +1,34 @@
+# 10 · Platform and Build
+
+## Build Philosophy
+- Builds must be reproducible, deterministic, and automatable.
+- The same source revision should produce predictable artifacts across environments.
+
+## Environment Management
+- Separate local, CI, staging, and production configuration clearly.
+- Keep environment-specific values outside source via secure configuration.
+- Document required environment variables and defaults.
+
+## CI/CD Baseline
+- CI runs format/lint, tests, and packaging steps relevant to the stack.
+- Release pipelines are versioned, observable, and auditable.
+- Failed deployments must fail fast with actionable diagnostics.
+
+## Artifact and Release Management
+- Produce immutable, versioned artifacts.
+- Sign artifacts where platform/regulatory requirements apply.
+- Keep release notes/changelogs with customer and operator impact.
+
+## Multi-Platform Considerations
+- Define supported platform/version matrix explicitly.
+- Track and gate platform-specific regressions (mobile/web/desktop/server runtimes).
+- Keep platform conditionals minimal and isolated.
+
+## Runtime Readiness
+- Health checks and startup validation are required for deployable services/apps.
+- Feature flags should support controlled rollout for high-risk changes.
+- Rollback or quick-disable path must be documented and tested.
+
+## Observability in Build and Release
+- Capture build metadata (commit, version, timestamp, environment).
+- Tie deployed artifacts to monitoring dashboards and alert ownership.

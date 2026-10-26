@@ -1,0 +1,28 @@
+# 03 · Performance
+
+## Performance Approach
+- Measure before optimizing.
+- Define and track meaningful performance budgets (latency, startup, memory, CPU, frame time, throughput).
+- Prioritize end-user impact and system reliability.
+
+## Common Rules
+- Avoid expensive work on critical user/request paths.
+- Cache intentionally with explicit invalidation rules.
+- Batch/chunk large operations where possible.
+- Prefer async/non-blocking execution for I/O-bound work.
+
+## UI-Facing Systems
+- Keep rendering/update paths lightweight.
+- Limit unnecessary rerenders/recompositions/layout passes.
+- Use lazy loading and virtualization for large lists or datasets.
+- Profile jank, startup, and memory with platform tooling.
+
+## API/Service Systems
+- Set clear timeouts and retry policies.
+- Use pagination/streaming for large payloads.
+- Control fan-out and concurrency to avoid cascading failures.
+- Track p50/p95/p99 latency and error rates by endpoint.
+
+## Validation
+- Benchmark/profiling evidence is required for performance-sensitive changes.
+- Regressions should block release until accepted or mitigated.

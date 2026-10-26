@@ -299,6 +299,11 @@ flutter:
      - assets/images/ic_delete.svg
      - assets/images/ic_star.svg
      - assets/images/ic_logo.svg
+     - assets/images/ic_idcard.svg
+     - assets/images/ic_placeholder_other_male.png
+     - assets/images/ic_placeholder_emirati_male.png
+     - assets/images/ic_placeholder_other_woman.png
+     - assets/images/ic_placeholder_emirati_woman.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

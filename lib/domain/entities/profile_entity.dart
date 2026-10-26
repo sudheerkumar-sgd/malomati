@@ -17,6 +17,7 @@ class ProfileEntity extends BaseEntity {
   String? DEPARTMENT_NAME = "";
   String? DEPARTMENT_NAME_US = "";
   String? NATIONALITY = "";
+  String? SEX = "";
   String? AS_OF_DATE = "";
   String? AS_OF_DATE_CHAR = "";
   String? USER_NAME = "";

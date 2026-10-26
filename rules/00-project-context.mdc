@@ -1,0 +1,41 @@
+# 00 · Project Context
+
+## Purpose
+Define a shared engineering baseline that works across:
+- Flutter
+- Android (Kotlin/Compose)
+- iOS (SwiftUI)
+- Next.js/TypeScript
+- .NET
+- APIs/microservices
+- Enterprise applications
+
+## Scope
+This ruleset defines:
+- Architecture and coding standards
+- Quality, performance, testing, and security expectations
+- API/data design rules
+- UI/UX and accessibility expectations
+- AI-assisted development guardrails
+- Code review and build/release practices
+
+## Working Principles
+- Prefer reuse over reinvention.
+- Keep solutions simple, explicit, and maintainable.
+- Optimize for correctness and operability before optimization tricks.
+- Favor incremental change over broad rewrites.
+
+## Definition of Done (Baseline)
+- The change is understandable by a new team member.
+- Static checks/lints pass.
+- Relevant automated tests pass.
+- Security/privacy implications are addressed.
+- Monitoring/logging is sufficient for troubleshooting.
+- Release/rollback path is clear for production-impacting changes.
+
+## Decision Framework
+When choosing implementations:
+1. Use existing project patterns first.
+2. Use standard language/platform capabilities second.
+3. Add dependencies only with clear value and maintenance confidence.
+4. Introduce new abstractions only when repeated complexity proves the need.

@@ -1,0 +1,30 @@
+# 09 · Code Review
+
+## Review Priorities
+1. Correctness and regression risk
+2. Security/privacy impact
+3. Architecture and boundary integrity
+4. Performance/operability impact
+5. Maintainability and clarity
+
+## Author Responsibilities
+- Keep pull requests focused and reasonably scoped.
+- Include context: problem, approach, tradeoffs, and verification steps.
+- Call out known risks and rollout/rollback notes when relevant.
+
+## Reviewer Checklist
+- Does this solve the root cause, not just one symptom?
+- Are edge cases and failure modes handled?
+- Are contracts/interfaces compatible and documented?
+- Are tests appropriate for the risk level?
+- Are logs/metrics sufficient for production debugging?
+
+## Feedback Standards
+- Be specific, actionable, and respectful.
+- Label comments as blocker vs suggestion.
+- Prefer concrete alternatives over vague objections.
+
+## Merge Criteria
+- Required checks pass.
+- Blockers are resolved.
+- Ownership and follow-ups are explicit for deferred work.

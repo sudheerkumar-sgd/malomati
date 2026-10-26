@@ -1,0 +1,30 @@
+# 08 · AI Development Workflow
+
+## Goal
+Use AI to increase delivery speed while keeping architecture, security, and quality standards intact.
+
+## Prompting Guidelines
+- Provide clear scope, constraints, acceptance criteria, and target files.
+- Request minimal diffs aligned with existing project patterns.
+- Ask the model to state assumptions when context is missing.
+
+## Guardrails
+- Treat generated output as draft, never as trusted final code.
+- Reject suggestions that introduce unnecessary dependencies or abstractions.
+- Do not include secrets, credentials, or sensitive customer data in prompts.
+
+## Verification Loop
+For non-trivial AI-assisted changes:
+1. Run static checks/lints.
+2. Run relevant tests (unit/integration/e2e as applicable).
+3. Manually validate critical user/business paths.
+4. Confirm observability and error handling are adequate.
+
+## Reviewability
+- Keep changes small enough to review effectively.
+- Require concise rationale for complex logic.
+- Record important tradeoffs or simplifications in code comments/docs.
+
+## Accountability
+- Human reviewers remain accountable for correctness and risk.
+- AI-generated code must meet the same standards as human-written code.

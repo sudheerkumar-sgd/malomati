@@ -19,6 +19,7 @@ class ProfileModel extends BaseModel {
   String? DEPARTMENT_NAME = "";
   String? DEPARTMENT_NAME_US = "";
   String? NATIONALITY = "";
+  String? SEX = "";
   String? AS_OF_DATE = "";
   String? AS_OF_DATE_CHAR = "";
   String? USER_NAME = "";
@@ -47,6 +48,7 @@ class ProfileModel extends BaseModel {
     profileModel.DEPARTMENT_NAME = json["DEPARTMENT_NAME"];
     profileModel.DEPARTMENT_NAME_US = json["ATTRIBUTE1"];
     profileModel.NATIONALITY = json["NATIONALITY"];
+    profileModel.SEX = json["SEX"] ?? '';
     profileModel.AS_OF_DATE = json["AS_OF_DATE"];
     profileModel.AS_OF_DATE_CHAR = json["AS_OF_DATE_CHAR"];
     profileModel.USER_NAME = json["USER_NAME"];
@@ -87,6 +89,7 @@ extension SourceModelExtension on ProfileModel {
     profileEntity.DEPARTMENT_NAME = DEPARTMENT_NAME;
     profileEntity.DEPARTMENT_NAME_US = DEPARTMENT_NAME_US;
     profileEntity.NATIONALITY = NATIONALITY;
+    profileEntity.SEX = SEX;
     profileEntity.AS_OF_DATE = AS_OF_DATE;
     profileEntity.AS_OF_DATE_CHAR = AS_OF_DATE_CHAR;
     profileEntity.USER_NAME = USER_NAME;

@@ -621,5 +621,18 @@
     "youDidntPunchYet": "You didn't punch yet",
     "workNotificationTitle":"Working Hours Completed",
     "workNotificationBody":"Your scheduled working hours for today have been completed successfully.",
+    "employeeCard":"Employee Card",
+    "digitalUmmAlQuwainAr":"أم القيوين الرقمية",
+    "digitalUmmAlQuwainEn":"DIGITAL UMM AL QUWAIN",
+    "employeeCardPrintedEn":"Employee Card",
+    "employeeCardPrintedAr":"البطاقة الوظيفية",
+    "employeeCardJobNumber":"الرقم الوظيفي",
+    "employeeCardHireDate":"تاريخ التوظيف",
+    "employeeCardInstructions":"تعليمات",
+    "employeeCardInstructionWear":"يجب أن يلتزم الموظف بتعليق هذه البطاقة أثناء الدوام الرسمي",
+    "employeeCardInstructionProperty":"هذه البطاقة تعريفية وهي ملك للدائرة",
+    "employeeCardInstructionFound":"في حال العثور على هذه البطاقة يرجى إرسالها إلى ص.ب: 225 أم القيوين أو الاتصال بالرقم: +971 6 764 1000",
+    "flipEmployeeCard":"Flip employee card",
+    "viewEmployeeCard":"View employee card",
     "dummy":"dummy"
 }

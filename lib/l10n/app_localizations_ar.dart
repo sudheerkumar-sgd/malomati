@@ -994,5 +994,47 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم استكمال ساعات الدوام المحددة لهذا اليوم بنجاح.';
 
   @override
+  String get employeeCard => 'البطاقة الوظيفية';
+
+  @override
+  String get digitalUmmAlQuwainAr => 'أم القيوين الرقمية';
+
+  @override
+  String get digitalUmmAlQuwainEn => 'DIGITAL UMM AL QUWAIN';
+
+  @override
+  String get employeeCardPrintedEn => 'Employee Card';
+
+  @override
+  String get employeeCardPrintedAr => 'البطاقة الوظيفية';
+
+  @override
+  String get employeeCardJobNumber => 'الرقم الوظيفي';
+
+  @override
+  String get employeeCardHireDate => 'تاريخ التوظيف';
+
+  @override
+  String get employeeCardInstructions => 'تعليمات';
+
+  @override
+  String get employeeCardInstructionWear =>
+      'يجب أن يلتزم الموظف بتعليق هذه البطاقة أثناء الدوام الرسمي';
+
+  @override
+  String get employeeCardInstructionProperty =>
+      'هذه البطاقة تعريفية وهي ملك للدائرة';
+
+  @override
+  String get employeeCardInstructionFound =>
+      'في حال العثور على هذه البطاقة يرجى إرسالها إلى ص.ب: 225 أم القيوين أو الاتصال بالرقم: +971 6 764 1000';
+
+  @override
+  String get flipEmployeeCard => 'قلب البطاقة الوظيفية';
+
+  @override
+  String get viewEmployeeCard => 'عرض البطاقة الوظيفية';
+
+  @override
   String get dummy => 'dummy';
 }

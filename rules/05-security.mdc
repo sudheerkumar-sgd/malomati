@@ -1,0 +1,29 @@
+# 05 · Security
+
+## Security Posture
+Apply secure-by-default practices at every trust boundary.
+
+## Secrets and Credentials
+- Never commit secrets or private keys to source control.
+- Use environment/secret managers and rotation policies.
+- Minimize secret exposure in logs, telemetry, and client binaries.
+
+## Authentication and Authorization
+- Enforce least privilege.
+- Validate identity and authorization for every protected action.
+- Expire/revoke tokens and sessions safely.
+
+## Input and Data Handling
+- Treat all external input as untrusted.
+- Validate and sanitize input at boundaries.
+- Use parameterized queries and safe encoding/output escaping.
+
+## Dependency and Supply Chain
+- Keep dependencies updated and supported.
+- Scan dependencies and containers/artifacts for known vulnerabilities.
+- Pin and verify critical build inputs where appropriate.
+
+## Operational Security
+- Ensure audit-ready logs for sensitive actions.
+- Rate-limit abuse-prone endpoints/actions.
+- Define incident response steps and escalation ownership.

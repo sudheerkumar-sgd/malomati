@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:malomati/core/common/common.dart';
+import 'package:malomati/domain/entities/profile_entity.dart';
 import 'package:malomati/presentation/bloc/login/login_bloc.dart';
+import 'package:malomati/presentation/ui/home/widgets/employee_card_widget.dart';
 import 'package:malomati/presentation/ui/widgets/back_app_bar.dart';
+import 'package:malomati/presentation/ui/widgets/image_widget.dart';
+import 'package:malomati/res/drawables/drawable_assets.dart';
 
 import '../../../core/common/common_utils.dart';
 import '../../../injection_container.dart';
@@ -27,6 +31,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     _loginBloc.getProfile(requestParams: {
       'USER_NAME': context.userDB.get(userNameKey, defaultValue: '')
     });
+  }
+
+  void _showEmployeeCard(ProfileEntity? profile) {
+    if (profile == null) return;
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) => EmployeeCardWidget(profile: profile),
+    );
   }
 
   @override
@@ -70,13 +88,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    profileEntity?.getFullName(
-                                            resources.isLocalEn) ??
-                                        '',
-                                    style: context.textFontWeight600
-                                        .onFontSize(resources.fontSize.dp17)
-                                        .onColor(resources.color.colorWhite),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          profileEntity?.getFullName(
+                                                  resources.isLocalEn) ??
+                                              '',
+                                          style: context.textFontWeight600
+                                              .onFontSize(
+                                                  resources.fontSize.dp17)
+                                              .onColor(
+                                                  resources.color.colorWhite),
+                                        ),
+                                      ),
+                                      Semantics(
+                                        button: true,
+                                        label: context.string.viewEmployeeCard,
+                                        child: InkWell(
+                                          onTap: () => _showEmployeeCard(
+                                              profileEntity),
+                                          child: ImageWidget(
+                                            path: DrawableAssets.icIdCard,
+                                            width: resources.dimen.dp25,
+                                            height: resources.dimen.dp25,
+                                            backgroundTint:
+                                                resources.color.colorWhite,
+                                          ).loadImage,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
                                     height: resources.dimen.dp15,

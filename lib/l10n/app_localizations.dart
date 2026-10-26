@@ -2042,6 +2042,84 @@ abstract class AppLocalizations {
   /// **'Your scheduled working hours for today have been completed successfully.'**
   String get workNotificationBody;
 
+  /// No description provided for @employeeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee Card'**
+  String get employeeCard;
+
+  /// No description provided for @digitalUmmAlQuwainAr.
+  ///
+  /// In en, this message translates to:
+  /// **'أم القيوين الرقمية'**
+  String get digitalUmmAlQuwainAr;
+
+  /// No description provided for @digitalUmmAlQuwainEn.
+  ///
+  /// In en, this message translates to:
+  /// **'DIGITAL UMM AL QUWAIN'**
+  String get digitalUmmAlQuwainEn;
+
+  /// No description provided for @employeeCardPrintedEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Employee Card'**
+  String get employeeCardPrintedEn;
+
+  /// No description provided for @employeeCardPrintedAr.
+  ///
+  /// In en, this message translates to:
+  /// **'البطاقة الوظيفية'**
+  String get employeeCardPrintedAr;
+
+  /// No description provided for @employeeCardJobNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'الرقم الوظيفي'**
+  String get employeeCardJobNumber;
+
+  /// No description provided for @employeeCardHireDate.
+  ///
+  /// In en, this message translates to:
+  /// **'تاريخ التوظيف'**
+  String get employeeCardHireDate;
+
+  /// No description provided for @employeeCardInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'تعليمات'**
+  String get employeeCardInstructions;
+
+  /// No description provided for @employeeCardInstructionWear.
+  ///
+  /// In en, this message translates to:
+  /// **'يجب أن يلتزم الموظف بتعليق هذه البطاقة أثناء الدوام الرسمي'**
+  String get employeeCardInstructionWear;
+
+  /// No description provided for @employeeCardInstructionProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'هذه البطاقة تعريفية وهي ملك للدائرة'**
+  String get employeeCardInstructionProperty;
+
+  /// No description provided for @employeeCardInstructionFound.
+  ///
+  /// In en, this message translates to:
+  /// **'في حال العثور على هذه البطاقة يرجى إرسالها إلى ص.ب: 225 أم القيوين أو الاتصال بالرقم: +971 6 764 1000'**
+  String get employeeCardInstructionFound;
+
+  /// No description provided for @flipEmployeeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip employee card'**
+  String get flipEmployeeCard;
+
+  /// No description provided for @viewEmployeeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'View employee card'**
+  String get viewEmployeeCard;
+
   /// No description provided for @dummy.
   ///
   /// In en, this message translates to:

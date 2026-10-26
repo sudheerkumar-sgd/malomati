@@ -1,0 +1,29 @@
+# 02 · Code Quality
+
+## Quality Objective
+Code should be readable, correct, and straightforward to modify safely.
+
+## Baseline Standards
+- Use the project's formatter and linter rules consistently.
+- Treat warnings as work to triage, not permanent noise.
+- Keep functions/classes focused on one clear responsibility.
+
+## Readability Rules
+- Name by intent, not implementation detail.
+- Favor explicit control flow over clever compactness.
+- Prefer immutable data where practical.
+- Keep public APIs small and predictable.
+
+## Error Handling
+- Do not silently swallow errors.
+- Convert low-level failures into actionable, user-safe errors at boundaries.
+- Log operationally useful context without leaking sensitive data.
+
+## Dependency Hygiene
+- Add new dependencies only when built-in/project options are insufficient.
+- Remove unused code, imports, and packages quickly.
+- Keep dependency versions current and supported.
+
+## Documentation
+- Add comments for non-obvious "why", not obvious "what".
+- Keep lightweight docs updated when introducing important behavior or constraints.

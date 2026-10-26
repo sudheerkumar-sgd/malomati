@@ -1,0 +1,31 @@
+# 06 · API and Data
+
+## API Design Principles
+- Design around stable business capabilities, not internal implementation details.
+- Use explicit versioning/compatibility strategy for public interfaces.
+- Prefer idempotent operations where retries are expected.
+
+## Contracts and Schemas
+- Define request/response/event schemas explicitly.
+- Validate input and output against contracts.
+- Document error formats and status semantics consistently.
+
+## Data Modeling
+- Model entities and relationships with clear ownership and lifecycle rules.
+- Keep invariants enforceable at the right layer (app + storage constraints).
+- Avoid duplication unless denormalization is deliberate and documented.
+
+## Data Changes
+- Use forward-compatible, reversible migration plans where possible.
+- Backfill and migration jobs must be observable and resumable.
+- Validate data integrity before and after large migrations.
+
+## Reliability and Consistency
+- Choose consistency model intentionally (strong/eventual) per workflow.
+- Define conflict resolution strategy for concurrent updates.
+- Implement retry and deduplication behavior for at-least-once delivery paths.
+
+## Privacy and Retention
+- Store only required data.
+- Classify sensitive fields and protect accordingly.
+- Apply retention/deletion policies and verify they execute correctly.

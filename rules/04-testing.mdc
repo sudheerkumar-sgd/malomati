@@ -1,0 +1,28 @@
+# 04 · Testing
+
+## Testing Strategy
+Use a practical layered strategy:
+- **Unit tests** for business logic and utility behavior.
+- **Integration tests** for component/service interactions.
+- **End-to-end tests** for critical user or business workflows.
+
+## Baseline Expectations
+- Every bug fix should include a regression test when practical.
+- New business logic requires automated tests.
+- Critical flows require at least one end-to-end validation path.
+
+## Test Quality
+- Test behavior and contracts, not private implementation details.
+- Keep tests deterministic and independent.
+- Prefer fakes/mocks at system boundaries only.
+- Avoid flaky timing assumptions; use controlled clocks and fixtures.
+
+## API and Data Validation
+- Add contract tests for public APIs/events.
+- Cover validation, error responses, and compatibility cases.
+- Include migration tests for schema/data model changes.
+
+## CI Gate
+- Required suites must pass before merge.
+- Flaky tests are treated as defects and fixed or quarantined quickly.
+- Coverage is a signal, not a substitute for good test design.

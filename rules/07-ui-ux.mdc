@@ -1,0 +1,30 @@
+# 07 · UI and UX
+
+## UX Objectives
+- Make primary tasks easy, fast, and predictable.
+- Prioritize clarity over decorative complexity.
+- Design for real error, empty, loading, and offline states.
+
+## Consistency
+- Reuse established design system/components before creating new patterns.
+- Keep interaction and copy conventions consistent across surfaces.
+- Preserve platform expectations where users rely on them.
+
+## Accessibility
+- Meet accessibility standards relevant to the product (WCAG/platform guidance).
+- Ensure keyboard/focus/screen-reader support where applicable.
+- Maintain readable contrast and scalable typography.
+
+## Responsive and Adaptive Behavior
+- Support required viewport/device classes.
+- Avoid hardcoded layout assumptions that break on common form factors.
+- Verify behavior in dark/light themes and localization where in scope.
+
+## Feedback and Recovery
+- Provide clear success/failure feedback for user actions.
+- Offer safe undo/confirmation for destructive operations.
+- Error messages should tell users what they can do next.
+
+## Validation
+- Include UX acceptance criteria in feature definitions.
+- Run quick usability checks for high-impact flows before release.

@@ -1,0 +1,31 @@
+# 01 · Architecture
+
+## Architecture Goal
+Keep systems modular, testable, and easy to evolve without hidden coupling.
+
+## Standard Layers (adapt as needed)
+- **Presentation/Interface**: UI, controllers, handlers, endpoints.
+- **Application/Domain**: business rules, orchestration, use cases.
+- **Infrastructure/Data**: persistence, network clients, external integrations.
+
+## Dependency Direction
+- Outer layers depend inward; domain rules should not depend on UI details.
+- Infrastructure concerns should be isolated behind interfaces/contracts.
+- Avoid circular dependencies between modules/services.
+
+## Module and Service Boundaries
+- Group code by business capability/feature, not by technical type alone.
+- Define clear ownership per module/service.
+- Shared libraries should be small, stable, and intentionally versioned.
+
+## Cross-Cutting Concerns
+Centralize patterns for:
+- Configuration and environment handling
+- Logging/metrics/tracing
+- Error mapping and retry behavior
+- Authentication/authorization integration
+
+## Evolution Rules
+- Prefer additive change over breaking change.
+- When a major architectural change is needed, migrate incrementally behind clear boundaries.
+- Document architectural decisions (lightweight ADRs are acceptable).

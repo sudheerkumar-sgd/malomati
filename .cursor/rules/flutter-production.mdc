@@ -1,0 +1,732 @@
+---
+description: Final production Flutter rules for existing Android, iOS and Web applications
+globs:
+  - "lib/**/*.dart"
+  - "test/**/*.dart"
+  - "integration_test/**/*.dart"
+  - "pubspec.yaml"
+  - "pubspec.lock"
+  - "android/**/*.gradle"
+  - "android/**/*.gradle.kts"
+  - "android/**/*.kt"
+  - "android/**/*.java"
+  - "ios/**/*.swift"
+  - "ios/**/*.m"
+  - "ios/**/*.mm"
+  - "ios/Podfile"
+  - "ios/Runner/Info.plist"
+  - "web/**/*"
+alwaysApply: true
+---
+
+# Flutter Production Rules
+
+## 1. Core Principle — Existing Project First
+
+This rule is intended primarily for existing production Flutter applications.
+
+Before changing code:
+
+- Inspect the existing project structure and implementation.
+- Identify existing architecture, state management, naming, navigation, networking, storage, localization, and testing patterns.
+- Reuse existing services, repositories, models, widgets, utilities, and packages whenever appropriate.
+- Follow established project conventions over generic preferences in this rule.
+- Do not introduce a new architecture, state-management library, networking library, dependency-injection framework, or major package unless explicitly requested or genuinely required.
+- Do not refactor unrelated code while implementing a requested change.
+- Prefer the smallest safe change that solves the requested problem.
+- Preserve existing behavior unless the requirement explicitly changes it.
+- Do not rewrite working code merely to make it match this rule.
+- Before creating a new file/class/component, search the project for an existing equivalent.
+
+When adding new functionality to an existing project, make the new code consistent with the closest existing feature.
+
+---
+
+## 2. Architecture
+
+For new code, prefer a maintainable feature-oriented structure while respecting the existing project's architecture.
+
+Typical separation:
+
+- Presentation: screens, pages, widgets, state management.
+- Domain: business rules, entities, use cases where the project uses them.
+- Data: repositories, API clients, DTOs, local data sources.
+- Core/shared: common utilities, constants, errors, services, theme, localization.
+
+Rules:
+
+- UI should not contain complex business logic.
+- Business logic should not depend directly on widgets.
+- API and database implementation details should stay outside presentation.
+- Keep responsibilities focused.
+- Avoid unnecessary abstraction for trivial code.
+- Do not introduce Clean Architecture layers into an existing project unless requested or justified by the change.
+- Preserve existing dependency direction.
+
+---
+
+## 3. SOLID Principles
+
+Apply SOLID pragmatically:
+
+- Single Responsibility: classes and methods should have focused responsibilities.
+- Open/Closed: extend behavior without unnecessary modification of stable code.
+- Liskov Substitution: implementations must honor their contracts.
+- Interface Segregation: avoid unnecessarily large interfaces.
+- Dependency Inversion: depend on abstractions where it provides meaningful value.
+
+Avoid overengineering.
+
+---
+
+## 4. Dart Standards
+
+- Follow Dart effective style and project lint rules.
+- Use strong typing.
+- Prefer `final` when variables are not reassigned.
+- Avoid `dynamic` unless required.
+- Avoid force unwraps / null assertions when safe alternatives exist.
+- Handle nullable values intentionally.
+- Keep methods small and readable.
+- Prefer descriptive names.
+- Avoid magic numbers and strings when they represent business rules or reusable configuration.
+- Use constants for stable values.
+- Prefer immutable models/state where practical.
+- Do not leave dead code, unused imports, debug prints, or temporary code.
+- Preserve existing naming conventions.
+
+---
+
+## 5. Widgets and UI
+
+- Prefer small, reusable widgets.
+- Avoid large monolithic `build()` methods.
+- Keep business logic outside widgets.
+- Use `const` constructors/widgets where applicable.
+- Reuse existing design-system components.
+- Preserve existing theme, spacing, typography, colors, and component behavior.
+- Do not duplicate UI code when an existing reusable component already exists.
+- Keep accessibility in mind.
+- Ensure loading, empty, error, and success states are handled where applicable.
+
+---
+
+## 6. State Management
+
+Respect the state-management solution already used by the project.
+
+Supported examples include:
+
+- BLoC
+- Cubit
+- Riverpod
+- Provider
+- ChangeNotifier
+
+Rules:
+
+- Do not introduce another state-management solution unnecessarily.
+- Keep state transitions predictable.
+- Keep business logic in the appropriate state-management/domain layer.
+- Avoid API calls directly inside widgets unless the existing project intentionally follows that pattern.
+- Avoid unnecessary rebuilds.
+- Keep states explicit and meaningful.
+- Handle loading, success, empty, and error states.
+- Preserve existing event/state naming conventions.
+
+For BLoC/Cubit:
+
+- Keep events, states, and business logic organized according to the existing project pattern.
+- Avoid emitting unnecessary duplicate states.
+- Cancel or guard asynchronous work where appropriate.
+- Do not create multiple blocs for a simple feature without justification.
+
+---
+
+## 7. Dependency Injection
+
+- Reuse the project's existing dependency-injection approach.
+- Do not introduce a new DI framework unnecessarily.
+- Register dependencies in the established location.
+- Prefer constructor injection.
+- Avoid hidden global dependencies where practical.
+- Keep lifecycle/scoping consistent with the existing project.
+
+---
+
+## 8. Networking and APIs
+
+- Reuse the existing HTTP/API client.
+- Follow existing repository/service patterns.
+- Do not duplicate API clients.
+- Keep API models/DTOs separate from UI models when the project architecture requires it.
+- Handle HTTP errors, timeouts, malformed responses, authentication failures, and network failures.
+- Never hardcode production URLs or credentials.
+- Use the project's existing environment/flavor configuration.
+- Validate API response assumptions.
+- Avoid unnecessary API calls.
+- Handle pagination correctly where applicable.
+- Use cancellation/debouncing for search or rapidly changing requests where appropriate.
+
+---
+
+## 9. Local Storage
+
+- Reuse the existing storage mechanism.
+- Do not introduce another storage package without justification.
+- Do not store secrets or sensitive data in insecure plain text storage.
+- Handle serialization/deserialization safely.
+- Consider migration/backward compatibility when changing persisted data.
+- Do not clear or overwrite existing user data unexpectedly.
+- Respect existing cache invalidation behavior.
+
+---
+
+## 10. Navigation and Deep Links
+
+- Reuse the existing navigation solution.
+- Preserve existing route names and navigation behavior unless the requirement changes them.
+- Handle authentication-protected routes consistently.
+- Preserve deep links.
+- Do not introduce a second navigation framework unnecessarily.
+- Avoid navigation directly from low-level data/services.
+- Handle back navigation correctly on Android, iOS, and Web.
+
+---
+
+## 11. Localization and RTL
+
+For multilingual applications:
+
+- Do not hardcode user-facing strings.
+- Reuse the existing localization mechanism.
+- Support English and Arabic where the project requires it.
+- Ensure Arabic RTL layout works correctly.
+- Avoid fixed left/right assumptions; use directional APIs where appropriate.
+- Test long translations and text expansion.
+- Ensure icons, alignment, padding, and navigation behave correctly in RTL.
+- Preserve existing translation keys and naming conventions.
+
+---
+
+## 12. Responsive UI
+
+The application may run on:
+
+- Android phones/tablets
+- iPhones/iPads
+- Web browsers
+
+Rules:
+
+- Do not assume a single screen size.
+- Use responsive layouts for Web/tablet where required.
+- Avoid unnecessary hardcoded dimensions.
+- Handle narrow and wide layouts.
+- Consider keyboard/mouse interaction on Web.
+- Preserve existing responsive behavior.
+- Test important screens at representative sizes.
+
+---
+
+## 13. Performance
+
+- Avoid unnecessary widget rebuilds.
+- Use lazy lists for large collections.
+- Avoid expensive work inside `build()`.
+- Avoid unnecessary JSON parsing or repeated transformations.
+- Cache expensive resources where appropriate.
+- Optimize images and large assets.
+- Avoid memory leaks and uncontrolled stream/subscription lifetimes.
+- Dispose controllers, streams, timers, and other resources correctly.
+- Avoid blocking the UI isolate with expensive synchronous work.
+- Profile before making complex performance changes.
+- Do not optimize prematurely at the cost of maintainability.
+
+---
+
+## 14. Error Handling
+
+- Never silently swallow important errors.
+- Use the project's existing error-handling architecture.
+- Show user-friendly messages for user-facing failures.
+- Log useful diagnostic information without exposing secrets.
+- Distinguish validation, network, authentication, authorization, and unexpected errors where applicable.
+- Do not display stack traces or internal exception details to end users.
+- Handle offline/network failure gracefully where appropriate.
+- Preserve existing global error handling.
+
+---
+
+## 15. Security
+
+- Never hardcode passwords, API secrets, private keys, tokens, or production credentials.
+- Do not commit secrets to source control.
+- Use secure configuration mechanisms already established by the project.
+- Avoid insecure local storage for sensitive information.
+- Validate untrusted input.
+- Avoid logging tokens, passwords, personal data, or sensitive API payloads.
+- Follow secure authentication/token handling already established.
+- Review permissions before adding new platform capabilities.
+- Do not weaken certificate/security controls merely to make development work.
+- Do not disable security checks in production builds.
+- Treat exported files, downloaded documents, clipboard content, screenshots, and cached data as potentially sensitive.
+
+---
+
+## 16. File Handling
+
+- Validate file type, size, and source.
+- Handle permission failures.
+- Avoid loading unnecessarily large files into memory.
+- Use temporary/cache directories appropriately.
+- Clean up temporary resources.
+- Handle Android/iOS/Web differences.
+- Do not expose sensitive files through publicly accessible paths.
+- Preserve existing download/share/open behavior.
+
+---
+
+## 17. Permissions
+
+Before adding a permission:
+
+- Confirm the feature actually requires it.
+- Check existing Android/iOS permission handling.
+- Use the minimum required permission.
+- Handle denied/restricted/permanently denied states.
+- Provide appropriate user-facing guidance where necessary.
+- Update platform configuration only when required.
+- Do not request permissions at startup unless the application genuinely needs them there.
+
+---
+
+## 18. Packages and Dependencies
+
+Before adding a package:
+
+1. Check whether the project already has an equivalent.
+2. Check whether the existing package can solve the requirement.
+3. Consider Android, iOS, and Web compatibility.
+4. Consider maintenance and release compatibility.
+5. Consider permissions and security implications.
+6. Consider package size and performance.
+7. Avoid adding dependencies for trivial functionality.
+
+After changing dependencies:
+
+- Run dependency resolution.
+- Check for breaking changes.
+- Check platform build compatibility.
+- Update lock files as appropriate.
+- Test affected functionality.
+
+Do not upgrade unrelated dependencies during a feature change unless explicitly requested.
+
+---
+
+## 19. Android Rules
+
+- Preserve the existing Android architecture and Gradle configuration.
+- Do not upgrade Gradle, AGP, Kotlin, compile SDK, target SDK, or Java versions unnecessarily.
+- Follow current Android platform requirements when making platform changes.
+- Check Android 15+ behavior, including edge-to-edge where applicable.
+- Consider 16 KB page-size compatibility for native dependencies.
+- Handle runtime permissions correctly.
+- Use appropriate exported component configuration.
+- Avoid insecure activities/services/receivers/providers.
+- Do not expose sensitive data through intents, logs, backups, or external storage.
+- Verify release builds, not only debug builds.
+- Preserve existing signing configuration.
+- Do not commit signing keys or passwords.
+
+---
+
+## 20. iOS Rules
+
+- Preserve the existing Xcode/Swift/Objective-C configuration.
+- Do not upgrade deployment targets or CocoaPods versions unnecessarily.
+- Respect Info.plist permissions and privacy descriptions.
+- Handle App Transport Security appropriately.
+- Do not expose secrets in the app bundle.
+- Verify notification, background, file, camera, location, and other capabilities when changed.
+- Preserve signing/provisioning configuration.
+- Test release/archive behavior for platform-specific changes.
+
+---
+
+## 21. Web Rules
+
+- Preserve existing Flutter Web configuration.
+- Verify routing and refresh/deep-link behavior.
+- Consider browser caching after releases.
+- Ensure static assets resolve correctly.
+- Handle responsive layouts.
+- Avoid exposing secrets in client-side code.
+- Verify API/CORS configuration where applicable.
+- Test Chrome and other supported browsers according to project requirements.
+- Preserve existing hosting/rewrite behavior.
+
+---
+
+## 22. Platform Services
+
+For platform-specific functionality:
+
+- Keep platform-specific code isolated.
+- Use platform channels only when required.
+- Reuse existing platform service abstractions.
+- Handle unsupported platforms gracefully.
+- Do not duplicate platform logic unnecessarily.
+- Test the affected platform separately.
+
+---
+
+## 23. Flavors and Environments
+
+When the project uses development/staging/production flavors:
+
+- Never mix environment URLs or credentials.
+- Reuse existing `FlavorConfig` or equivalent configuration.
+- Verify the correct Firebase configuration per flavor.
+- Verify API endpoints, bundle IDs/application IDs, icons, and app names.
+- Never commit production secrets.
+- Confirm release builds use the intended production configuration.
+
+---
+
+## 24. Firebase and Third-Party Services
+
+When Firebase or third-party SDKs are present:
+
+- Reuse existing initialization.
+- Do not initialize the same service multiple times unnecessarily.
+- Preserve existing analytics/crash reporting behavior.
+- Avoid logging sensitive user information.
+- Verify configuration per environment/flavor.
+- Check platform-specific setup after package upgrades.
+- Consider privacy and consent requirements.
+- Do not add SDKs without a clear requirement.
+
+---
+
+## 25. Notifications and Background Work
+
+For push notifications, local notifications, Workmanager, background tasks, or similar:
+
+- Reuse existing notification/background architecture.
+- Handle platform-specific restrictions.
+- Avoid assuming background execution is guaranteed.
+- Make jobs idempotent where possible.
+- Handle duplicate execution safely.
+- Avoid excessive background work.
+- Dispose/close resources correctly.
+- Test foreground, background, terminated, and relevant permission states.
+
+---
+
+# 26. Testing and Test Cases
+
+Testing is required for production-quality changes.
+
+## Existing Project First
+
+Before writing tests:
+
+- Inspect the existing test structure.
+- Identify existing unit, widget, and integration-test patterns.
+- Reuse existing test utilities, fixtures, mocks, fakes, factories, and helpers.
+- Use the testing libraries already present in the project.
+- Do not introduce a new testing framework unnecessarily.
+- Do not reorganize existing tests just to match a preferred structure.
+
+## New Features
+
+For every new feature, add appropriate tests based on risk and complexity.
+
+At minimum, consider:
+
+- Unit tests for business logic.
+- Unit tests for validation and transformations.
+- BLoC/Cubit tests for state transitions when applicable.
+- Repository/service tests for important data behavior.
+- Widget tests for important UI behavior.
+- Integration tests for critical end-to-end user flows where appropriate.
+
+Do not create tests merely to increase coverage numbers. Tests should verify meaningful behavior.
+
+## Bug Fixes
+
+For a bug fix:
+
+- Identify the root behavior being corrected.
+- Add a regression test when the behavior is testable.
+- Ensure the test would fail against the buggy implementation when practical.
+- Implement the fix.
+- Run the regression test.
+- Run related existing tests.
+
+Do not remove or weaken a test simply because the current implementation fails it.
+
+## Existing Functionality Changes
+
+When modifying existing functionality:
+
+- Find tests covering the affected behavior.
+- Update tests when behavior intentionally changes.
+- Preserve tests for behavior that must remain unchanged.
+- Add missing tests for important regression risks.
+
+## Test Cases to Consider
+
+For business-critical functionality, consider:
+
+- Valid input.
+- Invalid input.
+- Empty input.
+- Boundary values.
+- Loading state.
+- Success state.
+- Empty state.
+- Error state.
+- Network failure.
+- Timeout.
+- Unauthorized/expired authentication.
+- Permission denied.
+- Duplicate submission.
+- Retry behavior.
+- Offline behavior where applicable.
+- Arabic/RTL behavior where applicable.
+- Different screen sizes where applicable.
+- Platform-specific behavior.
+- Existing-user data compatibility.
+
+## Test Naming
+
+Use descriptive test names that explain behavior.
+
+Prefer:
+
+```dart
+test('emits loading then success when leave request is submitted', () {});
+```
+
+over:
+
+```dart
+test('test submit', () {});
+```
+
+## Test Isolation
+
+- Tests must be deterministic.
+- Avoid dependence on real production services.
+- Avoid relying on execution order.
+- Clean up resources after tests.
+- Mock/fake external services where appropriate.
+- Do not use real production credentials or data.
+
+## Test Commands
+
+After relevant changes, run the appropriate commands:
+
+```bash
+flutter analyze
+flutter test
+```
+
+For integration tests where applicable:
+
+```bash
+flutter test integration_test
+```
+
+For platform-specific changes, verify the affected platform build.
+
+If the project uses additional test commands, follow the project's existing scripts/CI configuration.
+
+## Test Expectations Before Completion
+
+A task is not considered complete merely because the application compiles.
+
+Before completion:
+
+1. Run relevant tests.
+2. Run static analysis.
+3. Verify affected user flows.
+4. Verify regression-sensitive functionality.
+5. Report any tests that could not be run and why.
+6. Do not claim tests passed if they were not actually executed.
+
+---
+
+## 27. Code Quality
+
+Before considering code complete:
+
+- Run formatter.
+- Run static analysis.
+- Remove warnings introduced by the change.
+- Remove unused imports.
+- Remove dead/debug code.
+- Check null-safety.
+- Check naming and readability.
+- Check duplicated logic.
+- Check error handling.
+- Check localization.
+- Check accessibility where relevant.
+- Check tests.
+- Check platform impact.
+
+Prefer readable code over clever code.
+
+---
+
+## 28. Build Verification
+
+For changes affecting application behavior:
+
+```bash
+flutter analyze
+flutter test
+```
+
+For relevant platform builds, verify the affected platform.
+
+Examples:
+
+```bash
+flutter build apk
+flutter build appbundle
+flutter build ios
+flutter build web
+```
+
+Only run the commands relevant to the project/platform and environment.
+
+For existing projects:
+
+- Do not change build tooling just to make a warning disappear unless required.
+- Investigate compatibility warnings before upgrading core build tools.
+- Preserve signing and release configuration.
+- Check generated artifacts when platform configuration changes.
+
+---
+
+## 29. Release Checklist
+
+Before production release, verify:
+
+### Code
+- Requested functionality implemented.
+- No unrelated refactoring.
+- No debug code.
+- No secrets.
+- Existing conventions preserved.
+
+### Tests
+- Relevant unit tests pass.
+- Relevant widget tests pass.
+- Relevant integration tests pass.
+- Regression tests added for important bug fixes.
+- No known critical test failures.
+
+### Quality
+- `flutter analyze` passes or existing known issues are documented.
+- Formatting is applied.
+- No new analyzer warnings.
+
+### Configuration
+- Correct flavor/environment.
+- Correct API endpoint.
+- Correct Firebase configuration.
+- Correct application ID/bundle ID.
+- Correct app name/icon where applicable.
+
+### Platform
+- Android verified.
+- iOS verified.
+- Web verified when applicable.
+
+### Security
+- No credentials in source.
+- Sensitive data is not logged.
+- Permissions reviewed.
+- Production security controls remain enabled.
+
+---
+
+## 30. Code Review Rules
+
+When reviewing or generating code, check:
+
+- Does it follow the existing architecture?
+- Is there already an implementation that can be reused?
+- Does it introduce unnecessary dependencies?
+- Does it preserve existing behavior?
+- Is business logic in the correct layer?
+- Are errors handled?
+- Are loading/success/error states handled?
+- Are tests added or updated?
+- Is there a regression test for a meaningful bug fix?
+- Does it affect Android/iOS/Web?
+- Does it affect localization/RTL?
+- Does it introduce security/privacy risks?
+- Does it affect performance?
+- Does it require configuration changes?
+- Does it require migration or backward compatibility handling?
+
+---
+
+## 31. Cursor Implementation Behavior
+
+When asked to implement a feature or fix:
+
+1. Inspect relevant files first.
+2. Search for existing similar functionality.
+3. Identify the established project pattern.
+4. Explain or internally determine the minimal set of changes required.
+5. Reuse existing code where appropriate.
+6. Implement incrementally.
+7. Add/update tests appropriate to the change.
+8. Run relevant analysis/tests.
+9. Check platform impact.
+10. Summarize changed files and verification performed.
+
+Do not:
+
+- Rewrite unrelated files.
+- Introduce a new architecture without request.
+- Introduce duplicate services/components.
+- Upgrade dependencies unnecessarily.
+- Remove existing tests without justification.
+- Claim a test/build passed without running it.
+- Hide errors or bypass security controls merely to make the task pass.
+
+---
+
+## 32. Preferred Implementation Order
+
+For a typical existing-project change:
+
+1. Inspect existing implementation.
+2. Identify reusable code.
+3. Confirm architecture/state-management pattern.
+4. Identify affected API/data models.
+5. Implement the smallest appropriate change.
+6. Add or update test cases.
+7. Run formatter.
+8. Run `flutter analyze`.
+9. Run relevant `flutter test` / integration tests.
+10. Verify affected platform.
+11. Review for regression, security, localization, and performance impact.
+
+---
+
+## 33. Final Rule
+
+The goal is not to make an existing project look like a new project.
+
+The goal is to make **safe, maintainable, tested, production-ready changes while preserving the project's established architecture and behavior**.
+
+When generic best practices conflict with an established project convention, follow the existing convention unless the user explicitly asks for an architectural improvement or the existing approach creates a clear correctness, security, maintainability, or platform-compatibility problem.

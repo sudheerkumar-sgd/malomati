@@ -17,7 +17,7 @@ Future<void> main() async {
   await SecureHive.init();
   FlavorConfig(
     flavor: Flavor.DEVELOPMENT,
-    values: FlavorValues(baseUrl: baseUrlProduction),
+    values: FlavorValues(baseUrl: baseUrlDevelopment),
   );
   await di.init();
   // await Workmanager().initialize(

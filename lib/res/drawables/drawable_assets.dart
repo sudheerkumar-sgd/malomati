@@ -134,6 +134,15 @@ class DrawableAssets {
   static const icDelete = '${drawablePath}ic_delete.svg';
   static const icStar = '${drawablePath}ic_star.svg';
   static const icLogo = '${drawablePath}ic_logo.svg';
+  static const icIdCard = '${drawablePath}ic_idcard.svg';
+  static const icPlaceholderOtherMale =
+      '${drawablePath}ic_placeholder_other_male.png';
+  static const icPlaceholderEmiratiMale =
+      '${drawablePath}ic_placeholder_emirati_male.png';
+  static const icPlaceholderOtherWoman =
+      '${drawablePath}ic_placeholder_other_woman.png';
+  static const icPlaceholderEmiratiWoman =
+      '${drawablePath}ic_placeholder_emirati_woman.png';
 
   static String getCloseDrawable(BuildContext context) {
     return context.resources.getTheme() == ThemeEnum.red
