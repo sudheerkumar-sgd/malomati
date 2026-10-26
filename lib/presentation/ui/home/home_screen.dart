@@ -132,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // avoids races when the home tab is rebuilt after switching bottom tabs.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      // Must run after runApp — Android 13+ shows the system dialog here.
-      await FirbaseConfig.requestAndroidNotificationPermission();
+      // Must run after runApp — system notification dialogs here.
+      await FirbaseConfig.requestNotificationPermissions();
       if (!mounted) return;
       _refreshAttendance(notifyOnFailure: false);
     });
@@ -270,15 +270,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     _workNotificationShown = true;
     final title = context.string.workNotificationTitle;
     final body = context.string.workNotificationBody;
-    // Android: the 15s debug proved zonedSchedule works, while cancel+show()
-    // at countdown end wiped the pending alarm and often posted nothing.
-    // Deliver the same way — short schedule (iOS show() still fine via helper).
-    await FirbaseConfig.scheduleLocalNotification(
-      id: _workNotificationId,
-      title: title,
-      body: body,
-      scheduledDate: DateTime.now().add(const Duration(seconds: 2)),
-    );
+    await FirbaseConfig.showLocalNotification(title, body);
   }
 
   Future<void> _scheduleWorkHoursNotification(

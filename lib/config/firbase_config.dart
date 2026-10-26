@@ -99,6 +99,29 @@ class FirbaseConfig {
     return granted ?? (await android?.areNotificationsEnabled() ?? true);
   }
 
+  static Future<bool> requestIOSNotificationPermission() async {
+    if (!Platform.isIOS) return true;
+    await ensureLocalNotificationsReady();
+    final ios = flutterLocalNotificationsPlugin
+        ?.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>();
+    final granted = await ios?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+    if (kDebugMode) {
+      final settings = await ios?.checkPermissions();
+      print('iOS notification permission granted: $granted settings=$settings');
+    }
+    return granted ?? true;
+  }
+
+  static Future<void> requestNotificationPermissions() async {
+    await requestAndroidNotificationPermission();
+    await requestIOSNotificationPermission();
+  }
+
   Future<void> initFlutterLocalNotifications() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -198,6 +221,8 @@ class FirbaseConfig {
         ),
         iOS: DarwinNotificationDetails(
           presentAlert: true,
+          presentBanner: true,
+          presentList: true,
           presentBadge: true,
           presentSound: true,
         ),
@@ -210,6 +235,8 @@ class FirbaseConfig {
       // MainActivity already prompts for POST_NOTIFICATIONS on Android 13+.
       if (Platform.isAndroid) {
         await requestAndroidNotificationPermission();
+      } else if (Platform.isIOS) {
+        await requestIOSNotificationPermission();
       }
       await flutterLocalNotificationsPlugin!.show(
         id: 100,
@@ -243,6 +270,8 @@ class FirbaseConfig {
         await requestAndroidNotificationPermission();
         // Required so AlarmManager can fire while the screen is off / in Doze.
         await requestExactAlarmPermission();
+      } else if (Platform.isIOS) {
+        await requestIOSNotificationPermission();
       }
 
       final location = tz.getLocation('Asia/Dubai');
@@ -256,13 +285,28 @@ class FirbaseConfig {
         scheduledDate.second,
       );
       final now = tz.TZDateTime.now(location);
-      // If target is now/past, bump a couple seconds so Android still uses
-      // zonedSchedule (immediate show() is flaky on some devices; schedule works).
+
+      await flutterLocalNotificationsPlugin?.cancel(id: id);
+
+      if (!tzDateTime.isAfter(now)) {
+        if (Platform.isIOS) {
+          await flutterLocalNotificationsPlugin!.show(
+            id: id,
+            title: title,
+            body: body,
+            notificationDetails: _localDetails,
+          );
+          if (kDebugMode) {
+            print('scheduleLocalNotification iOS immediate show id=$id');
+          }
+          return;
+        }
+      }
+
+      // Android past: short zonedSchedule (show() was flaky on some devices).
       final scheduleAt = tzDateTime.isAfter(now)
           ? tzDateTime
           : now.add(const Duration(seconds: 2));
-
-      await flutterLocalNotificationsPlugin?.cancel(id: id);
 
       Future<void> schedule(AndroidScheduleMode mode) {
         return flutterLocalNotificationsPlugin!.zonedSchedule(
@@ -275,28 +319,42 @@ class FirbaseConfig {
         );
       }
 
-      // alarmClock uses setAlarmClock — most reliable when screen is off / Doze.
-      // exactAllowWhileIdle still needs SCHEDULE_EXACT_ALARM; inexact is deferred in Doze.
-      try {
-        await schedule(AndroidScheduleMode.alarmClock);
-      } catch (e) {
-        if (kDebugMode) print('alarmClock failed: $e — trying exactAllowWhileIdle');
+      if (Platform.isIOS) {
+        await schedule(AndroidScheduleMode.exactAllowWhileIdle);
+      } else {
+        // alarmClock uses setAlarmClock — most reliable when screen is off / Doze.
         try {
-          await schedule(AndroidScheduleMode.exactAllowWhileIdle);
-        } catch (e2) {
-          if (kDebugMode) print('exact failed: $e2 — using inexactAllowWhileIdle');
-          await schedule(AndroidScheduleMode.inexactAllowWhileIdle);
+          await schedule(AndroidScheduleMode.alarmClock);
+        } catch (e) {
+          if (kDebugMode) {
+            print('alarmClock failed: $e — trying exactAllowWhileIdle');
+          }
+          try {
+            await schedule(AndroidScheduleMode.exactAllowWhileIdle);
+          } catch (e2) {
+            if (kDebugMode) {
+              print('exact failed: $e2 — using inexactAllowWhileIdle');
+            }
+            await schedule(AndroidScheduleMode.inexactAllowWhileIdle);
+          }
         }
       }
 
       if (kDebugMode) {
-        final android = flutterLocalNotificationsPlugin
-            ?.resolvePlatformSpecificImplementation<
-                AndroidFlutterLocalNotificationsPlugin>();
         final pending = await flutterLocalNotificationsPlugin
             ?.pendingNotificationRequests();
-        print(
-            'Scheduled id=$id @ $scheduleAt pending=${pending?.length} canExact=${await android?.canScheduleExactNotifications()}');
+        final hasId =
+            pending?.any((request) => request.id == id) ?? false;
+        if (Platform.isAndroid) {
+          final android = flutterLocalNotificationsPlugin
+              ?.resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>();
+          print(
+              'Scheduled id=$id @ $scheduleAt pending=${pending?.length} idPending=$hasId canExact=${await android?.canScheduleExactNotifications()}');
+        } else {
+          print(
+              'Scheduled id=$id @ $scheduleAt pending=${pending?.length} idPending=$hasId');
+        }
       }
     } catch (e, st) {
       if (kDebugMode) {
